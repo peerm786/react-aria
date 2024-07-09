@@ -1,51 +1,51 @@
-export type nodeType = "child" | "container";
+export type nodeType = "item" | "grp";
 
 export interface TreeNode {
   id: string;
   title: string;
   type: nodeType;
   keys?: any;
-  children?: TreeNode[];
+  items?: TreeNode[];
 }
 
 export const menuItems: TreeNode[] = [
   {
     id: "1",
     title: "Menu Item 1",
-    type: "container",
-    children: [
-      { id: "1-1", type: "child", title: "Child 1-1", keys: {} },
-      { id: "1-2", type: "child", title: "Child 1-2", keys: {} },
-      { id: "1-3", type: "child", title: "Child 1-3", keys: {} },
+    type: "grp",
+    items: [
+      { id: "1-1", type: "item", title: "Child 1-1", keys: {} },
+      { id: "1-2", type: "item", title: "Child 1-2", keys: {} },
+      { id: "1-3", type: "item", title: "Child 1-3", keys: {} },
     ],
   },
   {
     id: "2",
     title: "Menu Item 2",
-    type: "container",
-    children: [
+    type: "grp",
+    items: [
       {
         id: "2-1",
         title: "Menu Item 2-1",
-        type: "container",
-        children: [
-          { id: "2-1-1", type: "child", title: "Child 2-1-1", keys: {} },
-          { id: "2-1-2", type: "child", title: "Child 2-1-2", keys: {} },
+        type: "grp",
+        items: [
+          { id: "2-1-1", type: "item", title: "Child 2-1-1", keys: {} },
+          { id: "2-1-2", type: "item", title: "Child 2-1-2", keys: {} },
         ],
       },
-      { id: "2-2", type: "child", title: "Menu Item 2-2", keys: {} },
+      { id: "2-2", type: "item", title: "Menu Item 2-2", keys: {} },
     ],
   },
   {
     id: "3",
-    type: "child",
+    type: "item",
     title: "Menu Item 3",
-    children: [{ id: "3-1", type: "child", title: "Menu Item 3-1", keys: {} }],
+    items: [{ id: "3-1", type: "item", title: "Menu Item 3-1", keys: {} }],
   },
   {
     id: "4",
-    type: "child",
+    type: "item",
     title: "Menu Item 4",
-    children: [{ id: "4-1", type: "child", title: "Menu Item 4-1", keys: {} }],
+    items: [{ id: "4-1", type: "item", title: "Menu Item 4-1", keys: {} }],
   },
 ];

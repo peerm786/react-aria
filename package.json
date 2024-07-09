@@ -11,6 +11,7 @@
   "dependencies": {
     "@react-stately/collections": "^3.10.7",
     "axios": "^1.7.2",
+    "framer-motion": "^11.2.13",
     "he-tree-react": "^1.1.4",
     "lodash": "^4.17.21",
     "lucide-react": "^0.400.0",
@@ -21,9 +22,11 @@
     "react-icons": "^5.2.1",
     "react-redux": "^9.1.2",
     "react-toastify": "^10.0.5",
-    "tailwind-scrollbar": "^3.1.0"
+    "tailwind-scrollbar": "^3.1.0",
+    "tailwind-variants": "^0.2.1"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

@@ -84,7 +84,7 @@ const TreeNodeComponent: React.FC<TreeNodeProps> = ({
                 onDrop={(e) => handleDrop(e, path)}
             >
                 <div
-                    className={`cursor-pointer flex items-center w-full focus:outline-gray-400 ${node.type == "container" ? "" : "flex-col"
+                    className={`cursor-pointer flex items-center w-full focus:outline-gray-400 ${node.type == "grp" ? "" : "flex-col"
                         } p-1 rounded`}
                 >
                     <div className="flex w-full h-full items-center">
@@ -115,7 +115,7 @@ const TreeNodeComponent: React.FC<TreeNodeProps> = ({
                         </RACButton>
                     </div>
                     <AnimatePresence>
-                        {expanded && node.type == "child" && (
+                        {expanded && node.type == "item" && (
                             <motion.div
                                 className="overflow-hidden"
                                 initial={{ height: 0, opacity: 0 }}
@@ -145,7 +145,7 @@ const TreeNodeComponent: React.FC<TreeNodeProps> = ({
                 </div>
             </div>
             <AnimatePresence>
-                {expanded && node.children && node.type == "container" && (
+                {expanded && node.items && node.type == "grp" && (
                     <motion.div
                         className={`overflow-hidden`}
                         initial={{ height: 0, opacity: 0 }}
@@ -153,13 +153,13 @@ const TreeNodeComponent: React.FC<TreeNodeProps> = ({
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.3 }}
                     >
-                        {node.children.map((child, index) => (
+                        {node.items.map((child, index) => (
                             <div key={child.id} className="ml-4 mt-2 last:mb-2">
                                 <TreeNodeComponent
                                     key={child.id}
                                     node={child}
                                     level={level + 1}
-                                    path={`${path}.children.${index}`}
+                                    path={`${path}.items.${index}`}
                                     handleUpdateJson={handleUpdateJson}
                                     handleDragStartOfNode={handleDragStartOfNode}
                                     handleDropNode={handleDropNode}
@@ -202,8 +202,8 @@ const TreeComponent: React.FC<TreeProps> = () => {
             const newMenuGrp: TreeNode = {
                 id: `${menuGroups.length + 1}`,
                 title: `Menu Item ${menuGroups.length + 1}`,
-                type: "container",
-                children: [],
+                type: "grp",
+                items: [],
             };
             setMenuGroups((prev) => [...prev, newMenuGrp]);
             close()
@@ -212,7 +212,7 @@ const TreeComponent: React.FC<TreeProps> = () => {
             const newMenuGrp: TreeNode = {
                 id: `${menuGroups.length + 1}`,
                 title: `Menu Item ${menuGroups.length + 1}`,
-                type: "child",
+                type: "item",
                 keys: {},
             };
             setMenuGroups((prev) => [...prev, newMenuGrp]);
@@ -222,27 +222,27 @@ const TreeComponent: React.FC<TreeProps> = () => {
     };
 
     const handleNewMenuItem = (id: number, type: MenuType, close: () => void) => {
-        const val: TreeNode[] | any = _.get(menuGroups, `${id}.children`);
+        const val: TreeNode[] | any = _.get(menuGroups, `${id}.items`);
         var newMenuItem: TreeNode;
         if (type == "grp") {
             newMenuItem = {
                 id: `${id + 1}-${val.length + 1}`,
                 title: `Menu Grp ${id + 1}-${val.length + 1}`,
-                type: "container",
-                children: [],
+                type: "grp",
+                items: [],
                 keys: {},
             };
         } else {
             newMenuItem = {
                 id: `${id + 1}-${val.length + 1}`,
                 title: `Menu Item ${id + 1}-${val.length + 1}`,
-                type: "child",
-                children: [],
+                type: "item",
+                items: [],
                 keys: {},
             };
         }
         val.push(newMenuItem);
-        handleUpdateJson(`${id}.children`, val);
+        handleUpdateJson(`${id}.items`, val);
         close()
     };
 
@@ -268,8 +268,8 @@ const TreeComponent: React.FC<TreeProps> = () => {
         const pathOfSrcNode = e.dataTransfer.getData("pathOfSrcNode");
         const srcNode = _.get(menuGroups, pathOfSrcNode);
         const targetNode = _.get(menuGroups, path);
-        if ((pathOfSrcNode !== path) && targetNode.type == "container") {
-            targetNode.children.push(srcNode);
+        if ((pathOfSrcNode !== path) && targetNode.type == "grp") {
+            targetNode.items.push(srcNode);
             handleUpdateJson(path, targetNode);
             const js = structuredClone(menuGroups);
             _.unset(js, pathOfSrcNode);
@@ -338,15 +338,15 @@ const TreeComponent: React.FC<TreeProps> = () => {
                     <div className="flex w-full justify-around h-[70vh] overflow-y-auto scrollbar-thin">
                         <div className="flex w-[97%] justify-around gap-4 mr-4">
                             {menuGroups.map((node: TreeNode, id: number) => {
-                                if (node.type == "container") {
+                                if (node.type == "grp") {
                                     return (
                                         <div className="w-full" key={id}>
-                                            {node.children?.map((subNode, index) => (
+                                            {node.items?.map((subNode, index) => (
                                                 <div className="w-full" key={index}>
                                                     <TreeNodeComponent
                                                         node={subNode}
                                                         level={0}
-                                                        path={`${id}.children.${index}`}
+                                                        path={`${id}.items.${index}`}
                                                         handleUpdateJson={handleUpdateJson}
                                                         handleDropNode={handleDropNode}
                                                         handleDragStartOfNode={handleDragStartOfNode}
