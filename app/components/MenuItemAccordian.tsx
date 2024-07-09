@@ -7,19 +7,39 @@ import {
     Label,
     Text,
     TextField,
+    MenuItem,
 } from "react-aria-components";
 import { DownArrow, PlusIcon, SixDotsSvg, UpArrow } from "../constants/svgApplications";
 import { motion, AnimatePresence } from "framer-motion";
 import { TreeNode, menuItems } from "../constants/MenuItemTree";
 import _ from "lodash";
+import { Dialog, DialogTrigger, Popover } from 'react-aria-components';
 
-type HandleUpdateJsonType = (path: string, newContent: any, isDropContent?: boolean) => void;
+type HandleUpdateJsonType = (
+    path: string,
+    newContent: any,
+    isDropContent?: boolean
+) => void;
+
+type HandleDragStart = (
+    e: React.DragEvent<HTMLDivElement>,
+    path: string
+) => void;
+
+type HandleDropNode = (
+    e: React.DragEvent<HTMLDivElement>,
+    path: string
+) => void;
+
+type MenuType = "grp" | "item";
 
 interface TreeNodeProps {
     node: TreeNode;
     level: number;
     path: string;
     handleUpdateJson: HandleUpdateJsonType;
+    handleDropNode: HandleDropNode;
+    handleDragStartOfNode: HandleDragStart;
 }
 
 interface TreeProps {
@@ -31,17 +51,20 @@ const TreeNodeComponent: React.FC<TreeNodeProps> = ({
     level,
     path,
     handleUpdateJson,
+    handleDragStartOfNode,
+    handleDropNode
 }) => {
     const [expanded, setExpanded] = useState(false);
     const [isInput, setInput] = useState(false);
 
-
     const handleDrop = (e: React.DragEvent<HTMLDivElement>, path: string) => {
-        const content = JSON.parse(e.dataTransfer.getData("key"));
-        handleUpdateJson(path, content, true);
+        const content = e.dataTransfer.getData("key");
+        if (content) {
+            handleUpdateJson(`${path}.keys`, JSON.parse(content), true);
+        } else {
+            handleDropNode(e, path);
+        }
     };
-
-
 
     const handleChangeTitle = (
         e: React.ChangeEvent<HTMLInputElement>,
@@ -53,7 +76,13 @@ const TreeNodeComponent: React.FC<TreeNodeProps> = ({
 
     return (
         <div>
-            <div className={`ml-4 mt-2 border rounded`}>
+            <div
+                className={`ml-4 mt-2 border rounded`}
+                draggable
+                onDragStart={(e) => handleDragStartOfNode(e, path)}
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={(e) => handleDrop(e, path)}
+            >
                 <div
                     className={`cursor-pointer flex items-center w-full focus:outline-gray-400 ${node.type == "container" ? "" : "flex-col"
                         } p-1 rounded`}
@@ -69,14 +98,19 @@ const TreeNodeComponent: React.FC<TreeNodeProps> = ({
                                 onBlur={(e) => handleChangeTitle(e, path)}
                             />
                         ) : (
-                            <span onDoubleClick={(e) => {
-                                e.stopPropagation();
-                                setInput(!isInput)
-                            }}>
+                            <span
+                                onDoubleClick={(e) => {
+                                    e.stopPropagation();
+                                    setInput(!isInput);
+                                }}
+                            >
                                 {node.title}
                             </span>
                         )}
-                        <RACButton className="ml-auto p-2 transition-all duration-300 ease-in-out focus:outline-none" onPress={() => setExpanded(!expanded)}>
+                        <RACButton
+                            className="ml-auto p-2 transition-all duration-300 ease-in-out focus:outline-none"
+                            onPress={() => setExpanded(!expanded)}
+                        >
                             {expanded ? <UpArrow /> : <DownArrow />}
                         </RACButton>
                     </div>
@@ -93,9 +127,8 @@ const TreeNodeComponent: React.FC<TreeNodeProps> = ({
                                     <TextField className="m-2" key={id}>
                                         <Label />
                                         <Input
-                                            value={node.keys ? node.keys[fab] : ""}
                                             onDragOver={(e) => e.preventDefault()}
-                                            onDrop={(e) => handleDrop(e, `${path}.keys`)}
+                                            value={node.keys ? node.keys[fab] : ""}
                                             className={
                                                 "bg-[#F4F5FA] p-2 focus:outline-blue-500 w-full rounded-lg"
                                             }
@@ -128,6 +161,8 @@ const TreeNodeComponent: React.FC<TreeNodeProps> = ({
                                     level={level + 1}
                                     path={`${path}.children.${index}`}
                                     handleUpdateJson={handleUpdateJson}
+                                    handleDragStartOfNode={handleDragStartOfNode}
+                                    handleDropNode={handleDropNode}
                                 />
                             </div>
                         ))}
@@ -162,27 +197,53 @@ const TreeComponent: React.FC<TreeProps> = () => {
         }
     };
 
-    const handleAddMenuGrp = () => {
-        const newMenuGrp: TreeNode = {
-            id: `${menuGroups.length + 1}`,
-            title: `Menu Item ${menuGroups.length + 1}`,
-            type: "container",
-            children: [],
-        };
-        setMenuGroups((prev) => [...prev, newMenuGrp]);
+    const handleAddMenuGrp = (type: MenuType, close: () => void) => {
+        if (type == "grp") {
+            const newMenuGrp: TreeNode = {
+                id: `${menuGroups.length + 1}`,
+                title: `Menu Item ${menuGroups.length + 1}`,
+                type: "container",
+                children: [],
+            };
+            setMenuGroups((prev) => [...prev, newMenuGrp]);
+            close()
+
+        } else {
+            const newMenuGrp: TreeNode = {
+                id: `${menuGroups.length + 1}`,
+                title: `Menu Item ${menuGroups.length + 1}`,
+                type: "child",
+                keys: {},
+            };
+            setMenuGroups((prev) => [...prev, newMenuGrp]);
+            close()
+        }
+
     };
 
-    const handleNewMenuItem = (id: number) => {
+    const handleNewMenuItem = (id: number, type: MenuType, close: () => void) => {
         const val: TreeNode[] | any = _.get(menuGroups, `${id}.children`);
-        const newMenuItem: TreeNode = {
-            id: `${id + 1}-${val.length + 1}`,
-            title: `Menu Item ${id + 1}-${val.length + 1}`,
-            type: "child",
-            children: [],
-            keys: {},
-        };
+        var newMenuItem: TreeNode;
+        if (type == "grp") {
+            newMenuItem = {
+                id: `${id + 1}-${val.length + 1}`,
+                title: `Menu Grp ${id + 1}-${val.length + 1}`,
+                type: "container",
+                children: [],
+                keys: {},
+            };
+        } else {
+            newMenuItem = {
+                id: `${id + 1}-${val.length + 1}`,
+                title: `Menu Item ${id + 1}-${val.length + 1}`,
+                type: "child",
+                children: [],
+                keys: {},
+            };
+        }
         val.push(newMenuItem);
         handleUpdateJson(`${id}.children`, val);
+        close()
     };
 
     const handleChangeTitle = (
@@ -193,13 +254,45 @@ const TreeComponent: React.FC<TreeProps> = () => {
         setInput(false);
     };
 
+    const handleDragStartOfNode: HandleDragStart = (
+        e: React.DragEvent<HTMLDivElement>,
+        path: string
+    ) => {
+        e.dataTransfer.setData("pathOfSrcNode", path);
+    };
+
+    const handleDropNode: HandleDropNode = (
+        e: React.DragEvent<HTMLDivElement>,
+        path: string
+    ) => {
+        const pathOfSrcNode = e.dataTransfer.getData("pathOfSrcNode");
+        const srcNode = _.get(menuGroups, pathOfSrcNode);
+        const targetNode = _.get(menuGroups, path);
+        if ((pathOfSrcNode !== path) && targetNode.type == "container") {
+            targetNode.children.push(srcNode);
+            handleUpdateJson(path, targetNode);
+            const js = structuredClone(menuGroups);
+            _.unset(js, pathOfSrcNode);
+            setMenuGroups(js.filter((node) => node !== undefined));
+        } else {
+            alert("Can't drop here");
+        }
+    };
+
     return (
         <div className="flex w-full">
             <div className="flex flex-col w-full">
-                <div className="flex w-full bg-[#F4F5FA] p-2 rounded-xl gap-3">
-                    <div className="flex w-[97%] justify-around gap-3">
+                <div className="flex w-full bg-[#F4F5FA] p-2 rounded-xl gap-2">
+                    <div className="flex w-[95%] justify-around gap-2 overflow-x-auto">
                         {menuGroups.map((node: TreeNode, id: number) => (
-                            <div key={id} className="flex p-3 border rounded w-full bg-white">
+                            <div
+                                draggable
+                                onDragStart={(e) => handleDragStartOfNode(e, `${id}`)}
+                                onDragOver={(e) => e.preventDefault()}
+                                onDrop={(e) => handleDropNode(e, `${id}`)}
+                                key={id}
+                                className="flex p-1 border rounded w-full bg-white"
+                            >
                                 <SixDotsSvg />
                                 {isInput ? (
                                     <Input
@@ -208,10 +301,12 @@ const TreeComponent: React.FC<TreeProps> = () => {
                                         onBlur={(e) => handleChangeTitle(e, id.toString())}
                                     />
                                 ) : (
-                                    <span onDoubleClick={(e) => {
-                                        e.stopPropagation();
-                                        setInput(!isInput);
-                                    }}>
+                                    <span
+                                        onDoubleClick={(e) => {
+                                            e.stopPropagation();
+                                            setInput(!isInput);
+                                        }}
+                                    >
                                         {node.title}
                                     </span>
                                 )}
@@ -219,40 +314,66 @@ const TreeComponent: React.FC<TreeProps> = () => {
                         ))}
                     </div>
                     <div className="w-[4%] flex justify-center">
-                        <RACButton
-                            className={` px-2 items-center flex bg-white rounded focus:outline-blue-300`}
-                            onPress={handleAddMenuGrp}
-                        >
-                            <PlusIcon />
-                        </RACButton>
+                        <DialogTrigger>
+                            <RACButton
+                                className={`px-2 items-center flex bg-white rounded focus:outline-blue-300`}
+                            >
+                                <PlusIcon />
+                            </RACButton>
+                            <Popover placement="left">
+                                <Dialog className="border bg-white focus:outline-none rounded-lg">
+                                    {({ close }) => (
+                                        <div className="flex flex-col p-2">
+                                            <RACButton onPress={() => handleAddMenuGrp("grp", close)} className={"focus:outline-blue-300 p-1"}>MenuGroup</RACButton>
+                                            <RACButton onPress={() => handleAddMenuGrp("item", close)} className={"focus:outline-blue-300 p-1"}>MenuItem</RACButton>
+                                        </div>
+                                    )}
+                                </Dialog>
+                            </Popover>
+                        </DialogTrigger>
                     </div>
                 </div>
 
                 <div>
-                    <div className="flex w-full justify-around h-[70vh] overflow-y-auto">
+                    <div className="flex w-full justify-around h-[70vh] overflow-y-auto scrollbar-thin">
                         <div className="flex w-[97%] justify-around gap-4 mr-4">
                             {menuGroups.map((node: TreeNode, id: number) => {
                                 if (node.type == "container") {
                                     return (
-                                        <div className="w-full " key={id}>
+                                        <div className="w-full" key={id}>
                                             {node.children?.map((subNode, index) => (
-                                                <div className="w-full " key={index}>
+                                                <div className="w-full" key={index}>
                                                     <TreeNodeComponent
                                                         node={subNode}
                                                         level={0}
                                                         path={`${id}.children.${index}`}
                                                         handleUpdateJson={handleUpdateJson}
+                                                        handleDropNode={handleDropNode}
+                                                        handleDragStartOfNode={handleDragStartOfNode}
+
                                                     />
                                                 </div>
                                             ))}
-                                            <RACButton
-                                                className={`w-[92%] flex items-center justify-center
+                                            <DialogTrigger>
+                                                <RACButton
+                                                    className={`w-[92%] flex items-center justify-center
                            mt-2.5 py-2 ml-4 rounded-lg border-2 border-dashed
                             border-[#d9d9d9] focus:border-[#bdbcbc] focus:outline-none`}
-                                                onPress={() => handleNewMenuItem(id)}
-                                            >
-                                                <PlusIcon />
-                                            </RACButton>
+                                                >
+                                                    <PlusIcon />
+                                                </RACButton>
+                                                <Popover placement="bottom">
+                                                    <Dialog className="border bg-white focus:outline-none rounded-lg">
+                                                        {({ close }) => (
+                                                            <div className="flex flex-col p-2">
+                                                                <RACButton onPress={() => handleNewMenuItem(id, "grp", close)} className={"focus:outline-blue-300 p-1"}>MenuGroup</RACButton>
+                                                                <RACButton onPress={() => handleNewMenuItem(id, "item", close)} className={"focus:outline-blue-300 p-1"}>MenuItem</RACButton>
+                                                            </div>
+                                                        )}
+                                                    </Dialog>
+                                                </Popover>
+                                            </DialogTrigger>
+
                                         </div>
                                     );
                                 } else {
@@ -265,13 +386,12 @@ const TreeComponent: React.FC<TreeProps> = () => {
                                                         value={node.keys ? node.keys[fab] : ""}
                                                         onDragOver={(e) => e.preventDefault()}
                                                         onDrop={(e) => {
-                                                            const content = JSON.parse(e.dataTransfer.getData("key"));
-                                                            handleUpdateJson(
-                                                                `${id}.keys`,
-                                                                content, true
-                                                            )
-                                                        }
-                                                        }
+                                                            const content =
+                                                                e.dataTransfer.getData("key")
+                                                            if (content) {
+                                                                handleUpdateJson(`${id}.keys`, JSON.parse(content), true);
+                                                            }
+                                                        }}
                                                         className={
                                                             "bg-[#F4F5FA] p-2 focus:outline-blue-500 w-full rounded-lg"
                                                         }
@@ -296,3 +416,4 @@ const TreeComponent: React.FC<TreeProps> = () => {
 };
 
 export default TreeComponent;
+

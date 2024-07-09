@@ -13,7 +13,7 @@ const MultiDropDown = () => {
                 <Dialog className="p-4">
                     <ListBox className="max-h-60 overflow-y-auto"
                         aria-label="Sandwich contents"
-                        selectionMode="multiple"
+                        selectionMode='multiple'
                         selectedKeys={selected}
                         onSelectionChange={setSelected}
                     >

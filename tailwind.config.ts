@@ -8,13 +8,18 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      scrollbarWidth: {
+        thin: "thin",
+        custom: "10px", // Example custom width
+      },
+      // Add custom colors for scrollbar
+      colors: {
+        "scrollbar-track": "#f1f1f1", // Example track color
+        "scrollbar-thumb": "#888", // Example thumb color
+        "scrollbar-thumb-hover": "#555", // Example hover state thumb color
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar")],
 };
 export default config;
