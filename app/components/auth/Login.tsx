@@ -52,11 +52,9 @@ const Login = () => {
               <Button
                 key={key}
                 onPress={() => handleDotClick(parseInt(key))}
-                className={`${
-                  index != 0 && "ml-3"
-                } bg-white focus:outline-none mt-5 rounded h-1 ${
-                  page === parseInt(key) ? " w-6 " : " w-1 "
-                }`}
+                className={`${index != 0 && "ml-3"
+                  } bg-white focus:outline-none mt-5 rounded h-1 ${page - 1 === parseInt(key) ? " w-6 " : " w-1 "
+                  }`}
               />
             ))}
           </div>

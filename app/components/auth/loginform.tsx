@@ -2,10 +2,11 @@
 import React, { useEffect, useState } from "react";
 import { Form } from "../../src/Form";
 import { Button } from "../../src/Button";
-import { Input, Label, TextField } from "react-aria-components";
+import { Input, Label } from "react-aria-components";
 import { Select, SelectItem } from "../../src/Select";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { login } from "../../../lib/utils/login";
 
 interface LoginFormProps {
   variant?: "TP" | "CG";
@@ -14,6 +15,7 @@ interface LoginFormProps {
 function LoginForm({ variant = "TP" }: LoginFormProps) {
   const [clientList, setClientList] = useState<string[]>([]);
   const [client, setClient] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
 
   const fetchClients = async () => {
     try {
@@ -34,18 +36,29 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
 
   const handleFormSubmit = async (formData: FormData) => {
     try {
+      setLoading(true);
       const client = formData.get("client");
       const username = formData.get("username");
       const password = formData.get("password");
 
       if (client && username && password) {
-        
-      }else{
-        alert("Please fill all the fields")
+        const res = await login({ client, username, password });
+        if (res?.error) {
+          setLoading(false);
+          toast.error("failed to login , check credentials", {
+            autoClose: 2000,
+          });
+        } else {
+          setLoading(false);
+          toast.success("Logged in successfully");
+        }
+      } else {
+        alert("Please fill all the fields");
+        setLoading(false);
       }
-
-    
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -109,7 +122,8 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
         <div className="flex justify-center ">
           <Button
             type="submit"
-            className="bg-[#0736C4] text-white px-4 py-2 w-[90%]  "
+            isDisabled={loading}
+            className="bg-[#0736C4] text-white px-4 py-2 w-[90%] disabled:bg-[#8c9ac4]  "
           >
             Sign In
           </Button>

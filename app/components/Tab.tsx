@@ -86,7 +86,11 @@ function TabsExample() {
                     className="flex w-[95%] bg-[#FFFFFF] rounded-lg p-2 ml-2 mt-2 font-semibold"
                 >
                     {tabs.map(({ id, label, icon }) => (
-                        <MyTab key={id} id={id} label={label} isSelected={selectedTab === id} onSelect={() => handleTabChange(id)}>
+                        <MyTab
+                            key={id} id={id} label={label}
+                            isSelected={selectedTab === id}
+                            onSelect={() => handleTabChange(id)}
+                        >
                             {icon}
                         </MyTab>
                     ))}

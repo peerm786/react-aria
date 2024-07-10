@@ -8,7 +8,7 @@ import TabsExample from './components/Tab'
 import TreeComponent from './components/MenuItemAccordian'
 
 const page = () => {
-  const [selectedBuildButton, setSelectedBuildButton] = useState(false)
+  const [selectedBuildButton, setSelectedBuildButton] = useState(true)
   const [selectedHistoryButton, setSelectedHistoryButton] = useState(false)
   const [selectTenantValue, setSelectTenantValue] = useState<string | undefined>("")
   const [selectAppGroupValue, setSelectAppGroupValue] = useState<string | undefined>("")
@@ -39,13 +39,13 @@ const page = () => {
       <div className='flex w-full justify-between'>
         <div className='flex gap-3 pt-2 pl-4'>
           <Button
-            className={`${selectedBuildButton ? "font-bold" : ""} rounded-lg border-none`}
+            className={`${selectedBuildButton ? "font-semibold" : ""} rounded-lg border-none`}
             onPress={handleBuildButtonSelect}
           >
             Build
           </Button>
           <Button
-            className={`${selectedHistoryButton ? "font-bold" : ""} rounded-lg border-none`}
+            className={`${selectedHistoryButton ? "font-semibold" : ""} rounded-lg border-none`}
             onPress={handleHistoryButtonSelect}
           >
             History
@@ -77,8 +77,8 @@ const page = () => {
           </Select>
         </div>
         <div className='flex gap-2 justify-end'>
-          <Button size='xs' className={"bg-red-100 rounded-md text-red-400 px-4 mt-2"}>Clear</Button>
-          <Button size='xs' className={"bg-gray-200 rounded-md text-black p-2 mt-2 mr-2"}>Clear All</Button>
+          <Button size='xs' className={"bg-red-50 font-semibold rounded-md text-red-400 px-5 mt-3"}>Clear</Button>
+          <Button size='xs' className={"bg-gray-100 font-medium rounded-md text-black px-5 mt-3 mr-2"}>Clear All</Button>
         </div>
       </div>
       <div>
