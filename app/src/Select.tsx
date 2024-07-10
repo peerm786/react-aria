@@ -40,7 +40,6 @@ export function Select<T extends object>(
 
   return (
     <AriaSelect aria-label='select item' {...props} className={composeTailwindRenderProps(props.className, 'group flex flex-col gap-1')}>
-      {/* {label && <Label>{label}</Label>} */}
       <Button aria-label='dropdown trigger' className={styles}>
         <SelectValue aria-label='selectedvalue' children={selectedKey ? selectedKey : label} className="flex-1 text-sm placeholder-shown:italic" />
         <ChevronDown aria-hidden className="w-4 h-4 text-gray-600 dark:text-zinc-400 forced-colors:text-[ButtonText] group-disabled:text-gray-200 dark:group-disabled:text-zinc-600 forced-colors:group-disabled:text-[GrayText]" />
