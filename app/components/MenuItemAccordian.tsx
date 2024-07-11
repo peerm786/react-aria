@@ -50,7 +50,7 @@ interface TreeProps {
   data?: TreeNode[];
 }
 
-const TreeNodeComponent: React.FC<TreeNodeProps> = ({
+const RenderAccordian: React.FC<TreeNodeProps> = ({
   node,
   level,
   path,
@@ -90,9 +90,8 @@ const TreeNodeComponent: React.FC<TreeNodeProps> = ({
         onDrop={(e) => handleDrop(e, path)}
       >
         <div
-          className={`cursor-pointer flex items-center w-full focus:outline-gray-400 ${
-            node.type == "grp" ? "" : "flex-col"
-          } p-1 rounded`}
+          className={`cursor-pointer flex items-center w-full focus:outline-gray-400 ${node.type == "grp" ? "" : "flex-col"
+            } p-1 rounded`}
         >
           <div className="flex w-full h-full items-center">
             <RACButton aria-label="dd" className="mr-2 focus:outline-none">
@@ -165,7 +164,7 @@ const TreeNodeComponent: React.FC<TreeNodeProps> = ({
           >
             {node.items.map((child, index) => (
               <div key={child.id} className="ml-4 mt-2 last:mb-2">
-                <TreeNodeComponent
+                <RenderAccordian
                   key={child.id}
                   node={child}
                   level={level + 1}
@@ -183,7 +182,7 @@ const TreeNodeComponent: React.FC<TreeNodeProps> = ({
   );
 };
 
-const TreeComponent: React.FC<TreeProps> = () => {
+const MenuItemAccordian: React.FC<TreeProps> = () => {
   const [menuGroups, setMenuGroups] = useState<TreeNode[]>([]);
   const [isInput, setInput] = useState(false);
 
@@ -341,16 +340,16 @@ const TreeComponent: React.FC<TreeProps> = () => {
               <Popover placement="left">
                 <Dialog className="border bg-white focus:outline-none rounded-lg">
                   {({ close }) => (
-                    <div className="flex flex-col p-2">
+                    <div className="flex flex-col px-5 py-2 gap-2">
                       <RACButton
                         onPress={() => handleAddMenuGrp("grp", close)}
-                        className={"focus:outline-blue-300 p-1"}
+                        className={"focus:outline-blue-300 bg-gray-200 p-1"}
                       >
                         MenuGroup
                       </RACButton>
                       <RACButton
                         onPress={() => handleAddMenuGrp("item", close)}
-                        className={"focus:outline-blue-300 p-1"}
+                        className={"focus:outline-blue-300 bg-gray-200 p-1"}
                       >
                         MenuItem
                       </RACButton>
@@ -371,7 +370,7 @@ const TreeComponent: React.FC<TreeProps> = () => {
                     <div className="w-full" key={id}>
                       {node.items?.map((subNode, index) => (
                         <div className="w-full" key={index}>
-                          <TreeNodeComponent
+                          <RenderAccordian
                             node={subNode}
                             level={0}
                             path={`${id}.items.${index}`}
@@ -392,12 +391,12 @@ const TreeComponent: React.FC<TreeProps> = () => {
                         <Popover placement="bottom">
                           <Dialog className="border bg-white focus:outline-none rounded-lg">
                             {({ close }) => (
-                              <div className="flex flex-col p-2">
+                              <div className="flex flex-col px-5 py-3 gap-2">
                                 <RACButton
                                   onPress={() =>
                                     handleNewMenuItem(id, "grp", close)
                                   }
-                                  className={"focus:outline-blue-300 p-1"}
+                                  className={"focus:outline-blue-300 bg-gray-200 p-1"}
                                 >
                                   MenuGroup
                                 </RACButton>
@@ -405,7 +404,7 @@ const TreeComponent: React.FC<TreeProps> = () => {
                                   onPress={() =>
                                     handleNewMenuItem(id, "item", close)
                                   }
-                                  className={"focus:outline-blue-300 p-1"}
+                                  className={"focus:outline-blue-300 bg-gray-200 p-1"}
                                 >
                                   MenuItem
                                 </RACButton>
@@ -458,4 +457,4 @@ const TreeComponent: React.FC<TreeProps> = () => {
   );
 };
 
-export default TreeComponent;
+export default MenuItemAccordian;

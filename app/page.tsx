@@ -1,18 +1,22 @@
 'use client'
-// import Selectitem from './components/Nav'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from './src/Button'
 import { Select, SelectItem } from './src/Select'
 import { Separator } from './src/Separator'
-import TabsExample from './components/Tab'
-import TreeComponent from './components/MenuItemAccordian'
+import FabricSelector from './components/Tab'
+import MenuItemAccordian from './components/MenuItemAccordian'
+import { AxiosService } from '../lib/utils/axiosService'
+import { toast } from 'react-toastify'
 
 const page = () => {
   const [selectedBuildButton, setSelectedBuildButton] = useState(true)
   const [selectedHistoryButton, setSelectedHistoryButton] = useState(false)
-  const [selectTenantValue, setSelectTenantValue] = useState<string | undefined>("")
-  const [selectAppGroupValue, setSelectAppGroupValue] = useState<string | undefined>("")
-  const [selectAppValue, setSelectAppValue] = useState<string | undefined>("")
+  const [selectedTenant, setSelectedTenant] = useState<string>("")
+  const [selectAppGroup, setSelectAppGroup] = useState<string>("")
+  const [selectApp, setSelectApp] = useState<string>("")
+  const [tenantList, setTenantList] = useState<string[]>([])
+  const [appGrpList, setAppGrpList] = useState<string[]>([])
+  const [appList, setAppList] = useState<string[]>([])
 
   const handleBuildButtonSelect = () => {
     setSelectedBuildButton(true)
@@ -25,14 +29,58 @@ const page = () => {
   }
 
   const handleTenantselect = (e: any) => {
-    setSelectTenantValue(e);
+    setAppGrpList([])
+    setSelectedTenant(e);
+    setSelectAppGroup("")
+    setSelectApp("")
+    fetchAppGroup(e)
   }
   const handleAppGroupselect = (e: any) => {
-    setSelectAppGroupValue(e);
+    setAppList([])
+    setSelectAppGroup(e);
+    setSelectApp("")
+    fetchApp(selectedTenant, e)
   }
   const handleAppselect = (e: any) => {
-    setSelectAppValue(e);
+    setSelectApp(e);
   }
+
+  const fetchTenants = async () => {
+    try {
+      const res = await AxiosService.get("/tp/getClientTenant?type=c");
+      if (res.status == 200) {
+        setTenantList(res.data as string[]);
+      }
+    } catch (error) {
+      toast.error("Error fetching tenants");
+    }
+  };
+
+  const fetchAppGroup = async (tenant: string) => {
+    try {
+      const res = await AxiosService.get(`/tp/getappgrouplist?tenant=${tenant}`)
+      if (res.status == 200) {
+        setAppGrpList(res.data)
+      }
+    } catch (error) {
+      toast.error("Error fetching Appgrp");
+    }
+  }
+
+  const fetchApp = async (tenant: string, appGroup: string) => {
+    try {
+      const res = await AxiosService.get(`/tp/getapplist?tenant=${tenant}&appGroup=${appGroup}`)
+      if (res.status == 200) {
+        setAppList(res.data)
+      }
+    } catch (error) {
+      toast.error("Error fetching Appgrp");
+    }
+  }
+
+  useEffect(() => {
+    fetchTenants();
+  }, []);
 
   return (
     <div className='flex flex-col w-full h-screen overflow-y-hidden'>
@@ -59,21 +107,30 @@ const page = () => {
         <Separator />
       </div>
       <div className='flex w-full justify-between'>
-        <div className='flex gap-5 pl-4'>
-          <Select selectedKey={selectTenantValue} onSelectionChange={handleTenantselect} label='Tenant' className={"min-w-[250px] rounded-lg mt-2 border border-violet-400"}>
-            <SelectItem id={"ABC"}>ABC</SelectItem>
-            <SelectItem id={"GSS"}>GSS</SelectItem>
-            <SelectItem id={"GF"}>GF</SelectItem>
+        <div className='flex outline-none gap-5 pl-4'>
+          <Select selectedKey={selectedTenant} onSelectionChange={handleTenantselect} label='Tenant' className={"min-w-[250px] rounded-lg mt-2 border border-[#D6BBFB]"}>
+            {tenantList.map((tenant: string, id: number) => (
+              <SelectItem key={id} id={tenant}>
+                {tenant}
+              </SelectItem>
+            ))}
           </Select>
-          <Select selectedKey={selectAppGroupValue} onSelectionChange={handleAppGroupselect} label='AppGroup' className={"min-w-[250px] rounded-lg mt-2 border border-violet-400"}>
-            <SelectItem id={"MSP"}>MSP</SelectItem>
-            <SelectItem id={"DEMO"}>DEMO</SelectItem>
-            <SelectItem id={"TEST"}>TEST</SelectItem>
+
+          <Select isDisabled={!selectedTenant} selectedKey={selectAppGroup} onSelectionChange={handleAppGroupselect} label='AppGroup'
+            className={"min-w-[250px] rounded-lg mt-2 border border-[#D6BBFB]"}>
+            {appGrpList.map((ag: string, id: number) => (
+              <SelectItem key={id} id={ag}>
+                {ag}
+              </SelectItem>
+            ))}
           </Select>
-          <Select selectedKey={selectAppValue} onSelectionChange={handleAppselect} label='App' className={"min-w-[250px] rounded-lg mt-2 border border-violet-400"}>
-            <SelectItem id={"ME"}>ME</SelectItem>
-            <SelectItem id={"DEMOAPP"}>DEMOAPP</SelectItem>
-            <SelectItem id={"TESTAPP"}>TESTAPP</SelectItem>
+
+          <Select isDisabled={!selectAppGroup} selectedKey={selectApp} onSelectionChange={handleAppselect} label='App' className={"min-w-[250px] rounded-lg mt-2 border border-[#D6BBFB]"}>
+            {appList.map((app: string, id: number) => (
+              <SelectItem key={id} id={app}>
+                {app}
+              </SelectItem>
+            ))}
           </Select>
         </div>
         <div className='flex gap-2 justify-end'>
@@ -86,45 +143,14 @@ const page = () => {
       </div>
       <div className='flex w-full h-full gap-3'>
         <div className='w-[25%] pt-3 pl-4 rounded-lg'>
-          <TabsExample />
+          <FabricSelector tenant={selectedTenant} appGrp={selectAppGroup} app={selectApp} />
         </div>
         <div className='w-[75%] pt-3 pr-2'>
-          <TreeComponent />
+          <MenuItemAccordian />
         </div>
       </div>
-      {/* <Separator className='mt-2' /> */}
-      {/* <Tabs>
-        <TabList>
-          <Tab className={({ isSelected }) => `${isSelected
-            ? 'text-emerald-700 bg-white shadow'
-            : 'text-gray-600 hover:bg-white/10 pressed:bg-white/10'
-            }`}>menu1</Tab>
-          <Tab>menu2</Tab>
-          <Tab>menu3</Tab>
-          <Tab>menu4</Tab>
-        </TabList>
-        <TabPanel>
-        </TabPanel>
-      </Tabs> */}
-      {/* <DatePicker />
-      <Button variant='destructive' className={"bg-blue-400"}>khgujh</Button>
-      <TorusDropDown title="Select" selected={selectedKeys} setSelected={setSelectedKeys} /> */}
     </div>
   )
 }
 
 export default page
-
-// 'use client'
-// import React from 'react'
-// import MultiDropDown from './components/multiDropDown'
-
-// const page = () => {
-//   return (
-//     <div>
-//       <MultiDropDown />
-//     </div>
-//   )
-// }
-
-// export default page
