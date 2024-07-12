@@ -7,8 +7,10 @@ import {
   Label,
   Text,
   TextField,
+  Button,
 } from "react-aria-components";
 import {
+  DeleteIcon,
   DownArrow,
   PlusIcon,
   SixDotsSvg,
@@ -35,6 +37,8 @@ type HandleDropNode = (
   path: string
 ) => void;
 
+type handleDeleteKeys = (path: string, fab: string) => void;
+
 type MenuType = "grp" | "item";
 
 interface TreeNodeProps {
@@ -44,6 +48,7 @@ interface TreeNodeProps {
   handleUpdateJson: HandleUpdateJsonType;
   handleDropNode: HandleDropNode;
   handleDragStartOfNode: HandleDragStart;
+  handleDeleteKeys: handleDeleteKeys;
 }
 
 interface TreeProps {
@@ -57,6 +62,7 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
   handleUpdateJson,
   handleDragStartOfNode,
   handleDropNode,
+  handleDeleteKeys
 }) => {
   const [expanded, setExpanded] = useState(false);
   const [isInput, setInput] = useState(false);
@@ -133,17 +139,20 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
                 transition={{ duration: 0.35 }}
               >
                 {["df", "uf", "pf", "sf"].map((fab, id) => (
-                  <TextField className="m-2" key={id}>
+                  <TextField className="m-2 relative" key={id}>
                     <Label />
                     <Input
                       onDragOver={(e) => e.preventDefault()}
                       value={node.keys ? node.keys[fab] : ""}
                       className={
-                        "bg-[#F4F5FA] p-2 focus:outline-blue-500 w-full rounded-lg"
+                        "bg-[#F4F5FA] p-2 focus:outline-blue-500 w-full rounded-lg pr-8"
                       }
                       name={fab}
                       placeholder={fab}
                     />
+                    {node.keys[fab] ? <Button onPress={() => handleDeleteKeys(`${path}.keys`, fab)} className="absolute right-2 top-3 focus:outline-none">
+                      <DeleteIcon />
+                    </Button> : null}
                     <Text slot="description" />
                     <FieldError />
                   </TextField>
@@ -172,6 +181,7 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
                   handleUpdateJson={handleUpdateJson}
                   handleDragStartOfNode={handleDragStartOfNode}
                   handleDropNode={handleDropNode}
+                  handleDeleteKeys={handleDeleteKeys}
                 />
               </div>
             ))}
@@ -288,6 +298,14 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
     }
   };
 
+  const handleDeleteKeys = (path: string, fab: string) => {
+    const js = structuredClone(menuGroups);
+    const data: any = _.get(js, path);
+    delete data[fab]
+    handleUpdateJson(path, data);
+  };
+
+
   return (
     <div className="flex w-full">
       <div className="flex flex-col w-full">
@@ -377,6 +395,7 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
                             handleUpdateJson={handleUpdateJson}
                             handleDropNode={handleDropNode}
                             handleDragStartOfNode={handleDragStartOfNode}
+                            handleDeleteKeys={handleDeleteKeys}
                           />
                         </div>
                       ))}
@@ -419,7 +438,7 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
                   return (
                     <div className="w-full h-fit border mt-3 rounded" key={id}>
                       {["df", "uf", "pf", "sf"].map((fab, index) => (
-                        <TextField className="m-2" key={index}>
+                        <TextField className="m-2 relative" key={index}>
                           <Label />
                           <Input
                             value={node.keys ? node.keys[fab] : ""}
@@ -435,11 +454,14 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
                               }
                             }}
                             className={
-                              "bg-[#F4F5FA] p-2 focus:outline-blue-500 w-full rounded-lg"
+                              "bg-[#F4F5FA] p-2 focus:outline-blue-500 w-full rounded-lg pr-8"
                             }
                             name={fab}
                             placeholder={fab}
                           />
+                          {node.keys?.[fab] ? <Button onPress={() => handleDeleteKeys(`${id}.keys`, fab)} className={"absolute right-2 top-3 focus:outline-none"}>
+                            <DeleteIcon />
+                          </Button> : null}
                           <Text slot="description" />
                           <FieldError />
                         </TextField>
