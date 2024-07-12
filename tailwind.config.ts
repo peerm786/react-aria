@@ -1,6 +1,9 @@
-import type { Config } from "tailwindcss";
+// tailwind.config.js
 
-const config: Config = {
+const { colors } = require("tailwindcss/defaultTheme");
+
+module.exports = {
+  darkMode: "class", // Enable the 'class' mode for dark mode
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -12,14 +15,21 @@ const config: Config = {
         thin: "thin",
         custom: "10px", // Example custom width
       },
-      // Add custom colors for scrollbar
       colors: {
+        dark: "#333", // Example dark mode background color
         "scrollbar-track": "#f1f1f1", // Example track color
         "scrollbar-thumb": "#888", // Example thumb color
         "scrollbar-thumb-hover": "#555", // Example hover state thumb color
       },
     },
   },
-  plugins: [require("tailwind-scrollbar")],
+  variants: {
+    extend: {
+      backgroundColor: ["dark"], // Enable dark mode variant for background colors
+      textColor: ["dark"], // Enable dark mode variant for text colors
+    },
+  },
+  plugins: [
+    require("tailwind-scrollbar"), // Example plugin for custom scrollbars
+  ],
 };
-export default config;

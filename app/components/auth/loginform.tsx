@@ -7,6 +7,8 @@ import { Select, SelectItem } from "../../src/Select";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { login } from "../../../lib/utils/login";
+import { useDarkMode } from "../../../lib/utils/useDarkmode";
+
 
 interface LoginFormProps {
   variant?: "TP" | "CG";
@@ -17,12 +19,17 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
   const [client, setClient] = useState<any>(null);
   const [loading, setLoading] = useState(false);
 
+  const { isDarkMode } = useDarkMode();
+
+
+
+
   const fetchClients = async () => {
     try {
       const res = await axios.get(
         "http://192.168.2.110:3002/tp/getClientTenant?type=c"
       );
-      if (res.status == 200) {
+      if (res.status === 200) {
         setClientList(res.data);
       }
     } catch (error) {
@@ -45,7 +52,7 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
         const res = await login({ client, username, password });
         if (res?.error) {
           setLoading(false);
-          toast.error("failed to login , check credentials", {
+          toast.error("Failed to login, check credentials", {
             autoClose: 2000,
           });
         } else {
@@ -62,17 +69,17 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
   };
 
   return (
-    <div className="min-h-screen w-full justify-center flex items-center bg-white p-11">
-      <Form action={handleFormSubmit} className="w-3/4">
+    <div className={`min-h-screen w-full justify-center flex items-center bg-white p-11 dark:bg-slate-500 `}>
+      <Form action={handleFormSubmit} className="w-3/4 ">
         <div className=" flex flex-col mb-6 gap-3">
-          <h1 className="text-xl font-bold text-black ml-5 ">
+          <h1 className={`text-xl font-bold ml-5`}>
             Welcome to Torus Platform
           </h1>
-          <p className="text-[#000000] text-sm ml-5">Let's get started!</p>
+          <p className={`text-[#000000] text-sm ml-5 `}>Let's get started!</p>
         </div>
         <div className="space-y-4">
           <div className="flex flex-col">
-            <Label htmlFor="tenant" className="text-black mb-1 text-sm ml-5">
+            <Label htmlFor="tenant" className={`text-black mb-1 text-sm ml-5 `}>
               Client
             </Label>
             <Select
@@ -80,7 +87,7 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
               onSelectionChange={(client) => setClient(client)}
               name="client"
               label="Select Client"
-              className={"w-[90%] bg-[#D9D9D9]  mt-2 ml-5 rounded-md"}
+              className={`text-sm pl-3 bg-[#D9D9D9]  py-2 rounded-md w-[90%] ml-5`}
             >
               {clientList.map((client: string, id: number) => (
                 <SelectItem key={id} id={client}>
@@ -92,7 +99,7 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
           <div className="flex flex-col">
             <Label
               htmlFor="Email or Username"
-              className="text-black mb-1 text-sm ml-5"
+              className={`text-black mb-1 text-sm ml-5 `}
             >
               Email or Username
             </Label>
@@ -101,11 +108,11 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
               name="username"
               type="text"
               placeholder="eg:support@torus.com"
-              className=" text-sm pl-3 bg-[#D9D9D9] text-[#000000] py-2 rounded-md w-[90%] ml-5"
+              className={`text-sm pl-3 bg-[#D9D9D9] py-2 rounded-md w-[90%] ml-5`}
             />
           </div>
           <div className="flex flex-col">
-            <Label htmlFor="Password" className="text-black mb-1 text-sm ml-5">
+            <Label htmlFor="Password" className={`text-black mb-1 text-sm ml-5 `}>
               Password
             </Label>
             <Input
@@ -113,28 +120,28 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
               name="password"
               type="Password"
               placeholder="Enter Password"
-              className=" text-sm pl-3 bg-[#D9D9D9] text-[#000000]   py-2 rounded-md w-[90%] ml-5"
+              className={`text-sm pl-3 bg-[#D9D9D9]  py-2 rounded-md w-[90%] ml-5`}
             />
           </div>
         </div>
 
-        <p className="text-black text-sm ml-5">Forgot Password?</p>
+        <p className={`text-black text-sm ml-5 `}>Forgot Password?</p>
         <div className="flex justify-center ">
           <Button
             type="submit"
             isDisabled={loading}
-            className="bg-[#0736C4] text-white px-4 py-2 w-[90%] disabled:bg-[#8c9ac4]  "
+            className={`bg-[#0736C4] text-white px-4 py-2 w-[90%] disabled:bg-[#8c9ac4]`}
           >
             Sign In
           </Button>
         </div>
         <div className="flex items-center justify-center ">
           <span className="h-px bg-gray-400 w-[40%] "></span>
-          <span className="text-gray-700 px-2">Or</span>
+          <span className={`text-gray-700 px-2 `}>Or</span>
           <span className="h-px bg-gray-400 w-[40%]"></span>
         </div>
         <div className="flex flex-row items-center gap-10 ">
-          <Button className="bg-[#D9D9D9] w-[50%] text-black px-4 ml-7 flex items-center justify-center">
+          <Button className={`bg-[#D9D9D9] w-[40%] h-[50px]  text-black px-4 ml-7 flex items-center justify-center `}>
             <svg
               className="mr-2"
               width="20"
@@ -150,7 +157,7 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
             </svg>
             Github
           </Button>
-          <Button className="bg-[#D9D9D9] text-black px-4 w-[50%] mr-4 flex items-center justify-center">
+          <Button className={`bg-[#D9D9D9] w-[40%] h-[50px] text-black px-4 mr-4  flex items-center justify-center `}>
             <svg
               className="mr-2"
               width="24"
@@ -180,12 +187,13 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
           </Button>
         </div>
         <div className="text-center ">
-          <p className="text-black  text-sm ">
+          <p className={`text-black  text-sm`}>
             Don't have an account?{" "}
             <a href="#" className="text-black font-bold gap">
               Sign Up
             </a>
           </p>
+
         </div>
       </Form>
     </div>
