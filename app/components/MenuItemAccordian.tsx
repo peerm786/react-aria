@@ -380,7 +380,7 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
         </div>
 
         <div>
-          <div className="flex w-full justify-around h-[70vh] overflow-y-auto scrollbar-thin">
+          <div className="flex w-full justify-around h-[70vh] overflow-y-auto">
             <div className="flex w-[97%] justify-around gap-4 mr-4">
               {menuGroups.map((node: TreeNode, id: number) => {
                 if (node.type == "grp") {

@@ -1,12 +1,12 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { Button } from './src/Button'
-import { Select, SelectItem } from './src/Select'
 import { Separator } from './src/Separator'
 import FabricSelector from './components/Tab'
 import MenuItemAccordian from './components/MenuItemAccordian'
 import { AxiosService } from '../lib/utils/axiosService'
 import { toast } from 'react-toastify'
+import DropDown from './components/multiDropdownnew'
 
 const page = () => {
   const [selectedBuildButton, setSelectedBuildButton] = useState(true)
@@ -17,6 +17,10 @@ const page = () => {
   const [tenantList, setTenantList] = useState<string[]>([])
   const [appGrpList, setAppGrpList] = useState<string[]>([])
   const [appList, setAppList] = useState<string[]>([])
+
+
+  console.log(appGrpList, "appGrpList");
+
 
   const handleBuildButtonSelect = () => {
     setSelectedBuildButton(true)
@@ -35,6 +39,7 @@ const page = () => {
     setSelectApp("")
     fetchAppGroup(e)
   }
+
   const handleAppGroupselect = (e: any) => {
     setAppList([])
     setSelectAppGroup(e);
@@ -55,6 +60,8 @@ const page = () => {
       toast.error("Error fetching tenants");
     }
   };
+  console.log(tenantList, "tenantList");
+
 
   const fetchAppGroup = async (tenant: string) => {
     try {
@@ -108,30 +115,46 @@ const page = () => {
       </div>
       <div className='flex w-full justify-between'>
         <div className='flex outline-none gap-5 pl-4'>
-          <Select selectedKey={selectedTenant} onSelectionChange={handleTenantselect} label='Tenant' className={"min-w-[250px] rounded-lg mt-2 border border-[#D6BBFB]"}>
-            {tenantList.map((tenant: string, id: number) => (
-              <SelectItem key={id} id={tenant}>
-                {tenant}
-              </SelectItem>
-            ))}
-          </Select>
 
-          <Select isDisabled={!selectedTenant} selectedKey={selectAppGroup} onSelectionChange={handleAppGroupselect} label='AppGroup'
-            className={"min-w-[250px] rounded-lg mt-2 border border-[#D6BBFB]"}>
-            {appGrpList.map((ag: string, id: number) => (
-              <SelectItem key={id} id={ag}>
-                {ag}
-              </SelectItem>
-            ))}
-          </Select>
+          <DropDown
+            triggerButton="Tenant"
+            selectedKeys={selectedTenant}
+            setSelectedKeys={handleTenantselect}
+            items={tenantList}
+            classNames={{
+              triggerButton: "min-w-60 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA]",
+              popover: "w-60",
+              listbox: "overflow-y-auto",
+              listboxItem: "flex text-sm justify-between",
+            }}
+          />
 
-          <Select isDisabled={!selectAppGroup} selectedKey={selectApp} onSelectionChange={handleAppselect} label='App' className={"min-w-[250px] rounded-lg mt-2 border border-[#D6BBFB]"}>
-            {appList.map((app: string, id: number) => (
-              <SelectItem key={id} id={app}>
-                {app}
-              </SelectItem>
-            ))}
-          </Select>
+          <DropDown
+            triggerButton="AppGroup"
+            selectedKeys={selectAppGroup}
+            setSelectedKeys={handleAppGroupselect}
+            items={appGrpList}
+            classNames={{
+              triggerButton: `${selectedTenant ? "min-w-60 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA]" : ""}`,
+              popover: "w-60",
+              listbox: "overflow-y-auto",
+              listboxItem: "flex text-sm justify-between",
+            }}
+          />
+
+          <DropDown
+            triggerButton="App"
+            selectedKeys={selectApp}
+            setSelectedKeys={handleAppselect}
+            items={appList}
+            classNames={{
+              triggerButton: "min-w-60 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA]",
+              popover: "w-60",
+              listbox: "overflow-y-auto",
+              listboxItem: "flex text-sm justify-between",
+            }}
+          />
+
         </div>
         <div className='flex gap-2 justify-end'>
           <Button size='xs' className={"bg-red-50 font-semibold rounded-md text-red-400 px-5 mt-3"}>Clear</Button>

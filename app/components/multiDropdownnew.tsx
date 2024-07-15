@@ -21,16 +21,16 @@ type classNames = {
 interface CustomDropDpwnProps {
   triggerButton: React.ReactNode;
   multiple?: boolean;
-  selectedKeys: any[];
+  selectedKeys: string[] | any[] | any;
   setSelectedKeys: (keys: any) => void;
   items: any[];
-  displayParam?: string; 
+  displayParam?: string;
   classNames?: classNames;
   renderOption?: (
     item: any,
     close: () => void,
     handleSelectionChange: (selectedItems: any, close: () => void) => void,
-    setOpen : (open: boolean) => void
+    setOpen: (open: boolean) => void
   ) => React.ReactNode;
 }
 
@@ -44,7 +44,7 @@ const DropDown = ({
   classNames,
   renderOption,
 }: CustomDropDpwnProps) => {
-  
+
 
   const [open, setOpen] = React.useState(false);
 
@@ -57,14 +57,14 @@ const DropDown = ({
             : k === selectedItem
         )
           ? prevKeys.filter((k: any) =>
-              displayParam
-                ? k[displayParam] !== selectedItem[displayParam]
-                : k !== selectedItem
-            )
+            displayParam
+              ? k[displayParam] !== selectedItem[displayParam]
+              : k !== selectedItem
+          )
           : [...prevKeys, selectedItem]
       );
     } else {
-      setSelectedKeys([selectedItem]);
+      setSelectedKeys(selectedItem);
       close();
       setOpen(false);
     }
@@ -78,17 +78,17 @@ const DropDown = ({
     <DialogTrigger >
       <Button
         className={twMerge(
-          `p-2 items-center flex justify-between rounded focus:outline-none w-full ${open ? "border-[#0736C4]": ""}`,
+          `p-2 items-center flex justify-between rounded focus:outline-none w-full ${open ? "border-[#0736C4]" : ""}`,
           classNames?.triggerButton
         )}
         onPress={() => setOpen(!open)}
       >
-        {selectedKeys.length
+        {selectedKeys.length && Array.isArray(selectedKeys)
           ? selectedKeys
-              .map((item: any) => getItemDisplayValue(item))
-              .join(", ")
-          : triggerButton}
-          {<DownArrow />}
+            .map((item: any) => getItemDisplayValue(item))
+            .join(", ")
+          : (selectedKeys && typeof selectedKeys === "string") ? getItemDisplayValue(selectedKeys) : triggerButton}
+        {<DownArrow />}
       </Button>
       <Popover
         placement="bottom"
@@ -102,13 +102,19 @@ const DropDown = ({
               className={twMerge("", classNames?.listbox)}
             >
               {items.map((item: any) => {
-                const isSelected = selectedKeys.some((k: any) =>
-                  displayParam
-                    ? k[displayParam] === item[displayParam]
-                    : k === item
-                );
+                const isSelected = () => {
+                  if (multiple) {
+                    return selectedKeys.some((k: any) =>
+                      displayParam
+                        ? k[displayParam] === item[displayParam]
+                        : k === item
+                    );
+                  } else {
+                    return selectedKeys === item
+                  }
+                }
                 if (renderOption) {
-                  return renderOption(item, close, handleSelectionChange , setOpen);
+                  return renderOption(item, close, handleSelectionChange, setOpen);
                 } else {
                   return (
                     <ListBoxItem
@@ -116,14 +122,13 @@ const DropDown = ({
                       textValue={getItemDisplayValue(item)}
                       onAction={() => handleSelectionChange(item, close)}
                       className={twMerge(
-                        `focus:outline-none p-2 ${
-                          isSelected ? "bg-[#F9FAFB]" : ""
+                        `focus:outline-none p-2 ${isSelected() ? "bg-[#F9FAFB]" : ""
                         }`,
                         classNames?.listboxItem
                       )}
                     >
                       {getItemDisplayValue(item)}
-                      {isSelected && <IoIosCheckmark fill="blue" />}
+                      {isSelected() && <IoIosCheckmark size={20} fill="blue" />}
                     </ListBoxItem>
                   );
                 }

@@ -90,10 +90,10 @@ function FabricSelector({ tenant, appGrp, app }: BuilderProps) {
                         </MyTab>
                     ))}
                 </TabList>
-                <div className='h-[85%] overflow-y-auto scrollbar-thin mt-3'>
+                <div className='h-[85%] overflow-y-auto mt-3'>
                     {modelKeys.map((key: string, index: number) => (
                         <MyTabPanel key={index} id={selectedTab}>
-                            <div draggable onDragStart={(e) => handleDragKey(e, key)} className="w-[95%] border border-black/20 p-1 ml-2 text-sm rounded-md">
+                            <div draggable onDragStart={(e) => handleDragKey(e, key)} className="w-[90%] border border-black/20 p-1 ml-2 text-sm rounded-md">
                                 {key.replace(`${tenant}:${appGrp}:${app}:`, "")}
                                 {/* {items.map((item) => (
                                     <div draggable onDragStart={(e) => handleDragKey(e, item.content)} key={item.id} className="w-[95%] border border-black/20 p-1 my-2 text-sm rounded-md">
