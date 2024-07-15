@@ -91,15 +91,15 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
     };
 
     return (
-        <div className="min-h-screen w-full justify-center flex items-center bg-[#FFFFFF] border-none dark:bg-[#000000]   ">
+        <div className="min-h-screen w-full justify-center flex items-center bg-[#FFFFFF] border-none dark:bg-[#000000]">
             <Form action={handleFormSubmit} className="mr-11" >
-                <div className="ml-10 mb-3">
+                <div className="ml-11 mb-3 mt-4">
                     <h2 className=" flex text-2xl font-bold text-black dark:text-white" >
                         <TorusLogo /> TORUS
                     </h2>
                 </div>
 
-                <div className=" flex flex-col mb-6 gap-1 ml-11">
+                <div className=" flex flex-col mb-6 gap-1 ml-14">
                     <h1 className="text-xl font-bold text-black dark:text-white ml-5 ">
                         Log in
                     </h1>
@@ -169,12 +169,12 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
                         Sign In
                     </Button>
                 </div>
-                <div className="flex items-center justify-center dark:text-white ml-13">
+                <div className="flex items-center justify-center dark:text-white ml-[62px]">
                     <span className="h-px bg-gray-400 w-[40%] "></span>
                     <span className="text-gray-700 dark:text-white px-2">Or</span>
                     <span className="h-px bg-gray-400 w-[40%]"></span>
                 </div>
-                <div className="flex flex-row items-center gap-5 ">
+                <div className="flex flex-row items-center gap-5 ml-6">
                     <Button
                         onPress={() => {
                             setSocial("GitHub");

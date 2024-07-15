@@ -13,6 +13,10 @@ export default auth((req): any => {
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
 
+  // if (isPublicRoute) {
+  //   return Response.redirect(new URL("/Signin", nextUrl));
+  // }
+
   // if (isApiAuthRoute) {
   //   return null;
   // }
@@ -27,7 +31,7 @@ export default auth((req): any => {
 
   // if (!isLoggedIn && !isPublicRoute) {
   //   //  // it will call if the url 3000/{something}
-  //   return Response.redirect(new URL("/login", nextUrl));
+  //   return Response.redirect(new URL("/Signin", nextUrl));
   // }
 
   return null;

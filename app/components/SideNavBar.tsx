@@ -9,10 +9,20 @@ import {
     TorusLogo,
 } from "../constants/svgApplications";
 import { Button } from "react-aria-components";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { deleteAllCookies } from "../../lib/utils/cookiemgmt";
 
 const Sidebar = () => {
     const [fillIndex, setFillIndex] = useState(0);
     const actionIcons = [HomeSvg, ShopSvg, QuestionSvg, CallChatSvg];
+    const router = useRouter()
+
+    const handleLogout = () => {
+        // signOut();
+        deleteAllCookies()
+        router.push("/Signin")
+    }
 
     return (
         <aside
@@ -41,7 +51,7 @@ const Sidebar = () => {
                 <Button className={`p-2 focus:outline-none text-white`}>
                     <ThemeIcon />
                 </Button>
-                <Button className={`p-2 focus:outline-none text-white`}>
+                <Button className={`p-2 focus:outline-none text-white`} onPress={handleLogout}>
                     <LogoutSvg />
                 </Button>
             </section>
