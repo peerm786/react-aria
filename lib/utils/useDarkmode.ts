@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { deleteCookie, setCookie } from "./cookiemgmt";
 
@@ -14,7 +15,6 @@ export function useDarkMode() {
     }
     setIsDarkMode((prevMode) => !prevMode);
   };
-  console.log(isDarkMode);
 
   return { isDarkMode, toggleDarkMode };
 }

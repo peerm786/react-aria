@@ -1,3 +1,4 @@
+"use client";
 export function setCookie(cname: string, cvalue: string, exdays: number = 10) {
   const d = new Date();
   d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
@@ -5,7 +6,8 @@ export function setCookie(cname: string, cvalue: string, exdays: number = 10) {
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
-export function getCookie(cname:string) {
+export function getCookie(cname: string) {
+  if (typeof window == "undefined") return "";
   let name = cname + "=";
   let ca = document.cookie.split(";");
   for (let i = 0; i < ca.length; i++) {

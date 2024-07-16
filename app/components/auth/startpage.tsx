@@ -1,20 +1,20 @@
 
 "use client";
 import React, { useEffect, useState } from "react";
-import { Form } from "../../src/Form";
-import { Button } from "../../src/Button";
-import { Input, Label } from "react-aria-components";
-import { Select, SelectItem } from "../../src/Select";
-import axios from "axios";
+import { Form } from "react-aria-components"
+import { Button } from "react-aria-components"
+import { Heading, Input, Label } from "react-aria-components";
 import { toast } from "react-toastify";
 import { login } from "../../../lib/utils/login";
 import { Gitbutton, Googlebutton, TorusLogo } from "../../constants/svgApplications";
 import { BsEyeFill, BsEyeSlash } from "react-icons/bs";
 import { getCookie } from "../../../lib/utils/cookiemgmt";
-import { Dialog, DialogTrigger, Heading, Modal, TextField } from 'react-aria-components';
 import { setServerCookie } from "../../../lib/utils/registerIdentityProvider"
-import { signIn } from "next-auth/react";
 import { DEFAULT_LOGIN_REDIRECT } from "../../../lib/utils/routes";
+import TorusDialog from "../../components/torusdialogmodal"
+import { signIn } from "next-auth/react";
+import { AxiosService } from "../../../lib/utils/axiosService";
+import DropDown from "../multiDropdownnew";
 
 
 interface LoginFormProps {
@@ -23,18 +23,23 @@ interface LoginFormProps {
 
 function LoginForm({ variant = "TP" }: LoginFormProps) {
     const [clientList, setClientList] = useState<string[]>([]);
-    const [client, setClient] = useState<any>(null);
+    const [client, setClient] = useState<any>("");
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [social, setSocial] = useState("");
-
-    const [socialclient, setsocialclient] = useState<any>(null);
+    const [socialclient, setsocialclient] = useState<any>("");
     const [open, setOpen] = useState(false);
+    const [data, setData] = useState<any>({
+        client: "",
+        username: "",
+        password: "",
+    });
+
 
     const fetchClients = async () => {
         try {
-            const res = await axios.get(
-                "http://192.168.2.110:3002/tp/getClientTenant?type=c"
+            const res = await AxiosService.get(
+                "/tp/getClientTenant?type=c"
             );
             if (res.status == 200) {
                 setClientList(res.data);
@@ -80,20 +85,28 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
         setShowPassword(!showPassword);
     };
     const handlesociallogin = async () => {
+        console.log(client, "dsfsdf", social);
+
         if (client) {
+            console.log(client, "dsfsdf")
             await setServerCookie("client", client);
-            signIn(social, {
+
+            await signIn(social, {
                 callbackUrl: DEFAULT_LOGIN_REDIRECT,
             });
-            setOpen(true);
+            setOpen(false);
+        }
+        else {
+            toast.error("No response")
         }
 
     };
 
+
     return (
         <div className="min-h-screen w-full justify-center flex items-center bg-[#FFFFFF] border-none dark:bg-[#000000]">
-            <Form action={handleFormSubmit} className="mr-11" >
-                <div className="ml-11 mb-3 mt-4">
+            <Form action={handleFormSubmit} className="mr-11 " >
+                <div className="ml-11 mb-3">
                     <h2 className=" flex text-2xl font-bold text-black dark:text-white" >
                         <TorusLogo /> TORUS
                     </h2>
@@ -110,21 +123,22 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
                         <Label htmlFor="tenant" className="text-black dark:text-white mb-1 text-sm ml-5">
                             Client
                         </Label>
-                        <Select
-                            selectedKey={client}
-                            onSelectionChange={(client) => setClient(client)}
-                            name="client"
-                            label="Select Client"
-                            className=" text-sm pl-3 bg-[#D9D9D9] text-[#000000] dark:bg-[#171717] rounded-md w-[90%] ml-5"
-                        >
-                            {clientList.map((client: string, id: number) => (
-                                <SelectItem key={id} id={client}>
-                                    {client}
-                                </SelectItem>
-                            ))}
-                        </Select>
+                        <DropDown
+                            triggerButton="Select Client"
+                            selectedKeys={client}
+                            setSelectedKeys={(client) => setClient(client)}
+                            items={clientList}
+
+                            classNames={{
+                                triggerButton: "w-[90%] bg-[#D9D9D9] ml-5 rounded-lg text-sm ${client ? 'text-black' : 'text-gray-400'} text-gray-400 font-medium mt-2 dark:bg-[#171717] dark:text-[#FFFFFF] ",
+                                popover: "w-[20%]",
+                                // listbox: "w-60 h-40 overflow-y-auto",
+                                listboxItem: "",
+                            }}
+
+                        />
                     </div>
-                    <div className="flex flex-col">
+                    <div className="flex flex-col focus:outline-none">
                         <Label
                             htmlFor="Email or Username"
                             className="text-black dark:text-white mb-1 text-sm ml-5"
@@ -159,82 +173,77 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
                     </div>
                 </div>
 
-                <p className="text-black dark:text-white text-sm ml-20">Forgot Password?</p>
-                <div className="flex justify-center ml-14">
+                <p className="text-black dark:text-white text-sm ml-20  mt-5">Forgot Password?</p>
+                <div className="flex justify-center ml-14 mt-5 ">
                     <Button
                         type="submit"
                         isDisabled={loading}
-                        className="bg-[#0736C4] text-white px-4 py-2 w-[90%] disabled:bg-[#8c9ac4]"
+                        className="bg-[#0736C4] text-white px-4 py-2 w-[90%] disabled:bg-[#8c9ac4]  focus:outline-none"
                     >
                         Sign In
                     </Button>
                 </div>
-                <div className="flex items-center justify-center dark:text-white ml-[62px]">
+                <div className="flex items-center justify-center dark:text-white ml-[62px] mt-5">
                     <span className="h-px bg-gray-400 w-[40%] "></span>
                     <span className="text-gray-700 dark:text-white px-2">Or</span>
                     <span className="h-px bg-gray-400 w-[40%]"></span>
                 </div>
-                <div className="flex flex-row items-center gap-5 ml-6">
-                    <Button
-                        onPress={() => {
-                            setSocial("GitHub");
-                            setOpen(true);
-                        }}
-                        className="bg-[#D9D9D9] py-2 dark:bg-[#171717] dark:text-white text-sm text-black px-6 ml-14 flex items-center justify-center"
-                    >
-                        <Gitbutton fill={getCookie("isDarkMode") ? "white" : "black"} />
-                        GitHub
-                    </Button>
-                    <Button
-                        onPress={() => {
-                            setSocial("Google");
-                            setOpen(true);
-                        }}
-                        className="bg-[#D9D9D9] py-2 text-black text-sm dark:bg-[#171717] dark:text-white px-6 mr-4 flex items-center justify-center"
-                    >
-                        <Googlebutton />
-                        Google
-                    </Button>
-                </div>
 
-
-                <Modal isOpen={open} isDismissable={true} onOpenChange={() => setOpen(false)} className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center backdrop-filter backdrop-blur-sm">
-                    <Dialog className="bg-white p-16 rounded shadow-lg ">
-                        <Heading slot="title" className="text-xl font-bold  ">Login with {social}</Heading>
-                        <Select
-                            selectedKey={socialclient}
-                            onSelectionChange={setsocialclient}
-                            name="client"
-                            label="Select Client"
-                            className="text-sm  bg-[#D9D9D9] text-[#000000] dark:bg-[#171717] rounded-md  mt-6"
-                        >
-                            {clientList.map((client: string, id: number) => (
-                                <SelectItem key={id} id={client}>
-                                    {client}
-                                </SelectItem>
-                            ))}
-                        </Select>
-                        <div className="flex gap-4 mt-7 justify-end ">
+                <TorusDialog
+                    triggerElement={
+                        <div className="flex flex-row items-center gap-5 ml-5 mt-5 ">
                             <Button
-                                onPress={handlesociallogin}
-                                className="bg-gray-500 text-white text-sm px-4 py-2 rounded  hover:bg-gray-600"
+                                onPress={() => {
+                                    setSocial("github");
+                                    setOpen(true);
+                                }}
+                                className="bg-[#D9D9D9] py-2 dark:bg-[#171717] dark:text-white text-sm text-black px-6 ml-14 flex items-center justify-center  focus:outline-none"
                             >
-                                Submit
+                                <Gitbutton fill={getCookie("isDarkMode") ? "white" : "black"} />
+                                GitHub
                             </Button>
                             <Button
-                                onPress={() => setOpen(false)}
-                                className="bg-gray-500 text-white text-sm px-4 py-2 rounded  hover:bg-gray-600"
+                                onPress={() => {
+                                    setSocial("google");
+                                    setOpen(true);
+                                }}
+                                className="bg-[#D9D9D9] py-2 text-black text-sm dark:bg-[#171717] dark:text-white px-6 mr-4 flex items-center justify-center  focus:outline-none"
                             >
-                                Close
+                                <Googlebutton />
+                                Google
                             </Button>
                         </div>
 
-                    </Dialog>
-                </Modal>
+                    }
+                    classNames={{ dialogClassName: "w-[405px]  bg-white focus:outline-none" }}
+                >
+                    <Heading slot="title" className="text-xl font-bold ml-28 mb-10 ">Login with {social}</Heading>
 
+                    <DropDown
+                        triggerButton="Select Client"
+                        selectedKeys={client}
+                        setSelectedKeys={(client) => setClient(client)}
+                        items={clientList}
 
+                        classNames={{
+                            triggerButton: "w-[90%] ml-5 rounded-lg text-sm  mt-2 bg-[#D9D9D9] dark:text-[#FFFFFF] text-[#000000] dark:bg-[#171717]  ",
+                            popover: "w-[10%]",
+                            listboxItem: "",
+                        }}
 
-                <div className="text-center ml-11">
+                    />
+                    <div className="flex mt-11 justify-between ml-44 ">
+                        <Button
+                            onPress={handlesociallogin}
+                            className="bg-gray-500 text-white text-sm px-4 py-2 rounded  hover:bg-gray-600  focus:outline-none"
+                        >
+                            Submit
+                        </Button>
+
+                    </div>
+                </TorusDialog>
+
+                <div className="text-center ml-11 mt-5 ">
                     <p className="text-black dark:text-white text-sm">
                         Don't have an account?{" "}
                         <a href="#" className="text-black dark:text-white font-bold gap">

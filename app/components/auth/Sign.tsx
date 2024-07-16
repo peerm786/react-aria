@@ -1,9 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
-import { Button } from "react-aria-components";
-// import LoginForm from "./loginform";
-import { LandingPageLogo, Newone } from "../../constants/svgApplications";
 import Bankmaster from "../../constants/image.png";
 import { useDarkMode } from "../../../lib/utils/useDarkmode";
 import LoginForm from "../../components/auth/startpage"
@@ -11,16 +8,8 @@ import { IoIosArrowForward } from "react-icons/io";
 import { IoToggleSharp } from "react-icons/io5";
 
 const Login = () => {
-    const [page, setPage] = useState(1);
-    const [Change, setChange] = useState(false);
-    const { isDarkMode, toggleDarkMode } = useDarkMode();
 
-    const handleDotClick = (pageNumber: number) => {
-        setPage(pageNumber);
-        setChange(true);
-        setTimeout(() => setChange(false), 2000);
-    };
-
+    const { toggleDarkMode } = useDarkMode();
 
     return (
         <div className="flex justify-between w-full h-screen bg-[#F4F4F6] overflow-hidden  dark:bg-[#171717]">
