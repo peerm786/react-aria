@@ -1,11 +1,12 @@
 'use client'
 import React from 'react'
 import FileUploader from '../components/FileUploader'
+import FileUploaderDragandDrop from '../components/FileUploaderDragandDrop'
 
 const page = () => {
     return (
-        <div className='bg-[#F4F5FA] w-full h-screen'>
-            <FileUploader />
+        <div className='w-full h-screen'>
+            <FileUploaderDragandDrop />
         </div>
     )
 }

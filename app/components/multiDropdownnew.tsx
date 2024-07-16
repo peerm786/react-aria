@@ -10,6 +10,7 @@ import {
 import { IoIosCheckmark } from "react-icons/io";
 import { twMerge } from "tailwind-merge";
 import { DownArrow } from "../constants/svgApplications";
+import { getCookie } from "../../lib/utils/cookiemgmt";
 
 type classNames = {
   triggerButton?: string;
@@ -88,7 +89,7 @@ const DropDown = ({
             .map((item: any) => getItemDisplayValue(item))
             .join(", ")
           : (selectedKeys && typeof selectedKeys === "string") ? getItemDisplayValue(selectedKeys) : triggerButton}
-        {<DownArrow />}
+        {<DownArrow fill={getCookie("isDarkMode") ? "white" : "black"} />}
       </Button>
       <Popover
         placement="bottom"
@@ -128,7 +129,7 @@ const DropDown = ({
                       )}
                     >
                       {getItemDisplayValue(item)}
-                      {isSelected() && <IoIosCheckmark size={20} fill="blue" />}
+                      {isSelected() && <IoIosCheckmark size={25} fill="blue" />}
                     </ListBoxItem>
                   );
                 }

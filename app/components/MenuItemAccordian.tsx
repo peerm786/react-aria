@@ -20,6 +20,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { TreeNode, menuItems } from "../constants/MenuItemTree";
 import _ from "lodash";
 import { Dialog, DialogTrigger, Popover } from "react-aria-components";
+import { getCookie } from "../../lib/utils/cookiemgmt";
 
 type HandleUpdateJsonType = (
   path: string,
@@ -126,7 +127,7 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
               className="ml-auto p-2 transition-all duration-300 ease-in-out focus:outline-none"
               onPress={() => setExpanded(!expanded)}
             >
-              {expanded ? <UpArrow /> : <DownArrow />}
+              {expanded ? <UpArrow fill={getCookie("isDarkMode") ? "white" : "black"} /> : <DownArrow fill={getCookie("isDarkMode") ? "white" : "black"} />}
             </RACButton>
           </div>
           <AnimatePresence>
@@ -145,7 +146,7 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
                       onDragOver={(e) => e.preventDefault()}
                       value={node.keys ? node.keys[fab] : ""}
                       className={
-                        "bg-[#F4F5FA] p-2 focus:outline-blue-500 w-full rounded-lg pr-8"
+                        "bg-[#F4F5FA] dark:bg-[#161616] p-2 focus:outline-blue-500 w-full rounded-lg pr-8"
                       }
                       name={fab}
                       placeholder={fab}
@@ -309,7 +310,7 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
   return (
     <div className="flex w-full">
       <div className="flex flex-col w-full">
-        <div className="flex w-full bg-[#F4F5FA] p-2 rounded-xl gap-2">
+        <div className="flex w-full bg-[#F4F5FA] dark:bg-[#0F0F0F] p-2 rounded-xl gap-2">
           <div className="flex w-[95%] justify-around gap-2 overflow-x-auto">
             {menuGroups.map((node: TreeNode, id: number) => (
               <div
@@ -318,16 +319,16 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={(e) => handleDropNode(e, `${id}`)}
                 key={id}
-                className="flex p-1 border rounded w-full bg-white"
+                className="flex p-1 border rounded w-full bg-white dark:bg-[#161616] dark:border-[#212121] dark:text-white"
                 onContextMenu={(e) => {
                   e.preventDefault();
                 }}
               >
-                <SixDotsSvg />
+                <SixDotsSvg fill={getCookie("isDarkMode") ? "white" : "black"} />
                 {isInput ? (
                   <Input
                     defaultValue={node.title}
-                    className={`border mr-2 w-full focus:outline-none focus:border-blue-300 rounded-lg p-1`}
+                    className={`border mr-2 w-full focus:outline-none dark:bg-[#161616] dark:border-[#212121] focus:border-blue-300 rounded-lg p-1`}
                     onKeyDown={(e) =>
                       e.key === "Enter"
                         ? handleChangeTitle(e, id.toString())
@@ -351,12 +352,12 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
           <div className="w-[4%] flex justify-center">
             <DialogTrigger>
               <RACButton
-                className={`px-2 items-center flex bg-white rounded focus:outline-blue-300`}
+                className={`px-2 items-center flex bg-white dark:bg-[#161616] rounded focus:outline-blue-300`}
               >
-                <PlusIcon />
+                <PlusIcon fill={getCookie("isDarkMode") ? "white" : "black"} />
               </RACButton>
               <Popover placement="left">
-                <Dialog className="border bg-white focus:outline-none rounded-lg">
+                <Dialog className="border bg-white dark:bg-[#161616] dark:border-[#212121] focus:outline-none rounded-lg">
                   {({ close }) => (
                     <div className="flex flex-col px-5 py-2 gap-2">
                       <RACButton
@@ -403,9 +404,9 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
                         <RACButton
                           className={`w-[92%] flex items-center justify-center
                            mt-2.5 py-2 ml-4 rounded-lg border-2 border-dashed
-                            border-[#d9d9d9] focus:border-[#bdbcbc] focus:outline-none`}
+                            border-[#d9d9d9] focus:border-[#bdbcbc] dark:border-[#212121] dark:bg-[#161616] focus:outline-none`}
                         >
-                          <PlusIcon />
+                          <PlusIcon fill={getCookie("isDarkMode") ? "white" : "black"} />
                         </RACButton>
                         <Popover placement="bottom">
                           <Dialog className="border bg-white focus:outline-none rounded-lg">

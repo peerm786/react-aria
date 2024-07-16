@@ -1,12 +1,16 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { Button } from './src/Button'
-import { Separator } from './src/Separator'
+import { Button } from 'react-aria-components'
+import { Separator } from 'react-aria-components'
 import FabricSelector from './components/Tab'
 import MenuItemAccordian from './components/MenuItemAccordian'
 import { AxiosService } from '../lib/utils/axiosService'
 import { toast } from 'react-toastify'
 import DropDown from './components/multiDropdownnew'
+import { useDarkMode } from "../lib/utils/useDarkmode";
+import { IoToggleSharp } from 'react-icons/io5'
+import { HistoryIcon, PushandPullIcon } from './constants/svgApplications'
+import { getCookie } from '../lib/utils/cookiemgmt'
 
 const page = () => {
   const [selectedBuildButton, setSelectedBuildButton] = useState(true)
@@ -17,9 +21,7 @@ const page = () => {
   const [tenantList, setTenantList] = useState<string[]>([])
   const [appGrpList, setAppGrpList] = useState<string[]>([])
   const [appList, setAppList] = useState<string[]>([])
-
-
-  console.log(appGrpList, "appGrpList");
+  const { toggleDarkMode } = useDarkMode();
 
 
   const handleBuildButtonSelect = () => {
@@ -60,8 +62,6 @@ const page = () => {
       toast.error("Error fetching tenants");
     }
   };
-  console.log(tenantList, "tenantList");
-
 
   const fetchAppGroup = async (tenant: string) => {
     try {
@@ -90,28 +90,29 @@ const page = () => {
   }, []);
 
   return (
-    <div className='flex flex-col w-full h-screen overflow-y-hidden'>
+    <div className='flex flex-col w-full h-screen overflow-y-hidden dark:bg-[#161616]'>
       <div className='flex w-full justify-between'>
-        <div className='flex gap-3 pt-2 pl-4'>
+        <div className='flex gap-5 pt-2 pl-4'>
           <Button
-            className={`${selectedBuildButton ? "font-semibold" : ""} rounded-lg border-none`}
+            className={`${selectedBuildButton ? "font-semibold" : ""} flex text-sm items-center gap-3 rounded-lg border-none outline-none dark:text-white`}
             onPress={handleBuildButtonSelect}
-          >
-            Build
+          ><PushandPullIcon fill={getCookie("isDarkMode") ? "white" : "black"} />
+            Push to Build
           </Button>
           <Button
-            className={`${selectedHistoryButton ? "font-semibold" : ""} rounded-lg border-none`}
+            className={`${selectedHistoryButton ? "font-semibold" : ""} flex text-sm items-center gap-3 rounded-lg border-none outline-none dark:text-white`}
             onPress={handleHistoryButtonSelect}
-          >
+          > <HistoryIcon fill={getCookie("isDarkMode") ? "white" : "black"} />
             History
           </Button>
         </div>
-        <div className='pt-2 pr-3'>
-          <Button className={"text-[12px] rounded-lg border-none text-[#0736C4] bg-blue-50 px-2 py-1"}>Build</Button>
+        <div className='flex pt-2 pr-3 gap-2 items-center'>
+          <IoToggleSharp size={25} onClick={toggleDarkMode} className="dark:text-white text-black/70" />
+          <Button className={"text-[12px] rounded-md border-none text-white bg-[#0736C4] px-3 py-1 outline-none"}>Build</Button>
         </div>
       </div>
       <div className='pt-2'>
-        <Separator />
+        <Separator className='dark:border-[#212121]' />
       </div>
       <div className='flex w-full justify-between'>
         <div className='flex outline-none gap-5 pl-4'>
@@ -122,7 +123,7 @@ const page = () => {
             setSelectedKeys={handleTenantselect}
             items={tenantList}
             classNames={{
-              triggerButton: "min-w-60 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA]",
+              triggerButton: "min-w-60 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white",
               popover: "w-60",
               listbox: "overflow-y-auto",
               listboxItem: "flex text-sm justify-between",
@@ -135,7 +136,7 @@ const page = () => {
             setSelectedKeys={handleAppGroupselect}
             items={appGrpList}
             classNames={{
-              triggerButton: `${selectedTenant ? "min-w-60 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA]" : ""}`,
+              triggerButton: `${selectedTenant ? "min-w-60 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white" : "backdrop-blur-3xl min-w-60 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"}`,
               popover: "w-60",
               listbox: "overflow-y-auto",
               listboxItem: "flex text-sm justify-between",
@@ -148,7 +149,7 @@ const page = () => {
             setSelectedKeys={handleAppselect}
             items={appList}
             classNames={{
-              triggerButton: "min-w-60 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA]",
+              triggerButton: `${selectAppGroup ? "min-w-60 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white" : "backdrop-blur-3xl min-w-60 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"}`,
               popover: "w-60",
               listbox: "overflow-y-auto",
               listboxItem: "flex text-sm justify-between",
@@ -157,12 +158,12 @@ const page = () => {
 
         </div>
         <div className='flex gap-2 justify-end'>
-          <Button size='xs' className={"bg-red-50 font-semibold rounded-md text-red-400 px-5 mt-3"}>Clear</Button>
-          <Button size='xs' className={"bg-gray-100 font-medium rounded-md text-black px-5 mt-3 mr-2"}>Clear All</Button>
+          <Button className={"bg-[#FFF6F6] dark:bg-[#EF4444]/15 text-sm font-semibold outline-none rounded-md text-[#EF4444] px-5 mt-3"}>Clear</Button>
+          <Button className={"bg-[#F1F1F1] dark:bg-[#0F0F0F] dark:text-white text-sm font-medium outline-none rounded-md text-black px-3 mt-3 mr-2"}>Clear All</Button>
         </div>
       </div>
       <div>
-        <Separator className='mt-2' />
+        <Separator className='mt-2 dark:border-[#212121]' />
       </div>
       <div className='flex w-full h-full gap-3'>
         <div className='w-[25%] pt-3 pl-4 rounded-lg'>

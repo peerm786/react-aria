@@ -1,13 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Form } from "../../src/Form";
-import { Button } from "../../src/Button";
+import { Form } from "react-aria-components";
+import { Button } from "react-aria-components";
 import { Input, Label } from "react-aria-components";
-import { Select, SelectItem } from "../../src/Select";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { login } from "../../../lib/utils/login";
 import { useDarkMode } from "../../../lib/utils/useDarkmode";
+import DropDown from "../multiDropdownnew";
+import { AxiosService } from "../../../lib/utils/axiosService";
 
 
 interface LoginFormProps {
@@ -16,18 +16,16 @@ interface LoginFormProps {
 
 function LoginForm({ variant = "TP" }: LoginFormProps) {
   const [clientList, setClientList] = useState<string[]>([]);
-  const [client, setClient] = useState<any>(null);
+  const [client, setClient] = useState<any>("");
   const [loading, setLoading] = useState(false);
+  console.log(client, "dsfsdf");
 
   const { isDarkMode } = useDarkMode();
 
-
-
-
   const fetchClients = async () => {
     try {
-      const res = await axios.get(
-        "http://192.168.2.110:3002/tp/getClientTenant?type=c"
+      const res = await AxiosService.get(
+        "/tp/getClientTenant?type=c"
       );
       if (res.status === 200) {
         setClientList(res.data);
@@ -82,19 +80,28 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
             <Label htmlFor="tenant" className={`text-black mb-1 text-sm ml-5 `}>
               Client
             </Label>
-            <Select
+            {/* <Select
               selectedKey={client}
               onSelectionChange={(client) => setClient(client)}
               name="client"
-              label="Select Client"
+              // label="Select Client"
               className={`text-sm pl-3 bg-[#D9D9D9]  py-2 rounded-md w-[90%] ml-5`}
-            >
-              {clientList.map((client: string, id: number) => (
-                <SelectItem key={id} id={client}>
-                  {client}
-                </SelectItem>
-              ))}
-            </Select>
+            > */}
+
+            <DropDown
+              triggerButton="Select Client"
+              selectedKeys={client}
+              setSelectedKeys={(client) => setClient(client)}
+              items={clientList}
+
+              classNames={{
+                triggerButton: `w-[90%] bg-[#D9D9D9] ml-5 rounded-lg text-sm ${client ? 'text-black' : 'text-gray-400'} text-gray-400 font-medium mt-2 dark:bg-[#171717] dark:text-[#FFFFFF]`,
+                popover: "w-[20%]",
+                // listbox: "w-60 h-40 overflow-y-auto",
+                listboxItem: "",
+              }}
+            />
+            {/* </Select> */}
           </div>
           <div className="flex flex-col">
             <Label

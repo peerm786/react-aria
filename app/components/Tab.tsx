@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { DataFabric, ProcessFabric, SecurityFabric, UserFabric } from '../constants/svgApplications';
 import { AxiosService } from '../../lib/utils/axiosService';
 import { toast } from 'react-toastify';
+import { getCookie } from '../../lib/utils/cookiemgmt';
 
 interface BuilderProps {
     tenant: string,
@@ -18,9 +19,9 @@ function FabricSelector({ tenant, appGrp, app }: BuilderProps) {
 
     const tabs = [
         { id: "df", label: "DataFabric", icon: <DataFabric /> },
-        { id: "uf", label: "UserFabric", icon: <UserFabric /> },
-        { id: "pf", label: "ProcessFabric", icon: <ProcessFabric /> },
-        { id: "sf", label: "SecurityFabric", icon: <SecurityFabric /> },
+        { id: "uf", label: "UserFabric", icon: <UserFabric fill={getCookie("isDarkMode") ? "white" : "black"} /> },
+        { id: "pf", label: "ProcessFabric", icon: <ProcessFabric fill={getCookie("isDarkMode") ? "white" : "black"} /> },
+        { id: "sf", label: "SecurityFabric", icon: <SecurityFabric fill={getCookie("isDarkMode") ? "white" : "black"} /> },
     ]
 
     const getAllApplicationList = async (fabric: string) => {
@@ -79,10 +80,10 @@ function FabricSelector({ tenant, appGrp, app }: BuilderProps) {
 
     return (
         <div className="flex flex-col w-full h-screen">
-            <Tabs className={"h-[81%] bg-[#F4F5FA] rounded-lg"} onSelectionChange={handleTabChange}>
+            <Tabs className={"h-[81%] dark:bg-[#0F0F0F] bg-[#F4F5FA] rounded-lg"} onSelectionChange={handleTabChange}>
                 <TabList
                     aria-label="Feeds"
-                    className="flex w-[95%] bg-[#FFFFFF] rounded-lg p-2 ml-2 mt-2 font-semibold"
+                    className="flex w-[95%] bg-[#FFFFFF] dark:bg-[#161616] rounded-lg p-2 ml-2 mt-2 font-semibold"
                 >
                     {tabs.map(({ id, label, icon }) => (
                         <MyTab key={id} id={id} label={label}>
@@ -93,7 +94,7 @@ function FabricSelector({ tenant, appGrp, app }: BuilderProps) {
                 <div className='h-[85%] overflow-y-auto mt-3'>
                     {modelKeys.map((key: string, index: number) => (
                         <MyTabPanel key={index} id={selectedTab}>
-                            <div draggable onDragStart={(e) => handleDragKey(e, key)} className="w-[90%] border border-black/20 p-1 ml-2 text-sm rounded-md">
+                            <div draggable onDragStart={(e) => handleDragKey(e, key)} className="w-[90%] border border-black/20 dark:border-[#212121] dark:text-white p-1 ml-2 text-sm rounded-md">
                                 {key.replace(`${tenant}:${appGrp}:${app}:`, "")}
                                 {/* {items.map((item) => (
                                     <div draggable onDragStart={(e) => handleDragKey(e, item.content)} key={item.id} className="w-[95%] border border-black/20 p-1 my-2 text-sm rounded-md">
@@ -115,7 +116,7 @@ function MyTab({ id, children, label }: TabProps & { label: string }) {
             id={id}
             className={({ isSelected }) => `
         w-full flex items-center justify-center text-[12px]
-        ${isSelected ? 'bg-[#F4F5FA] transition duration-300 ease-in-out rounded-lg outline-none p-1' : ''}
+        ${isSelected ? 'bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white transition duration-300 ease-in-out rounded-lg outline-none p-1' : ''}
       `}
         >
             {({ isSelected }) => (
