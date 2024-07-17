@@ -29,11 +29,7 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
     const [social, setSocial] = useState("");
     const [socialclient, setsocialclient] = useState<any>("");
     const [open, setOpen] = useState(false);
-    const [data, setData] = useState<any>({
-        client: "",
-        username: "",
-        password: "",
-    });
+
 
 
     const fetchClients = async () => {
@@ -56,13 +52,15 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
     const handleFormSubmit = async (formData: FormData) => {
         try {
             setLoading(true);
-            const client = formData.get("client");
+            // const client = formData.get("client");
             const username = formData.get("username");
             const password = formData.get("password");
 
+
+
             if (client && username && password) {
                 const res = await login({ client, username, password });
-                console.log(res, "dfgfd")
+                // console.log(res, "dfgfd")
                 if (res?.error) {
                     setLoading(false);
                     toast.error("failed to login , check credentials", {
@@ -120,7 +118,7 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
                 </div>
                 <div className="space-y-4 ml-12">
                     <div className="flex flex-col">
-                        <Label htmlFor="tenant" className="text-black dark:text-white mb-1 text-sm ml-5">
+                        <Label htmlFor="tenant" className="text-[#000000] dark:text-white mb-1 text-sm ml-5">
                             Client
                         </Label>
                         <DropDown
@@ -130,10 +128,10 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
                             items={clientList}
 
                             classNames={{
-                                triggerButton: "w-[90%] bg-[#D9D9D9] ml-5 rounded-lg text-sm ${client ? 'text-black' : 'text-gray-400'} text-gray-400 font-medium mt-2 dark:bg-[#171717] dark:text-[#FFFFFF] ",
+                                triggerButton: "w-[90%] bg-[#D9D9D9] text-black  ml-5 rounded-lg text-sm font-medium mt-2 dark:bg-[#171717] dark:text-[#FFFFFF] ",
                                 popover: "w-[20%]",
                                 // listbox: "w-60 h-40 overflow-y-auto",
-                                listboxItem: "",
+                                listboxItem: "flex justify-between",
                             }}
 
                         />
@@ -150,7 +148,7 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
                             name="username"
                             type="text"
                             placeholder="eg:support@torus.com"
-                            className=" text-sm pl-3 bg-[#D9D9D9] dark:bg-[#171717] dark:text-[#FFFFFF] text-[#000000] py-2 rounded-md w-[90%] ml-5"
+                            className=" bg-[#D9D9D9] text-sm outline-none pl-3  dark:bg-[#171717] dark:text-[#FFFFFF] text-[#000000] py-2 rounded-md w-[90%] ml-5"
                         />
                     </div>
                     <div className="flex flex-col relative">
@@ -162,7 +160,7 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
                             name="password"
                             type={showPassword ? "text" : "password"}
                             placeholder="Enter Password"
-                            className=" text-sm pl-3 bg-[#D9D9D9] dark:text-[#FFFFFF] text-[#000000] dark:bg-[#171717]  py-2 rounded-md w-[90%] ml-5"
+                            className=" bg-[#D9D9D9] text-sm pl-3 outline-none  dark:text-[#FFFFFF] text-[#000000] dark:bg-[#171717]  py-2 rounded-md w-[90%] ml-5"
                         />
                         <span
                             className="absolute bottom-2 right-6 "
@@ -178,7 +176,7 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
                     <Button
                         type="submit"
                         isDisabled={loading}
-                        className="bg-[#0736C4] text-white px-4 py-2 w-[90%] disabled:bg-[#8c9ac4]  focus:outline-none"
+                        className="bg-[#0736C4] text-white px-4 py-2 w-[90%] disabled:bg-[#8c9ac4]  focus:outline-none rounded-lg"
                     >
                         Sign In
                     </Button>
@@ -197,7 +195,7 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
                                     setSocial("github");
                                     setOpen(true);
                                 }}
-                                className="bg-[#D9D9D9] py-2 dark:bg-[#171717] dark:text-white text-sm text-black px-6 ml-14 flex items-center justify-center  focus:outline-none"
+                                className="bg-[#D9D9D9] py-2 dark:bg-[#171717] dark:text-white text-sm text-black px-6 ml-12 flex items-center justify-center  focus:outline-none rounded-lg"
                             >
                                 <Gitbutton fill={getCookie("isDarkMode") ? "white" : "black"} />
                                 GitHub
@@ -207,7 +205,7 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
                                     setSocial("google");
                                     setOpen(true);
                                 }}
-                                className="bg-[#D9D9D9] py-2 text-black text-sm dark:bg-[#171717] dark:text-white px-6 mr-4 flex items-center justify-center  focus:outline-none"
+                                className="bg-[#D9D9D9] py-2 text-black text-sm dark:bg-[#171717] dark:text-white px-6 mr-4 flex items-center justify-center  focus:outline-none rounded-lg"
                             >
                                 <Googlebutton />
                                 Google
@@ -215,7 +213,7 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
                         </div>
 
                     }
-                    classNames={{ dialogClassName: "w-[405px]  bg-white focus:outline-none" }}
+                    classNames={{ dialogClassName: "w-[405px] p-4 rounded-xl bg-white focus:outline-none" }}
                 >
                     <Heading slot="title" className="text-xl font-bold ml-28 mb-10 ">Login with {social}</Heading>
 
@@ -227,15 +225,15 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
 
                         classNames={{
                             triggerButton: "w-[90%] ml-5 rounded-lg text-sm  mt-2 bg-[#D9D9D9] dark:text-[#FFFFFF] text-[#000000] dark:bg-[#171717]  ",
-                            popover: "w-[10%]",
-                            listboxItem: "",
+                            popover: "w-[20%] bg-[#F4F5FA]",
+                            listboxItem: "flex  items-center justify-between"
                         }}
 
                     />
-                    <div className="flex mt-11 justify-between ml-44 ">
+                    <div className="flex mt-11 justify-between  ">
                         <Button
                             onPress={handlesociallogin}
-                            className="bg-gray-500 text-white text-sm px-4 py-2 rounded  hover:bg-gray-600  focus:outline-none"
+                            className="bg-gray-500 text-white text-sm  py-2 px-4  rounded  hover:bg-gray-600  focus:outline-none"
                         >
                             Submit
                         </Button>
