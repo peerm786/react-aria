@@ -79,7 +79,7 @@ const DropDown = ({
     <DialogTrigger >
       <Button
         className={twMerge(
-          `p-2 items-center flex justify-between rounded focus:outline-none w-full ${open ? "border-[#0736C4]" : ""}`,
+          `p-2 items-center flex justify-between dark:text-white rounded focus:outline-none w-full ${open ? "border-[#0736C4]" : ""}`,
           classNames?.triggerButton
         )}
         onPress={() => setOpen(!open)}
@@ -95,7 +95,7 @@ const DropDown = ({
         placement="bottom"
         className={twMerge("w-full", classNames?.popover)}
       >
-        <Dialog className="border bg-white focus:outline-none rounded-lg">
+        <Dialog className="border bg-white dark:bg-[#212121] dark:text-white dark:border-[#212121] focus:outline-none rounded-lg">
           {({ close }) => (
             <ListBox
               aria-label="Custom dropdown"
@@ -123,7 +123,7 @@ const DropDown = ({
                       textValue={getItemDisplayValue(item)}
                       onAction={() => handleSelectionChange(item, close)}
                       className={twMerge(
-                        `focus:outline-none p-2 ${isSelected() ? "bg-[#F9FAFB]" : ""
+                        `focus:outline-none p-2 flex justify-between border rounded ${isSelected() ? "bg-[#F9FAFB] dark:bg-[#000]" : ""
                         }`,
                         classNames?.listboxItem
                       )}

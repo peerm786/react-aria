@@ -52,15 +52,11 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
     const handleFormSubmit = async (formData: FormData) => {
         try {
             setLoading(true);
-            // const client = formData.get("client");
             const username = formData.get("username");
             const password = formData.get("password");
 
-
-
             if (client && username && password) {
                 const res = await login({ client, username, password });
-                // console.log(res, "dfgfd")
                 if (res?.error) {
                     setLoading(false);
                     toast.error("failed to login , check credentials", {
@@ -130,8 +126,6 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
                             classNames={{
                                 triggerButton: "w-[90%] bg-[#D9D9D9] text-black  ml-5 rounded-lg text-sm font-medium mt-2 dark:bg-[#171717] dark:text-[#FFFFFF] ",
                                 popover: "w-[20%]",
-                                // listbox: "w-60 h-40 overflow-y-auto",
-                                listboxItem: "flex justify-between",
                             }}
 
                         />
@@ -213,24 +207,22 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
                         </div>
 
                     }
-                    classNames={{ dialogClassName: "w-[405px] p-4 rounded-xl bg-white focus:outline-none" }}
+                    classNames={{ dialogClassName: "w-[405px] dark:bg-[#212121] dark:text-[#FFFFFF] p-4 rounded-xl bg-white focus:outline-none" }}
                 >
-                    <Heading slot="title" className="text-xl font-bold ml-28 mb-10 ">Login with {social}</Heading>
+                    <Heading slot="title" className="text-xl font-bold text-center mb-10 ">Login with {social}</Heading>
 
                     <DropDown
                         triggerButton="Select Client"
                         selectedKeys={client}
                         setSelectedKeys={(client) => setClient(client)}
                         items={clientList}
-
                         classNames={{
-                            triggerButton: "w-[90%] ml-5 rounded-lg text-sm  mt-2 bg-[#D9D9D9] dark:text-[#FFFFFF] text-[#000000] dark:bg-[#171717]  ",
-                            popover: "w-[20%] bg-[#F4F5FA]",
-                            listboxItem: "flex  items-center justify-between"
+                            triggerButton: "w-[90%] bg-[#D9D9D9] text-black  ml-5 rounded-lg text-sm font-medium mt-2 dark:bg-[#171717] dark:text-[#FFFFFF] ",
+                            popover: "w-[20%] bg-[#F4F5FA] dark:bg-[#212121]",
+                            listboxItem: "dark:bg-[#212121] dark:text-[#FFFFFF] ",
                         }}
-
                     />
-                    <div className="flex mt-11 justify-between  ">
+                    <div className="flex justify-end mt-4">
                         <Button
                             onPress={handlesociallogin}
                             className="bg-gray-500 text-white text-sm  py-2 px-4  rounded  hover:bg-gray-600  focus:outline-none"

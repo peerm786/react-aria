@@ -1,11 +1,13 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import Bankmaster from "../../constants/image.png";
+import DashBoard from "../../constants/image.png";
+import DarkModeDashboard from "../../constants/darkDashboard.png";
 import { useDarkMode } from "../../../lib/utils/useDarkmode";
 import LoginForm from "../../components/auth/startpage"
 import { IoIosArrowForward } from "react-icons/io";
 import { IoToggleSharp } from "react-icons/io5";
+import { getCookie } from "../../../lib/utils/cookiemgmt";
 
 const Login = () => {
 
@@ -43,7 +45,7 @@ const Login = () => {
                 </div>
                 <Image
                     className="w-[100%] h-[65vh] mr-auto rounded-tl-[3.5%]  "
-                    src={Bankmaster}
+                    src={getCookie("isDarkMode") ? DarkModeDashboard : DashBoard}
                     alt="bankmaster"
                 />
             </div>
