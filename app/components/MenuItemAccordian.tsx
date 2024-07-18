@@ -40,7 +40,9 @@ type HandleDropNode = (
 
 type handleDeleteKeys = (path: string, fab: string) => void;
 
-type MenuType = "grp" | "item";
+type handleDeleteMenuGrp = (path: string) => void;
+
+type MenuType = "group" | "item";
 
 interface TreeNodeProps {
   node: TreeNode;
@@ -50,10 +52,12 @@ interface TreeNodeProps {
   handleDropNode: HandleDropNode;
   handleDragStartOfNode: HandleDragStart;
   handleDeleteKeys: handleDeleteKeys;
+  handleDeleteMenuGrp: handleDeleteMenuGrp;
 }
 
 interface TreeProps {
-  data?: TreeNode[];
+  data: TreeNode[];
+  setData: (data: TreeNode[]) => void;
 }
 
 const RenderAccordian: React.FC<TreeNodeProps> = ({
@@ -63,7 +67,8 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
   handleUpdateJson,
   handleDragStartOfNode,
   handleDropNode,
-  handleDeleteKeys
+  handleDeleteKeys,
+  handleDeleteMenuGrp,
 }) => {
   const [expanded, setExpanded] = useState(false);
   const [isInput, setInput] = useState(false);
@@ -97,8 +102,9 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
         onDrop={(e) => handleDrop(e, path)}
       >
         <div
-          className={`cursor-pointer flex items-center w-full focus:outline-gray-400 ${node.type == "grp" ? "" : "flex-col"
-            } p-1 rounded`}
+          className={`cursor-pointer flex items-center w-full focus:outline-gray-400 group relative ${
+            node.type == "group" ? "" : "flex-col"
+          } p-1 rounded`}
         >
           <div className="flex w-full h-full items-center">
             <RACButton aria-label="dd" className="mr-2 focus:outline-none">
@@ -124,10 +130,20 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
               </span>
             )}
             <RACButton
+              onPress={() => handleDeleteMenuGrp(`${path}`)}
+              className="ml-auto focus:outline-none h-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              <DeleteIcon />
+            </RACButton>
+            <RACButton
               className="ml-auto p-2 transition-all duration-300 ease-in-out focus:outline-none dark:bg-[#161616] dark:text-white"
               onPress={() => setExpanded(!expanded)}
             >
-              {expanded ? <UpArrow fill={getCookie("isDarkMode") ? "white" : "black"} /> : <DownArrow fill={getCookie("isDarkMode") ? "white" : "black"} />}
+              {expanded ? (
+                <UpArrow fill={getCookie("isDarkMode") ? "white" : "black"} />
+              ) : (
+                <DownArrow fill={getCookie("isDarkMode") ? "white" : "black"} />
+              )}
             </RACButton>
           </div>
           <AnimatePresence>
@@ -140,7 +156,10 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
                 transition={{ duration: 0.35 }}
               >
                 {["df", "uf", "pf", "sf"].map((fab, id) => (
-                  <TextField className="m-2 relative dark:bg-[#161616] dark:text-white focus:outline-none" key={id}>
+                  <TextField
+                    className="m-2 relative dark:bg-[#161616] dark:text-white focus:outline-none"
+                    key={id}
+                  >
                     <Label />
                     <Input
                       onDragOver={(e) => e.preventDefault()}
@@ -151,9 +170,14 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
                       name={fab}
                       placeholder={fab}
                     />
-                    {node.keys[fab] ? <Button onPress={() => handleDeleteKeys(`${path}.keys`, fab)} className="absolute right-2 top-3 focus:outline-none">
-                      <DeleteIcon />
-                    </Button> : null}
+                    {node.keys[fab] ? (
+                      <Button
+                        onPress={() => handleDeleteKeys(`${path}.keys`, fab)}
+                        className="absolute right-2 top-3 focus:outline-none"
+                      >
+                        <DeleteIcon />
+                      </Button>
+                    ) : null}
                     <Text slot="description" />
                     <FieldError />
                   </TextField>
@@ -164,7 +188,7 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
         </div>
       </div>
       <AnimatePresence>
-        {expanded && node.items && node.type == "grp" && (
+        {expanded && node.items && node.type == "group" && (
           <motion.div
             className={`overflow-hidden dark:bg-[#161616] dark:text-white`}
             initial={{ height: 0, opacity: 0 }}
@@ -173,7 +197,10 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
             transition={{ duration: 0.3 }}
           >
             {node.items.map((child, index) => (
-              <div key={child.id} className="ml-4 mt-2 last:mb-2 dark:bg-[#161616] dark:text-white">
+              <div
+                key={child.id}
+                className="ml-4 mt-2 last:mb-2 dark:bg-[#161616] dark:text-white"
+              >
                 <RenderAccordian
                   key={child.id}
                   node={child}
@@ -183,6 +210,7 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
                   handleDragStartOfNode={handleDragStartOfNode}
                   handleDropNode={handleDropNode}
                   handleDeleteKeys={handleDeleteKeys}
+                  handleDeleteMenuGrp={handleDeleteMenuGrp}
                 />
               </div>
             ))}
@@ -193,13 +221,21 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
   );
 };
 
-const MenuItemAccordian: React.FC<TreeProps> = () => {
+const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
   const [menuGroups, setMenuGroups] = useState<TreeNode[]>([]);
   const [isInput, setInput] = useState(false);
 
   useEffect(() => {
-    setMenuGroups(menuItems);
-  }, []);
+    if (data?.length) {
+      setMenuGroups(data);
+    } else {
+      setMenuGroups(menuItems);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    setData(menuGroups);
+  }, [menuGroups]);
 
   const handleUpdateJson: HandleUpdateJsonType = (
     path: string,
@@ -218,11 +254,12 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
   };
 
   const handleAddMenuGrp = (type: MenuType, close: () => void) => {
-    if (type == "grp") {
+    if (type == "group") {
       const newMenuGrp: TreeNode = {
         id: `${menuGroups.length + 1}`,
         title: `Menu Item ${menuGroups.length + 1}`,
-        type: "grp",
+        sortOrder: `${menuGroups.length + 1}`,
+        type: "group",
         items: [],
       };
       setMenuGroups((prev) => [...prev, newMenuGrp]);
@@ -231,6 +268,7 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
       const newMenuGrp: TreeNode = {
         id: `${menuGroups.length + 1}`,
         title: `Menu Item ${menuGroups.length + 1}`,
+        sortOrder: `${menuGroups.length + 1}`,
         type: "item",
         keys: {},
       };
@@ -242,11 +280,12 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
   const handleNewMenuItem = (id: number, type: MenuType, close: () => void) => {
     const val: TreeNode[] | any = _.get(menuGroups, `${id}.items`);
     var newMenuItem: TreeNode;
-    if (type == "grp") {
+    if (type == "group") {
       newMenuItem = {
         id: `${id + 1}-${val.length + 1}`,
         title: `Menu Grp ${id + 1}-${val.length + 1}`,
-        type: "grp",
+        sortOrder: `${val.length + 1}`,
+        type: "group",
         items: [],
         keys: {},
       };
@@ -254,6 +293,7 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
       newMenuItem = {
         id: `${id + 1}-${val.length + 1}`,
         title: `Menu Item ${id + 1}-${val.length + 1}`,
+        sortOrder: `${val.length + 1}`,
         type: "item",
         items: [],
         keys: {},
@@ -283,29 +323,138 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
 
   const handleDropNode: HandleDropNode = (
     e: React.DragEvent<HTMLDivElement>,
-    path: string
+    pathOfTargetNode: string
   ) => {
     const pathOfSrcNode = e.dataTransfer.getData("pathOfSrcNode");
     const srcNode = _.get(menuGroups, pathOfSrcNode);
-    const targetNode = _.get(menuGroups, path);
-    if (pathOfSrcNode !== path && targetNode.type == "grp") {
-      targetNode.items.push(srcNode);
-      handleUpdateJson(path, targetNode);
+    const targetNode = _.get(menuGroups, pathOfTargetNode);
+
+    //Code to sort node from within the same group at the Nav level working fine
+    if (
+      pathOfSrcNode.split(".").length == 1 &&
+      pathOfTargetNode.split(".").length == 1
+    ) {
       const js = structuredClone(menuGroups);
-      _.unset(js, pathOfSrcNode);
+      _.update(js, pathOfSrcNode, () => targetNode);
+      _.update(js, pathOfTargetNode, () => srcNode);
+      const updatedSortOrder = js.map((node, index) => ({
+        ...node,
+        sortOrder: `${index + 1}`,
+      }));
+      setMenuGroups(updatedSortOrder);
+      return;
+    }
+
+    const parentPathOfSrcNode = pathOfSrcNode.split(".").slice(0, -1).join(".");
+    const indexToModify = parseInt(
+      pathOfSrcNode.split(".")[pathOfSrcNode.split(".").length - 1]
+    );
+    const parentPathOfTargetNode = pathOfTargetNode
+      .split(".")
+      .slice(0, -1)
+      .join(".");
+
+
+      //Code to sort node from within the same group working finely
+    if (parentPathOfSrcNode == parentPathOfTargetNode) {
+      const js = structuredClone(menuGroups);
+      _.update(js, pathOfSrcNode, () => targetNode);
+      _.update(js, pathOfTargetNode, () => srcNode);
+      const updatedParentNode = _.get(js, parentPathOfSrcNode);
+      const updatedSortOrder = updatedParentNode.map(
+        (node: TreeNode, index: number) => ({
+          ...node,
+          sortOrder: `${index + 1}`,
+        })
+      );
+      handleUpdateJson(parentPathOfSrcNode, updatedSortOrder);
+      return;
+    }
+
+
+
+    //Code To Drop nodes from any group to any other group working finely
+    // But Sorting of nodes for both src and target node not working good working on it
+    if (pathOfSrcNode !== pathOfTargetNode && targetNode.type == "group") {
+
+      // Workout code sorting working fine but drop malfunctioned
+      // const js = structuredClone(menuGroups);
+      // const parentOfSrcNode = _.get(js, parentPathOfSrcNode);
+      // parentOfSrcNode.splice(indexToModify, 1);
+      // const sortedItemsOfSrcNode = parentOfSrcNode.map((node:TreeNode , index:number)=> (
+      //   {...node, sortOrder: `${index + 1}` }
+      // ))
+
+      // console.log(parentOfSrcNode , "parentOfSrcNode", sortedItemsOfSrcNode);
+      
+      // const updatedTarget = structuredClone(targetNode);
+      // updatedTarget.items.push(srcNode);
+      // const sortedItems = updatedTarget.items.map((node: TreeNode, index: number) => ({
+      //   ...node,
+      //   sortOrder: `${index + 1}`,
+      // }))
+
+      // handleUpdateJson(pathOfTargetNode, {
+      //   ...targetNode,
+      //   items: sortedItems,
+      // })
+
+      // _.set(js ,parentPathOfSrcNode ,sortedItemsOfSrcNode);
+      // setMenuGroups(js)
+
+      targetNode.items.push({
+        ...srcNode,
+        sortOrder: `${targetNode.items.length + 1}`,
+      });
+      const sortedOrderOfTargetNodeArr = targetNode.items
+        .map((node: TreeNode, index: number) => ({
+          ...node,
+          sortOrder: `${index + 1}`,
+        }));
+
+      handleUpdateJson(pathOfTargetNode, {
+        ...targetNode,
+        items: sortedOrderOfTargetNodeArr,
+      });
+      const js = structuredClone(menuGroups);
+      const updatedParentOfSrcNode = _.get(js, parentPathOfSrcNode)
+      updatedParentOfSrcNode.splice(indexToModify, 1);
+      const sortedSrcNode =updatedParentOfSrcNode.map((node:TreeNode , index: number) => ({
+        ...node, 
+        sortOrder: `${index + 1}`
+      }))
+
+      handleUpdateJson(parentPathOfSrcNode, sortedSrcNode);
       setMenuGroups(js.filter((node) => node !== undefined));
     } else {
       alert("Can't drop here");
     }
   };
+  // console.log(menuGroups, "menuGroups");
 
   const handleDeleteKeys = (path: string, fab: string) => {
     const js = structuredClone(menuGroups);
     const data: any = _.get(js, path);
-    delete data[fab]
+    delete data[fab];
     handleUpdateJson(path, data);
   };
 
+  const handleDeleteMenuGrp = (path: string, isCalledfromNav?: boolean) => {
+    const js = structuredClone(menuGroups);
+    if (isCalledfromNav) {
+      const indexToDelete = parseInt(path);
+      js.splice(indexToDelete, 1);
+      setMenuGroups(js);
+    } else {
+      const parentPath = path.split(".").slice(0, -1).join(".");
+      const indexToDelete = parseInt(
+        path.split(".")[path.split(".").length - 1]
+      );
+      const parentData: any = _.get(js, parentPath);
+      parentData.splice(indexToDelete, 1);
+      handleUpdateJson(parentPath, parentData);
+    }
+  };
 
   return (
     <div className="flex w-full">
@@ -319,12 +468,14 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={(e) => handleDropNode(e, `${id}`)}
                 key={id}
-                className="flex p-1 border rounded w-full bg-white dark:bg-[#161616] dark:border-[#212121] dark:text-white"
+                className="flex p-1 border rounded w-full bg-white dark:bg-[#161616] dark:border-[#212121] dark:text-white group relative"
                 onContextMenu={(e) => {
                   e.preventDefault();
                 }}
               >
-                <SixDotsSvg fill={getCookie("isDarkMode") ? "white" : "black"} />
+                <SixDotsSvg
+                  fill={getCookie("isDarkMode") ? "white" : "black"}
+                />
                 {isInput ? (
                   <Input
                     defaultValue={node.title}
@@ -346,6 +497,12 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
                     {node.title}
                   </span>
                 )}
+                <RACButton
+                  onPress={() => handleDeleteMenuGrp(`${id}`, true)}
+                  className="absolute right-2 top-0 focus:outline-none h-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <DeleteIcon />
+                </RACButton>
               </div>
             ))}
           </div>
@@ -361,14 +518,18 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
                   {({ close }) => (
                     <div className="flex flex-col px-5 py-2 gap-2 dark:bg-[#161616] dark:text-white">
                       <RACButton
-                        onPress={() => handleAddMenuGrp("grp", close)}
-                        className={"focus:outline-blue-300 bg-gray-200 p-1 dark:bg-[#161616] dark:text-white"}
+                        onPress={() => handleAddMenuGrp("group", close)}
+                        className={
+                          "focus:outline-blue-300 p-1 dark:bg-[#161616] dark:text-white"
+                        }
                       >
                         MenuGroup
                       </RACButton>
                       <RACButton
                         onPress={() => handleAddMenuGrp("item", close)}
-                        className={"focus:outline-blue-300 bg-gray-200 p-1 dark:bg-[#161616] dark:text-white"}
+                        className={
+                          "focus:outline-blue-300 p-1 dark:bg-[#161616] dark:text-white"
+                        }
                       >
                         MenuItem
                       </RACButton>
@@ -384,7 +545,7 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
           <div className="flex w-full justify-around h-[70vh] overflow-y-auto dark:bg-[#161616] dark:text-white">
             <div className="flex w-[97%] justify-around gap-4 mr-4 dark:bg-[#161616] dark:text-white">
               {menuGroups.map((node: TreeNode, id: number) => {
-                if (node.type == "grp") {
+                if (node.type == "group") {
                   return (
                     <div className="w-full" key={id}>
                       {node.items?.map((subNode, index) => (
@@ -397,6 +558,7 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
                             handleDropNode={handleDropNode}
                             handleDragStartOfNode={handleDragStartOfNode}
                             handleDeleteKeys={handleDeleteKeys}
+                            handleDeleteMenuGrp={handleDeleteMenuGrp}
                           />
                         </div>
                       ))}
@@ -406,7 +568,9 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
                            mt-2.5 py-2 ml-4 rounded-lg border-2 border-dashed
                             border-[#d9d9d9] focus:border-[#bdbcbc] dark:border-[#212121]  dark:text-white dark:bg-[#161616] focus:outline-none`}
                         >
-                          <PlusIcon fill={getCookie("isDarkMode") ? "white" : "black"} />
+                          <PlusIcon
+                            fill={getCookie("isDarkMode") ? "white" : "black"}
+                          />
                         </RACButton>
                         <Popover placement="bottom">
                           <Dialog className="border bg-white focus:outline-none rounded-lg dark:bg-[#161616] dark:text-white">
@@ -414,9 +578,11 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
                               <div className="flex flex-col px-5 py-3 gap-2 dark:bg-[#161616] dark:text-white">
                                 <RACButton
                                   onPress={() =>
-                                    handleNewMenuItem(id, "grp", close)
+                                    handleNewMenuItem(id, "group", close)
                                   }
-                                  className={"focus:outline-blue-300 bg-gray-200 p-1 dark:bg-[#161616] dark:text-white"}
+                                  className={
+                                    "focus:outline-blue-300 p-1 dark:bg-[#161616] dark:text-white"
+                                  }
                                 >
                                   MenuGroup
                                 </RACButton>
@@ -424,7 +590,9 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
                                   onPress={() =>
                                     handleNewMenuItem(id, "item", close)
                                   }
-                                  className={"focus:outline-blue-300 bg-gray-200 p-1 dark:bg-[#161616] dark:text-white"}
+                                  className={
+                                    "focus:outline-blue-300 p-1 dark:bg-[#161616] dark:text-white"
+                                  }
                                 >
                                   MenuItem
                                 </RACButton>
@@ -437,9 +605,15 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
                   );
                 } else {
                   return (
-                    <div className="w-full h-fit border mt-3 rounded dark:bg-[#161616] dark:text-white" key={id}>
+                    <div
+                      className="w-full h-fit border mt-3 rounded dark:bg-[#161616] dark:text-white"
+                      key={id}
+                    >
                       {["df", "uf", "pf", "sf"].map((fab, index) => (
-                        <TextField className="m-2 relative dark:bg-[#161616] dark:text-white" key={index}>
+                        <TextField
+                          className="m-2 relative dark:bg-[#161616] dark:text-white"
+                          key={index}
+                        >
                           <Label />
                           <Input
                             value={node.keys ? node.keys[fab] : ""}
@@ -460,9 +634,18 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
                             name={fab}
                             placeholder={fab}
                           />
-                          {node.keys?.[fab] ? <Button onPress={() => handleDeleteKeys(`${id}.keys`, fab)} className={"absolute right-2 top-3 focus:outline-none dark:bg-[#161616] dark:text-white"}>
-                            <DeleteIcon />
-                          </Button> : null}
+                          {node.keys?.[fab] ? (
+                            <Button
+                              onPress={() =>
+                                handleDeleteKeys(`${id}.keys`, fab)
+                              }
+                              className={
+                                "absolute right-2 top-3 focus:outline-none dark:bg-[#161616] dark:text-white"
+                              }
+                            >
+                              <DeleteIcon />
+                            </Button>
+                          ) : null}
                           <Text slot="description" />
                           <FieldError />
                         </TextField>
