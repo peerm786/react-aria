@@ -102,12 +102,12 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
         >
           <div className="flex w-full h-full items-center">
             <RACButton aria-label="dd" className="mr-2 focus:outline-none">
-              <SixDotsSvg />
+              <SixDotsSvg fill={getCookie("isDarkMode") ? "white" : "black"} />
             </RACButton>
             {isInput ? (
               <Input
                 defaultValue={node.title}
-                className={`border mr-2 w-full focus:outline-none focus:border-blue-300 rounded-lg p-1`}
+                className={`border mr-2 w-full focus:outline-none dark:text-white dark:bg-white focus:border-blue-300 rounded-lg p-1`}
                 onKeyDown={(e) =>
                   e.key === "Enter" ? handleChangeTitle(e, path) : null
                 }
@@ -124,7 +124,7 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
               </span>
             )}
             <RACButton
-              className="ml-auto p-2 transition-all duration-300 ease-in-out focus:outline-none"
+              className="ml-auto p-2 transition-all duration-300 ease-in-out focus:outline-none dark:bg-[#161616] dark:text-white"
               onPress={() => setExpanded(!expanded)}
             >
               {expanded ? <UpArrow fill={getCookie("isDarkMode") ? "white" : "black"} /> : <DownArrow fill={getCookie("isDarkMode") ? "white" : "black"} />}
@@ -140,13 +140,13 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
                 transition={{ duration: 0.35 }}
               >
                 {["df", "uf", "pf", "sf"].map((fab, id) => (
-                  <TextField className="m-2 relative" key={id}>
+                  <TextField className="m-2 relative dark:bg-[#161616] dark:text-white focus:outline-none" key={id}>
                     <Label />
                     <Input
                       onDragOver={(e) => e.preventDefault()}
                       value={node.keys ? node.keys[fab] : ""}
                       className={
-                        "bg-[#F4F5FA] dark:bg-[#161616] p-2 focus:outline-blue-500 w-full rounded-lg pr-8"
+                        "bg-[#F4F5FA]  p-2 focus:outline-blue-500 w-full rounded-lg pr-8 dark:bg-[#161616] dark:text-white"
                       }
                       name={fab}
                       placeholder={fab}
@@ -166,14 +166,14 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
       <AnimatePresence>
         {expanded && node.items && node.type == "grp" && (
           <motion.div
-            className={`overflow-hidden`}
+            className={`overflow-hidden dark:bg-[#161616] dark:text-white`}
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
             {node.items.map((child, index) => (
-              <div key={child.id} className="ml-4 mt-2 last:mb-2">
+              <div key={child.id} className="ml-4 mt-2 last:mb-2 dark:bg-[#161616] dark:text-white">
                 <RenderAccordian
                   key={child.id}
                   node={child}
@@ -310,7 +310,7 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
   return (
     <div className="flex w-full">
       <div className="flex flex-col w-full">
-        <div className="flex w-full bg-[#F4F5FA] dark:bg-[#0F0F0F] p-2 rounded-xl gap-2">
+        <div className="flex w-full bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white  p-2 rounded-xl gap-2">
           <div className="flex w-[95%] justify-around gap-2 overflow-x-auto">
             {menuGroups.map((node: TreeNode, id: number) => (
               <div
@@ -328,7 +328,7 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
                 {isInput ? (
                   <Input
                     defaultValue={node.title}
-                    className={`border mr-2 w-full focus:outline-none dark:bg-[#161616] dark:border-[#212121] focus:border-blue-300 rounded-lg p-1`}
+                    className={`border mr-2 w-full focus:outline-none dark:bg-[#161616] dark:border-[#212121] dark:text-white focus:border-blue-300 rounded-lg p-1`}
                     onKeyDown={(e) =>
                       e.key === "Enter"
                         ? handleChangeTitle(e, id.toString())
@@ -352,23 +352,23 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
           <div className="w-[4%] flex justify-center">
             <DialogTrigger>
               <RACButton
-                className={`px-2 items-center flex bg-white dark:bg-[#161616] rounded focus:outline-blue-300`}
+                className={`px-2 items-center flex bg-white dark:bg-[#161616] dark:text-white rounded focus:outline-blue-300`}
               >
                 <PlusIcon fill={getCookie("isDarkMode") ? "white" : "black"} />
               </RACButton>
               <Popover placement="left">
-                <Dialog className="border bg-white dark:bg-[#161616] dark:border-[#212121] focus:outline-none rounded-lg">
+                <Dialog className="border bg-white dark:bg-[#161616] dark:text-white dark:border-[#212121] focus:outline-none rounded-lg">
                   {({ close }) => (
-                    <div className="flex flex-col px-5 py-2 gap-2">
+                    <div className="flex flex-col px-5 py-2 gap-2 dark:bg-[#161616] dark:text-white">
                       <RACButton
                         onPress={() => handleAddMenuGrp("grp", close)}
-                        className={"focus:outline-blue-300 bg-gray-200 p-1"}
+                        className={"focus:outline-blue-300 bg-gray-200 p-1 dark:bg-[#161616] dark:text-white"}
                       >
                         MenuGroup
                       </RACButton>
                       <RACButton
                         onPress={() => handleAddMenuGrp("item", close)}
-                        className={"focus:outline-blue-300 bg-gray-200 p-1"}
+                        className={"focus:outline-blue-300 bg-gray-200 p-1 dark:bg-[#161616] dark:text-white"}
                       >
                         MenuItem
                       </RACButton>
@@ -381,8 +381,8 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
         </div>
 
         <div>
-          <div className="flex w-full justify-around h-[70vh] overflow-y-auto">
-            <div className="flex w-[97%] justify-around gap-4 mr-4">
+          <div className="flex w-full justify-around h-[70vh] overflow-y-auto dark:bg-[#161616] dark:text-white">
+            <div className="flex w-[97%] justify-around gap-4 mr-4 dark:bg-[#161616] dark:text-white">
               {menuGroups.map((node: TreeNode, id: number) => {
                 if (node.type == "grp") {
                   return (
@@ -404,19 +404,19 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
                         <RACButton
                           className={`w-[92%] flex items-center justify-center
                            mt-2.5 py-2 ml-4 rounded-lg border-2 border-dashed
-                            border-[#d9d9d9] focus:border-[#bdbcbc] dark:border-[#212121] dark:bg-[#161616] focus:outline-none`}
+                            border-[#d9d9d9] focus:border-[#bdbcbc] dark:border-[#212121]  dark:text-white dark:bg-[#161616] focus:outline-none`}
                         >
                           <PlusIcon fill={getCookie("isDarkMode") ? "white" : "black"} />
                         </RACButton>
                         <Popover placement="bottom">
-                          <Dialog className="border bg-white focus:outline-none rounded-lg">
+                          <Dialog className="border bg-white focus:outline-none rounded-lg dark:bg-[#161616] dark:text-white">
                             {({ close }) => (
-                              <div className="flex flex-col px-5 py-3 gap-2">
+                              <div className="flex flex-col px-5 py-3 gap-2 dark:bg-[#161616] dark:text-white">
                                 <RACButton
                                   onPress={() =>
                                     handleNewMenuItem(id, "grp", close)
                                   }
-                                  className={"focus:outline-blue-300 bg-gray-200 p-1"}
+                                  className={"focus:outline-blue-300 bg-gray-200 p-1 dark:bg-[#161616] dark:text-white"}
                                 >
                                   MenuGroup
                                 </RACButton>
@@ -424,7 +424,7 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
                                   onPress={() =>
                                     handleNewMenuItem(id, "item", close)
                                   }
-                                  className={"focus:outline-blue-300 bg-gray-200 p-1"}
+                                  className={"focus:outline-blue-300 bg-gray-200 p-1 dark:bg-[#161616] dark:text-white"}
                                 >
                                   MenuItem
                                 </RACButton>
@@ -437,9 +437,9 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
                   );
                 } else {
                   return (
-                    <div className="w-full h-fit border mt-3 rounded" key={id}>
+                    <div className="w-full h-fit border mt-3 rounded dark:bg-[#161616] dark:text-white" key={id}>
                       {["df", "uf", "pf", "sf"].map((fab, index) => (
-                        <TextField className="m-2 relative" key={index}>
+                        <TextField className="m-2 relative dark:bg-[#161616] dark:text-white" key={index}>
                           <Label />
                           <Input
                             value={node.keys ? node.keys[fab] : ""}
@@ -455,12 +455,12 @@ const MenuItemAccordian: React.FC<TreeProps> = () => {
                               }
                             }}
                             className={
-                              "bg-[#F4F5FA] p-2 focus:outline-blue-500 w-full rounded-lg pr-8"
+                              "bg-[#F4F5FA] p-2 focus:outline-blue-500 w-full rounded-lg pr-8 dark:bg-[#161616] dark:text-white"
                             }
                             name={fab}
                             placeholder={fab}
                           />
-                          {node.keys?.[fab] ? <Button onPress={() => handleDeleteKeys(`${id}.keys`, fab)} className={"absolute right-2 top-3 focus:outline-none"}>
+                          {node.keys?.[fab] ? <Button onPress={() => handleDeleteKeys(`${id}.keys`, fab)} className={"absolute right-2 top-3 focus:outline-none dark:bg-[#161616] dark:text-white"}>
                             <DeleteIcon />
                           </Button> : null}
                           <Text slot="description" />

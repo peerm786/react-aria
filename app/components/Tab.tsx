@@ -83,7 +83,7 @@ function FabricSelector({ tenant, appGrp, app }: BuilderProps) {
             <Tabs className={"h-[81%] dark:bg-[#0F0F0F] bg-[#F4F5FA] rounded-lg"} onSelectionChange={handleTabChange}>
                 <TabList
                     aria-label="Feeds"
-                    className="flex w-[95%] bg-[#FFFFFF] dark:bg-[#161616] rounded-lg p-2 ml-2 mt-2 font-semibold"
+                    className="flex w-[95%] bg-[#FFFFFF] dark:bg-[#161616] dark:text-white rounded-lg p-2 ml-2 mt-2 font-semibold"
                 >
                     {tabs.map(({ id, label, icon }) => (
                         <MyTab key={id} id={id} label={label}>
@@ -91,7 +91,7 @@ function FabricSelector({ tenant, appGrp, app }: BuilderProps) {
                         </MyTab>
                     ))}
                 </TabList>
-                <div className='h-[85%] overflow-y-auto mt-3'>
+                <div className='h-[85%] overflow-y-auto mt-3 '>
                     {modelKeys.map((key: string, index: number) => (
                         <MyTabPanel key={index} id={selectedTab}>
                             <div draggable onDragStart={(e) => handleDragKey(e, key)} className="w-[90%] border border-black/20 dark:border-[#212121] dark:text-white p-1 ml-2 text-sm rounded-md">
