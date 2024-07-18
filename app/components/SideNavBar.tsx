@@ -1,58 +1,48 @@
 import React, { useState } from "react";
 import {
+    BellIcon,
     CallChatSvg,
     HomeSvg,
-    LogoutSvg,
     QuestionSvg,
+    SettingsIcon,
     ShopSvg,
-    ThemeIcon,
-    TorusLogo,
 } from "../constants/svgApplications";
 import { Button } from "react-aria-components";
-import { signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { deleteAllCookies } from "../../lib/utils/cookiemgmt";
+import TorusAvatar from "./Avatar";
 
 const Sidebar = () => {
     const [fillIndex, setFillIndex] = useState(0);
     const actionIcons = [HomeSvg, ShopSvg, QuestionSvg, CallChatSvg];
-    const router = useRouter()
-
-    const handleLogout = () => {
-        // signOut();
-        deleteAllCookies()
-        router.push("/Signin")
-    }
 
     return (
         <aside
             aria-label="Sidebar"
-            className="w-12 flex flex-col items-center justify-between h-screen bg-white border"
+            className="w-10 flex  ml-5 flex-col items-center justify-between h-[95%] bg-white border rounded-md"
         >
-            <section className="flex flex-col justify-center items-center gap-4">
-                <section aria-label="Logo" className="p-2 mt-2">
-                    <TorusLogo />
-                </section>
+            <section className="flex flex-col justify-center items-center">
                 <section
                     aria-label="Actions"
                     className="w-12 flex flex-col items-center justify-center gap-3 mt-3"
                 >
                     {actionIcons.map((Icon, index) => (
-                        <Button key={index} className={`p-2 focus:outline-none ${fillIndex === index ? "bg-[#0736C4] rounded" : ""}`} onPress={() => setFillIndex(index)}>
-                            <Icon key={index} fill={fillIndex === index ? "white" : "black"} />
+                        <Button key={index} className={`p-2 focus:outline-none`} onPress={() => setFillIndex(index)}>
+                            <Icon key={index} fill={index === fillIndex ? "#0736C4" : "black"} />
                         </Button>
                     ))}
                 </section>
             </section>
             <section
                 aria-label="Theme and Logout"
-                className="w-full flex flex-col gap-3 justify-center items-center mb-3"
+                className="w-full flex flex-col justify-center items-center mb-3"
             >
-                <Button className={`p-2 focus:outline-none text-white`}>
-                    <ThemeIcon />
+                <Button className={`outline-none`}>
+                    <BellIcon />
                 </Button>
-                <Button className={`p-2 focus:outline-none text-white`} onPress={handleLogout}>
-                    <LogoutSvg />
+                <Button className={`outline-none mb-2`}>
+                    <SettingsIcon />
+                </Button>
+                <Button className={`outline-none mr-1`}>
+                    <TorusAvatar radius="full" size="lg" />
                 </Button>
             </section>
         </aside>
