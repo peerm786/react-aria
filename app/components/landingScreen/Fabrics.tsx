@@ -4,7 +4,7 @@ import { DataFabric, ProcessFabric, SecurityFabric, UserFabric } from '../../con
 
 const Fabrics = () => {
     return (
-        <div className='flex flex-col bg-white gap-3 p-4 ml-4 mt-4 border border-black/15 w-[40%] h-[25%] rounded-md'>
+        <div className='flex flex-col bg-white gap-3 p-4 ml-4 mt-4 border border-black/15 w-[40%] h-[28%] rounded-md'>
             <h2 className='text-sm font-semibold'>Fabrics</h2>
             <div className='flex gap-2'>
                 <Button className="flex flex-col gap-3 outline-none w-[25%] p-2 bg-[#F4F5FA] text-xs font-medium rounded-md"><DataFabric />Data Fabric</Button>
