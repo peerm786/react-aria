@@ -21,7 +21,7 @@ const Tabcard = () => {
     ];
 
     return (
-        <div className='w-[60%] h-[30%] border-2 border-gray-300 p-4 rounded-md'>
+        <div className='flex flex-col w-full h-full border border-gray-300 p-4 rounded-md'>
             <div className='flex justify-between'>
                 <h1 className='text-center mb-4'>My Library</h1>
                 <h2 className='text-center'>Filter</h2>
