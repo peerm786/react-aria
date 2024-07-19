@@ -371,66 +371,46 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
       return;
     }
 
-
-
     //Code To Drop nodes from any group to any other group working finely
-    // But Sorting of nodes for both src and target node not working good working on it
     if (pathOfSrcNode !== pathOfTargetNode && targetNode.type == "group") {
-
-      // Workout code sorting working fine but drop malfunctioned
-      // const js = structuredClone(menuGroups);
-      // const parentOfSrcNode = _.get(js, parentPathOfSrcNode);
-      // parentOfSrcNode.splice(indexToModify, 1);
-      // const sortedItemsOfSrcNode = parentOfSrcNode.map((node:TreeNode , index:number)=> (
-      //   {...node, sortOrder: `${index + 1}` }
-      // ))
-
-      // console.log(parentOfSrcNode , "parentOfSrcNode", sortedItemsOfSrcNode);
+      const js = structuredClone(menuGroups);
+      const parentOfSrcNode = _.get(js, parentPathOfSrcNode);
       
-      // const updatedTarget = structuredClone(targetNode);
-      // updatedTarget.items.push(srcNode);
-      // const sortedItems = updatedTarget.items.map((node: TreeNode, index: number) => ({
-      //   ...node,
-      //   sortOrder: `${index + 1}`,
-      // }))
-
-      // handleUpdateJson(pathOfTargetNode, {
-      //   ...targetNode,
-      //   items: sortedItems,
-      // })
-
-      // _.set(js ,parentPathOfSrcNode ,sortedItemsOfSrcNode);
-      // setMenuGroups(js)
-
+      // Remove the node from the source group
+      const srcNode = parentOfSrcNode.splice(indexToModify, 1)[0];
+    
+      // Update the sort order of the source group
+      const sortedItemsOfSrcNode = parentOfSrcNode.map((node: TreeNode, index: number) => ({
+        ...node,
+        sortOrder: `${index + 1}`,
+      }));
+    
+      // Add the node to the target group
       targetNode.items.push({
         ...srcNode,
         sortOrder: `${targetNode.items.length + 1}`,
       });
-      const sortedOrderOfTargetNodeArr = targetNode.items
-        .map((node: TreeNode, index: number) => ({
-          ...node,
-          sortOrder: `${index + 1}`,
-        }));
-
-      handleUpdateJson(pathOfTargetNode, {
+    
+      // Update the sort order of the target group
+      const sortedItemsOfTargetNode = targetNode.items.map((node: TreeNode, index: number) => ({
+        ...node,
+        sortOrder: `${index + 1}`,
+      }));
+        
+       // Update the source group and target group in the state
+       _.set(js, parentPathOfSrcNode, sortedItemsOfSrcNode);
+      _.set(js , pathOfTargetNode, {
         ...targetNode,
-        items: sortedOrderOfTargetNodeArr,
+        items: sortedItemsOfTargetNode,
       });
-      const js = structuredClone(menuGroups);
-      const updatedParentOfSrcNode = _.get(js, parentPathOfSrcNode)
-      updatedParentOfSrcNode.splice(indexToModify, 1);
-      const sortedSrcNode =updatedParentOfSrcNode.map((node:TreeNode , index: number) => ({
-        ...node, 
-        sortOrder: `${index + 1}`
-      }))
-
-      handleUpdateJson(parentPathOfSrcNode, sortedSrcNode);
-      setMenuGroups(js.filter((node) => node !== undefined));
+      setMenuGroups(js);
+    
     } else {
       alert("Can't drop here");
     }
+    
   };
-  // console.log(menuGroups, "menuGroups");
+  console.log(menuGroups, "menuGroups");
 
   const handleDeleteKeys = (path: string, fab: string) => {
     const js = structuredClone(menuGroups);
