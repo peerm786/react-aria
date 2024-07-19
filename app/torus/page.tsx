@@ -11,16 +11,16 @@ const page = () => {
     return (
         <div className='flex flex-col w-full h-screen bg-[#F4F5FA] pt-1'>
             <Topbar />
-            <div className='flex h-[88%]'>
+            <div className='flex h-[85%]'>
                 <Sidebar />
-                <div className='flex flex-col w-full pt-3'>
+                <div className='flex flex-col w-full h-full pt-3'>
                     <DateandTime />
-                    <div className='flex justify-between w-full gap-5 h-[75%]'>
-                        <div className='flex flex-col gap-3 w-[35%] h-[82%]'>
+                    <div className='flex justify-between w-full gap-2 h-full'>
+                        <div className='flex flex-col gap-3 w-[36%]'>
                             <Fabrics />
                             <Card />
                         </div>
-                        <div className='flex flex-col w-[60%] h-full mt-5 mr-3'>
+                        <div className='flex flex-col mt-4 mr-3 w-[61%]'>
                             <Tabcard />
                         </div>
                     </div>

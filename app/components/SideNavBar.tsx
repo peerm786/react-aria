@@ -17,7 +17,7 @@ const Sidebar = () => {
     return (
         <aside
             aria-label="Sidebar"
-            className="w-10 flex  ml-5 flex-col items-center justify-between h-full bg-white border rounded-md"
+            className="w-10 flex ml-5 flex-col items-center justify-between h-full bg-white border border-[#000000]/15 rounded-md"
         >
             <section className="flex flex-col justify-center items-center">
                 <section
