@@ -196,14 +196,14 @@ const page = () => {
         <Button
             onPress={handleUpdateBuild}
             isDisabled={!selectedVersion}
-            className={`px-2 p-1/2 bg-blue-700 disabled:bg-blue-300 text-white text- rounded focus:outline-none`}
+            className={`text-[12px] rounded-md border-none text-white disabled:cursor-not-allowed bg-[#0736C4] px-3 py-1 outline-none`}
           >
             Update
           </Button>
           <Button
             onPress={handleSaveBuild}
             isDisabled={!selectApp}
-            className={`px-2 p-1/2 bg-blue-700  disabled:bg-blue-300 text-white text- rounded focus:outline-none`}
+            className={`text-[12px] rounded-md border-none text-white disabled:cursor-not-allowed bg-[#0736C4] px-3 py-1 outline-none`}
           >
             Save
           </Button>

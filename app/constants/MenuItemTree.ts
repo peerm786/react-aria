@@ -12,46 +12,50 @@ export interface TreeNode {
 export const menuItems: TreeNode[] = [
   {
     id: "1",
-    title: "Menu Item 1",
+    type: "item",
+    sortOrder: "4",
+    title: "Home",
+    items: [],
+    keys: {}
+  },{
+    id: "2",
+    title: "Master",
     type: "group",
     sortOrder: "1",
     items: [
-      { id: "1-1", type: "item", sortOrder: "1", title: "Child 1-1", keys: {} },
-      { id: "1-2", type: "item", sortOrder: "2", title: "Child 1-2", keys: {} },
-      { id: "1-3", type: "item", sortOrder: "3", title: "Child 1-3", keys: {} },
+      { id: "2-1", type: "item", sortOrder: "1", title: "Bank master", keys: {} },
+      { id: "2-2", type: "item", sortOrder: "2", title: "Branch master", keys: {} },
+      { id: "2-3", type: "item", sortOrder: "3", title: "Account master", keys: {} },
+    ],
+  },{
+    id: "3",
+    title: "User",
+    type: "group",
+    sortOrder: "1",
+    items: [
+      { id: "3-1", type: "item", sortOrder: "1", title: "Admin", keys: {} },
+      { id: "3-2", type: "item", sortOrder: "2", title: "tenants", keys: {} },
+      { id: "3-3", type: "item", sortOrder: "3", title: "Privacy", keys: {} },
     ],
   },
   {
-    id: "2",
-    title: "Menu Item 2",
+    id: "4",
+    title: "Accounts",
     sortOrder: "2",
     type: "group",
     items: [
       {
-        id: "2-1",
-        title: "Menu Item 2-1",
+        id: "4-1",
+        title: "Loans",
         type: "group",
         sortOrder: "1",
         items: [
-          { id: "2-1-1", type: "item", sortOrder: "1", title: "Child 2-1-1", keys: {} },
-          { id: "2-1-2", type: "item", sortOrder: "2", title: "Child 2-1-2", keys: {} },
+          { id: "4-1-1", type: "item", sortOrder: "1", title: "Loan processing", keys: {} },
+          { id: "4-1-2", type: "item", sortOrder: "2", title: "Querying", keys: {} },
         ],
       },
-      { id: "2-2", type: "item", sortOrder: "2", title: "Menu Item 2-2", keys: {} },
+      { id: "4-2", type: "item", sortOrder: "2", title: "Savings", keys: {} },
     ],
   },
-  {
-    id: "3",
-    type: "item",
-    sortOrder: "3",
-    title: "Menu Item 3",
-    items: [{ id: "3-1", type: "item", sortOrder: "1", title: "Menu Item 3-1", keys: {} }],
-  },
-  {
-    id: "4",
-    type: "item",
-    sortOrder: "4",
-    title: "Menu Item 4",
-    items: [{ id: "4-1", type: "item", sortOrder: "1", title: "Menu Item 4-1", keys: {} }],
-  },
+ 
 ];

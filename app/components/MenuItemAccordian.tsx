@@ -121,6 +121,7 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
               />
             ) : (
               <span
+              className="text-sm"
                 onDoubleClick={(e) => {
                   e.stopPropagation();
                   setInput(!isInput);
@@ -287,7 +288,6 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
         sortOrder: `${val.length + 1}`,
         type: "group",
         items: [],
-        keys: {},
       };
     } else {
       newMenuItem = {
@@ -374,6 +374,23 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
     //Code To Drop nodes from any group to any other group working finely
     if (pathOfSrcNode !== pathOfTargetNode && targetNode.type == "group") {
       const js = structuredClone(menuGroups);
+
+      if(!parentPathOfSrcNode){
+        const srcNode =js.splice(indexToModify, 1)[0];
+        targetNode.items.push({
+          ...srcNode,
+          sortOrder: `${targetNode.items.length + 1}`,
+        })
+        const updatedMainGroup = js.map((node: TreeNode, index: number) => ({
+          ...node,
+          sortOrder: `${index + 1}`,
+        }))
+        _.set(updatedMainGroup , pathOfTargetNode , targetNode);
+        setMenuGroups(updatedMainGroup);
+        return
+      }
+
+
       const parentOfSrcNode = _.get(js, parentPathOfSrcNode);
       
       // Remove the node from the source group
@@ -448,7 +465,7 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={(e) => handleDropNode(e, `${id}`)}
                 key={id}
-                className="flex p-1 border rounded w-full bg-white dark:bg-[#161616] dark:border-[#212121] dark:text-white group relative"
+                className="flex p-1 items-center gap-2 border rounded w-full bg-white dark:bg-[#161616] dark:border-[#212121] dark:text-white group relative"
                 onContextMenu={(e) => {
                   e.preventDefault();
                 }}
@@ -469,6 +486,7 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
                   />
                 ) : (
                   <span
+                  className="text-sm"
                     onDoubleClick={(e) => {
                       e.stopPropagation();
                       setInput(!isInput);
@@ -479,7 +497,7 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
                 )}
                 <RACButton
                   onPress={() => handleDeleteMenuGrp(`${id}`, true)}
-                  className="absolute right-2 top-0 focus:outline-none h-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="ml-auto mr-2 focus:outline-none h-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                 >
                   <DeleteIcon />
                 </RACButton>
