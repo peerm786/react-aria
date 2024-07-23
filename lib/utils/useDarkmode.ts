@@ -1,9 +1,16 @@
 "use client";
-import { useState } from "react";
-import { deleteCookie, setCookie } from "./cookiemgmt";
+import { useEffect, useState } from "react";
+import { deleteCookie, getCookie, setCookie } from "./cookiemgmt";
 
 export function useDarkMode() {
   const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    if (getCookie("isDarkMode") === "true") {
+      document.body.classList.add("dark");
+      setIsDarkMode(true);
+    }
+  }, []);
 
   const toggleDarkMode = () => {
     if (isDarkMode) {

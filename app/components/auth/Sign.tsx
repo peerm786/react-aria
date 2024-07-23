@@ -11,7 +11,7 @@ import { getCookie } from "../../../lib/utils/cookiemgmt";
 
 const Login = () => {
 
-    const { toggleDarkMode } = useDarkMode();
+    const { isDarkMode , toggleDarkMode } = useDarkMode();
 
     return (
         <div className="flex justify-between w-full h-screen bg-[#F4F4F6] overflow-hidden  dark:bg-[#171717]">
@@ -45,7 +45,7 @@ const Login = () => {
                 </div>
                 <Image
                     className="w-[100%] h-[65vh] mr-auto rounded-tl-[3.5%]  "
-                    src={getCookie("isDarkMode") ? DarkModeDashboard : DashBoard}
+                    src={isDarkMode ? DarkModeDashboard : DashBoard}
                     alt="bankmaster"
                 />
             </div>
