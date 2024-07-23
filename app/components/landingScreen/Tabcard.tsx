@@ -36,7 +36,7 @@ const Tabcard = () => {
                         `${isSelected ? 'bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold' : 'outline-none text-xs font-semibold ml-2'}`}>Shared with Me</Tab>
                 </TabList>
             </Tabs>
-            <div className='mt-4 grid grid-cols-3 gap-5 overflow-y-auto pr-2' >
+            <div className='mt-4 grid sm:grid-cols-2 xl:grid-cols-3 gap-5 overflow-y-auto pr-2' >
                 {banks.map((bank, index) => (
                     <div key={index} className='border-2   border-gray-300 bg-[#F4F5FA] p-3 flex flex-col items-center justify-center rounded-md'>
                         <div className='flex items-center ml-auto gap-1'>
@@ -44,7 +44,7 @@ const Tabcard = () => {
                             <ThreeDots />
                         </div>
                         <div className=' mr-auto bg-[#0736C4]/15 rounded-md mb-3 p-1'>
-                            < DataFabric width='22' />
+                            <DataFabric width='22' />
                         </div>
                         <div className='flex w-full justify-between  '>
                             <h3 className='text-sm font-bold whitespace-nowrap'>{bank.name}</h3>
@@ -57,7 +57,7 @@ const Tabcard = () => {
                         <div className='w-[110%] border-b border-b-black/15 my-2'>
 
                         </div>
-                        <div className=' flex text-xs whitespace-nowrap gap-4'>
+                        <div className='flex w-full text-xs whitespace-nowrap justify-between px-1'>
                             <div className='text-xs text-black/35'>Last edited a few mins ago
                                 <div className='text-[#0736C4] font-medium'>Peer Maideen</div></div>
                             <div className=''>
