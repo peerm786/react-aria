@@ -79,9 +79,10 @@ const DropDown = ({
     <DialogTrigger >
       <Button
         className={twMerge(
-          `p-2 items-center flex justify-between dark:text-white rounded focus:outline-none w-full ${open ? "border-[#0736C4]" : ""}`,
+          `p-2 items-center flex justify-between disabled:cursor-not-allowed dark:text-white rounded focus:outline-none w-full ${open ? "border-[#0736C4]" : ""}`,
           classNames?.triggerButton
         )}
+        isDisabled={items.length === 0}
         onPress={() => setOpen(!open)}
       >
         {selectedKeys.length && Array.isArray(selectedKeys)
