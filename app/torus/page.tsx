@@ -1,8 +1,8 @@
 "use client"
 import React from 'react'
 import Fabrics from '../components/landingScreen/Fabrics'
-import Sidebar from '../components/SideNavBar'
-import Topbar from '../components/TopNavBar'
+import Sidebar from '../components/landingScreen/SideNavBar'
+import Topbar from '../components/landingScreen/TopNavBar'
 import DateandTime from '../components/landingScreen/DayandDate'
 import Card from '../components/landingScreen/card'
 import Tabcard from '../components/landingScreen/Tabcard'

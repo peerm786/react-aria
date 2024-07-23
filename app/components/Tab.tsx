@@ -18,7 +18,7 @@ function FabricSelector({ tenant, appGrp, app }: BuilderProps) {
     const [modelKeys, setModelKeys] = useState<any[]>([]);
 
     const tabs = [
-        { id: "df", label: "DataFabric", icon: <DataFabric /> },
+        { id: "df", label: "DataFabric", icon: <DataFabric fill={getCookie("isDarkMode") ? "white" : "black"} /> },
         { id: "uf", label: "UserFabric", icon: <UserFabric fill={getCookie("isDarkMode") ? "white" : "black"} /> },
         { id: "pf", label: "ProcessFabric", icon: <ProcessFabric fill={getCookie("isDarkMode") ? "white" : "black"} /> },
         { id: "sf", label: "SecurityFabric", icon: <SecurityFabric fill={getCookie("isDarkMode") ? "white" : "black"} /> },
@@ -79,11 +79,11 @@ function FabricSelector({ tenant, appGrp, app }: BuilderProps) {
     }
 
     return (
-        <div className="flex flex-col w-full h-screen">
-            <Tabs className={"h-[81%] dark:bg-[#0F0F0F] bg-[#F4F5FA] rounded-lg"} onSelectionChange={handleTabChange}>
+        <div className="flex flex-col w-[85%] h-screen">
+            <Tabs className={"h-[67%] dark:bg-[#0F0F0F] bg-[#F4F5FA] rounded-lg"} onSelectionChange={handleTabChange}>
                 <TabList
                     aria-label="Feeds"
-                    className="flex w-[95%] bg-[#FFFFFF] dark:bg-[#161616] dark:text-white rounded-lg p-2 ml-2 mt-2 font-semibold"
+                    className="flex w-[95%] bg-[#FFFFFF] dark:bg-[#161616] dark:text-white rounded-lg p-1 ml-2 mt-2 font-semibold"
                 >
                     {tabs.map(({ id, label, icon }) => (
                         <MyTab key={id} id={id} label={label}>
@@ -139,8 +139,3 @@ function MyTabPanel(props: TabPanelProps) {
 }
 
 export default FabricSelector;
-
-
-
-
-

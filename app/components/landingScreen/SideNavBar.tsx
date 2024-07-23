@@ -6,12 +6,11 @@ import {
   QuestionSvg,
   SettingsIcon,
   ShopSvg,
-} from "../constants/svgApplications";
+} from "../../constants/svgApplications";
 import { Button } from "react-aria-components";
-import TorusAvatar from "./Avatar";
-import TorusDialog from "./torusdialogmodal";
-import Settings from "./settings";
-// import { Settings } from "lucide-react";
+import TorusAvatar from "../Avatar";
+import TorusDialog from "../torusdialogmodal";
+import Settings from "../settings";
 
 const Sidebar = () => {
   const [fillIndex, setFillIndex] = useState(0);

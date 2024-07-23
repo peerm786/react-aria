@@ -15,12 +15,12 @@ import {
   PlusIcon,
   SixDotsSvg,
   UpArrow,
-} from "../constants/svgApplications";
+} from "../../constants/svgApplications";
 import { motion, AnimatePresence } from "framer-motion";
-import { TreeNode, menuItems } from "../constants/MenuItemTree";
+import { TreeNode, menuItems } from "../../constants/MenuItemTree";
 import _ from "lodash";
 import { Dialog, DialogTrigger, Popover } from "react-aria-components";
-import { getCookie } from "../../lib/utils/cookiemgmt";
+import { getCookie } from "../../../lib/utils/cookiemgmt";
 
 type HandleUpdateJsonType = (
   path: string,
@@ -102,9 +102,8 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
         onDrop={(e) => handleDrop(e, path)}
       >
         <div
-          className={`cursor-pointer flex items-center w-full focus:outline-gray-400 group relative ${
-            node.type == "group" ? "" : "flex-col"
-          } p-1 rounded`}
+          className={`cursor-pointer flex items-center w-full focus:outline-gray-400 group relative ${node.type == "group" ? "" : "flex-col"
+            } p-1 rounded`}
         >
           <div className="flex w-full h-full items-center">
             <RACButton aria-label="dd" className="mr-2 focus:outline-none">
@@ -121,7 +120,7 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
               />
             ) : (
               <span
-              className="text-sm"
+                className="text-sm"
                 onDoubleClick={(e) => {
                   e.stopPropagation();
                   setInput(!isInput);
@@ -355,7 +354,7 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
       .join(".");
 
 
-      //Code to sort node from within the same group working finely
+    //Code to sort node from within the same group working finely
     if (parentPathOfSrcNode == parentPathOfTargetNode) {
       const js = structuredClone(menuGroups);
       _.update(js, pathOfSrcNode, () => targetNode);
@@ -375,8 +374,8 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
     if (pathOfSrcNode !== pathOfTargetNode && targetNode.type == "group") {
       const js = structuredClone(menuGroups);
 
-      if(!parentPathOfSrcNode){
-        const srcNode =js.splice(indexToModify, 1)[0];
+      if (!parentPathOfSrcNode) {
+        const srcNode = js.splice(indexToModify, 1)[0];
         targetNode.items.push({
           ...srcNode,
           sortOrder: `${targetNode.items.length + 1}`,
@@ -385,47 +384,47 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
           ...node,
           sortOrder: `${index + 1}`,
         }))
-        _.set(updatedMainGroup , pathOfTargetNode , targetNode);
+        _.set(updatedMainGroup, pathOfTargetNode, targetNode);
         setMenuGroups(updatedMainGroup);
         return
       }
 
 
       const parentOfSrcNode = _.get(js, parentPathOfSrcNode);
-      
+
       // Remove the node from the source group
       const srcNode = parentOfSrcNode.splice(indexToModify, 1)[0];
-    
+
       // Update the sort order of the source group
       const sortedItemsOfSrcNode = parentOfSrcNode.map((node: TreeNode, index: number) => ({
         ...node,
         sortOrder: `${index + 1}`,
       }));
-    
+
       // Add the node to the target group
       targetNode.items.push({
         ...srcNode,
         sortOrder: `${targetNode.items.length + 1}`,
       });
-    
+
       // Update the sort order of the target group
       const sortedItemsOfTargetNode = targetNode.items.map((node: TreeNode, index: number) => ({
         ...node,
         sortOrder: `${index + 1}`,
       }));
-        
-       // Update the source group and target group in the state
-       _.set(js, parentPathOfSrcNode, sortedItemsOfSrcNode);
-      _.set(js , pathOfTargetNode, {
+
+      // Update the source group and target group in the state
+      _.set(js, parentPathOfSrcNode, sortedItemsOfSrcNode);
+      _.set(js, pathOfTargetNode, {
         ...targetNode,
         items: sortedItemsOfTargetNode,
       });
       setMenuGroups(js);
-    
+
     } else {
       alert("Can't drop here");
     }
-    
+
   };
   console.log(menuGroups, "menuGroups");
 
@@ -456,7 +455,7 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
   return (
     <div className="flex w-full">
       <div className="flex flex-col w-full">
-        <div className="flex w-full bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white  p-2 rounded-xl gap-2">
+        <div className="flex w-full bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white p-2 rounded-xl gap-2">
           <div className="flex w-[95%] justify-around gap-2 overflow-x-auto">
             {menuGroups.map((node: TreeNode, id: number) => (
               <div
@@ -486,7 +485,7 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
                   />
                 ) : (
                   <span
-                  className="text-sm"
+                    className="text-sm"
                     onDoubleClick={(e) => {
                       e.stopPropagation();
                       setInput(!isInput);

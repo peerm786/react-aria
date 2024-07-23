@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Input } from "react-aria-components";
-import { SearchIcon, TorusLogo } from "../constants/svgApplications";
-import DropDown from "./multiDropdownnew";
+import { SearchIcon, TorusLogo } from "../../constants/svgApplications";
+import DropDown from "../multiDropdownnew";
 
 const Topbar = () => {
 
