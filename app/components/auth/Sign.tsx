@@ -11,13 +11,15 @@ import { getCookie } from "../../../lib/utils/cookiemgmt";
 
 const Login = () => {
 
-    const { isDarkMode , toggleDarkMode } = useDarkMode();
+    const { isDarkMode, toggleDarkMode } = useDarkMode();
 
     return (
         <div className="flex justify-between w-full h-screen bg-[#F4F4F6] overflow-hidden  dark:bg-[#171717]">
 
             <div className="w-[30%] flex items-center justify-center  ">
-                <LoginForm />
+                <LoginForm
+                    isDarkMode={isDarkMode}
+                />
             </div>
             <div
                 className={`flex flex-col justify-between w-[66%] h-[100%] `}>

@@ -5,24 +5,31 @@ import React, { useEffect, useState } from 'react';
 import { DataFabric, ProcessFabric, SecurityFabric, UserFabric } from '../constants/svgApplications';
 import { AxiosService } from '../../lib/utils/axiosService';
 import { toast } from 'react-toastify';
-import { getCookie } from '../../lib/utils/cookiemgmt';
 
 interface BuilderProps {
     tenant: string,
     appGrp: string,
     app: string
+    isDarkMode: boolean
 }
 
-function FabricSelector({ tenant, appGrp, app }: BuilderProps) {
+function FabricSelector({ tenant, appGrp, app, isDarkMode }: BuilderProps) {
     const [selectedTab, setSelectedTab] = useState('df');
     const [modelKeys, setModelKeys] = useState<any[]>([]);
 
+    const IconColors = {
+        df: "#0736C4",
+        uf: "#03A9F4",
+        pf: "#13CC78",
+        sf: "#FFBE00"
+    };
+
     const tabs = [
-        { id: "df", label: "DataFabric", icon: <DataFabric fill={getCookie("isDarkMode") ? "white" : "black"} /> },
-        { id: "uf", label: "UserFabric", icon: <UserFabric fill={getCookie("isDarkMode") ? "white" : "black"} /> },
-        { id: "pf", label: "ProcessFabric", icon: <ProcessFabric fill={getCookie("isDarkMode") ? "white" : "black"} /> },
-        { id: "sf", label: "SecurityFabric", icon: <SecurityFabric fill={getCookie("isDarkMode") ? "white" : "black"} /> },
-    ]
+        { id: "df", label: "DataFabric", icon: <DataFabric fill={IconColors["df"]} />, iconDefault: <DataFabric fill={isDarkMode ? "white" : "black"} /> },
+        { id: "uf", label: "UserFabric", icon: <UserFabric fill={IconColors["uf"]} />, iconDefault: <UserFabric fill={isDarkMode ? "white" : "black"} /> },
+        { id: "pf", label: "ProcessFabric", icon: <ProcessFabric fill={IconColors["pf"]} />, iconDefault: <ProcessFabric fill={isDarkMode ? "white" : "black"} /> },
+        { id: "sf", label: "SecurityFabric", icon: <SecurityFabric fill={IconColors["sf"]} />, iconDefault: <SecurityFabric fill={isDarkMode ? "white" : "black"} /> },
+    ];
 
     const getAllApplicationList = async (fabric: string) => {
 
@@ -85,9 +92,9 @@ function FabricSelector({ tenant, appGrp, app }: BuilderProps) {
                     aria-label="Feeds"
                     className="flex w-[95%] bg-[#FFFFFF] dark:bg-[#161616] dark:text-white rounded-lg p-1 ml-2 mt-2 font-semibold"
                 >
-                    {tabs.map(({ id, label, icon }) => (
-                        <MyTab key={id} id={id} label={label}>
-                            {icon}
+                    {tabs.map(({ id, label, icon, iconDefault }) => (
+                        <MyTab key={id} id={id} label={label} >
+                            {selectedTab === id ? icon : iconDefault}
                         </MyTab>
                     ))}
                 </TabList>

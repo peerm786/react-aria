@@ -10,8 +10,7 @@ import DropDown from "./components/multiDropdownnew";
 import { useDarkMode } from "../lib/utils/useDarkmode";
 import { IoToggleSharp } from "react-icons/io5";
 import { HistoryIcon, PushandPullIcon } from "./constants/svgApplications";
-import { getCookie } from "../lib/utils/cookiemgmt";
-import { menuItems, TreeNode } from "./constants/MenuItemTree";
+import { TreeNode } from "./constants/MenuItemTree";
 import BuilderTopNav from "./components/builderScreen/BuilderTopNav";
 import BuilderSideNav from "./components/builderScreen/BuilderSideNav";
 
@@ -25,10 +24,10 @@ const page = () => {
   const [tenantList, setTenantList] = useState<string[]>([]);
   const [appGrpList, setAppGrpList] = useState<string[]>([]);
   const [appList, setAppList] = useState<string[]>([]);
-  const { toggleDarkMode } = useDarkMode();
   const [menuItemData, setMenuItemData] = useState<TreeNode[]>([]);
   const [versionList, setVersionList] = useState<string[]>([]);
   const [selectedVersion, setSelectedVersion] = useState<string>("");
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
 
   const handleBuildButtonSelect = () => {
     setSelectedBuildButton(true);
@@ -181,7 +180,7 @@ const page = () => {
                 onPress={handleBuildButtonSelect}
               >
                 <PushandPullIcon
-                  fill={getCookie("isDarkMode") ? "white" : "black"}
+                  fill={isDarkMode ? "white" : "black"}
                 />
                 Push to Build
               </Button>
@@ -191,7 +190,7 @@ const page = () => {
                 onPress={handleHistoryButtonSelect}
               >
                 {" "}
-                <HistoryIcon fill={getCookie("isDarkMode") ? "white" : "black"} />
+                <HistoryIcon fill={isDarkMode ? "white" : "black"} />
                 History
               </Button>
             </div>
@@ -210,11 +209,11 @@ const page = () => {
               >
                 Clear All
               </Button>
-              {/* <IoToggleSharp
+              <IoToggleSharp
                 size={25}
                 onClick={toggleDarkMode}
                 className="dark:text-white text-black/70"
-              /> */}
+              />
             </div>
           </div>
           <div className="pt-2">
@@ -223,13 +222,14 @@ const page = () => {
           <div className="flex w-full justify-between items-center">
             <div className="flex outline-none gap-5 pl-4">
               <DropDown
+                isDarkMode={isDarkMode}
                 triggerButton="Tenant"
                 selectedKeys={selectedTenant}
                 setSelectedKeys={handleTenantselect}
                 items={tenantList}
                 classNames={{
                   triggerButton:
-                    "min-w-40 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white",
+                    `min-w-40 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white`,
                   popover: "w-40",
                   listbox: "overflow-y-auto",
                   listboxItem: "flex text-sm justify-between",
@@ -237,6 +237,7 @@ const page = () => {
               />
 
               <DropDown
+                isDarkMode={isDarkMode}
                 triggerButton="AppGroup"
                 selectedKeys={selectAppGroup}
                 setSelectedKeys={handleAppGroupselect}
@@ -253,6 +254,7 @@ const page = () => {
               />
 
               <DropDown
+                isDarkMode={isDarkMode}
                 triggerButton="App"
                 selectedKeys={selectApp}
                 setSelectedKeys={handleAppselect}
@@ -269,6 +271,7 @@ const page = () => {
               />
 
               <DropDown
+                isDarkMode={isDarkMode}
                 triggerButton="version"
                 selectedKeys={selectedVersion}
                 setSelectedKeys={handleVersionselect}
@@ -310,10 +313,15 @@ const page = () => {
                 tenant={selectedTenant}
                 appGrp={selectAppGroup}
                 app={selectApp}
+                isDarkMode={isDarkMode}
               />
             </div>
             <div className="w-[75%] pt-3 pr-2">
-              <MenuItemAccordian data={menuItemData} setData={setMenuItemData} />
+              <MenuItemAccordian
+                data={menuItemData}
+                setData={setMenuItemData}
+                isDarkMode={isDarkMode}
+              />
             </div>
           </div>
         </div>

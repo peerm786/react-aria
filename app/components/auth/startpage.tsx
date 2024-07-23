@@ -19,9 +19,10 @@ import { Tab, TabPanel } from 'react-aria-components';
 
 interface LoginFormProps {
     variant?: "TP" | "CG";
+    isDarkMode: boolean;
 }
 
-function LoginForm({ variant = "TP" }: LoginFormProps) {
+function LoginForm({ variant = "TP", isDarkMode }: LoginFormProps) {
     const [clientList, setClientList] = useState<string[]>([]);
     const [client, setClient] = useState<any>("");
     const [loading, setLoading] = useState(false);
@@ -30,7 +31,6 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
     const [socialclient, setsocialclient] = useState<any>("");
     const [open, setOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState<"Individual" | "Teams">("Individual");
-
 
     const fetchClients = async () => {
         try {
@@ -78,6 +78,7 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
     const passwordvisible = () => {
         setShowPassword(!showPassword);
     };
+
     const handlesociallogin = async () => {
         console.log(client, "dsfsdf", social);
 
@@ -93,9 +94,7 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
         else {
             toast.error("No response")
         }
-
     };
-
 
     return (
         <div className="min-h-screen w-full bg-[#FFFFFF] border-none dark:bg-[#000000]">
@@ -127,9 +126,7 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
                     </Button>
                 </div>
 
-
                 <div className="space-y-4 ">
-
                     {selectedOption === "Teams" && (
                         <div className="flex flex-col">
                             <Label htmlFor="tenant" className="text-[#000000] dark:text-white mb-1 text-sm">
@@ -145,9 +142,7 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
                                     triggerButton: "w-full bg-[#D9D9D9] text-black rounded-lg text-sm font-medium mt-2 dark:bg-[#171717] dark:text-[#FFFFFF] ",
                                     popover: "w-[20%]",
                                 }}
-
                             />
-
                         </div>
                     )}
 
@@ -181,13 +176,11 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
                             className="absolute bottom-8 right-4 "
                             onClick={passwordvisible}
                         >
-                            {showPassword ? <BsEyeFill fill={getCookie("isDarkMode") ? "#FFFFFF" : "#000000"} /> : <BsEyeSlash fill={getCookie("isDarkMode") ? "#FFFFFF" : "#000000"} />}
+                            {showPassword ? <BsEyeFill fill={isDarkMode ? "#FFFFFF" : "#000000"} /> : <BsEyeSlash fill={isDarkMode ? "#FFFFFF" : "#000000"} />}
                         </span>
                         <p className="text-black/35 dark:text-white text-sm">Forgot Password?</p>
                     </div>
                 </div>
-
-
                 <div className="flex justify-center mt-5 ">
                     <Button
                         type="submit"
@@ -203,7 +196,6 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
                     <span className="h-px bg-gray-400 w-[40%]"></span>
                 </div>}
                 {selectedOption === "Individual" && (
-
                     <TorusDialog
                         triggerElement={
                             <div className="flex w-full justify-between ">
@@ -214,7 +206,7 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
                                     }}
                                     className="bg-[#D9D9D9] py-2 dark:bg-[#171717] dark:text-white text-sm text-black px-6 flex items-center justify-center  focus:outline-none rounded-lg"
                                 >
-                                    <Gitbutton fill={getCookie("isDarkMode") ? "white" : "black"} />
+                                    <Gitbutton fill={isDarkMode ? "white" : "black"} />
                                     GitHub
                                 </Button>
                                 <Button
@@ -228,7 +220,6 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
                                     Google
                                 </Button>
                             </div>
-
                         }
                         classNames={{ dialogClassName: "w-[405px] dark:bg-[#212121] dark:text-[#FFFFFF] p-4 rounded-xl bg-white focus:outline-none" }}
                     >
@@ -252,7 +243,6 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
                             >
                                 Submit
                             </Button>
-
                         </div>
                     </TorusDialog>
                 )}
@@ -265,8 +255,6 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
                     </p>
                 </div>
             </Form>
-
-
         </div>
     );
 }

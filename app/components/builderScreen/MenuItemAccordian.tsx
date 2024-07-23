@@ -53,11 +53,13 @@ interface TreeNodeProps {
   handleDragStartOfNode: HandleDragStart;
   handleDeleteKeys: handleDeleteKeys;
   handleDeleteMenuGrp: handleDeleteMenuGrp;
+  isDarkMode: boolean;
 }
 
 interface TreeProps {
   data: TreeNode[];
   setData: (data: TreeNode[]) => void;
+  isDarkMode: boolean;
 }
 
 const RenderAccordian: React.FC<TreeNodeProps> = ({
@@ -69,6 +71,7 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
   handleDropNode,
   handleDeleteKeys,
   handleDeleteMenuGrp,
+  isDarkMode
 }) => {
   const [expanded, setExpanded] = useState(false);
   const [isInput, setInput] = useState(false);
@@ -107,7 +110,7 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
         >
           <div className="flex w-full h-full items-center">
             <RACButton aria-label="dd" className="mr-2 focus:outline-none">
-              <SixDotsSvg fill={getCookie("isDarkMode") ? "white" : "black"} />
+              <SixDotsSvg fill={isDarkMode ? "white" : "black"} />
             </RACButton>
             {isInput ? (
               <Input
@@ -140,9 +143,9 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
               onPress={() => setExpanded(!expanded)}
             >
               {expanded ? (
-                <UpArrow fill={getCookie("isDarkMode") ? "white" : "black"} />
+                <UpArrow fill={isDarkMode ? "white" : "black"} />
               ) : (
-                <DownArrow fill={getCookie("isDarkMode") ? "white" : "black"} />
+                <DownArrow fill={isDarkMode ? "white" : "black"} />
               )}
             </RACButton>
           </div>
@@ -211,6 +214,7 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
                   handleDropNode={handleDropNode}
                   handleDeleteKeys={handleDeleteKeys}
                   handleDeleteMenuGrp={handleDeleteMenuGrp}
+                  isDarkMode={isDarkMode}
                 />
               </div>
             ))}
@@ -221,7 +225,7 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
   );
 };
 
-const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
+const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData, isDarkMode }) => {
   const [menuGroups, setMenuGroups] = useState<TreeNode[]>([]);
   const [isInput, setInput] = useState(false);
 
@@ -470,7 +474,7 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
                 }}
               >
                 <SixDotsSvg
-                  fill={getCookie("isDarkMode") ? "white" : "black"}
+                  fill={isDarkMode ? "white" : "black"}
                 />
                 {isInput ? (
                   <Input
@@ -508,7 +512,7 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
               <RACButton
                 className={`px-2 items-center flex bg-white dark:bg-[#161616] dark:text-white rounded focus:outline-blue-300`}
               >
-                <PlusIcon fill={getCookie("isDarkMode") ? "white" : "black"} />
+                <PlusIcon fill={isDarkMode ? "white" : "black"} />
               </RACButton>
               <Popover placement="left">
                 <Dialog className="border bg-white dark:bg-[#161616] dark:text-white dark:border-[#212121] focus:outline-none rounded-lg">
@@ -556,6 +560,7 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
                             handleDragStartOfNode={handleDragStartOfNode}
                             handleDeleteKeys={handleDeleteKeys}
                             handleDeleteMenuGrp={handleDeleteMenuGrp}
+                            isDarkMode={isDarkMode}
                           />
                         </div>
                       ))}
@@ -566,7 +571,7 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
                             border-[#d9d9d9] focus:border-[#bdbcbc] dark:border-[#212121]  dark:text-white dark:bg-[#161616] focus:outline-none`}
                         >
                           <PlusIcon
-                            fill={getCookie("isDarkMode") ? "white" : "black"}
+                            fill={isDarkMode ? "white" : "black"}
                           />
                         </RACButton>
                         <Popover placement="bottom">

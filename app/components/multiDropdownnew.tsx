@@ -10,7 +10,6 @@ import {
 import { IoIosCheckmark } from "react-icons/io";
 import { twMerge } from "tailwind-merge";
 import { DownArrow } from "../constants/svgApplications";
-import { getCookie } from "../../lib/utils/cookiemgmt";
 
 type classNames = {
   triggerButton?: string;
@@ -33,6 +32,7 @@ interface CustomDropDpwnProps {
     handleSelectionChange: (selectedItems: any, close: () => void) => void,
     setOpen: (open: boolean) => void
   ) => React.ReactNode;
+  isDarkMode?: boolean;
 }
 
 const DropDown = ({
@@ -44,8 +44,8 @@ const DropDown = ({
   displayParam,
   classNames,
   renderOption,
+  isDarkMode,
 }: CustomDropDpwnProps) => {
-
 
   const [open, setOpen] = React.useState(false);
 
@@ -90,7 +90,7 @@ const DropDown = ({
             .map((item: any) => getItemDisplayValue(item))
             .join(", ")
           : (selectedKeys && typeof selectedKeys === "string") ? getItemDisplayValue(selectedKeys) : triggerButton}
-        {<DownArrow fill={getCookie("isDarkMode") ? "white" : "black"} />}
+        {<DownArrow fill={isDarkMode ? "white" : "black"} />}
       </Button>
       <Popover
         placement="bottom"
