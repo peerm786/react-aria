@@ -57,5 +57,24 @@ export const menuItems: TreeNode[] = [
       { id: "4-2", type: "item", sortOrder: "2", title: "Savings", keys: {} },
     ],
   },
+  {
+    id: "4",
+    title: "Accounts",
+    sortOrder: "2",
+    type: "group",
+    items: [
+      {
+        id: "4-1",
+        title: "Loans",
+        type: "group",
+        sortOrder: "1",
+        items: [
+          { id: "4-1-1", type: "item", sortOrder: "1", title: "Loan processing", keys: {} },
+          { id: "4-1-2", type: "item", sortOrder: "2", title: "Querying", keys: {} },
+        ],
+      },
+      { id: "4-2", type: "item", sortOrder: "2", title: "Savings", keys: {} },
+    ],
+  },
  
 ];
