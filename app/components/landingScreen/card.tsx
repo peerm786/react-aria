@@ -19,7 +19,7 @@ const Card = () => {
 
     ];
     return (
-        <div className='flex flex-col gap-3 border border-black/15 p-3 w-full h-[63%] rounded-md ml-4 bg-white'>
+        <div className='flex flex-col gap-3 border border-black/15 p-3 w-full h-full rounded-md ml-4 bg-white'>
             <div className='flex justify-between'>
                 <h1 className='text-sm font-semibold'>AppGroups</h1>
                 <h2 className='text-xs'>View all</h2>

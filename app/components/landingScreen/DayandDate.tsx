@@ -1,6 +1,8 @@
+"use client"
 import { useEffect, useState } from 'react';
 import { Button } from 'react-aria-components';
 import { ShareIcon } from '../../constants/svgApplications';
+import { getCookie } from '../../../lib/utils/cookiemgmt';
 
 const formatDate = (date: Date) => {
     const options: Intl.DateTimeFormatOptions = {
@@ -38,10 +40,14 @@ const DateandTime = () => {
         setGreeting(currentGreeting);
     }, []);
 
+    if (!greeting) {
+        return null
+    }
+
     return (
         <div className='flex justify-between ml-5'>
             <div className='flex flex-col'>
-                <h1 className='text-sm font-bold'>{greeting},Peer Maideen!</h1>
+                <h1 className='text-sm font-bold'>{greeting},{getCookie("loginId")}!</h1>
                 <p className='text-xs'>{formattedDate}</p>
             </div>
             <div className='flex gap-2 mr-3'>

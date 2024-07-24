@@ -30,6 +30,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         // Return the promise from the axios.post() call
         const res = await AxiosService.post(`/tp/signin`, data);
         if (res.status == 201) {
+          cookies().set("client", client as string);
+          cookies().set("loginId", username as string);
           cookies().set("token", res.data.token, { maxAge: 60 * 60 * 24 });
           return res.data;
         } else {
