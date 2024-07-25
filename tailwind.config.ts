@@ -1,6 +1,7 @@
 // tailwind.config.js
 
 const { colors } = require("tailwindcss/defaultTheme");
+const { nextui } = require("@nextui-org/react");
 
 module.exports = {
   darkMode: "class", // Enable the 'class' mode for dark mode
@@ -8,6 +9,7 @@ module.exports = {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
@@ -31,18 +33,19 @@ module.exports = {
   },
   plugins: [
     require("tailwind-scrollbar"), // Example plugin for custom scrollbars
-      function ({ addUtilities }:any) {
+    function ({ addUtilities }: any) {
       addUtilities({
-        '.scrollbar-hide': {
+        ".scrollbar-hide": {
           /* Hide scrollbar for Chrome, Safari and Opera */
-          '&::-webkit-scrollbar': {
-            display: 'none',
+          "&::-webkit-scrollbar": {
+            display: "none",
           },
           /* Hide scrollbar for IE, Edge and Firefox */
-          '-ms-overflow-style': 'none',  /* IE and Edge */
-          'scrollbar-width': 'none',  /* Firefox */
+          "-ms-overflow-style": "none" /* IE and Edge */,
+          "scrollbar-width": "none" /* Firefox */,
         },
       });
     },
+    nextui(),
   ],
 };

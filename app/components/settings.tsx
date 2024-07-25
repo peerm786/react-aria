@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   AccountSettingsIcon,
   AppearanceIcon,
@@ -7,9 +7,28 @@ import {
   TenantSetupIcon,
   UserSettingsIcon,
 } from "../constants/svgApplications";
-import { Button, Radio, RadioGroup } from "react-aria-components";
+import { Button } from "react-aria-components";
+import { AxiosService } from "../../lib/utils/axiosService";
+import { toast } from "react-toastify";
+import ModalWindow from "../settings/ModalWindow";
 
 const Settings = () => {
+
+  const [tenantInfo, setTenantInfo] = useState<null | any>(null);
+  const [selectedButton, setSelectedButton] = useState("Tenant Setup");
+
+  const handleTenant = async () => {
+
+    const response = await AxiosService.get(
+      `/tp/getTenantInfo?tenant=ABC`
+    );
+    if (response.status === 200) {
+      setTenantInfo(response.data);
+    } else {
+      toast.error("Failed to fetch tenant info");
+    }
+  };
+
   const SettingsMenu = [
     { Icon: TenantSetupIcon, name: "Tenant Setup" },
     { Icon: AppSetupIcon, name: "App Setup" },
@@ -29,42 +48,46 @@ const Settings = () => {
   ];
   return (
 
-    <div className="p-4 w-[50vw]  bg-white rounded-md shadow-md flex">
+    <div className="p-4 w-[60vw] h-[80vh] bg-white rounded-md shadow-md flex">
 
-      <div className="w-[20%] border-r ">
+      <div className="w-[20%] border-r">
         <h1 className="w-full border-b  font-semibold">Settings</h1>
         {SettingsMenu.map(({ Icon, name }, index) => (
-          <div key={index} className="flex items-center py-2 cursor-pointer hover:bg-gray-200">
+          <Button onPress={() => { setSelectedButton(name); handleTenant() }} key={index} className="flex text-sm gap-2 items-center p-2 rounded-md cursor-pointer hover:bg-gray-200 outline-none">
             <Icon />
-            <span className="ml-3 text-xs">{name}</span>
-          </div>
+            {name}
+          </Button>
         ))}
       </div>
 
+      <div className="w-3/4 ml-4 mt-2">
+        {selectedButton == "Tenant Setup" && tenantInfo ? <ModalWindow json={tenantInfo} setjson={setTenantInfo} /> : null}
+        {selectedButton == "App Setup" ?
+          <div>
+            <h1 className="text-lg font-semibold mt-4 border-t  pb-2">Appearance</h1>
+            <div>
+              <h2 className="text-sm font-medium mb-2">Color Mode</h2>
+              <p className="text-sm text-[#000000]">Choose to change the apperance of the Torus app</p>
+              <div className="flex items-center py-2 mb-5  rounded-md gap-6 ">
+                <Button className="bg-[#0736C4]  px-2 py-1 rounded-md   text-white">Light</Button>
+                <Button className="bg-[#F4F5FA] px-2 py-1 rounded-md  ">Dark</Button>
+              </div>
+            </div>
+            <div>
+              <h2 className="text-sm font-medium mb-2">Themes</h2>
+              <p className="text-sm text-[#000000] mb-2">Change the color theme of the app.</p>
 
-      <div className="w-3/4 p-2 mb-20 ">
-        <h1 className="text-lg font-semibold mt-4 border-t  pb-2">Appearance</h1>
-        <div>
-          <h2 className="text-sm font-medium mb-2">Color Mode</h2>
-          <p className="text-sm text-[#000000]">Choose to change the apperance of the Torus app</p>
-          <div className="flex items-center py-2 mb-5  rounded-md gap-6 ">
-            <Button className="bg-[#0736C4]  px-2 py-1 rounded-md   text-white">Light</Button>
-            <Button className="bg-[#F4F5FA] px-2 py-1 rounded-md  ">Dark</Button>
+              <div className="grid grid-cols-4 gap-2  ">
+                {colorThemes.map((theme, index) => (
+                  <Button key={index} value={theme.color} className={`flex items-center w-[80%]  ${theme.bgClass} gap-2 rounded-md p-2  `}>
+                    <span className={`w-2 h-2  ${theme.bgClass}  inline-block rounded-full border border-black`} />
+                    <span>{theme.color}</span>
+                  </Button>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
-        <div>
-          <h2 className="text-sm font-medium mb-2">Themes</h2>
-          <p className="text-sm text-[#000000] mb-2">Change the color theme of the app.</p>
-
-          <div className="grid grid-cols-4 gap-2  ">
-            {colorThemes.map((theme, index) => (
-              <Button key={index} value={theme.color} className={`flex items-center w-[80%]  ${theme.bgClass} gap-2 rounded-md p-2  `}>
-                <span className={`w-2 h-2  ${theme.bgClass}  inline-block rounded-full border border-black`} />
-                <span>{theme.color}</span>
-              </Button>
-            ))}
-          </div>
-        </div>
+          : null}
       </div>
     </div>
 

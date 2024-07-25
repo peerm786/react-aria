@@ -88,7 +88,7 @@ const Tabcard = ({ fabric }: { fabric: string }) => {
                 {artifactList.map((item: any, index: number) => (
                     <div key={index} className='border-2   border-gray-300 bg-[#F4F5FA] p-3 flex flex-col items-center justify-center rounded-md'>
                         <div className='flex items-center ml-auto gap-1'>
-                            <LuLock className='ml-1 text-red-500' />
+                            {item.isLocked ? <LuLock className='ml-1 text-red-500' /> : null}
                             <ThreeDots />
                         </div>
                         <div className=' mr-auto bg-[#0736C4]/5 rounded-md mb-3 p-1'>
