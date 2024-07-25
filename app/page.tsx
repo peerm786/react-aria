@@ -171,7 +171,7 @@ const page = () => {
       <BuilderTopNav />
       <div className="flex justify-between bg-[#F4F5FA] w-full h-[92%]">
         <BuilderSideNav />
-        <div className="flex flex-col w-[94%] h-[95%] border border-black/15 bg-white mt-5 overflow-y-hidden dark:bg-[#161616] rounded-md mr-3">
+        <div className="flex flex-col w-[94%] h-[95%] border border-black/15 bg-white mt-5 overflow-y-hidden dark:bg-[#161616] rounded-md mr-3 scrollbar-hide">
           <div className="flex w-full justify-between">
             <div className="flex gap-5 pt-2 pl-4">
               <Button

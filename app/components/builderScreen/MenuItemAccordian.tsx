@@ -20,7 +20,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { TreeNode, menuItems } from "../../constants/MenuItemTree";
 import _ from "lodash";
 import { Dialog, DialogTrigger, Popover } from "react-aria-components";
-import { getCookie } from "../../../lib/utils/cookiemgmt";
 
 type HandleUpdateJsonType = (
   path: string,
@@ -98,7 +97,7 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
   return (
     <div>
       <div
-        className={`ml-4 mt-2 border rounded`}
+        className={`mt-2 border rounded`}
         draggable
         onDragStart={(e) => handleDragStartOfNode(e, path)}
         onDragOver={(e) => e.preventDefault()}
@@ -458,13 +457,13 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData, isDarkMode }) =
     }
   };
 
-  const syncScroll = (source: HTMLDivElement, target:HTMLDivElement) => {
+  const syncScroll = (source: HTMLDivElement, target: HTMLDivElement) => {
     target.scrollLeft = source.scrollLeft;
   };
 
   useEffect(() => {
     console.log(headerSectionRef.current?.clientHeight);
-    
+
     const headerSection = headerSectionRef.current;
     const contentSection = contentSectionRef.current;
 
@@ -484,175 +483,174 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData, isDarkMode }) =
 
   return (
     <div className="flex w-full">
-    <div className="flex flex-col w-full">
-      <div
-        ref={headerSectionRef}
-        className="flex w-full overflow-x-auto scrollbar-thin bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white p-2 rounded-tl-xl rounded-bl-xl gap-2 hide-scrollbar"
-      >
-        {menuGroups.map((node: TreeNode, id: number) => (
-          <div
-            draggable
-            onDragStart={(e) => handleDragStartOfNode(e, `${id}`)}
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={(e) => handleDropNode(e, `${id}`)}
-            key={id}
-            className="flex p-1 items-center gap-2 border rounded flex-[0_0_23%] bg-white dark:bg-[#161616] dark:border-[#212121] dark:text-white group relative"
-            onContextMenu={(e) => {
-              e.preventDefault();
-            }}
-          >
-            <SixDotsSvg fill={isDarkMode ? 'white' : 'black'} />
-            {isInput ? (
-              <Input
-                defaultValue={node.title}
-                className={`border mr-2 w-full focus:outline-none dark:bg-[#161616] dark:border-[#212121] dark:text-white focus:border-blue-300 rounded-lg p-1`}
-                onKeyDown={(e) =>
-                  e.key === 'Enter' ? handleChangeTitle(e, id.toString()) : null
-                }
-                onBlur={(e) => handleChangeTitle(e, id.toString())}
-              />
-            ) : (
-              <span
-                className="text-sm"
-                onDoubleClick={(e) => {
-                  e.stopPropagation();
-                  setInput(!isInput);
-                }}
-              >
-                {node.title}
-              </span>
-            )}
-            <RACButton
-              onPress={() => handleDeleteMenuGrp(`${id}`, true)}
-              className="ml-auto mr-2 focus:outline-none h-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-            >
-              <DeleteIcon />
-            </RACButton>
-          </div>
-        ))}
-      </div>
-      <div
-        ref={contentSectionRef}
-        className="flex w-full h-[66vh] overflow-x-auto overflow-auto gap-4 dark:bg-[#161616] dark:text-white"
-      >
-        {menuGroups.map((node: TreeNode, id: number) => {
-          if (node.type === 'group') {
-            return (
-              <div className="flex-[0_0_23%]" key={id}>
-                {node.items?.map((subNode, index) => (
-                  <div className="w-full" key={index}>
-                    <RenderAccordian
-                      node={subNode}
-                      level={0}
-                      path={`${id}.items.${index}`}
-                      handleUpdateJson={handleUpdateJson}
-                      handleDropNode={handleDropNode}
-                      handleDragStartOfNode={handleDragStartOfNode}
-                      handleDeleteKeys={handleDeleteKeys}
-                      handleDeleteMenuGrp={handleDeleteMenuGrp}
-                      isDarkMode={isDarkMode}
-                    />
-                  </div>
-                ))}
-                <DialogTrigger>
-                  <RACButton
-                    className={`w-[92%] flex items-center justify-center mt-2.5 py-2 ml-4 rounded-lg border-2 border-dashed border-[#d9d9d9] focus:border-[#bdbcbc] dark:border-[#212121] dark:text-white dark:bg-[#161616] focus:outline-none`}
-                  >
-                    <PlusIcon fill={isDarkMode ? 'white' : 'black'} />
-                  </RACButton>
-                  <Popover placement="bottom">
-                    <Dialog className="border bg-white focus:outline-none rounded-lg dark:bg-[#161616] dark:text-white">
-                      {({ close }) => (
-                        <div className="flex flex-col px-5 py-3 gap-2 dark:bg-[#161616] dark:text-white">
-                          <RACButton
-                            onPress={() => handleNewMenuItem(id, 'group', close)}
-                            className={'focus:outline-blue-300 p-1 dark:bg-[#161616] dark:text-white'}
-                          >
-                            MenuGroup
-                          </RACButton>
-                          <RACButton
-                            onPress={() => handleNewMenuItem(id, 'item', close)}
-                            className={'focus:outline-blue-300 p-1 dark:bg-[#161616] dark:text-white'}
-                          >
-                            MenuItem
-                          </RACButton>
-                        </div>
-                      )}
-                    </Dialog>
-                  </Popover>
-                </DialogTrigger>
-              </div>
-            );
-          } else {
-            return (
-              <div
-                className="flex-[0_0_23%] h-fit border mt-3 rounded dark:bg-[#161616] dark:text-white"
-                key={id}
-              >
-                {['df', 'uf', 'pf', 'sf'].map((fab, index) => (
-                  <TextField className="m-2 relative dark:bg-[#161616] dark:text-white" key={index}>
-                    <Label />
-                    <Input
-                      value={node.keys ? node.keys[fab] : ''}
-                      onDragOver={(e) => e.preventDefault()}
-                      onDrop={(e) => {
-                        const content = e.dataTransfer.getData('key');
-                        if (content) {
-                          handleUpdateJson(`${id}.keys`, JSON.parse(content), true);
-                        }
-                      }}
-                      className={'bg-[#F4F5FA]  p-2 focus:outline-blue-500 w-full rounded-lg pr-8 dark:bg-[#161616] dark:text-white'}
-                      name={fab}
-                      placeholder={fab}
-                    />
-                    {node.keys?.[fab] ? (
-                      <Button
-                        onPress={() => handleDeleteKeys(`${id}.keys`, fab)}
-                        className={'absolute right-2 top-3 focus:outline-none dark:bg-[#161616] dark:text-white'}
-                      >
-                        <DeleteIcon />
-                      </Button>
-                    ) : null}
-                    <Text slot="description" />
-                    <FieldError />
-                  </TextField>
-                ))}
-              </div>
-            );
-          }
-        })}
-      </div>
-    </div>
-    <div ref={plusIconRef} className="bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white h-12 px-2 rounded-tr-xl rounded-br-xl flex items-center">
-      <DialogTrigger>
-        <RACButton
-          className={`px-2 h-2/3 items-center bg-white flex dark:bg-[#161616] dark:text-white rounded focus:outline-blue-300`}
+      <div className="flex flex-col w-full">
+        <div
+          ref={headerSectionRef}
+          className="flex w-full overflow-x-auto bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white p-2 rounded-tl-xl rounded-bl-xl gap-2 scrollbar-hide"
         >
-          <PlusIcon fill={isDarkMode ? 'white' : 'black'} />
-        </RACButton>
-        <Popover placement="left">
-          <Dialog className="border bg-white dark:bg-[#161616] dark:text-white dark:border-[#212121] focus:outline-none rounded-lg">
-            {({ close }) => (
-              <div className="flex flex-col px-5 py-2 gap-2 dark:bg-[#161616] dark:text-white">
-                <RACButton
-                  onPress={() => handleAddMenuGrp('group', close)}
-                  className={'focus:outline-blue-300 p-1 dark:bg-[#161616] dark:text-white'}
+          {menuGroups.map((node: TreeNode, id: number) => (
+            <div
+              draggable
+              onDragStart={(e) => handleDragStartOfNode(e, `${id}`)}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={(e) => handleDropNode(e, `${id}`)}
+              key={id}
+              className="flex p-1 items-center gap-2 border rounded flex-[0_0_23%] bg-white dark:bg-[#161616] dark:border-[#212121] dark:text-white group relative"
+              onContextMenu={(e) => {
+                e.preventDefault();
+              }}
+            >
+              <SixDotsSvg fill={isDarkMode ? 'white' : 'black'} />
+              {isInput ? (
+                <Input
+                  defaultValue={node.title}
+                  className={`border mr-2 w-full focus:outline-none dark:bg-[#161616] dark:border-[#212121] dark:text-white focus:border-blue-300 rounded-lg p-1`}
+                  onKeyDown={(e) =>
+                    e.key === 'Enter' ? handleChangeTitle(e, id.toString()) : null
+                  }
+                  onBlur={(e) => handleChangeTitle(e, id.toString())}
+                />
+              ) : (
+                <span
+                  className="text-sm"
+                  onDoubleClick={(e) => {
+                    e.stopPropagation();
+                    setInput(!isInput);
+                  }}
                 >
-                  MenuGroup
-                </RACButton>
-                <RACButton
-                  onPress={() => handleAddMenuGrp('item', close)}
-                  className={'focus:outline-blue-300 p-1 dark:bg-[#161616] dark:text-white'}
+                  {node.title}
+                </span>
+              )}
+              <RACButton
+                onPress={() => handleDeleteMenuGrp(`${id}`, true)}
+                className="ml-auto mr-2 focus:outline-none h-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <DeleteIcon />
+              </RACButton>
+            </div>
+          ))}
+
+          <DialogTrigger>
+            <RACButton
+              className={`px-2 h-8 items-center bg-white flex dark:bg-[#161616] dark:text-white rounded focus:outline-blue-300`}
+            >
+              <PlusIcon fill={isDarkMode ? 'white' : 'black'} />
+            </RACButton>
+            <Popover placement="left">
+              <Dialog className="border bg-white dark:bg-[#161616] dark:text-white dark:border-[#212121] focus:outline-none rounded-lg">
+                {({ close }) => (
+                  <div className="flex flex-col px-5 py-2 gap-2 dark:bg-[#161616] dark:text-white">
+                    <RACButton
+                      onPress={() => handleAddMenuGrp('group', close)}
+                      className={'focus:outline-blue-300 p-1 dark:bg-[#161616] dark:text-white'}
+                    >
+                      MenuGroup
+                    </RACButton>
+                    <RACButton
+                      onPress={() => handleAddMenuGrp('item', close)}
+                      className={'focus:outline-blue-300 p-1 dark:bg-[#161616] dark:text-white'}
+                    >
+                      MenuItem
+                    </RACButton>
+                  </div>
+                )}
+              </Dialog>
+            </Popover>
+          </DialogTrigger>
+        </div>
+        <div
+          ref={contentSectionRef}
+          className="flex h-[60vh] w-[95%] overflow-x-auto scrollbar-thin gap-4 dark:bg-[#161616] dark:text-white"
+        >
+          {menuGroups.map((node: TreeNode, id: number) => {
+            if (node.type === 'group') {
+              return (
+                <div className="flex-[0_0_23%]" key={id}>
+                  {node.items?.map((subNode, index) => (
+                    <div className="w-full" key={index}>
+                      <RenderAccordian
+                        node={subNode}
+                        level={0}
+                        path={`${id}.items.${index}`}
+                        handleUpdateJson={handleUpdateJson}
+                        handleDropNode={handleDropNode}
+                        handleDragStartOfNode={handleDragStartOfNode}
+                        handleDeleteKeys={handleDeleteKeys}
+                        handleDeleteMenuGrp={handleDeleteMenuGrp}
+                        isDarkMode={isDarkMode}
+                      />
+                    </div>
+                  ))}
+                  <DialogTrigger>
+                    <RACButton
+                      className={`w-[92%] flex items-center justify-center mt-2.5 py-2 ml-2 rounded-lg border-2 border-dashed border-[#d9d9d9] focus:border-[#bdbcbc] dark:border-[#212121] dark:text-white dark:bg-[#161616] focus:outline-none`}
+                    >
+                      <PlusIcon fill={isDarkMode ? 'white' : 'black'} />
+                    </RACButton>
+                    <Popover placement="bottom">
+                      <Dialog className="border bg-white focus:outline-none rounded-lg dark:bg-[#161616] dark:text-white">
+                        {({ close }) => (
+                          <div className="flex flex-col px-5 py-3 gap-2 dark:bg-[#161616] dark:text-white">
+                            <RACButton
+                              onPress={() => handleNewMenuItem(id, 'group', close)}
+                              className={'focus:outline-blue-300 p-1 dark:bg-[#161616] dark:text-white'}
+                            >
+                              MenuGroup
+                            </RACButton>
+                            <RACButton
+                              onPress={() => handleNewMenuItem(id, 'item', close)}
+                              className={'focus:outline-blue-300 p-1 dark:bg-[#161616] dark:text-white'}
+                            >
+                              MenuItem
+                            </RACButton>
+                          </div>
+                        )}
+                      </Dialog>
+                    </Popover>
+                  </DialogTrigger>
+                </div>
+              );
+            } else {
+              return (
+                <div
+                  className="flex-[0_0_23%] ml-4 h-fit border mt-3 rounded dark:bg-[#161616] dark:text-white"
+                  key={id}
                 >
-                  MenuItem
-                </RACButton>
-              </div>
-            )}
-          </Dialog>
-        </Popover>
-      </DialogTrigger>
+                  {['df', 'uf', 'pf', 'sf'].map((fab, index) => (
+                    <TextField className="m-2 relative dark:bg-[#161616] dark:text-white" key={index}>
+                      <Label />
+                      <Input
+                        value={node.keys ? node.keys[fab] : ''}
+                        onDragOver={(e) => e.preventDefault()}
+                        onDrop={(e) => {
+                          const content = e.dataTransfer.getData('key');
+                          if (content) {
+                            handleUpdateJson(`${id}.keys`, JSON.parse(content), true);
+                          }
+                        }}
+                        className={'bg-[#F4F5FA]  p-2 focus:outline-blue-500 w-full rounded-lg pr-8 dark:bg-[#161616] dark:text-white'}
+                        name={fab}
+                        placeholder={fab}
+                      />
+                      {node.keys?.[fab] ? (
+                        <Button
+                          onPress={() => handleDeleteKeys(`${id}.keys`, fab)}
+                          className={'absolute right-2 top-3 focus:outline-none dark:bg-[#161616] dark:text-white'}
+                        >
+                          <DeleteIcon />
+                        </Button>
+                      ) : null}
+                      <Text slot="description" />
+                      <FieldError />
+                    </TextField>
+                  ))}
+                </div>
+              );
+            }
+          })}
+        </div>
+      </div>
     </div>
-  </div>
   );
 };
 
