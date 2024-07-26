@@ -53,7 +53,7 @@ const Settings = () => {
       <div className="w-[20%] border-r">
         <h1 className="w-full border-b  font-semibold">Settings</h1>
         {SettingsMenu.map(({ Icon, name }, index) => (
-          <Button onPress={() => { setSelectedButton(name); handleTenant() }} key={index} className="flex text-sm gap-2 items-center p-2 rounded-md cursor-pointer hover:bg-gray-200 outline-none">
+          <Button onPress={() => { setSelectedButton(name); handleTenant() }} key={index} className="flex text-xs gap-2 items-center p-2 rounded-md cursor-pointer hover:bg-gray-200 outline-none">
             <Icon />
             {name}
           </Button>
