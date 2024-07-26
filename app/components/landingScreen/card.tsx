@@ -10,8 +10,6 @@ const Card = ({ tenant }: { tenant: string }) => {
     const [appGrpList, setAppGrpList] = React.useState<string[]>([]);
     const [mappingAppGrp, setMappingAppGrp] = React.useState<any[]>([]);
 
-
-
     const banks = [
         { name: 'First Abu Dhabi Bank', icon: <PiAirplaneTiltFill />, apps: ['4 Apps'] },
         { name: 'Equity Bank', icon: <RiBankFill />, apps: ['3 Apps'] },
@@ -23,7 +21,6 @@ const Card = ({ tenant }: { tenant: string }) => {
         { name: 'Equity Bank', icon: <RiBankFill />, apps: ['3 Apps'] },
         { name: 'First Abu Dhabi Bank', icon: <PiAirplaneTiltFill />, apps: ['4 Apps'] },
         { name: 'Equity Bank', icon: <RiBankFill />, apps: ['3 Apps'] },
-
     ];
 
     const fetchAppGroups = async (tenant: string) => {
@@ -57,8 +54,6 @@ const Card = ({ tenant }: { tenant: string }) => {
         }
 
     }, [appGrpList])
-
-
 
     return (
         <div className='flex flex-col gap-3 border border-black/15 p-3 w-full h-full rounded-md ml-4 bg-white'>

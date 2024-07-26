@@ -25,7 +25,7 @@ const Fabrics = ({ fabric, setFabric }: { fabric: string, setFabric: (fabric: st
             <div className='flex gap-2'>
                 {
                     fabricData.map((fab, i) => (
-                        <Button onPress={() => handleFabricChange(fab.fabric)} className={`flex flex-col gap-3 outline-none w-[24%] p-2 ${fabric === fab.fabric ? 'bg-[#f1f1f0]' : 'bg-[#F4F5FA]'} text-[0.9vw] font-medium rounded-md text-nowrap mt-1`}>{fab.icon}{fab.displayParam}</Button>
+                        <Button onPress={() => handleFabricChange(fab.fabric)} className={`flex flex-col gap-3 outline-none w-[24%] p-2 ${fabric === fab.fabric ? 'bg-[#0736C4]/15' : 'bg-[#F4F5FA]'} text-[0.9vw] font-medium rounded-md text-nowrap mt-1`}>{fab.icon}{fab.displayParam}</Button>
                     ))
                 }
             </div>
