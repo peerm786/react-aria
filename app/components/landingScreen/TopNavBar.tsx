@@ -3,7 +3,7 @@ import { Button, Input } from "react-aria-components";
 import { SearchIcon, TorusLogo } from "../../constants/svgApplications";
 import DropDown from "../multiDropdownnew";
 
-const Topbar = () => {
+const Topbar = ({ tenant, setTenant }: { tenant: string, setTenant: (tenant: string) => void }) => {
 
     const [selectedTenant, setSelectedTenant] = useState<string>("")
 
@@ -29,8 +29,8 @@ const Topbar = () => {
                 <div className="flex">
                     <DropDown
                         triggerButton="Tenant Selector"
-                        selectedKeys={selectedTenant}
-                        setSelectedKeys={setSelectedTenant}
+                        selectedKeys={tenant ? tenant : selectedTenant}
+                        setSelectedKeys={setTenant}
                         items={["ABC"]}
                         classNames={{
                             triggerButton: "min-w-40 rounded-lg text-xs font-medium mt-2 bg-[white] dark:bg-[#0F0F0F] dark:text-white",
