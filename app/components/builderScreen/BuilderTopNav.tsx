@@ -26,7 +26,7 @@ const BuilderTopNav = () => {
                     <div className="flex h-8">
                         <Separator className="border border-black/35" orientation="vertical" />
                     </div>
-                    <Button className={"mr-2 px-4 py-1 bg-[#0736C4] rounded-md text-white text-sm font-medium outline-none"}>Build</Button>
+                    <Button className={"mr-2 px-4 py-1 bg-[#0736C4] rounded-md text-white text-sm font-medium outline-none"}>Publish</Button>
                 </div>
             </div>
             <Separator />

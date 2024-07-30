@@ -1,11 +1,19 @@
-import React, { useState } from "react";
-import { Button, Input } from "react-aria-components";
+import React, { useEffect, useState } from "react";
+import { Input } from "react-aria-components";
 import { SearchIcon, TorusLogo } from "../../constants/svgApplications";
 import DropDown from "../multiDropdownnew";
 
-const Topbar = ({ tenant, setTenant }: { tenant: string, setTenant: (tenant: string) => void }) => {
+
+const Topbar = ({ tenant, setTenant, tenantInfo }: { tenant: string, setTenant: (tenant: string) => void, tenantInfo: any[] }) => {
 
     const [selectedTenant, setSelectedTenant] = useState<string>("")
+    const [tenantList, setTenantList] = useState<string[]>([])
+
+    useEffect(() => {
+        if (tenantInfo && Array.isArray(tenantInfo)) {
+            setTenantList(tenantInfo.map((item: any) => item.name))
+        }
+    }, [tenantInfo])
 
     return (
         <nav
@@ -31,7 +39,7 @@ const Topbar = ({ tenant, setTenant }: { tenant: string, setTenant: (tenant: str
                         triggerButton="Tenant Selector"
                         selectedKeys={tenant ? tenant : selectedTenant}
                         setSelectedKeys={setTenant}
-                        items={["ABC"]}
+                        items={tenantList}
                         classNames={{
                             triggerButton: "min-w-40 rounded-lg text-xs font-medium mt-2 bg-[white] dark:bg-[#0F0F0F] dark:text-white",
                             popover: "w-40",

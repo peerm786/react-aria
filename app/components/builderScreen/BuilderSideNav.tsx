@@ -8,14 +8,15 @@ import {
     SecurityFabric,
     ShopSvg,
     UserFabric,
+    LogDetailIcon
 } from "../../constants/svgApplications";
 import { Button } from "react-aria-components";
 import TorusAvatar from "../Avatar";
 
 const BuilderSideNav = () => {
     const [fillIndex, setFillIndex] = useState(0);
-    const actionIcons = [HomeSvg, DataFabric, UserFabric, ProcessFabric, SecurityFabric, ShopSvg, QuestionSvg, CallChatSvg];
-    const iconColors = ["#006FEE", "#0736C4", "#03A9F4", "#13CC78", "#FFBE00", "#006FEE", "#006FEE", "#006FEE"];
+    const actionIcons = [HomeSvg, DataFabric, UserFabric, ProcessFabric, SecurityFabric, LogDetailIcon, ShopSvg, QuestionSvg, CallChatSvg];
+    const iconColors = ["#006FEE", "#0736C4", "#03A9F4", "#13CC78", "#FFBE00", "#0736C4", "#006FEE", "#006FEE", "#006FEE"];
 
     return (
         <aside
@@ -30,7 +31,7 @@ const BuilderSideNav = () => {
                     {actionIcons.map((Icon, index) => (
                         <Button
                             key={index}
-                            className={`${index === 4 ? "border-b border-b-black/35" : ""} p-2 focus:outline-none ${index === fillIndex ? "border-l-2 border-l-[#0736C4]" : ""}`}
+                            className={`${index === 5 ? "border-b border-b-black/35" : ""} p-2 focus:outline-none ${index === fillIndex ? "border-l-2 border-l-[#0736C4]" : ""}`}
                             onPress={() => setFillIndex(index)}
                         >
                             <Icon

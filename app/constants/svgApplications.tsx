@@ -121,7 +121,7 @@ export const DataFabric = ({ width = "20", fill = "black" }) => {
   return (
     <svg
       width={width}
-      height="20"
+      height="25"
       viewBox="0 0 27 26"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -1496,5 +1496,15 @@ export const BuilderShareIcon = () => {
       <path d="M32 22.9979C31.9711 26.4119 31.7815 28.294 30.5404 29.5352C29.0755 31 26.7179 31 22.0026 31C17.2873 31 14.9297 31 13.4648 29.5352C12 28.0703 12 25.7127 12 20.9974C12 16.2821 12 13.9245 13.4648 12.4596C14.706 11.2185 16.5881 11.029 20.0021 11" stroke="black" strokeWidth="1.5" strokeLinecap="round" />
       <path d="M32 16H24C22.1824 16 21.0867 16.892 20.6804 17.3003C20.5546 17.4267 20.4917 17.49 20.4908 17.4908C20.49 17.4917 20.4267 17.5546 20.3003 17.6804C19.892 18.0867 19 19.1824 19 21V24M32 16L27 11M32 16L27 21" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
+  )
+}
+
+export const LogDetailIcon = ({ fill = "black" }) => {
+  return (
+    <svg width="20" height="25" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g opacity={fill == "black" ? "0.35" : "1"}>
+        <path d="M4 13.3333H28M12 4L12.0094 4.00943M25.3333 13.3333V17.3333C25.3333 22.488 21.1547 26.6667 16 26.6667C10.8453 26.6667 6.66667 22.488 6.66667 17.3333V13.3333M8 22.1435V28M24 22.1435V28M20 8C20 8.73637 19.4031 9.33333 18.6667 9.33333C17.9303 9.33333 17.3333 8.73637 17.3333 8C17.3333 7.26363 17.9303 6.66667 18.6667 6.66667C19.4031 6.66667 20 7.26363 20 8Z" stroke={fill} strokeWidth="2.66667" strokeLinecap="round" strokeLinejoin="round" />
+      </g >
+    </svg >
   )
 }

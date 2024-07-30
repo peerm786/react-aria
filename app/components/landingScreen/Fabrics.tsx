@@ -24,8 +24,13 @@ const Fabrics = ({ fabric, setFabric }: { fabric: string, setFabric: (fabric: st
             <h2 className='text-sm font-semibold'>Fabrics</h2>
             <div className='flex gap-2'>
                 {
-                    fabricData.map((fab, i) => (
-                        <Button onPress={() => handleFabricChange(fab.fabric)} className={`flex flex-col gap-3 outline-none w-[24%] p-2 ${fabric === fab.fabric ? 'bg-[#0736C4]/15' : 'bg-[#F4F5FA]'} text-[0.9vw] font-medium rounded-md text-nowrap mt-1`}>{fab.icon}{fab.displayParam}</Button>
+                    fabricData.map((fab) => (
+                        <Button onPress={() => handleFabricChange(fab.fabric)}
+                            className={`flex flex-col gap-3 outline-none w-[24%] p-2 text-[0.9vw] font-medium rounded-md text-nowrap mt-1
+                        ${fabric === fab.fabric ? 'bg-[#0736C4]/15' : 'bg-[#F4F5FA]'}`}
+                        >
+                            {fab.icon}{fab.displayParam}
+                        </Button>
                     ))
                 }
             </div>

@@ -18,7 +18,6 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
   const [clientList, setClientList] = useState<string[]>([]);
   const [client, setClient] = useState<any>("");
   const [loading, setLoading] = useState(false);
-  console.log(client, "dsfsdf");
 
   const { isDarkMode } = useDarkMode();
 

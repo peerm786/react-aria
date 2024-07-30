@@ -15,9 +15,8 @@ import BuilderTopNav from "./components/builderScreen/BuilderTopNav";
 import BuilderSideNav from "./components/builderScreen/BuilderSideNav";
 
 const page = () => {
-
-  const [selectedBuildButton, setSelectedBuildButton] = useState(true);
-  const [selectedHistoryButton, setSelectedHistoryButton] = useState(false);
+  const [selectedAssemblerButton, setSelectedAssemblerButton] = useState(true);
+  const [selectedLogsButton, setSelectedLogsButton] = useState(false);
   const [selectedTenant, setSelectedTenant] = useState<string>("");
   const [selectAppGroup, setSelectAppGroup] = useState<string>("");
   const [selectApp, setSelectApp] = useState<string>("");
@@ -30,13 +29,13 @@ const page = () => {
   const { isDarkMode, toggleDarkMode } = useDarkMode();
 
   const handleBuildButtonSelect = () => {
-    setSelectedBuildButton(true);
-    setSelectedHistoryButton(false);
+    setSelectedAssemblerButton(true);
+    setSelectedLogsButton(false);
   };
 
   const handleHistoryButtonSelect = () => {
-    setSelectedHistoryButton(true);
-    setSelectedBuildButton(false);
+    setSelectedLogsButton(true);
+    setSelectedAssemblerButton(false);
   };
 
   const handleTenantselect = (e: any) => {
@@ -175,45 +174,45 @@ const page = () => {
           <div className="flex w-full justify-between">
             <div className="flex gap-5 pt-2 pl-4">
               <Button
-                className={`${selectedBuildButton ? "font-semibold" : ""
+                className={`${selectedAssemblerButton ? "font-semibold" : ""
                   } flex text-sm items-center gap-3 rounded-lg border-none outline-none dark:text-white`}
                 onPress={handleBuildButtonSelect}
               >
                 <PushandPullIcon
                   fill={isDarkMode ? "white" : "black"}
                 />
-                Push to Build
+                Assembler
               </Button>
               <Button
-                className={`${selectedHistoryButton ? "font-semibold" : ""
+                className={`${selectedLogsButton ? "font-semibold" : ""
                   } flex text-sm items-center gap-3 rounded-lg border-none outline-none dark:text-white`}
                 onPress={handleHistoryButtonSelect}
               >
                 {" "}
                 <HistoryIcon fill={isDarkMode ? "white" : "black"} />
-                History
+                Logs Hub
               </Button>
             </div>
             <div className="flex pt-2 pr-3 gap-2 items-center">
               <Button
-                className={
-                  "bg-[#FFF6F6] dark:bg-[#EF4444]/15 text-sm font-semibold outline-none rounded-md text-[#EF4444] px-5 py-1"
-                }
+                onPress={handleUpdateBuild}
+                isDisabled={!selectedVersion}
+                className={`text-[12px] rounded-md border-none text-[#4CAF50] disabled:cursor-not-allowed bg-[#4CAF50]/15 px-5 py-2 outline-none`}
               >
-                Clear
+                Update
               </Button>
               <Button
-                className={
-                  "bg-[#F1F1F1] dark:bg-[#0F0F0F] dark:text-white text-sm font-medium outline-none rounded-md text-black px-3 py-1"
-                }
+                onPress={handleSaveBuild}
+                isDisabled={!selectApp}
+                className={`text-[12px] rounded-md border-none text-[#0736C4] disabled:cursor-not-allowed bg-[#0736C4]/15 px-5 py-2 outline-none`}
               >
-                Clear All
+                Save
               </Button>
-              <IoToggleSharp
-                size={25}
-                onClick={toggleDarkMode}
-                className="dark:text-white text-black/70"
-              />
+              <Button
+                className={"text-[12px] rounded-md border-none text-white disabled:cursor-not-allowed bg-[#0736C4] px-5 py-2 outline-none"}
+              >
+                Build
+              </Button>
             </div>
           </div>
           <div className="pt-2">
@@ -289,19 +288,24 @@ const page = () => {
             </div>
             <div className="flex gap-2 justify-end mr-3 mt-2">
               <Button
-                onPress={handleUpdateBuild}
-                isDisabled={!selectedVersion}
-                className={`text-[12px] rounded-md border-none text-white disabled:cursor-not-allowed bg-[#0736C4] px-5 py-2 outline-none`}
+                className={
+                  "bg-[#FFF6F6] dark:bg-[#EF4444]/15 text-sm font-semibold outline-none rounded-md text-[#EF4444] px-5 py-1"
+                }
               >
-                Update
+                Clear
               </Button>
               <Button
-                onPress={handleSaveBuild}
-                isDisabled={!selectApp}
-                className={`text-[12px] rounded-md border-none text-white disabled:cursor-not-allowed bg-[#0736C4] px-5 py-2 outline-none`}
+                className={
+                  "bg-[#F1F1F1] dark:bg-[#0F0F0F] dark:text-white text-sm font-medium outline-none rounded-md text-black px-3 py-1"
+                }
               >
-                Save
+                Clear All
               </Button>
+              <IoToggleSharp
+                size={25}
+                onClick={toggleDarkMode}
+                className="dark:text-white text-black/70"
+              />
             </div>
           </div>
           <div>
@@ -324,6 +328,7 @@ const page = () => {
               />
             </div>
           </div>
+
         </div>
       </div>
     </div>

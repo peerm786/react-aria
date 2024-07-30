@@ -1,59 +1,58 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from 'react-aria-components';
 import { PiAirplaneTiltFill } from "react-icons/pi";
 import { RiBankFill } from "react-icons/ri";
 import { ThreeDots } from '../../constants/svgApplications';
-import { AxiosService } from '../../../lib/utils/axiosService';
-import { toast } from 'react-toastify';
 
-const Card = ({ tenant }: { tenant: string }) => {
-    const [appGrpList, setAppGrpList] = React.useState<string[]>([]);
-    const [mappingAppGrp, setMappingAppGrp] = React.useState<any[]>([]);
+const Card = ({ tenant, tenantInfo }: { tenant: string, tenantInfo: any[] }) => {
+    const [mappingAppGrp, setMappingAppGrp] = useState<any[]>([]);
 
-    const banks = [
-        { name: 'First Abu Dhabi Bank', icon: <PiAirplaneTiltFill />, apps: ['4 Apps'] },
-        { name: 'Equity Bank', icon: <RiBankFill />, apps: ['3 Apps'] },
-        { name: 'First Abu Dhabi Bank', icon: <PiAirplaneTiltFill />, apps: ['4 Apps'] },
-        { name: 'Equity Bank', icon: <RiBankFill />, apps: ['3 Apps'] },
-        { name: 'First Abu Dhabi Bank', icon: <PiAirplaneTiltFill />, apps: ['4 Apps'] },
-        { name: 'Equity Bank', icon: <RiBankFill />, apps: ['3 Apps'] },
-        { name: 'First Abu Dhabi Bank', icon: <PiAirplaneTiltFill />, apps: ['4 Apps'] },
-        { name: 'Equity Bank', icon: <RiBankFill />, apps: ['3 Apps'] },
-        { name: 'First Abu Dhabi Bank', icon: <PiAirplaneTiltFill />, apps: ['4 Apps'] },
-        { name: 'Equity Bank', icon: <RiBankFill />, apps: ['3 Apps'] },
-    ];
+    // const banks = [
+    //     { name: 'First Abu Dhabi Bank', icon: <PiAirplaneTiltFill />, apps: ['4 Apps'] },
+    //     { name: 'Equity Bank', icon: <RiBankFill />, apps: ['3 Apps'] },
+    //     { name: 'First Abu Dhabi Bank', icon: <PiAirplaneTiltFill />, apps: ['4 Apps'] },
+    //     { name: 'Equity Bank', icon: <RiBankFill />, apps: ['3 Apps'] },
+    //     { name: 'First Abu Dhabi Bank', icon: <PiAirplaneTiltFill />, apps: ['4 Apps'] },
+    //     { name: 'Equity Bank', icon: <RiBankFill />, apps: ['3 Apps'] },
+    //     { name: 'First Abu Dhabi Bank', icon: <PiAirplaneTiltFill />, apps: ['4 Apps'] },
+    //     { name: 'Equity Bank', icon: <RiBankFill />, apps: ['3 Apps'] },
+    //     { name: 'First Abu Dhabi Bank', icon: <PiAirplaneTiltFill />, apps: ['4 Apps'] },
+    //     { name: 'Equity Bank', icon: <RiBankFill />, apps: ['3 Apps'] },
+    // ];
 
-    const fetchAppGroups = async (tenant: string) => {
-        try {
-            const res = await AxiosService.get(
-                `/tp/getappgrouplist?tenant=${tenant}`
-            );
-            if (res.status == 200) {
-                setAppGrpList(res.data);
+    useEffect(() => {
+        if (tenantInfo.length) {
+            const appGrpData: any[] = []
+            if (tenant) {
+                const SelectedTenantAg = tenantInfo.find(item => item.name == tenant)
+                if (SelectedTenantAg.appGroups && Array.isArray(SelectedTenantAg.appGroups)) {
+                    SelectedTenantAg.appGroups.forEach((grpData: any, i: number) => {
+                        const Ag = {
+                            name: grpData.name,
+                            apps: [`${grpData.apps.length} Apps`],
+                            icon: i % 2 === 0 ? <PiAirplaneTiltFill /> : <RiBankFill />
+                        }
+                        appGrpData.push(Ag)
+                    })
+                }
+            } else {
+                tenantInfo.forEach((item) => {
+                    if (item.appGroups && Array.isArray(item.appGroups)) {
+                        item.appGroups.forEach((grpData: any) => {
+                            const Ag = {
+                                name: grpData.name,
+                                apps: [`${grpData.apps.length} Apps`],
+                                icon: < RiBankFill />,
+                                tenant: item.name
+                            }
+                            appGrpData.push(Ag)
+                        })
+                    }
+                })
             }
-        } catch (error) {
-            toast.error("Error fetching Appgrp");
+            setMappingAppGrp(appGrpData)
         }
-    };
-
-    useEffect(() => {
-        if (tenant) {
-            fetchAppGroups(tenant)
-        }
-    }, [tenant])
-
-    useEffect(() => {
-        if (appGrpList.length) {
-            setMappingAppGrp(appGrpList.map((grp, i) => ({
-                name: grp,
-                icon: i % 2 === 0 ? <PiAirplaneTiltFill /> : <RiBankFill />,
-                apps: [`${i + 2} Apps`]
-            })))
-        } else {
-            setMappingAppGrp(banks)
-        }
-
-    }, [appGrpList])
+    }, [tenant, tenantInfo])
 
     return (
         <div className='flex flex-col gap-3 border border-black/15 p-3 w-full h-full rounded-md ml-4 bg-white'>

@@ -50,8 +50,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   callbacks: {
     async signIn({ user, account }) {
-      console.log(user, account);
-
       if (account?.type == "credentials") {
         return true; //false;
       } else {

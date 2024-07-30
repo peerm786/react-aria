@@ -80,10 +80,7 @@ function LoginForm({ variant = "TP", isDarkMode }: LoginFormProps) {
     };
 
     const handlesociallogin = async () => {
-        console.log(client, "dsfsdf", social);
-
         if (client) {
-            console.log(client, "dsfsdf")
             await setServerCookie("client", client);
 
             await signIn(social, {

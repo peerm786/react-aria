@@ -47,8 +47,6 @@ const Page = () => {
       </div>
     </ListBoxItem>
   );
-  console.log(selectedKeys, "selectedKeys");
-
 
   return (
     <div className="p-4 w-60">

@@ -6,8 +6,6 @@ import { Button, Label, ListBox, ListBoxItem, Popover, Select, SelectValue } fro
 const Selectitem = () => {
     const handleselectchange = () => {
 
-        console.log("111")
-
     }
     return (
         <div className='flex gap-3'>
