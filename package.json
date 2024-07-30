@@ -12,6 +12,7 @@
     "@nextui-org/react": "^2.4.6",
     "@react-stately/collections": "^3.10.7",
     "axios": "^1.7.2",
+    "flat": "^6.0.1",
     "framer-motion": "^11.2.13",
     "he-tree-react": "^1.1.4",
     "jsonwebtoken": "^9.0.2",
