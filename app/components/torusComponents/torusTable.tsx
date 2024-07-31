@@ -336,6 +336,7 @@ export function TorusTable({
   addableColumns,
   visibleColumns,
   isSkeleton = false,
+  searchValue = "",
 }: any) {
   const [data, setData] = useState<any>([]);
   const [columns, setColumns] = useState<any>(new Set([]));
@@ -343,7 +344,7 @@ export function TorusTable({
   const [page, setPage] = useState<any>(1);
   const [totalPages, setTotalPages] = useState<null | any>(null);
   const [TotalColumns, setTotalColumns] = useState<any>([]);
-  const [serchValue, setSerchValue] = useState<string>("");
+  // const [searchValue, setSearchValue] = useState<string>("");
 
   const [tableDataLength, setTableDataLength] = useState<any>(0);
   const [tableIndex, setTableIndex] = useState<any>(new Set([]));
@@ -370,22 +371,22 @@ export function TorusTable({
       );
     }
   };
-  const handleSerach = useCallback(
-    (e: any) => {
-      if (isAsync)
-        getAysncData(page, e, rowsPerPage).then((data: any) => {
-          if (data && data.tableData && data.tableData.length > 0) {
-            setData(data.tableData);
-            setSerchValue(e);
-          } else {
-            setData([]);
-            setSerchValue(e);
-          }
-        });
-      else setSerchValue(e);
-    },
-    [page, rowsPerPage, getAysncData]
-  );
+  // const handleSerach = useCallback(
+  //   (e: any) => {
+  //     if (isAsync)
+  //       getAysncData(page, e, rowsPerPage).then((data: any) => {
+  //         if (data && data.tableData && data.tableData.length > 0) {
+  //           setData(data.tableData);
+  //           setSearchValue(e);
+  //         } else {
+  //           setData([]);
+  //           setSearchValue(e);
+  //         }
+  //       });
+  //     else setSearchValue(e);
+  //   },
+  //   [page, rowsPerPage, getAysncData]
+  // );
 
   const serachedItems: any = React.useMemo(() => {
     try {
@@ -394,12 +395,12 @@ export function TorusTable({
         Object.values(item)
           .join(" ")
           .toLowerCase()
-          .includes(serchValue.toLowerCase())
+          .includes(searchValue.toLowerCase())
       );
     } catch (e) {
       console.error(e);
     }
-  }, [serchValue, data, page, rowsPerPage, getAysncData]);
+  }, [searchValue, data, page, rowsPerPage, getAysncData]);
 
   const items = React.useMemo(() => {
     try {
@@ -523,7 +524,7 @@ export function TorusTable({
 
   const initalsAysncData = (isIntial = false, page: any) => {
     try {
-      getAysncData(page, serchValue, rowsPerPage).then((data: any) => {
+      getAysncData(page, searchValue, rowsPerPage).then((data: any) => {
         if (
           data &&
           data.tableData &&
@@ -762,7 +763,7 @@ export function TorusTable({
                       radius="lg"
                       textColor="text-[#000000]"
                       bgColor="bg-[#FFFFFF]"
-                      value={serchValue}
+                      value={searchValue}
                       type="text"
                     />
                   </div>
