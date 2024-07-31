@@ -705,7 +705,7 @@ export function TorusTable({
             </div> */}
             <div className="w-full h-[70%] flex flex-col justify-between items-center">
               <div className="w-[95%] flex items-center justify-center h-[8%]">
-                <div className="w-[60%] flex  h-full bg-transparent rounded-md ">
+                {/* <div className="w-[60%] flex  h-full bg-transparent rounded-md ">
                   <div className="w-[20%] h-full bg-white rounded-md pl-2">
                     <Tabs aria-label="aria tabs">
                       <TabList
@@ -787,7 +787,7 @@ export function TorusTable({
                       fontStyle={"text-sm font-medium text-[#344054]"}
                     />
                   </div>
-                </div>
+                </div> */}
               </div>
               <div className="w-full h-[90%] overflow-scroll ">
                 <Table
