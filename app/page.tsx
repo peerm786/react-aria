@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Button } from "react-aria-components";
+import { Button, Tab, TabList, Tabs } from "react-aria-components";
 import { Separator } from "react-aria-components";
 import FabricSelector from "./components/Tab";
 import MenuItemAccordian from "./components/builderScreen/MenuItemAccordian";
@@ -13,6 +13,7 @@ import { HistoryIcon, PushandPullIcon } from "./constants/svgApplications";
 import { TreeNode } from "./constants/MenuItemTree";
 import BuilderTopNav from "./components/builderScreen/BuilderTopNav";
 import BuilderSideNav from "./components/builderScreen/BuilderSideNav";
+import ProcessLogs from "./components/torusComponents/processLog";
 
 const page = () => {
   const [selectedAssemblerButton, setSelectedAssemblerButton] = useState(true);
@@ -27,6 +28,7 @@ const page = () => {
   const [versionList, setVersionList] = useState<string[]>([]);
   const [selectedVersion, setSelectedVersion] = useState<string>("");
   const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const [logsTabList, setLogTabList] = useState("")
 
   const handleBuildButtonSelect = () => {
     setSelectedAssemblerButton(true);
@@ -193,142 +195,167 @@ const page = () => {
                 Logs Hub
               </Button>
             </div>
-            <div className="flex pt-2 pr-3 gap-2 items-center">
-              <Button
-                onPress={handleUpdateBuild}
-                isDisabled={!selectedVersion}
-                className={`text-[12px] rounded-md border-none text-[#4CAF50] disabled:cursor-not-allowed bg-[#4CAF50]/15 px-5 py-2 outline-none`}
-              >
-                Update
-              </Button>
-              <Button
-                onPress={handleSaveBuild}
-                isDisabled={!selectApp}
-                className={`text-[12px] rounded-md border-none text-[#0736C4] disabled:cursor-not-allowed bg-[#0736C4]/15 px-5 py-2 outline-none`}
-              >
-                Save
-              </Button>
-              <Button
-                className={"text-[12px] rounded-md border-none text-white disabled:cursor-not-allowed bg-[#0736C4] px-5 py-2 outline-none"}
-              >
-                Build
-              </Button>
-            </div>
+            {selectedAssemblerButton &&
+              <div className="flex pt-2 pr-3 gap-2 items-center">
+                <Button
+                  onPress={handleUpdateBuild}
+                  isDisabled={!selectedVersion}
+                  className={`text-[12px] rounded-md border-none text-[#4CAF50] disabled:cursor-not-allowed bg-[#4CAF50]/15 px-5 py-2 outline-none`}
+                >
+                  Update
+                </Button>
+                <Button
+                  onPress={handleSaveBuild}
+                  isDisabled={!selectApp}
+                  className={`text-[12px] rounded-md border-none text-[#0736C4] disabled:cursor-not-allowed bg-[#0736C4]/15 px-5 py-2 outline-none`}
+                >
+                  Save
+                </Button>
+                <Button
+                  className={"text-[12px] rounded-md border-none text-white disabled:cursor-not-allowed bg-[#0736C4] px-5 py-2 outline-none"}
+                >
+                  Build
+                </Button>
+              </div>
+            }
+            {
+              selectedLogsButton &&
+              <div className="flex pt-2 pr-3 gap-2 items-center">
+                <Tabs onSelectionChange={() => setLogTabList("")}>
+                  <TabList className="flex w-full p-1 gap-2 bg-[#F4F5FA] items-center text-nowrap rounded-md">
+                    <Tab id="logDetails" className={`p-1 outline-none text-sm rounded-lg ${logsTabList === 'logDetails' ? 'bg-[white]' : ''}`}>
+                      Log Details
+                    </Tab>
+                    <Tab id="exceptionDetails" className={`p-1 outline-none text-sm rounded-lg ${logsTabList === 'exceptionDetails' ? 'bg-[white]' : ''}`}>
+                      Exception Details
+                    </Tab>
+                  </TabList>
+                </Tabs>
+              </div>
+            }
           </div>
           <div className="pt-2">
             <Separator className="dark:border-[#212121]" />
           </div>
-          <div className="flex w-full justify-between items-center">
-            <div className="flex outline-none gap-5 pl-4">
-              <DropDown
-                isDarkMode={isDarkMode}
-                triggerButton="Tenant"
-                selectedKeys={selectedTenant}
-                setSelectedKeys={handleTenantselect}
-                items={tenantList}
-                classNames={{
-                  triggerButton:
-                    `min-w-40 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white`,
-                  popover: "w-40",
-                  listbox: "overflow-y-auto",
-                  listboxItem: "flex text-sm justify-between",
-                }}
-              />
+          {selectedAssemblerButton &&
+            <div>
+              <div className="flex w-full justify-between items-center">
+                <div className="flex outline-none gap-5 pl-4">
+                  <DropDown
+                    isDarkMode={isDarkMode}
+                    triggerButton="Tenant"
+                    selectedKeys={selectedTenant}
+                    setSelectedKeys={handleTenantselect}
+                    items={tenantList}
+                    classNames={{
+                      triggerButton:
+                        `min-w-40 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white`,
+                      popover: "w-40",
+                      listbox: "overflow-y-auto",
+                      listboxItem: "flex text-sm justify-between",
+                    }}
+                  />
 
-              <DropDown
-                isDarkMode={isDarkMode}
-                triggerButton="AppGroup"
-                selectedKeys={selectAppGroup}
-                setSelectedKeys={handleAppGroupselect}
-                items={appGrpList}
-                classNames={{
-                  triggerButton: `${selectedTenant
-                    ? "min-w-40 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                    : "backdrop-blur-3xl min-w-40 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                    }`,
-                  popover: "w-40",
-                  listbox: "overflow-y-auto",
-                  listboxItem: "flex text-sm justify-between",
-                }}
-              />
+                  <DropDown
+                    isDarkMode={isDarkMode}
+                    triggerButton="AppGroup"
+                    selectedKeys={selectAppGroup}
+                    setSelectedKeys={handleAppGroupselect}
+                    items={appGrpList}
+                    classNames={{
+                      triggerButton: `${selectedTenant
+                        ? "min-w-40 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                        : "backdrop-blur-3xl min-w-40 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                        }`,
+                      popover: "w-40",
+                      listbox: "overflow-y-auto",
+                      listboxItem: "flex text-sm justify-between",
+                    }}
+                  />
 
-              <DropDown
-                isDarkMode={isDarkMode}
-                triggerButton="App"
-                selectedKeys={selectApp}
-                setSelectedKeys={handleAppselect}
-                items={appList}
-                classNames={{
-                  triggerButton: `${selectAppGroup
-                    ? "min-w-40 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                    : "backdrop-blur-3xl min-w-40 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                    }`,
-                  popover: "w-40",
-                  listbox: "overflow-y-auto",
-                  listboxItem: "flex text-sm justify-between",
-                }}
-              />
+                  <DropDown
+                    isDarkMode={isDarkMode}
+                    triggerButton="App"
+                    selectedKeys={selectApp}
+                    setSelectedKeys={handleAppselect}
+                    items={appList}
+                    classNames={{
+                      triggerButton: `${selectAppGroup
+                        ? "min-w-40 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                        : "backdrop-blur-3xl min-w-40 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                        }`,
+                      popover: "w-40",
+                      listbox: "overflow-y-auto",
+                      listboxItem: "flex text-sm justify-between",
+                    }}
+                  />
 
-              <DropDown
-                isDarkMode={isDarkMode}
-                triggerButton="version"
-                selectedKeys={selectedVersion}
-                setSelectedKeys={handleVersionselect}
-                items={versionList}
-                classNames={{
-                  triggerButton: `${selectApp
-                    ? "min-w-20 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                    : "backdrop-blur-3xl min-w-20 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                    }`,
-                  popover: "w-40",
-                  listbox: "overflow-y-auto",
-                  listboxItem: "flex text-sm justify-between",
-                }}
-              />
+                  <DropDown
+                    isDarkMode={isDarkMode}
+                    triggerButton="version"
+                    selectedKeys={selectedVersion}
+                    setSelectedKeys={handleVersionselect}
+                    items={versionList}
+                    classNames={{
+                      triggerButton: `${selectApp
+                        ? "min-w-20 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                        : "backdrop-blur-3xl min-w-20 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                        }`,
+                      popover: "w-40",
+                      listbox: "overflow-y-auto",
+                      listboxItem: "flex text-sm justify-between",
+                    }}
+                  />
+                </div>
+                <div className="flex gap-2 justify-end mr-3 mt-2">
+                  <Button
+                    className={
+                      "bg-[#FFF6F6] dark:bg-[#EF4444]/15 text-sm font-semibold outline-none rounded-md text-[#EF4444] px-5 py-1"
+                    }
+                  >
+                    Clear
+                  </Button>
+                  <Button
+                    className={
+                      "bg-[#F1F1F1] dark:bg-[#0F0F0F] dark:text-white text-sm font-medium outline-none rounded-md text-black px-3 py-1"
+                    }
+                  >
+                    Clear All
+                  </Button>
+                  <IoToggleSharp
+                    size={25}
+                    onClick={toggleDarkMode}
+                    className="dark:text-white text-black/70"
+                  />
+                </div>
+              </div>
+              <div>
+                <Separator className="mt-2 dark:border-[#212121]" />
+              </div>
+              <div className="flex w-full h-full">
+                <div className="w-[25%] pt-3 pl-4 rounded-lg">
+                  <FabricSelector
+                    tenant={selectedTenant}
+                    appGrp={selectAppGroup}
+                    app={selectApp}
+                    isDarkMode={isDarkMode}
+                  />
+                </div>
+                <div className="w-[75%] pt-3 pr-2">
+                  <MenuItemAccordian
+                    data={menuItemData}
+                    setData={setMenuItemData}
+                    isDarkMode={isDarkMode}
+                  />
+                </div>
+              </div>
             </div>
-            <div className="flex gap-2 justify-end mr-3 mt-2">
-              <Button
-                className={
-                  "bg-[#FFF6F6] dark:bg-[#EF4444]/15 text-sm font-semibold outline-none rounded-md text-[#EF4444] px-5 py-1"
-                }
-              >
-                Clear
-              </Button>
-              <Button
-                className={
-                  "bg-[#F1F1F1] dark:bg-[#0F0F0F] dark:text-white text-sm font-medium outline-none rounded-md text-black px-3 py-1"
-                }
-              >
-                Clear All
-              </Button>
-              <IoToggleSharp
-                size={25}
-                onClick={toggleDarkMode}
-                className="dark:text-white text-black/70"
-              />
+          }
+          {selectedLogsButton &&
+            <div>
+              <ProcessLogs />
             </div>
-          </div>
-          <div>
-            <Separator className="mt-2 dark:border-[#212121]" />
-          </div>
-          <div className="flex w-full h-full">
-            <div className="w-[25%] pt-3 pl-4 rounded-lg">
-              <FabricSelector
-                tenant={selectedTenant}
-                appGrp={selectAppGroup}
-                app={selectApp}
-                isDarkMode={isDarkMode}
-              />
-            </div>
-            <div className="w-[75%] pt-3 pr-2">
-              <MenuItemAccordian
-                data={menuItemData}
-                setData={setMenuItemData}
-                isDarkMode={isDarkMode}
-              />
-            </div>
-          </div>
-
+          }
         </div>
       </div>
     </div>

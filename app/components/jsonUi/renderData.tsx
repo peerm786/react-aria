@@ -12,7 +12,7 @@ import { SiDatabricks } from "react-icons/si";
 import TorusInput from "./torusComponents/TorusInput";
 import _ from "lodash";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
-import TorusDropDown from "../Dropdown";
+import TorusDropDown from "./torusComponents/torusDropdown";
 
 
 const iconArray = [
@@ -40,7 +40,7 @@ const RenderJsonArraySidebarIcon = memo(
     setActiveTab,
     setLabel,
     shuffledIcons,
-  }:any) => {
+  }: any) => {
     return (
       <>
         <div
@@ -51,7 +51,7 @@ const RenderJsonArraySidebarIcon = memo(
               : " text-black cursor-pointer")
           }
         >
-         
+
           <TorusToolTip
             hoverContent={
               shuffledIcons.length > 0 &&
@@ -64,7 +64,7 @@ const RenderJsonArraySidebarIcon = memo(
               )
             }
             tooltipFor="arr"
-            tooltipContent={obj.map((ele:any) => ele.label ? ele.label : fg)}
+            tooltipContent={obj.map((ele: any) => ele.label ? ele.label : fg)}
             color={activeTab == fg ? "#6600ff" : "#09254D"}
             setShowObj={setShowObj}
             setActiveTab={setActiveTab}
@@ -79,14 +79,14 @@ const RenderJsonArraySidebarIcon = memo(
 );
 
 
-const RenderSwitch = ({ obj }:any) => {
-  const handleDropdownClick = (event:any) => {
+const RenderSwitch = ({ obj }: any) => {
+  const handleDropdownClick = (event: any) => {
     event.stopPropagation();
   };
   return (
     <div>
       <select onClick={handleDropdownClick}>
-        {obj && obj.map((ele:any) => ({ ele }))}
+        {obj && obj.map((ele: any) => ({ ele }))}
       </select>
     </div>
   );
@@ -99,18 +99,18 @@ const RenderJsonArraySidebarDetail = ({
   path,
   handlejs,
   objs,
-}:any) => {
+}: any) => {
   const [expandedItem, setExpandedItem] = useState<any[]>([]);
   const [showAccordianItem, setShowAccordianItem] = useState(null);
   const [value, setValue] = useState(null);
-  const handleInput = (e:any, i:any, key:any, type:any) => {
+  const handleInput = (e: any, i: any, key: any, type: any) => {
     setValue(e);
     if (value) {
       handlejs(e, i, key, type, showObj);
     }
   };
 
-  const toggleKey = (key:any) => {
+  const toggleKey = (key: any) => {
     if (expandedItem.includes(key)) {
       setExpandedItem(expandedItem.filter((k) => k !== key));
     } else {
@@ -119,9 +119,9 @@ const RenderJsonArraySidebarDetail = ({
   };
 
   return (
-    <div className={`grid ${obj.length >1 ? "grid-cols-2" : ""} gap-2`}>
+    <div className={`grid ${obj.length > 1 ? "grid-cols-2" : ""} gap-2`}>
       {obj &&
-        obj.map((ele:any, index:number) => {
+        obj.map((ele: any, index: number) => {
           const isExpanded = expandedItem.includes(ele.label);
           return (
             <div
@@ -170,7 +170,7 @@ const RenderJsonArraySidebarDetail = ({
                                 outlineColor="torus-focus:ring-[#000000]/50"
                                 placeholder=""
                                 isDisabled={false}
-                                onChange={(e:any) => {
+                                onChange={(e: any) => {
                                   handleInput(
                                     e,
                                     path + "." + index + "." + item,
@@ -282,12 +282,12 @@ const RenderJsonArraySidebarDetail = ({
 
 
 
-const RenderDropdown = ({ obj, path, handlejs, item, showObj }:any) => {
+const RenderDropdown = ({ obj, path, handlejs, item, showObj }: any) => {
   const [value, setValue] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [data, setData] = useState<any>(null);
 
-  const handleDropdownClick = (event:any) => {
+  const handleDropdownClick = (event: any) => {
     event.stopPropagation();
   };
 
@@ -320,7 +320,7 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }:any) => {
     }
   }, [value]);
 
-  const handleDropdownChange = (e:any) => {
+  const handleDropdownChange = (e: any) => {
     setValue(e);
 
     handlejs(e, path + "." + item + "." + data, data, "dropdown", showObj);
@@ -366,7 +366,7 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }:any) => {
                     selected={value}
                     setSelected={setValue}
                     selectionMode="multiple"
-                    items={obj.selectionList.map((ele:any) => ({
+                    items={obj.selectionList.map((ele: any) => ({
                       key: ele,
                       label: ele,
                     }))}
@@ -409,11 +409,11 @@ export default function JsonSidebarDetail({
   path,
   label,
   OgJson,
-}:any) {
+}: any) {
   const [value, setValue] = useState(null);
   const [selectedTab, setselectedTab] = useState("Tabs");
 
-  const handleInput = (e:any, i:any, key:any, type:any) => {
+  const handleInput = (e: any, i: any, key: any, type: any) => {
     setValue(e);
     if (value) {
       handlejs(e, i, key, type, showObj);
@@ -433,7 +433,7 @@ export default function JsonSidebarDetail({
           </span>
         </span>
 
-      
+
 
         <span className="mt-1 font-normal m-2 w-[100%] text-black dark:text-white">
           Label :
@@ -549,7 +549,7 @@ export default function JsonSidebarDetail({
 
 
 export const JsonSidebarIcon = memo(
-  ({ obj, setShowObj, setPath, setLabel }:any) => {
+  ({ obj, setShowObj, setPath, setLabel }: any) => {
     const [activeTab, setActiveTab] = useState<any>(null);
 
     return (
@@ -578,7 +578,7 @@ export const JsonSidebarIcon = memo(
                           iconArray.length > 0 &&
                           createElement(
                             iconArray[
-                              Math.floor(Math.random() * iconArray.length)
+                            Math.floor(Math.random() * iconArray.length)
                             ],
                             {
                               size: 20,
@@ -627,7 +627,7 @@ export function FabricsSideBar({
   obj,
   handlejs,
   OgJson
-}:any) {
+}: any) {
   const [showObj, setShowObj] = useState();
   const [label, setLabel] = useState(null);
 
@@ -635,7 +635,7 @@ export function FabricsSideBar({
   return (
     <div className="flex h-[100%] w-full max-w-full flex-row overflow-hidden ">
       <div className="max-w-[40%] h-[450px] border-r   bg-white  dark:border-[#212121]">
-       { <JsonSidebarIcon
+        {<JsonSidebarIcon
           key={"iconBar"}
           showObj={showObj}
           setShowObj={setShowObj}
@@ -646,17 +646,17 @@ export function FabricsSideBar({
 
       </div>
       <div className="w-full max-w-[90%] bg-white dark:bg-[#161616]">
-   
+
         <div className="h-[430px] relative w-full">
 
-       { <JsonSidebarDetail
-          showObj={showObj}
-          obj={obj}
-          handlejs={handlejs}
-          path={path}
-          label={label}
-          OgJson={OgJson}
-        />}
+          {<JsonSidebarDetail
+            showObj={showObj}
+            obj={obj}
+            handlejs={handlejs}
+            path={path}
+            label={label}
+            OgJson={OgJson}
+          />}
         </div>
       </div>
     </div>
@@ -670,10 +670,10 @@ const RenderObject = ({
   handlejs,
   OgJson,
   setDupJson,
-}:any) => {
+}: any) => {
   return (
     <>
-      { (
+      {(
         <FabricsSideBar
           obj={obj}
           handlejs={handlejs}
@@ -689,13 +689,13 @@ const RenderObject = ({
 // This will be the main render function which can be called from outside to list datas
 export const RenderJson = memo(
   ({
-    json , functionality
-  }:any) => {
+    json, functionality
+  }: any) => {
     const [dupJson, setDupJson] = useState<any>(null);
     const [convertedJson, setConvertedJson] = useState<any>(null);
 
-    function convertJson(obj:any) {
-      const converted:any = {};
+    function convertJson(obj: any) {
+      const converted: any = {};
       for (let key in obj) {
         if (typeof obj[key] === "object" && !Array.isArray(obj[key])) {
           converted[key.replace(/\//g, ".")] = convertJson(obj[key]);
@@ -729,16 +729,16 @@ export const RenderJson = memo(
     const OgJson = () => {
       const jss = convertJson(dupJson);
       const newjson = JSON.stringify(jss, null, 2);
-      let newjs :any = unflatten(jss);
+      let newjs: any = unflatten(jss);
       setConvertedJson(newjs);
       functionality(newjs)
 
     };
 
-    const handlejs = (e:any, i:any, key:any, type:any, jskey:any) => {
+    const handlejs = (e: any, i: any, key: any, type: any, jskey: any) => {
 
       if (type == "obj") {
-        setDupJson((prev:any) => {
+        setDupJson((prev: any) => {
           return {
             ...prev,
             [i]: {
@@ -766,7 +766,7 @@ export const RenderJson = memo(
     };
 
 
-    function denormalizeJson(obj:any, prefix = "", result:any = {}, originalObj:any) {
+    function denormalizeJson(obj: any, prefix = "", result: any = {}, originalObj: any) {
       const copy = JSON.parse(JSON.stringify(obj));
       for (let key in copy) {
         if (copy.hasOwnProperty(key)) {
@@ -807,13 +807,13 @@ export const RenderJson = memo(
       return result;
     }
 
-const haandledenormalize = () => {
-  if(json){
-    const denormalized = denormalizeJson(json , "" , {} , json);
-    console.log(denormalized, 'denormalized')
-    setDupJson(structuredClone(denormalized))
-  }
-}
+    const haandledenormalize = () => {
+      if (json) {
+        const denormalized = denormalizeJson(json, "", {}, json);
+        console.log(denormalized, 'denormalized')
+        setDupJson(structuredClone(denormalized))
+      }
+    }
 
     useEffect(() => {
       haandledenormalize()
@@ -823,9 +823,9 @@ const haandledenormalize = () => {
       <div
         className="w-full  "
       >
-        {dupJson &&Object.keys(dupJson).length > 0 && (
+        {dupJson && Object.keys(dupJson).length > 0 && (
           <div className="">
-            { (
+            {(
               <>
                 <RenderObject
                   obj={dupJson}
