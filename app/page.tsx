@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Button, Tab, TabList, Tabs } from "react-aria-components";
+import { Button, Input, Tab, TabList, Tabs } from "react-aria-components";
 import { Separator } from "react-aria-components";
 import FabricSelector from "./components/Tab";
 import MenuItemAccordian from "./components/builderScreen/MenuItemAccordian";
@@ -9,11 +9,12 @@ import { toast } from "react-toastify";
 import DropDown from "./components/multiDropdownnew";
 import { useDarkMode } from "../lib/utils/useDarkmode";
 import { IoToggleSharp } from "react-icons/io5";
-import { HistoryIcon, PushandPullIcon } from "./constants/svgApplications";
+import { HistoryIcon, PushandPullIcon, SearchIcon } from "./constants/svgApplications";
 import { TreeNode } from "./constants/MenuItemTree";
 import BuilderTopNav from "./components/builderScreen/BuilderTopNav";
 import BuilderSideNav from "./components/builderScreen/BuilderSideNav";
 import ProcessLogs from "./components/torusComponents/processLog";
+import { FilterIcon } from "./components/torusComponents/SVG_Application";
 
 const page = () => {
   const [selectedAssemblerButton, setSelectedAssemblerButton] = useState(true);
@@ -28,7 +29,18 @@ const page = () => {
   const [versionList, setVersionList] = useState<string[]>([]);
   const [selectedVersion, setSelectedVersion] = useState<string>("");
   const { isDarkMode, toggleDarkMode } = useDarkMode();
-  const [logsTabList, setLogTabList] = useState("")
+  const [logsTabList, setLogTabList] = useState<any>("logDetails")
+  const [searchValue, setSearchValue] = useState<string>("");
+  const allColumns = [
+    "jobName",
+    "version",
+    "fabric",
+    "jobType",
+    "status",
+    "node",
+    "time",
+  ];
+  const [visibleColumns, setVisibleColumns] = useState<any>(allColumns);
 
   const handleBuildButtonSelect = () => {
     setSelectedAssemblerButton(true);
@@ -221,12 +233,41 @@ const page = () => {
             {
               selectedLogsButton &&
               <div className="flex pt-2 pr-3 gap-2 items-center">
-                <Tabs onSelectionChange={() => setLogTabList("")}>
+                <div className="flex w-full gap-2 items-center mt-2">
+                  <div className="relative ">
+                    <span className="absolute inset-y-0 left-0 flex items-center p-2 h-7 w-7">
+                      <SearchIcon />
+                    </span>
+                    <Input
+                      value={searchValue}
+                      onChange={(e) => setSearchValue(e.target.value)}
+                      placeholder="Search"
+                      className={`w- p-1 focus:outline-none focus:border-blue-400 border pl-6 text-sm font-medium rounded-md`}
+                    />
+                  </div>
+                  <DropDown
+                    classNames={{
+                      popover: "w-[200px]",
+                      triggerButton: "w-[100px] bg-[#F4F5FA] border-none",
+                    }}
+                    triggerButton={
+                      <div className="flex text-xs items-center gap-2">
+                        <FilterIcon /> Columns
+                      </div>
+                    }
+                    items={allColumns}
+                    selectedKeys={visibleColumns}
+                    setSelectedKeys={setVisibleColumns}
+                    multiple
+                    displaySelectedKeys={false}
+                  />
+                </div>
+                <Tabs selectedKey={logsTabList} onSelectionChange={setLogTabList}>
                   <TabList className="flex w-full p-1 gap-2 bg-[#F4F5FA] items-center text-nowrap rounded-md">
-                    <Tab id="logDetails" className={`p-1 outline-none text-sm rounded-lg ${logsTabList === 'logDetails' ? 'bg-[white]' : ''}`}>
+                    <Tab id="logDetails" className={`p-1 outline-none text-sm rounded-md ${logsTabList === 'logDetails' ? 'bg-[white]' : ''}`}>
                       Log Details
                     </Tab>
-                    <Tab id="exceptionDetails" className={`p-1 outline-none text-sm rounded-lg ${logsTabList === 'exceptionDetails' ? 'bg-[white]' : ''}`}>
+                    <Tab id="exceptionDetails" className={`p-1 outline-none text-sm rounded-md ${logsTabList === 'exceptionDetails' ? 'bg-[white]' : ''}`}>
                       Exception Details
                     </Tab>
                   </TabList>
@@ -353,7 +394,14 @@ const page = () => {
           }
           {selectedLogsButton &&
             <div>
-              <ProcessLogs />
+              {logsTabList == "logDetails" ? (
+                <ProcessLogs visibleColumns={visibleColumns} searchValue={searchValue} />
+              ) : (logsTabList == "exceptionDetails" ? (
+                null
+              ) : (
+                null
+              ))
+              }
             </div>
           }
         </div>

@@ -7,27 +7,10 @@ import {
   TorusTable,
   TorusTableHeader,
 } from "./torusTable";
-import { Cell, Input, Separator, TableBody } from "react-aria-components";
-import DropDown from "../multiDropdownnew";
-import { FilterIcon } from "./SVG_Application";
-import { SearchIcon } from "../../constants/svgApplications";
+import { Cell, Separator, TableBody } from "react-aria-components";
 
-const ProcessLogs = () => {
+const ProcessLogs = ({ visibleColumns, searchValue }: any) => {
   const [data, setData] = useState<any>([]);
-
-  const [searchValue, setSearchValue] = useState<string>("");
-
-  const allColumns = [
-    "jobName",
-    "version",
-    "fabric",
-    "jobType",
-    "status",
-    "node",
-    "time",
-  ];
-
-  const [visibleColumns, setVisibleColumns] = useState<any>(allColumns);
 
   const getProcessLogs = async () => {
     try {
@@ -175,35 +158,6 @@ const ProcessLogs = () => {
 
   return (
     <div>
-      {/* <div className="flex w-full gap-2 items-center mt-2">
-        <div className="relative ">
-          <span className="absolute inset-y-0 left-0 flex items-center p-2 h-7 w-7">
-            <SearchIcon />
-          </span>
-          <Input
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-            placeholder="Search"
-            className={`w- p-1 focus:outline-none focus:border-blue-400 border pl-6 text-sm font-medium rounded-md`}
-          />
-        </div>
-        <DropDown
-          classNames={{
-            popover: "w-[200px]",
-            triggerButton: "w-[100px] bg-[#F4F5FA] border-none",
-          }}
-          triggerButton={
-            <div className="flex text-xs items-center gap-2">
-              <FilterIcon /> Columns
-            </div>
-          }
-          items={allColumns}
-          selectedKeys={visibleColumns}
-          setSelectedKeys={setVisibleColumns}
-          multiple
-          displaySelectedKeys={false}
-        />
-      </div> */}
       <TorusTable
         primaryColumn="jobName"
         tableData={data}
