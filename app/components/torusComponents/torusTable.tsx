@@ -617,7 +617,7 @@ export function TorusTable({
         filterColmns.length > 0 &&
         sortDescriptor &&
         totalPages && (
-          <div className="w-full h-screen flex flex-col items-center justify-evenly">
+          <div className="w-full h-screen flex flex-col items-center ">
             {/* <div className="w-full h-[8%] flex justify-center items-center ">
               <div className="w-[95%] h-full flex justify-between items-center pl-2">
                 <div className="w-[60%] h-full bg-transparent rounded-md flex justify-start  ">
@@ -705,8 +705,8 @@ export function TorusTable({
               </div>
             </div> */}
             <div className="w-full h-[70%] flex flex-col justify-between items-center">
-              <div className="w-[95%] flex items-center justify-center h-[8%]">
-                {/* <div className="w-[60%] flex  h-full bg-transparent rounded-md ">
+              {/* <div className="w-[95%] flex items-center justify-center h-[8%]">
+                <div className="w-[60%] flex  h-full bg-transparent rounded-md ">
                   <div className="w-[20%] h-full bg-white rounded-md pl-2">
                     <Tabs aria-label="aria tabs">
                       <TabList
@@ -788,9 +788,9 @@ export function TorusTable({
                       fontStyle={"text-sm font-medium text-[#344054]"}
                     />
                   </div>
-                </div> */}
-              </div>
-              <div className="w-full h-[90%] overflow-scroll ">
+                </div>
+              </div> */}
+              <div className="w-full h-[90%] overflow-y-scroll ">
                 <Table
                   aria-label="table"
                   selectedKeys={selectedKeys}

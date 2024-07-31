@@ -175,7 +175,7 @@ const ProcessLogs = () => {
 
   return (
     <div>
-      <div className="flex w-full gap-2 items-center mt-2">
+      {/* <div className="flex w-full gap-2 items-center mt-2">
         <div className="relative ">
           <span className="absolute inset-y-0 left-0 flex items-center p-2 h-7 w-7">
             <SearchIcon />
@@ -203,7 +203,7 @@ const ProcessLogs = () => {
           multiple
           displaySelectedKeys={false}
         />
-      </div>
+      </div> */}
       <TorusTable
         primaryColumn="jobName"
         tableData={data}
