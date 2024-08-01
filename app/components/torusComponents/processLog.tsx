@@ -188,10 +188,10 @@ const ProcessLogs = ({ visibleColumns, searchValue }: any) => {
               )}
             </TorusTableHeader>
             <Separator className="dark:border-[#212121] border border-black" />
+            {/* <span className="h-[500px] overflow-y-scroll"> */}
             <TableBody
-              className={"overflow-y-auto"}
               renderEmptyState={() => (
-                <div className="text-center overflow-y-auto"> No Data </div>
+                <div className="text-center overflow-y-auto"> No Process log detail found </div>
               )}
             >
               {sortedItems.map((item: any, index: number) => (
@@ -227,6 +227,7 @@ const ProcessLogs = ({ visibleColumns, searchValue }: any) => {
                 </TorusRow>
               ))}
             </TableBody>
+            {/* </span> */}
           </>
         )}
       </TorusTable>

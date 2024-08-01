@@ -92,7 +92,7 @@ export function TorusTableHeader({
   const { selectionBehavior, selectionMode, isSkeleton } =
     useContext(TableDataContext);
   return (
-    <TableHeader aria-label="Table Header" className="w-full">
+    <TableHeader aria-label="Table Header" className="w-full sticky top-0">
       {/* Add extra columns for drag and drop and selection. */}
       {/* {allowsDragging && <Column />} */}
       {selectionBehavior === "toggle" && (
@@ -790,14 +790,14 @@ export function TorusTable({
                   </div>
                 </div>
               </div> */}
-              <div className="w-full h-[90%] overflow-y-scroll ">
+              <div className="w-full h-[90%] overflow-y-scroll mt-2">
                 <Table
                   aria-label="table"
                   selectedKeys={selectedKeys}
                   onSortChange={setSortDescriptor}
                   sortDescriptor={sortDescriptor}
                   onSelectionChange={setSelectedKeys}
-                  className={"w-full h-[90%] mt-2"}
+                  className={"w-full h-[90%] "}
                 >
                   {isSkeleton ? (
                     <>
