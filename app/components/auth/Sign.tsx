@@ -14,7 +14,7 @@ const Login = () => {
     const { isDarkMode, toggleDarkMode } = useDarkMode();
 
     return (
-        <div className="flex justify-between w-full h-screen bg-[#F4F4F6] overflow-hidden  dark:bg-[#171717]">
+        <div className="flex justify-between w-full h-screen bg-[#F4F4F6] overflow-hidden  dark:bg-[#171717] transition-colors duration-700 ease">
 
             <div className="w-[30%] flex items-center justify-center  ">
                 <LoginForm
