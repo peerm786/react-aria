@@ -19,6 +19,8 @@ import { FaArrowDown } from "react-icons/fa";
 import { CiSaveUp1 } from "react-icons/ci";
 import { Tabs, TabList, Tab } from "react-aria-components";
 import { Checkbox } from "react-aria-components";
+import { BiLeftArrowAlt } from "react-icons/bi";
+import { BiRightArrowAlt } from "react-icons/bi";
 
 import {
   DeleteIcon,
@@ -50,7 +52,7 @@ export function TorusColumn(props: any) {
       aria-label="Column"
       {...props}
       className={twMerge(
-        "text-xs  font-medium px-4 center bg-[#EAECF0] py-[0.8rem] torus-focus:outline-none torus-focus:border-none",
+        "text-xs  font-medium px-4 center bg-[#EAECF0] py-[0.8rem] focus:outline-none focus:border-none",
         props.className
       )}
     >
@@ -101,7 +103,7 @@ export function TorusTableHeader({
           className={twMerge(
             `text-xs w-[${
               100 / columns.length + 1
-            }%] font-medium px-2 py-[0.8rem] torus-focus:outline-none torus-focus:border-none`,
+            }%] font-medium px-2 py-[0.8rem] focus:outline-none focus:border-none`,
             className
           )}
         >
@@ -314,6 +316,88 @@ function TorusColumnCheckbox({ children, ...props }: any) {
     </Checkbox>
   );
 }
+
+const Pagination = ({ currentPage, totalPages, setCurrentPage }: any) => {
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    const maxPagesToShow = 4;
+
+    if (totalPages <= maxPagesToShow) {
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      let startPage = Math.max(currentPage - 2, 1);
+      let endPage = Math.min(startPage + maxPagesToShow - 1, totalPages);
+
+      if (endPage - startPage < maxPagesToShow - 1) {
+        startPage = Math.max(endPage - maxPagesToShow + 1, 1);
+      }
+
+      for (let i = startPage; i <= endPage; i++) {
+        pageNumbers.push(i);
+      }
+    }
+
+    return pageNumbers;
+  };
+
+  const handlePageChange = (page: any) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
+  return (
+    <div className="w-full flex items-center justify-center gap-4">
+      <Button
+        className="px-2 py-1 border rounded shadow flex items-center text-xs text-[#344054] gap-2 focus:outline-none"
+        onPress={() => handlePageChange(currentPage - 1)}
+        isDisabled={currentPage === 1}
+      >
+        <BiLeftArrowAlt size={20} /> Previous
+      </Button>
+      <div className="flex gap-2">
+        {getPageNumbers().map((page) => (
+          <Button
+            key={page}
+            className={`pagination-button text-xs focus:outline-none ${
+              page === currentPage
+                ? "text-[#0736C4] bg-[#E3EAFF] px-2 py-1 rounded"
+                : "text-[#667085]"
+            }`}
+            onPress={() => handlePageChange(page)}
+          >
+            {page}
+          </Button>
+        ))}
+        {totalPages > 4 && currentPage + 2 < totalPages && (
+          <span className="text-[#667085]">...</span>
+        )}
+      </div>
+      {totalPages > 4 && currentPage + 1 < totalPages && (
+        <Button
+          className={`pagination-button text-xs focus:outline-none ${
+            totalPages === currentPage
+              ? "text-[#0736C4] bg-[#E3EAFF] px-2 py-1 rounded"
+              : "text-[#667085]"
+          }`}
+          onPress={() => handlePageChange(totalPages)}
+        >
+          {totalPages}
+        </Button>
+      )}
+      <Button
+        className="px-2 py-1 border rounded shadow flex items-center text-xs text-[#344054] gap-2 focus:outline-none aria-pressed:hidden"
+        onPress={() => handlePageChange(currentPage + 1)}
+        isDisabled={currentPage === totalPages}
+      >
+        Next <BiRightArrowAlt size={20} />
+      </Button>
+    </div>
+  );
+};
+
 export function TorusTable({
   isAsync = false,
   allowsSorting = true,
@@ -592,6 +676,9 @@ export function TorusTable({
     }
     setPage(newPage(page));
   };
+
+  console.log(totalPages, "totalPages" , typeof totalPages);
+  
   return (
     <TableDataContext.Provider
       value={{
@@ -614,11 +701,11 @@ export function TorusTable({
       }}
     >
       {filterColmns &&
-        filterColmns.length > 0 &&
-        sortDescriptor &&
-        totalPages && (
-          <div className="w-full h-screen flex flex-col items-center ">
-            {/* <div className="w-full h-[8%] flex justify-center items-center ">
+      filterColmns.length > 0 &&
+      sortDescriptor &&
+      totalPages ? (
+        <div className="w-full h-screen flex flex-col items-center ">
+          {/* <div className="w-full h-[8%] flex justify-center items-center ">
               <div className="w-[95%] h-full flex justify-between items-center pl-2">
                 <div className="w-[60%] h-full bg-transparent rounded-md flex justify-start  ">
                   <div className="w-[100%] h-full bg-transparent gap-1 rounded-md flex flex-col items-center">
@@ -649,7 +736,7 @@ export function TorusTable({
                       Children="Save"
                     //   width={"full"}
                       btncolor={"#FFFFFF"}
-                      outlineColor="torus-hover:ring-gray-200/50"
+                      outlineColor="hover:ring-gray-200/50"
                       borderColor={"2px solid #D0D5DD"}
                       radius={"lg"}
                       color={"#000000"}
@@ -665,7 +752,7 @@ export function TorusTable({
                       Children="Import"
                     //   width={"full"}
                       btncolor={"#FFFFFF"}
-                      outlineColor="torus-hover:ring-gray-200/50"
+                      outlineColor="hover:ring-gray-200/50"
                       borderColor={"2px solid #D0D5DD"}
                       radius={"lg"}
                       color={"#000000"}
@@ -683,7 +770,7 @@ export function TorusTable({
                           Children={`Add`}
                           size={"xs"}
                           btncolor={"#0736C4"}
-                          outlineColor="torus-hover:ring-[#0736C4]/50"
+                          outlineColor="hover:ring-[#0736C4]/50"
                           radius={"lg"}
                           color={"#ffffff"}
                           gap={"py-[0.2rem] px-[0.2rem]"}
@@ -704,8 +791,10 @@ export function TorusTable({
                 </div>
               </div>
             </div> */}
-            <div className="w-full h-[70%] flex flex-col justify-between items-center">
-              {/* <div className="w-[95%] flex items-center justify-center h-[8%]">
+          <div
+            className={`w-full  ${totalPages>1 ? "h-[70%]": "h-[75%]"} flex flex-col justify-between items-center`}
+          >
+            {/* <div className="w-[95%] flex items-center justify-center h-[8%]">
                 <div className="w-[60%] flex  h-full bg-transparent rounded-md ">
                   <div className="w-[20%] h-full bg-white rounded-md pl-2">
                     <Tabs aria-label="aria tabs">
@@ -716,7 +805,7 @@ export function TorusTable({
                         <Tab
                           aria-label="Aria-Tabs"
                           className={
-                            "py-[0.2rem]  bg-white torus-focus:outline-none torus-focus:bg-[#F9FAFB] px-[0.5rem] rounded-l-md border-2 border-[#D0D5DD] border-r-transparent "
+                            "py-[0.2rem]  bg-white focus:outline-none focus:bg-[#F9FAFB] px-[0.5rem] rounded-l-md border-2 border-[#D0D5DD] border-r-transparent "
                           }
                           id="FoR"
                         >
@@ -727,7 +816,7 @@ export function TorusTable({
                         <Tab
                           aria-label="Aria-Tabs"
                           className={
-                            "py-[0.2rem]  bg-white torus-focus:outline-none torus-focus:bg-[#F9FAFB] px-[0.5rem] border-2 border-[#D0D5DD]  "
+                            "py-[0.2rem]  bg-white focus:outline-none focus:bg-[#F9FAFB] px-[0.5rem] border-2 border-[#D0D5DD]  "
                           }
                           id="MaR"
                         >
@@ -738,7 +827,7 @@ export function TorusTable({
                         <Tab
                           aria-label="Aria-Tabs"
                           className={
-                            "py-[0.2rem]  bg-white torus-focus:outline-none torus-focus:bg-[#F9FAFB] px-[0.5rem] border-2 border-[#D0D5DD] border-l-transparent rounded-r-md "
+                            "py-[0.2rem]  bg-white focus:outline-none focus:bg-[#F9FAFB] px-[0.5rem] border-2 border-[#D0D5DD] border-l-transparent rounded-r-md "
                           }
                           id="Emp"
                         >
@@ -756,7 +845,7 @@ export function TorusTable({
                       variant="bordered"
                       labelColor="text-[#000000]/50"
                       borderColor="border-[#000000]/20"
-                      outlineColor="torus-focus:ring-[#000000]/50"
+                      outlineColor="focus:ring-[#000000]/50"
                       placeholder="search"
                       onChange={handleSerach}
                       isDisabled={false}
@@ -779,7 +868,7 @@ export function TorusTable({
                       btWidth={"full"}
                       btncolor={"#FFFFFF"}
                       btheight={"md"}
-                      outlineColor="torus-hover:ring-gray-200/50"
+                      outlineColor="hover:ring-gray-200/50"
                       radius={"lg"}
                       color={"#000000"}
                       gap={"py-[0.2rem] px-[0.5rem]"}
@@ -790,92 +879,102 @@ export function TorusTable({
                   </div>
                 </div>
               </div> */}
-              <div className="w-full h-[90%] overflow-y-scroll mt-2">
-                <Table
-                  aria-label="table"
-                  selectedKeys={selectedKeys}
-                  onSortChange={setSortDescriptor}
-                  sortDescriptor={sortDescriptor}
-                  onSelectionChange={setSelectedKeys}
-                  className={"w-full h-[90%] "}
-                >
-                  {isSkeleton ? (
-                    <>
-                      {children &&
-                        typeof children === "function" &&
-                        children({
-                          selectedKeys,
-                          sortedItems,
-                          filterColmns,
-                          primaryColumn,
-                        })}
-                    </>
-                  ) : (
-                    <>
-                      <TorusTableHeader
-                        selectedKeys={selectedKeys}
-                        columns={[
-                          ...filterColmns,
-                          isEditable && {
-                            id: "Actions",
-                            name: "Actions",
-                            key: "Actions",
-                            label: "Actions",
-                            isRowHeader: false,
-                          },
-                        ]}
-                      />
+            <div className={`w-full h-full overflow-y-scroll mt-2 border-b-1`}>
+              <Table
+                aria-label="table"
+                selectedKeys={selectedKeys}
+                onSortChange={setSortDescriptor}
+                sortDescriptor={sortDescriptor}
+                onSelectionChange={setSelectedKeys}
+                className={"w-full h-full "}
+              >
+                {isSkeleton ? (
+                  <>
+                    {children &&
+                      typeof children === "function" &&
+                      children({
+                        selectedKeys,
+                        sortedItems,
+                        filterColmns,
+                        primaryColumn,
+                      })}
+                  </>
+                ) : (
+                  <>
+                    <TorusTableHeader
+                      selectedKeys={selectedKeys}
+                      columns={[
+                        ...filterColmns,
+                        isEditable && {
+                          id: "Actions",
+                          name: "Actions",
+                          key: "Actions",
+                          label: "Actions",
+                          isRowHeader: false,
+                        },
+                      ]}
+                    />
 
-                      <TableBody
-                        aria-label="table body"
-                        renderEmptyState={() => (
-                          <div className="text-center"> No Data </div>
-                        )}
-                      >
-                        {sortedItems.map((item: any, index: number) => (
-                          <>
-                            <TorusRow
-                              key={item[primaryColumn]}
-                              item={item}
-                              id={index}
-                              index={item[primaryColumn]}
-                              columns={[
-                                ...filterColmns,
-                                isEditable && {
-                                  id: "Actions",
-                                  name: "Actions",
-                                  key: "Actions",
-                                  label: "Actions",
-                                  isRowHeader: false,
-                                },
-                              ]}
-                              selectedKeys={selectedKeys}
-                              className={
-                                "border-1 border-b-slate-800 border-t-transparent border-l-transparent border-r-transparent"
-                              }
-                            />
-                          </>
-                        ))}
-                      </TableBody>
-                    </>
-                  )}
-                </Table>
-              </div>
+                    <TableBody
+                      aria-label="table body"
+                      renderEmptyState={() => (
+                        <div className="text-center"> No Data </div>
+                      )}
+                    >
+                      {sortedItems.map((item: any, index: number) => (
+                        <>
+                          <TorusRow
+                            key={item[primaryColumn]}
+                            item={item}
+                            id={index}
+                            index={item[primaryColumn]}
+                            columns={[
+                              ...filterColmns,
+                              isEditable && {
+                                id: "Actions",
+                                name: "Actions",
+                                key: "Actions",
+                                label: "Actions",
+                                isRowHeader: false,
+                              },
+                            ]}
+                            selectedKeys={selectedKeys}
+                            className={
+                              "border-1 border-b-slate-800 border-t-transparent border-l-transparent border-r-transparent"
+                            }
+                          />
+                        </>
+                      ))}
+                    </TableBody>
+                  </>
+                )}
+              </Table>
             </div>
+          </div>
+          {totalPages > 1 ? (
+            <div className="w-full h-[7%] flex items-center">
+            <Pagination
+              currentPage={page}
+              setCurrentPage={setPage}
+              totalPages={totalPages}
+              />
+             </div>
+            ) : 
+          null}
 
-            <div className="flex flex-col items-center justify-center pl-2 w-[100%] h-[5%]">
-              <div className="w-[95%] flex justify-between ">
-                <div className="w-[85%] flex justify-start">
+          {/* <div className="flex flex-col items-center justify-center pl-2 w-[100%] h-[5%]">
+              <div className="w-[95%] flex justify-between "> */}
+          {/* <div className="w-[85%] flex justify-start">
                   <span className="text-sm font-medium text-[#344054]">
                     Page {page} of {totalPages}
                   </span>
-                </div>
+                </div> */}
 
-                <div className="w-[15%] flex items-center justify-end gap-2">
-                  {/* <TorusButton
+          {/* <div className="w-[15%] flex items-center justify-end gap-2"> */}
+          {/* <TorusButton
                     Children={<FaArrowDown  color="white"/>}
                     size={"md"}
-                    outlineColor="torus-hover:ring-gray-200/50"
+                    outlineColor="hover:ring-gray-200/50"
                     btncolor={"warning"}
                     borderColor={"2px solid #D0D5DD"}
                     fontStyle={"text-xs font-normal text-[#344054]"}
@@ -884,12 +983,12 @@ export function TorusTable({
                     isIconOnly={true}
                   /> */}
 
-                  <div className="w-[40%] flex justify-start">
+          {/* <div className="w-[40%] flex justify-start">
                     <TorusButton
                       Children="Previous"
                       size={"md"}
                       btncolor={"#FFFFFF"}
-                      outlineColor="torus-hover:ring-gray-200/50"
+                      outlineColor="hover:ring-gray-200/50"
                       borderColor={"2px solid #D0D5DD"}
                       fontStyle={"text-xs font-normal text-[#344054]"}
                       radius={"lg"}
@@ -897,13 +996,13 @@ export function TorusTable({
                       // startContent={<GiPreviousButton />}
                       onPress={() => handlePageChange("prev")}
                     />
-                  </div>
+                  </div> */}
 
-                  <div className="w-[30%] flex justify-end">
+          {/* <div className="w-[30%] flex justify-end">
                     <TorusButton
                       Children={"Next"}
                       btncolor={"#FFFFFF"}
-                      outlineColor="torus-hover:ring-gray-200/50"
+                      outlineColor="hover:ring-gray-200/50"
                       borderColor={"2px solid #D0D5DD"}
                       fontStyle={"text-xs font-normal text-[#344054]"}
                       radius={"lg"}
@@ -912,12 +1011,16 @@ export function TorusTable({
                       // startContent={<GiPreviousButton />}
                       onPress={() => handlePageChange("next")}
                     />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+                  </div> */}
+          {/* </div> */}
+          {/* </div>
+            </div> */}
+        </div>
+      ) : (
+        <div className="flex items-center justify-center w-full h-[80vh]">
+          No Data available
+        </div>
+      )}
     </TableDataContext.Provider>
   );
 }
@@ -1175,7 +1278,7 @@ const Cycle = ({ obj, setObj }: any) => {
               label={ele}
               labelColor="text-[#000000]/50"
               borderColor="[#000000]/50"
-              outlineColor="torus-focus:ring-[#000000]/50"
+              outlineColor="focus:ring-[#000000]/50"
               placeholder=""
               isDisabled={false}
               onChange={(e: any) => setObj({ ...obj, [ele]: e })}
@@ -1194,7 +1297,7 @@ const Cycle = ({ obj, setObj }: any) => {
           variant="bordered"
           labelColor="text-[#000000]/50"
           borderColor="[#000000]/50"
-          outlineColor="torus-focus:ring-[#000000]/50"
+          outlineColor="focus:ring-[#000000]/50"
           placeholder=""
           isDisabled={false}
           onChange={(e: any) => setObj(e)}
