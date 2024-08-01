@@ -10,6 +10,7 @@ import { AxiosService } from '../../../lib/utils/axiosService';
 import { toast } from 'react-toastify';
 import JsonView from "react18-json-view";
 import "react18-json-view/src/style.css";
+import { tree } from 'next/dist/build/templates/app-page';
 
 const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[], searchValue: string }) => {
     const [data, setData] = useState<any[]>([]);
@@ -80,7 +81,6 @@ const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[
                 return "none";
         }
     };
-
 
     const handleRowAction = (item: any) => {
         if (item.errorDetails) {
@@ -168,19 +168,17 @@ const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[
                 </TorusTable>
             </div>
             <hr className="w-[1px] h-[90%] bg-black/10" />
-            <div className='w-[25%] h-[75%] pt-2 pr-2'>
-                <div className='flex flex-col h-full items-center bg-[#F4F5FA] rounded-lg'>
-                    <h2 className="text-xl font-bold text-left">Error Details</h2>
-                    {/* <div className="flex w-full h-[40%] overflow-y-auto"> */}
+            <div className='w-[25%] h-[75%] mt-2 mr-3 items-center bg-[#F4F5FA] rounded-lg'>
+                <p className="text-l p-3 font-semibold text-left">Error Details</p>
+                <div className='w-full h-[88%] overflow-y-auto'>
                     {(tabdata) ? (
                         <JsonView
                             theme='atom'
                             enableClipboard={false}
                             src={tabdata}
-                            className='w-full h-full overflow-y-auto'
+                            collapsed={true}
                         />
                     ) : null}
-                    {/* </div> */}
                 </div>
             </div>
         </div>
