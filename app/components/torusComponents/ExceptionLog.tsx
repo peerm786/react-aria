@@ -168,9 +168,9 @@ const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[
                 </TorusTable>
             </div>
             <hr className="w-[1px] h-[90%] bg-black/10" />
-            <div className='w-[25%] h-[75%] mt-2 mr-3 items-center bg-[#F4F5FA] rounded-lg'>
+            <div className='w-[25%] h-[85%] mt-2 mr-3 items-center bg-[#F4F5FA] rounded-lg'>
                 <p className="text-l p-3 font-semibold text-left">Error Details</p>
-                <div className='w-full h-[88%] overflow-y-auto'>
+                <div className='w-full h-[88%] overflow-scroll scrollbar-hide'>
                     {(tabdata) ? (
                         <JsonView
                             theme='atom'

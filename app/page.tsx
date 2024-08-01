@@ -481,7 +481,7 @@ const page = () => {
             </div>
           }
           {selectedLogsButton &&
-            <div>
+            <div className="w-full h-full">
               {logsTabList == "log" ? (
                 <ProcessLogs visibleColumns={visibleColumns} searchValue={searchValue} />
               ) : (logsTabList == "exception" && (
