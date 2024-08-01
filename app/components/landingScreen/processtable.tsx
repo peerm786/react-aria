@@ -497,11 +497,10 @@ interface Vendor {
     fabric: string;
     jobType: string;
     nodeName: string;
+
     status: string;
-    madeBy: {
-        avatar: string;
-        name: string;
-    };
+    timestamp: string[];
+
     time: string[];
     key: string,
 }
@@ -533,8 +532,6 @@ const VendorTable: React.FC = () => {
                 });
                 console.log(res)
 
-
-
                 if (res.status === 200) {
                     setLoading(true);
                     setData(res.data);
@@ -549,53 +546,7 @@ const VendorTable: React.FC = () => {
         })();
     }, []);
 
-    var allKey: any = [];
-    for (let i = 0; i < data.length; i++) {
-        allKey = [...allKey, data[i].key];
-    }
 
-    const unique = allKey.filter((item: any, index: any) => {
-        return allKey.indexOf(item) === index;
-    });
-
-
-    allKey = unique;
-
-    var timestamp: any = [];
-
-    for (let i = 0; i < allKey.length; i++) {
-        var times: any = [];
-        var nodeNames: any = [];
-        for (let j = 0; j < data.length; j++) {
-            if (allKey[i] == data[j].key) {
-                if (data[j].time) times.push(data[j].time);
-                if (data[j].nodeName) {
-                    var ggg = JSON.parse(JSON.stringify(data[j]));
-                    delete ggg.key;
-                    delete ggg.time;
-
-                    nodeNames.push({ ...ggg });
-                }
-            }
-        }
-        timestamp = [...timestamp, { time: times, nodeName: nodeNames }];
-    }
-
-
-    var rearranged: any = [];
-
-    for (let i = 0; i < allKey.length; i++)
-        rearranged = [...rearranged, { key: allKey[i], ...timestamp[i] }];
-
-
-
-    var filter: any = [];
-
-    for (let i = 0; i < rearranged.length; i++) {
-        if (rearranged[i].key.startsWith(tenant)) {
-            filter = [...filter, rearranged[i]];
-        }
-    }
 
 
 
@@ -618,6 +569,7 @@ const VendorTable: React.FC = () => {
     const displayjobname = (data: any) => {
         const array = data.key.split(":")
         const jobName = array[5]
+        const uid = array[7]
         return (
             <div>
                 <div>{jobName}</div>
@@ -626,12 +578,17 @@ const VendorTable: React.FC = () => {
                         index < 3 && <span>{item + ">"}</span>
                     ))}
                 </div>
+                <div>
+                    Uid:{uid}
+                </div>
+
             </div>
 
 
         )
 
     }
+
     const version = (data: any) => {
         const array = data.key.split(":")
         const version = array[6]
@@ -642,11 +599,13 @@ const VendorTable: React.FC = () => {
         const fabric = array[1]
         return <div>{fabric}</div>
     }
-    const nodeName = (data: any) => {
-        const array = data.key.split(":")
-        const nodeName = array[2]
-        return <div>{nodeName}</div>
-    }
+    // const nodeName = (data: any) => {
+    //     const array = data.key.split(":")
+    //     const nodeName = array[2]
+    //     return <div>{nodeName}</div>
+    // }
+
+
     const time = (data: any) => {
         const array = data.key.split(":")
         const timestamp = array[1]
@@ -656,13 +615,78 @@ const VendorTable: React.FC = () => {
 
     const handleClick = (event: React.MouseEvent<HTMLTableCellElement, MouseEvent>, ele: any, index: number, id: any) => {
         setTabData(ele);
-        setActiveTableRow([id, index]); // Assuming `id` is defined somewhere in your component
+        setActiveTableRow([id, index]);
     };
+
+
+    // const handleData = () => {
+    //     const objData: any = [];
+    //     if (data.length) {
+    //         data.forEach((item) => {
+    //             objData.forEach((ele: any) => {
+    //                 if (item.key === ele.key) {
+    //                     ele.nodeData.push({ node: item.nodeName, time: item.time, status: item.status })
+    //                 } else {
+    //                     objData.push({
+    //                         key: item.key,
+    //                         nodeData: [{ node: item.nodeName, time: item.time }]
+    //                     })
+    //                 }
+    //             })
+    //         })
+    //     }
+    //     console.log(objData);
+    // }
+    // const determineOverallStatus = (nodeData: any) => {
+    //     return nodeData.every(subItem => subItem.status === 'Success') ? 'Success' : 'Failed';
+    // };
+
+
+
+    const groupedData: { [key: string]: any[] } = {};
+
+    data.forEach((item: any) => {
+        // Check if the key already exists in groupedData
+        if (!groupedData[item.key]) {
+            // If not, create a new entry with an empty array
+            groupedData[item.key] = [];
+        }
+        // Add the current item to the array for the specific key
+        groupedData[item.key].push({
+            node: item.nodeName,
+            time: item.time,
+            status: item.status,
+            npc: item.npc,
+            ipc: item.ipc
+        });
+    });
+
+    // Convert the groupedData object into an array if needed
+    const result = Object.keys(groupedData).map(key => ({
+        key,
+        nodeData: groupedData[key],
+
+
+    }));
+    console.log(result);
+
+
+
+
+
+
+
+
+
+
+
+
     return (
         <div className='flex justify-between h-screen'>
+            {/* <button onClick={handleData}>getData</button> */}
             <div className="container mx-auto p-4 ">
                 <Tabs>
-                    <TabList className="flex space-x-2">
+                    <TabList className="flex space-x-2 font-inter font-bold text-sm">
                         <Tab id="logDetails" className={`p-2 rounded-lg ${tabListState.selectedKey === 'logDetails' ? 'bg-gray-200' : 'bg-gray-100'}`}>
                             Log Details
                         </Tab>
@@ -677,10 +701,7 @@ const VendorTable: React.FC = () => {
                             <Table
 
                                 className="w-full  overflow-y-auto  border-gray-300 rounded-lg  "
-                                aria-label="Example table with client side sorting"
-
-
-                            >
+                                aria-label="Example table with client side sorting" >
 
                                 <TableHeader className=" flex text-start bg-[#F4F5FA]  text-sm border-b rounded-lg ">
                                     <Column className="  w-1/8 h-12 " isRowHeader={true}>Job Name</Column>
@@ -695,25 +716,36 @@ const VendorTable: React.FC = () => {
                                 <TableBody className=" flex flex-col h-full gap-10 whitespace-normal break-words  ">
                                     {data.map((item: any, id: any) => (
                                         <Row key={item.id} className=" flex gap-28 ">
-                                            <Cell className=""> {displayjobname(item)}
+                                            <Cell >
+                                                {displayjobname(item)}
+
 
                                             </Cell>
                                             <Cell className="">{version(item)}</Cell>
                                             <Cell className="">{fabric(item)}</Cell>
-                                            <Cell className="">{displayartifacts(item)}</Cell>
-                                            <Cell className="">{item.nodeName}</Cell>
+                                            <Cell className="">Process</Cell>
+                                            <Cell>
+                                                {groupedData[item.key].map((item: any, index: number) => (
+                                                    <div key={index}>{item.node}</div>
 
+                                                ))}
 
-                                            <Cell className=" ">
-                                                <span
-                                                    className={`px-4 py-1 rounded-full text-white ${item.status === 'Success' ? 'bg-green-500' : 'bg-red-500'}`}
-                                                >
-                                                    {item.status}
-                                                </span>
                                             </Cell>
 
-                                            <Cell className="whitespace-normal break-words">
-                                                {item.time}
+                                            <Cell>
+                                                <span className={`px-4 py-1 rounded-full text-white ${item.statusDetails === 'Success' ? 'bg-green-500' : 'bg-red-500'}`}
+                                                >{groupedData[item.key][0].status}</span>
+
+                                                {groupedData[item.key].map((item: any, index: number) => (
+                                                    <div key={index}>{item.status}</div>
+
+                                                ))}
+                                            </Cell>
+                                            <Cell >
+                                                {groupedData[item.key].map((item: any, index: number) => (
+                                                    <div key={index}>{item.time}</div>
+
+                                                ))}
                                             </Cell>
                                         </Row>
                                     ))}
