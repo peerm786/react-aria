@@ -3,6 +3,7 @@ import {
   BellIcon,
   CallChatSvg,
   HomeSvg,
+  LogDetailIcon,
   QuestionSvg,
   SettingsIcon,
   ShopSvg,
@@ -11,10 +12,25 @@ import { Button } from "react-aria-components";
 import TorusAvatar from "../Avatar";
 import TorusDialog from "../torusdialogmodal";
 import Settings from "../settings";
+import { useRouter } from "next/navigation";
 
 const Sidebar = () => {
   const [fillIndex, setFillIndex] = useState(0);
-  const actionIcons = [HomeSvg, ShopSvg, QuestionSvg, CallChatSvg];
+  const actionIcons = [
+    { Icon: HomeSvg, route: "/torus" },
+    { Icon: ShopSvg },
+    { Icon: QuestionSvg },
+    { Icon: CallChatSvg },
+    { Icon: LogDetailIcon, route: "/" }
+  ];
+  const router = useRouter();
+
+  const handleRoutes = (index: number, route: string | undefined) => {
+    if (route) {
+      router.push(route);
+    }
+    setFillIndex(index);
+  }
 
   return (
     <aside
@@ -26,11 +42,11 @@ const Sidebar = () => {
           aria-label="Actions"
           className="w-12 flex flex-col items-center justify-center gap-3 mt-3"
         >
-          {actionIcons.map((Icon, index) => (
+          {actionIcons.map(({ Icon, route }, index) => (
             <Button
               key={index}
               className={`p-2 focus:outline-none`}
-              onPress={() => setFillIndex(index)}
+              onPress={() => handleRoutes(index, route)}
             >
               <Icon
                 key={index}

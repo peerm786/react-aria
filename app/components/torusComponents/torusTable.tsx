@@ -71,9 +71,8 @@ export function TorusColumn(props: any) {
                   <FaArrowDown
                     size={15}
                     color="#667085"
-                    className={` transition-rotate ease-in-out duration-100 ${
-                      sortDirection === "ascending" ? "rotate-180" : ""
-                    }`}
+                    className={` transition-rotate ease-in-out duration-100 ${sortDirection === "ascending" ? "rotate-180" : ""
+                      }`}
                   />
                 </span>
               )}
@@ -101,8 +100,7 @@ export function TorusTableHeader({
         <Column
           aria-label="Column"
           className={twMerge(
-            `text-xs w-[${
-              100 / columns.length + 1
+            `text-xs w-[${100 / columns.length + 1
             }%] font-medium px-2 py-[0.8rem] focus:outline-none focus:border-none`,
             className
           )}
@@ -149,9 +147,17 @@ export function TorusRow({
 }: any) {
   let { selectionBehavior, isSkeleton } = useContext(TableDataContext);
 
+  const handleRowAction = (item: any) => {
+    if (otherProps?.onAction) {
+      otherProps?.onAction(item)
+    } else {
+      console.log("Action not found")
+    }
+  }
+
   return (
     <>
-      <Row aria-label="Row" {...otherProps} key={id} className={className}>
+      <Row aria-label="Row" {...otherProps} key={id} className={className} onAction={() => handleRowAction(otherProps?.item)}>
         {/* {allowsDragging && (
             <Cell className={"min-h-4"}>
               <Button slot="drag">≡</Button>
@@ -223,8 +229,8 @@ export function TorusCheckbox({ children, index, ...props }: any) {
       className={"w-full, h-full, flex items-center justify-center"}
       isIndeterminate={
         selectedRows &&
-        Array.from(selectedRows).length > 0 &&
-        (selectedRows.has(index) || selectedRows.has("all"))
+          Array.from(selectedRows).length > 0 &&
+          (selectedRows.has(index) || selectedRows.has("all"))
           ? true
           : false
       }
@@ -253,7 +259,7 @@ export function TorusCheckbox({ children, index, ...props }: any) {
               } else {
                 if (
                   Array.from(selectedRows).length + 1 ==
-                    Array.from(tableIndex).length &&
+                  Array.from(tableIndex).length &&
                   selectionMode === "multiple"
                 ) {
                   setSelectedRows(new Set(["all"]));
@@ -288,8 +294,8 @@ function TorusColumnCheckbox({ children, ...props }: any) {
       id="all"
       isIndeterminate={
         selectedRows &&
-        Array.from(selectedRows).length > 0 &&
-        selectedRows.has("all")
+          Array.from(selectedRows).length > 0 &&
+          selectedRows.has("all")
           ? true
           : false
       }
@@ -361,11 +367,10 @@ const Pagination = ({ currentPage, totalPages, setCurrentPage }: any) => {
         {getPageNumbers().map((page) => (
           <Button
             key={page}
-            className={`pagination-button text-xs focus:outline-none ${
-              page === currentPage
-                ? "text-[#0736C4] bg-[#E3EAFF] px-2 py-1 rounded"
-                : "text-[#667085]"
-            }`}
+            className={`pagination-button text-xs focus:outline-none ${page === currentPage
+              ? "text-[#0736C4] bg-[#E3EAFF] px-2 py-1 rounded"
+              : "text-[#667085]"
+              }`}
             onPress={() => handlePageChange(page)}
           >
             {page}
@@ -377,11 +382,10 @@ const Pagination = ({ currentPage, totalPages, setCurrentPage }: any) => {
       </div>
       {totalPages > 4 && currentPage + 1 < totalPages && (
         <Button
-          className={`pagination-button text-xs focus:outline-none ${
-            totalPages === currentPage
-              ? "text-[#0736C4] bg-[#E3EAFF] px-2 py-1 rounded"
-              : "text-[#667085]"
-          }`}
+          className={`pagination-button text-xs focus:outline-none ${totalPages === currentPage
+            ? "text-[#0736C4] bg-[#E3EAFF] px-2 py-1 rounded"
+            : "text-[#667085]"
+            }`}
           onPress={() => handlePageChange(totalPages)}
         >
           {totalPages}
@@ -677,8 +681,6 @@ export function TorusTable({
     setPage(newPage(page));
   };
 
-  console.log(totalPages, "totalPages" , typeof totalPages);
-  
   return (
     <TableDataContext.Provider
       value={{
@@ -701,9 +703,9 @@ export function TorusTable({
       }}
     >
       {filterColmns &&
-      filterColmns.length > 0 &&
-      sortDescriptor &&
-      totalPages ? (
+        filterColmns.length > 0 &&
+        sortDescriptor &&
+        totalPages ? (
         <div className="w-full h-screen flex flex-col items-center ">
           {/* <div className="w-full h-[8%] flex justify-center items-center ">
               <div className="w-[95%] h-full flex justify-between items-center pl-2">
@@ -792,7 +794,7 @@ export function TorusTable({
               </div>
             </div> */}
           <div
-            className={`w-full  ${totalPages>1 ? "h-[70%]": "h-[75%]"} flex flex-col justify-between items-center`}
+            className={`w-full  ${totalPages > 1 ? "h-[70%]" : "h-[75%]"} flex flex-col justify-between items-center`}
           >
             {/* <div className="w-[95%] flex items-center justify-center h-[8%]">
                 <div className="w-[60%] flex  h-full bg-transparent rounded-md ">
@@ -953,14 +955,14 @@ export function TorusTable({
           </div>
           {totalPages > 1 ? (
             <div className="w-full h-[7%] flex items-center">
-            <Pagination
-              currentPage={page}
-              setCurrentPage={setPage}
-              totalPages={totalPages}
+              <Pagination
+                currentPage={page}
+                setCurrentPage={setPage}
+                totalPages={totalPages}
               />
-             </div>
-            ) : 
-          null}
+            </div>
+          ) :
+            null}
 
           {/* <div className="flex flex-col items-center justify-center pl-2 w-[100%] h-[5%]">
               <div className="w-[95%] flex justify-between "> */}

@@ -211,7 +211,7 @@ const ProcessLogs = ({ visibleColumns, searchValue }: any) => {
                       {columns.map((column: any, i: number) => (
                         <Cell
                           key={i}
-                          className={"border-b border-[#EAECF0]"}
+                          className={"border-b border-transparent"}
                           children={
                             <div className="w-full h-full flex flex-col items-center justify-center py-[1rem] text-xs font-normal ">
                               {/* <RenderTableChildren

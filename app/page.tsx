@@ -9,12 +9,13 @@ import { toast } from "react-toastify";
 import DropDown from "./components/multiDropdownnew";
 import { useDarkMode } from "../lib/utils/useDarkmode";
 import { IoToggleSharp } from "react-icons/io5";
-import { HistoryIcon, PushandPullIcon, SearchIcon } from "./constants/svgApplications";
+import { ColumnIcon, HistoryIcon, PushandPullIcon, SearchIcon } from "./constants/svgApplications";
 import { TreeNode } from "./constants/MenuItemTree";
 import BuilderTopNav from "./components/builderScreen/BuilderTopNav";
 import BuilderSideNav from "./components/builderScreen/BuilderSideNav";
 import ProcessLogs from "./components/torusComponents/processLog";
 import { FilterIcon } from "./components/torusComponents/SVG_Application";
+import ExceptionLog from "./components/torusComponents/ExceptionLog";
 
 const page = () => {
   const [selectedAssemblerButton, setSelectedAssemblerButton] = useState(true);
@@ -29,9 +30,9 @@ const page = () => {
   const [versionList, setVersionList] = useState<string[]>([]);
   const [selectedVersion, setSelectedVersion] = useState<string>("");
   const { isDarkMode, toggleDarkMode } = useDarkMode();
-  const [logsTabList, setLogTabList] = useState<any>("logDetails")
+  const [logsTabList, setLogTabList] = useState<"exception" | "log" | any>("log")
   const [searchValue, setSearchValue] = useState<string>("");
-  const allColumns = [
+  const allProcessLogColumns = [
     "jobName",
     "version",
     "fabric",
@@ -40,7 +41,13 @@ const page = () => {
     "node",
     "time",
   ];
-  const [visibleColumns, setVisibleColumns] = useState<any>(allColumns);
+  const allExceptionLogColumns = [
+    "key",
+    "version",
+    "timeStamp",
+    "errorCode",
+  ]
+  const [visibleColumns, setVisibleColumns] = useState<any>(allProcessLogColumns);
 
   const handleBuildButtonSelect = () => {
     setSelectedAssemblerButton(true);
@@ -119,12 +126,18 @@ const page = () => {
 
   useEffect(() => {
     fetchTenants();
+    if (logsTabList == "exception") {
+      setVisibleColumns(allExceptionLogColumns);
+    } else if (logsTabList == "log") {
+      setVisibleColumns(allProcessLogColumns);
+    }
   }, []);
+
 
   const getAssemblerVersion = async (app: string) => {
     try {
       const res = await AxiosService.get(
-        `/tp/getAssemblerVersion?key=${selectedTenant}:${selectAppGroup}:${app}:ABK`
+        `/tp/getAssemblerVersion?key=TGA:ARK:RELEASE:${selectedTenant}:${selectAppGroup}:${app}`
       );
 
       if (res.status == 200) {
@@ -138,23 +151,22 @@ const page = () => {
   const getAssemblerData = async (version: string) => {
     try {
       const res = await AxiosService.get(
-        `/tp/getAssemblerData?key=${selectedTenant}:${selectAppGroup}:${selectApp}:ABK:${version}`
+        `/tp/getAssemblerData?key=TGA:ARK:RELEASE:${selectedTenant}:${selectAppGroup}:${selectApp}:${version}`
       );
       if (res.status == 200) {
         setMenuItemData(res.data);
       } else {
         setMenuItemData([]);
       }
-
     } catch (error) {
       setMenuItemData([]);
     }
-  }
+  };
 
   const handleSaveBuild = async () => {
     try {
       const res = await AxiosService.post("/tp/saveAssemblerData", {
-        key: `${selectedTenant}:${selectAppGroup}:${selectApp}:ABK`,
+        key: `TGA:ARK:RELEASE:${selectedTenant}:${selectAppGroup}:${selectApp}`,
         data: menuItemData,
       });
       if (res.status == 201) {
@@ -168,16 +180,74 @@ const page = () => {
   const handleUpdateBuild = async () => {
     try {
       const res = await AxiosService.post("/tp/updateAssemblerData", {
-        key: `${selectedTenant}:${selectAppGroup}:${selectApp}:ABK:${selectedVersion}`,
+        key: `TGA:ARK:RELEASE:${selectedTenant}:${selectAppGroup}:${selectApp}:${selectedVersion}`,
         data: menuItemData,
-      })
+      });
       if (res.status == 201) {
         toast.success("Build saved successfully");
       }
     } catch (error) {
       toast.error("Error saving build");
     }
-  }
+  };
+
+  // const getAssemblerVersion = async (app: string) => {
+  //   try {
+  //     const res = await AxiosService.get(
+  //       `/tp/getAssemblerVersion?key=${selectedTenant}:${selectAppGroup}:${app}:ABK`
+  //     );
+
+  //     if (res.status == 200) {
+  //       setVersionList(res.data);
+  //     }
+  //   } catch (err) {
+  //     setVersionList([]);
+  //   }
+  // };
+
+  // const getAssemblerData = async (version: string) => {
+  //   try {
+  //     const res = await AxiosService.get(
+  //       `/tp/getAssemblerData?key=${selectedTenant}:${selectAppGroup}:${selectApp}:ABK:${version}`
+  //     );
+  //     if (res.status == 200) {
+  //       setMenuItemData(res.data);
+  //     } else {
+  //       setMenuItemData([]);
+  //     }
+
+  //   } catch (error) {
+  //     setMenuItemData([]);
+  //   }
+  // }
+
+  // const handleSaveBuild = async () => {
+  //   try {
+  //     const res = await AxiosService.post("/tp/saveAssemblerData", {
+  //       key: `${selectedTenant}:${selectAppGroup}:${selectApp}:ABK`,
+  //       data: menuItemData,
+  //     });
+  //     if (res.status == 201) {
+  //       toast.success("Build saved successfully");
+  //     }
+  //   } catch (error) {
+  //     toast.error("Error saving build");
+  //   }
+  // };
+
+  // const handleUpdateBuild = async () => {
+  //   try {
+  //     const res = await AxiosService.post("/tp/updateAssemblerData", {
+  //       key: `${selectedTenant}:${selectAppGroup}:${selectApp}:ABK:${selectedVersion}`,
+  //       data: menuItemData,
+  //     })
+  //     if (res.status == 201) {
+  //       toast.success("Build saved successfully");
+  //     }
+  //   } catch (error) {
+  //     toast.error("Error saving build");
+  //   }
+  // }
 
   return (
     <div className="flex flex-col w-full h-screen">
@@ -185,7 +255,7 @@ const page = () => {
       <div className="flex justify-between bg-[#F4F5FA] w-full h-[92%]">
         <BuilderSideNav />
         <div className="flex flex-col w-[94%] h-[95%] border border-black/15 bg-white mt-5 overflow-y-hidden dark:bg-[#161616] rounded-md mr-3 scrollbar-hide">
-          <div className="flex w-full justify-between">
+          <div className="flex w-full items-center justify-between">
             <div className="flex gap-5 pt-2 pl-4">
               <Button
                 className={`${selectedAssemblerButton ? "font-semibold" : ""
@@ -232,9 +302,9 @@ const page = () => {
             }
             {
               selectedLogsButton &&
-              <div className="flex pt-2 pr-3 gap-2 items-center">
-                <div className="flex w-full gap-2 items-center mt-2">
-                  <div className="relative ">
+              <div className="flex gap-2 items-center">
+                <div className="flex w-full gap-2 items-center pt-2">
+                  <div className="relative">
                     <span className="absolute inset-y-0 left-0 flex items-center p-2 h-7 w-7">
                       <SearchIcon />
                     </span>
@@ -248,30 +318,48 @@ const page = () => {
                   <DropDown
                     classNames={{
                       popover: "w-[200px]",
-                      triggerButton: "w-[100px] bg-[#F4F5FA] border-none",
+                      triggerButton: "w-[100px] h-[30px] border border-black/15 rounded-lg bg-[#F4F5FA]",
                     }}
                     triggerButton={
-                      <div className="flex text-xs items-center gap-2">
-                        <FilterIcon /> Columns
+                      <div className="flex text-xs font-medium items-center gap-2">
+                        <ColumnIcon /> Columns
                       </div>
                     }
-                    items={allColumns}
+                    items={logsTabList == "exception" ? allExceptionLogColumns : allProcessLogColumns}
+                    selectedKeys={visibleColumns}
+                    setSelectedKeys={setVisibleColumns}
+                    multiple
+                    displaySelectedKeys={false}
+                  />
+                  <DropDown
+                    classNames={{
+                      popover: "w-[200px]",
+                      triggerButton: "w-[90px] h-[30px] border border-black/15 rounded-lg bg-[#F4F5FA]",
+                    }}
+                    triggerButton={
+                      <div className="flex text-xs font-medium items-center gap-2">
+                        <FilterIcon /> Filter
+                      </div>
+                    }
+                    items={logsTabList == "exception" ? allExceptionLogColumns : allProcessLogColumns}
                     selectedKeys={visibleColumns}
                     setSelectedKeys={setVisibleColumns}
                     multiple
                     displaySelectedKeys={false}
                   />
                 </div>
-                <Tabs selectedKey={logsTabList} onSelectionChange={setLogTabList}>
-                  <TabList className="flex w-full p-1 gap-2 bg-[#F4F5FA] items-center text-nowrap rounded-md">
-                    <Tab id="logDetails" className={`p-1 outline-none text-sm rounded-md ${logsTabList === 'logDetails' ? 'bg-[white]' : ''}`}>
-                      Log Details
-                    </Tab>
-                    <Tab id="exceptionDetails" className={`p-1 outline-none text-sm rounded-md ${logsTabList === 'exceptionDetails' ? 'bg-[white]' : ''}`}>
-                      Exception Details
-                    </Tab>
-                  </TabList>
-                </Tabs>
+                <div>
+                  <Tabs className={"pt-2 pr-2"} selectedKey={logsTabList} onSelectionChange={setLogTabList}>
+                    <TabList className="flex w-full p-1 gap-2 bg-[#F4F5FA] items-center text-nowrap rounded-md">
+                      <Tab id="log" className={`p-2 outline-none text-xs rounded-md font-semibold cursor-pointer ${logsTabList === 'log' ? 'bg-white' : ''}`}>
+                        Log Details
+                      </Tab>
+                      <Tab id="exception" className={`p-2 outline-none text-xs rounded-md font-semibold cursor-pointer ${logsTabList === 'exception' ? 'bg-white' : ''}`}>
+                        Exception Details
+                      </Tab>
+                    </TabList>
+                  </Tabs>
+                </div>
               </div>
             }
           </div>
@@ -394,12 +482,10 @@ const page = () => {
           }
           {selectedLogsButton &&
             <div>
-              {logsTabList == "logDetails" ? (
+              {logsTabList == "log" ? (
                 <ProcessLogs visibleColumns={visibleColumns} searchValue={searchValue} />
-              ) : (logsTabList == "exceptionDetails" ? (
-                null
-              ) : (
-                null
+              ) : (logsTabList == "exception" && (
+                <ExceptionLog visibleColumns={visibleColumns} searchValue={searchValue} />
               ))
               }
             </div>
