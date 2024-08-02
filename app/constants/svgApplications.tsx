@@ -1519,12 +1519,20 @@ export const ColumnIcon = () => {
 
 export const Clipboard = ({ fill = "black" }) => {
   return (
-
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g opacity="0.5">
         <path d="M4 7.33325C4 5.44763 4 4.50483 4.58579 3.91904C5.17157 3.33325 6.11438 3.33325 8 3.33325H10C11.8856 3.33325 12.8284 3.33325 13.4142 3.91904C14 4.50483 14 5.44763 14 7.33325V10.6666C14 12.5522 14 13.495 13.4142 14.0808C12.8284 14.6666 11.8856 14.6666 10 14.6666H8C6.11438 14.6666 5.17157 14.6666 4.58579 14.0808C4 13.495 4 12.5522 4 10.6666V7.33325Z" stroke="#1C274C" />
         <path d="M4 12.6666C2.89543 12.6666 2 11.7712 2 10.6666V6.66658C2 4.15243 2 2.89535 2.78105 2.1143C3.5621 1.33325 4.81917 1.33325 7.33333 1.33325H10C11.1046 1.33325 12 2.22869 12 3.33325" stroke="#1C274C" />
       </g>
+    </svg>
+  )
+}
+
+export const BackwardIcon = () => {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="black" stroke-width="1.5" />
+      <path d="M13.5 9L10.5 12L13.5 15" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }

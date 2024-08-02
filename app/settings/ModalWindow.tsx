@@ -131,7 +131,7 @@ const ModalWindow = ({ json = null, setjson }: componentprops) => {
                             ([skey]) => skey !== "Code" && skey !== "Name" && skey !== "Logo"
                         )
                         .map(([dkey, value]: [string, any]) => (
-                            <Tab className="h-full overflow-y-auto" key={dkey} title={dkey.toUpperCase()}>
+                            <Tab className="h-full overflow-y-auto overflow-x-hidden" key={dkey} title={dkey.toUpperCase()}>
                                 <>
                                     {Array.isArray(value) && (
                                         <div className="w-full p-2 rounded flex justify-end cursor-pointer">

@@ -1,37 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Tabs } from '../../src/Tabs';
-import { Separator, Tab, TabList, TabPanel } from 'react-aria-components';
+import { Tab, TabList, TabPanel } from 'react-aria-components';
 import JsonView from 'react18-json-view';
-import { FaClipboard, FaClipboardCheck } from 'react-icons/fa';
+import { FaClipboardCheck } from 'react-icons/fa';
 import { Clipboard } from '../../constants/svgApplications';
-import { Item } from '@react-stately/collections';
-import { Check } from 'lucide-react';
 import { MdOutlineManageAccounts } from "react-icons/md";
 import "react18-json-view/src/style.css";
 
-type TableRow = {
-    addedAt: string;
-    processStartedAt: string;
-    finishedAt: string;
-    percentage: number;
-    status: string;
-    statusColor: string;
-    title: string;
-    description: string;
-};
-
-// ...
-
-const Table: TableRow[] = [
-    // your table data here
-];
-
-// ...
-
-<p>{Table[0]?.addedAt}</p>
-
 const Artifactdetails = ({ nodeData }: any) => {
-    const [copySuccess, setCopySuccess] = useState<string | null>(null);
     const [copied, setCopied] = useState(false);
     const [activeTab, setActiveTab] = useState<any>('');
     const [selectedNode, setSelectedNode] = useState<any>(null);
@@ -68,18 +44,16 @@ const Artifactdetails = ({ nodeData }: any) => {
     };
 
     const determinePercentageColorClass = (percentage: any) => {
-        if (percentage > 75) return 'text-green-500'; // example color
-        if (percentage > 50) return 'text-yellow-500'; // example color
-
-        return 'text-green-500'; // example color
+        if (percentage == -100) return 'text-green-500'; // example color
+        if (percentage == -27) return 'text-red-500'; // example color
     };
 
     const determineStatusColorClass = (status: string) => {
         switch (status) {
             case 'Success':
-                return 'text-green-500  bg-green-100  border border-green-200 w-[80%] h-[20%]'; // Green for success
+                return 'text-green-500 bg-green-100 border border-green-200 w-[80%] h-[15%]'; // Green for success
             case 'Failed':
-                return 'text-red-500 text-center bg-red-100 border border-red-200 w-[80%] h-[20%]';   // Red for failed
+                return 'text-red-500 text-center bg-red-100 border border-red-200 w-[80%] h-[15%]';   // Red for failed
             default:
                 return 'text-gray-500';  // Default gray for other statuses
         }
@@ -134,7 +108,7 @@ const Artifactdetails = ({ nodeData }: any) => {
             </div>
 
             <div className='flex flex-col border w-[90%] h-full bg-white rounded-lg'>
-                <div className=' flex gap-5 text-black border-b-2 rounded-lg pb-4 p-2 '>
+                <div className='flex gap-5 text-black pb-4 p-2'>
                     <h3 className='text-[#1A2024] text-sm font-bold'>Completed</h3>
                     <h4 className='text-[#1A2024]/35 text-sm'>Waiting</h4>
                     <h5 className='text-[#1A2024]/35 text-sm'>Active</h5>
@@ -142,9 +116,10 @@ const Artifactdetails = ({ nodeData }: any) => {
                     <p className='text-[#1A2024]/35 text-sm'>Failed</p>
                     <p className='text-[#1A2024]/35 text-sm'>Waiting</p>
                 </div>
+                <hr className='w-full border-[#E5E9EB]' />
 
                 <div className='flex w-full h-full'>
-                    <div className='w-[75%] h-full p-4'>
+                    <div className='w-[75%] h-full'>
                         {Table.map((item: any) => (
                             <div className="flex w-[96%] mx-4 bg-[#F4F5FA] p-2 gap-2 border-t rounded-lg  mt-5 ">
                                 <div className="flex  gap-3 text-gray-500">
@@ -185,7 +160,7 @@ const Artifactdetails = ({ nodeData }: any) => {
                                     <div>
                                         <p className='text-black font-semibold text-nowrap text-sm'>{item?.title}</p>
                                     </div>
-                                    <div className="flex gap-5">
+                                    <div className="flex gap-3 text-center">
                                         <p className={`text-sm text-[#1A2024]/35 ${determinePercentageColorClass(item?.percentage)}`}>
                                             {item?.percentage}%
                                         </p>

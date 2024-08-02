@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Separator } from "react-aria-components";
-import { Avatars, Debugger, Preview, BuilderShareIcon, TorusLogo } from "../../constants/svgApplications";
+import { Avatars, Debugger, Preview, BuilderShareIcon, TorusLogo, BackwardIcon } from "../../constants/svgApplications";
 
 const BuilderTopNav = ({ showNodeData, setShowNodeData }: any) => {
     return (
@@ -15,7 +15,7 @@ const BuilderTopNav = ({ showNodeData, setShowNodeData }: any) => {
                         <h2 className="font-semibold">TORUS</h2>
                     </div>
                     {showNodeData ? <div>
-                        <Button onPress={() => setShowNodeData(null)}>back</Button>
+                        <Button className={"outline-none"} onPress={() => setShowNodeData(null)}><BackwardIcon /></Button>
                     </div> : null}
                 </div>
                 <div className="flex h-full gap-3 items-center">
