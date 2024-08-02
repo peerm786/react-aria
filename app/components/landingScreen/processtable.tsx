@@ -599,11 +599,7 @@ const VendorTable: React.FC = () => {
         const fabric = array[1]
         return <div>{fabric}</div>
     }
-    // const nodeName = (data: any) => {
-    //     const array = data.key.split(":")
-    //     const nodeName = array[2]
-    //     return <div>{nodeName}</div>
-    // }
+
 
 
     const time = (data: any) => {
@@ -617,30 +613,6 @@ const VendorTable: React.FC = () => {
         setTabData(ele);
         setActiveTableRow([id, index]);
     };
-
-
-    // const handleData = () => {
-    //     const objData: any = [];
-    //     if (data.length) {
-    //         data.forEach((item) => {
-    //             objData.forEach((ele: any) => {
-    //                 if (item.key === ele.key) {
-    //                     ele.nodeData.push({ node: item.nodeName, time: item.time, status: item.status })
-    //                 } else {
-    //                     objData.push({
-    //                         key: item.key,
-    //                         nodeData: [{ node: item.nodeName, time: item.time }]
-    //                     })
-    //                 }
-    //             })
-    //         })
-    //     }
-    //     console.log(objData);
-    // }
-    // const determineOverallStatus = (nodeData: any) => {
-    //     return nodeData.every(subItem => subItem.status === 'Success') ? 'Success' : 'Failed';
-    // };
-
 
 
     const groupedData: { [key: string]: any[] } = {};
@@ -669,17 +641,6 @@ const VendorTable: React.FC = () => {
 
     }));
     console.log(result);
-
-
-
-
-
-
-
-
-
-
-
 
     return (
         <div className='flex justify-between h-screen'>

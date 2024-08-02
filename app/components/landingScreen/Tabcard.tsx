@@ -76,26 +76,25 @@ const Tabcard = ({ fabric }: { fabric: string }) => {
   };
 
   return (
-    <div className="flex flex-col w-full h-full bg-white border border-gray-300 p-2 rounded-md">
+    <div className="flex flex-col w-full h-full bg-white border border-gray-300 p-2 rounded-md dark:bg-[#1D1D1D] text-[#FFFFFF] dark:border-[#212121]">
       <div className="flex justify-between mb-2">
-        <h1 className="text-sm font-bold">My Library</h1>
-        <h2 className="flex items-center gap-2 text-xs font-medium border border-black/15 rounded-md px-3 h-6 cursor-pointer">
+        <h1 className="text-sm font-bold text-black dark:text-[#FFFFFF]">My Library</h1>
+        <h2 className="flex items-center gap-2 text-xs dark:bg-[#0F0F0F] dark:border-[#212121] text-black font-medium border border-black/15 rounded-md px-3 h-6 cursor-pointer dark:text-[#FFFFFF]">
           Filter
           <TfiAlignCenter />
         </h2>
       </div>
       <Tabs selectedKey={artifactType} onSelectionChange={setArtifactType}>
         <TabList
-          className="flex gap-5 rounded-md p-1 text-sm bg-[#F4F5FA] items-center"
+          className="flex gap-5 rounded-md p-1  bg-[#F4F5FA] text-sm text-black  items-center dark:bg-[#0F0F0F] dark:text-[#FFFFFF] dark:border-[#212121]"
           aria-label="Tabs"
         >
           <Tab
             id={"frk"}
             className={({ isSelected }) =>
-              `${
-                isSelected
-                  ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold"
-                  : "outline-none text-xs font-semibold ml-2"
+              `${isSelected
+                ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
+                : "outline-none text-xs font-semibold ml-2 "
               } cursor-pointer`
             }
           >
@@ -105,10 +104,9 @@ const Tabcard = ({ fabric }: { fabric: string }) => {
           <Tab
             id={"crk"}
             className={({ isSelected }) =>
-              `${
-                isSelected
-                  ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold"
-                  : "outline-none text-xs font-semibold ml-2"
+              `${isSelected
+                ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
+                : "outline-none text-xs font-semibold ml-2"
               } cursor-pointer`
             }
           >
@@ -117,10 +115,9 @@ const Tabcard = ({ fabric }: { fabric: string }) => {
           <Tab
             id={"tpfrk"}
             className={({ isSelected }) =>
-              `${
-                isSelected
-                  ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold"
-                  : "outline-none text-xs font-semibold ml-2"
+              `${isSelected
+                ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
+                : "outline-none text-xs font-semibold ml-2"
               } cursor-pointer`
             }
           >
@@ -128,11 +125,11 @@ const Tabcard = ({ fabric }: { fabric: string }) => {
           </Tab>
         </TabList>
       </Tabs>
-      <div className="mt-4 grid sm:grid-cols-2 xl:grid-cols-3 gap-5 overflow-y-auto pr-2">
+      <div className="mt-4 grid sm:grid-cols-2 xl:grid-cols-3 text-[#000000] gap-5 overflow-y-auto  pr-2 dark:bg-[1D1D1D] dark:text-[#FFFFFF] dark:border-[#212121]">
         {artifactList.map((item: any, index: number) => (
           <div
             key={index}
-            className="border-2   border-gray-300 bg-[#F4F5FA] p-3 flex flex-col items-center justify-center rounded-md"
+            className="border-2   border-gray-300 bg-[#F4F5FA] dark:bg-[#0F0F0F] p-3 flex flex-col items-center justify-center rounded-md dark:border-[#212121]"
           >
             <div className="flex items-center ml-auto gap-1">
               {item.isLocked ? <LuLock className="ml-1 text-red-500" /> : null}
@@ -141,21 +138,21 @@ const Tabcard = ({ fabric }: { fabric: string }) => {
             <div className=" mr-auto bg-[#0736C4]/5 rounded-md mb-3 p-1">
               {getFabricIcon(item.fabric)}
             </div>
-            <div className="flex w-full justify-between  ">
-              <h3 className="text-sm font-bold whitespace-nowrap">
+            <div className="flex w-full justify-between text-[#000000] dark:text-[#FFFFFF]  ">
+              <h3 className="text-sm font-bold whitespace-nowrap ">
                 {item.artifactName}
               </h3>
-              <div className=" text-xs ">{item.version}</div>
+              <div className=" text-xs dark:text-[#FFFFFF]/40 ">{item.version}</div>
             </div>
 
-            <div className="grid grid-cols-2 gap-2">
-              <p className="text-xs whitespace-nowrap text-black/40">
+            <div className="grid grid-cols-2 gap- ">
+              <p className="text-xs whitespace-nowrap text-black/40 dark:text-[#FFFFFF]/40">
                 {artifactType === "frk" ? item.project : item.source} - {client}
               </p>
             </div>
             <div className="w-[110%] border-b border-b-black/15 my-2"></div>
             <div className="flex w-full text-xs whitespace-nowrap justify-between px-1">
-              <div className="text-xs text-black/35">
+              <div className="text-xs text-black/35 dark:text-[#FFFFFF]/40">
                 Last edited{" "}
                 {calculateRecentlyWorkingDetails(item.recentlyWorking)}
                 <div className="text-[#0736C4] font-medium">{loginId}</div>

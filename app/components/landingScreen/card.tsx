@@ -55,18 +55,18 @@ const Card = ({ tenant, tenantInfo }: { tenant: string, tenantInfo: any[] }) => 
     }, [tenant, tenantInfo])
 
     return (
-        <div className='flex flex-col gap-3 border border-black/15 p-3 w-full h-full rounded-md ml-4 bg-white'>
+        <div className='flex flex-col gap-3 border border-black/15 p-3 w-full h-full rounded-md ml-4 bg-white dark:bg-[#1D1D1D] dark:text-[#FFFFFF] dark:border-[#212121]'>
             <div className='flex justify-between'>
                 <h1 className='text-sm font-semibold'>AppGroups</h1>
                 <h2 className='text-xs'>View all</h2>
             </div>
             <div className='grid grid-cols-2 grid-rows-5 gap-3 h-[90%] text-xs rounded-md'>
                 {mappingAppGrp.map((bank, index) => (
-                    <div key={index} className='flex flex-col bg-[#F4F5FA] border border-black/15 justify-center rounded-md'>
+                    <div key={index} className='flex flex-col bg-[#F4F5FA] border border-black/15 justify-center rounded-md dark:bg-[#0F0F0F] '>
                         <Button className='flex ml-4 focus:outline-none'>
                             <div className='flex justify-between items-center w-full'>
                                 <div className='flex gap-3 items-center'>
-                                    <div className='bg-white p-2 text-[#0736C4] rounded-md'>
+                                    <div className='bg-white p-2 text-[#0736C4] rounded-md dark:bg-[#161616]'>
                                         {bank.icon}
                                     </div>
                                     <div className='flex flex-col'>

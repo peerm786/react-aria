@@ -25,13 +25,13 @@ const Topbar = ({ tenant, setTenant, tenantInfo }: { tenant: string, setTenant: 
                     <TorusLogo />
                     <h2 className="font-semibold">TORUS</h2>
                 </div>
-                <div className="relative ">
-                    <span className="absolute inset-y-0 left-0 flex items-center p-2 h-7 w-7">
+                <div className="relative  ">
+                    <span className="absolute inset-y-0 left-0 flex items-center p-2 h-7 w-7 ">
                         <SearchIcon />
                     </span>
                     <Input
                         placeholder="Search"
-                        className={`w-[180%] p-1 focus:outline-none focus:border-blue-400 border pl-6 text-sm font-medium rounded-md`}
+                        className={`w-[180%] p-1 focus:outline-none focus:border-blue-400 border pl-6 text-sm font-medium rounded-md dark:border-[#212121]`}
                     />
                 </div>
                 <div className="flex">
