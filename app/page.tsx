@@ -17,6 +17,7 @@ import ProcessLogs from "./components/torusComponents/processLog";
 import { FilterIcon } from "./components/torusComponents/SVG_Application";
 import ExceptionLog from "./components/torusComponents/ExceptionLog";
 import Artifactdetails from "./components/landingScreen/artifactdetails";
+import ProgressButton from "./components/progressbar";
 
 const page = () => {
   const [selectedAssemblerButton, setSelectedAssemblerButton] = useState(true);
@@ -50,6 +51,7 @@ const page = () => {
   ]
   const [visibleColumns, setVisibleColumns] = useState<any>(allProcessLogColumns);
   const [showNodeData, setShowNodeData] = useState<null | any>(null)
+  const [isLoading, setLoading] = useState(true)
 
 
   const handleBuildButtonSelect = () => {
@@ -194,63 +196,15 @@ const page = () => {
     }
   };
 
-  // const getAssemblerVersion = async (app: string) => {
-  //   try {
-  //     const res = await AxiosService.get(
-  //       `/tp/getAssemblerVersion?key=${selectedTenant}:${selectAppGroup}:${app}:ABK`
-  //     );
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setLoading(false)
+    }
+  }, [])
 
-  //     if (res.status == 200) {
-  //       setVersionList(res.data);
-  //     }
-  //   } catch (err) {
-  //     setVersionList([]);
-  //   }
-  // };
-
-  // const getAssemblerData = async (version: string) => {
-  //   try {
-  //     const res = await AxiosService.get(
-  //       `/tp/getAssemblerData?key=${selectedTenant}:${selectAppGroup}:${selectApp}:ABK:${version}`
-  //     );
-  //     if (res.status == 200) {
-  //       setMenuItemData(res.data);
-  //     } else {
-  //       setMenuItemData([]);
-  //     }
-
-  //   } catch (error) {
-  //     setMenuItemData([]);
-  //   }
-  // }
-
-  // const handleSaveBuild = async () => {
-  //   try {
-  //     const res = await AxiosService.post("/tp/saveAssemblerData", {
-  //       key: `${selectedTenant}:${selectAppGroup}:${selectApp}:ABK`,
-  //       data: menuItemData,
-  //     });
-  //     if (res.status == 201) {
-  //       toast.success("Build saved successfully");
-  //     }
-  //   } catch (error) {
-  //     toast.error("Error saving build");
-  //   }
-  // };
-
-  // const handleUpdateBuild = async () => {
-  //   try {
-  //     const res = await AxiosService.post("/tp/updateAssemblerData", {
-  //       key: `${selectedTenant}:${selectAppGroup}:${selectApp}:ABK:${selectedVersion}`,
-  //       data: menuItemData,
-  //     })
-  //     if (res.status == 201) {
-  //       toast.success("Build saved successfully");
-  //     }
-  //   } catch (error) {
-  //     toast.error("Error saving build");
-  //   }
-  // }
+  if (isLoading) {
+    return <div className="h-screen w-screen flex items-center justify-center"><ProgressButton isIndeterminate size={"xl"} /> </div>
+  }
 
   return (
     <div className="flex flex-col w-full h-screen">
