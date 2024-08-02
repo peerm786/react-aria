@@ -881,7 +881,7 @@ export function TorusTable({
                   </div>
                 </div>
               </div> */}
-            <div className={`w-full h-full overflow-y-scroll mt-2 border-b-1`}>
+            <div className={`w-full h-full overflow-y-scroll mt-2 `}>
               <Table
                 aria-label="table"
                 selectedKeys={selectedKeys}

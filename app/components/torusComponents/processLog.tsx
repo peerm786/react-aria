@@ -171,13 +171,14 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
             >
               {({ columns }: any) => (
                 <>
-                  {columns.map((column: any) => (
+                  {columns.map((column: any, i: number) => (
                     <TorusColumn
                       key={column.id}
                       id={column.id}
                       allowsSorting={column.allowsSorting}
                       isRowHeader={column.isRowHeader}
-                      className={"bg-[#F4F5FA] cursor-pointer"}
+                      className={`bg-[#F4F5FA] cursor-pointer ${i == 0 ? "rounded-tl-xl rounded-bl-xl" : ""} ${i == filterColmns.length - 1 ? "rounded-tr-xl rounded-br-xl" : ""}`}
+
                     >
                       {column.name}
                     </TorusColumn>

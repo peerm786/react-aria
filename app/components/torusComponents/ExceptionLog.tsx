@@ -110,13 +110,13 @@ const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[
                             >
                                 {({ columns }: any) => (
                                     <>
-                                        {columns.map((column: any) => (
+                                        {columns.map((column: any, i: number) => (
                                             <TorusColumn
                                                 key={column.id}
                                                 id={column.id}
                                                 allowsSorting={column.allowsSorting}
                                                 isRowHeader={column.isRowHeader}
-                                                className={"bg-[#F4F5FA] cursor-pointer"}
+                                                className={`bg-[#F4F5FA] cursor-pointer ${i == 0 ? "rounded-tl-xl rounded-bl-xl" : ""} ${i == filterColmns.length - 1 ? "rounded-tr-xl rounded-br-xl" : ""}`}
                                             >
                                                 {column.name}
                                             </TorusColumn>
@@ -140,7 +140,7 @@ const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[
                                         columns={[...filterColmns]}
                                         selectedKeys={selectedKeys}
                                         className={
-                                            `${item.timeStamp == tabdata.timeStamp ? "bg-[#F4F5FA] rounded-full" : ""}hover:bg-[#F4F5FA] outline-none hover:cursor-pointer`
+                                            `${item.timeStamp == tabdata.timeStamp ? "bg-[#F4F5FA] rounded-tl" : ""}hover:bg-[#F4F5FA] outline-none hover:cursor-pointer`
                                         }
                                         onAction={handleRowAction}
                                     >
@@ -149,12 +149,9 @@ const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[
                                                 {columns.map((column: any, i: number) => (
                                                     <Cell
                                                         key={i}
-                                                        className={"border-b border-transparent"}
+                                                        className={`border-b border-transparent ${item.timeStamp == tabdata.timeStamp ? (i == 0 ? " rounded-tl-2xl rounded-bl-2xl" : i == columns.length - 1 ? "rounded-tr-2xl rounded-br-2xl" : "") : ""}`}
                                                         children={
                                                             <div className="w-full h-full flex flex-col items-center justify-center py-[1rem] text-xs font-normal ">
-                                                                {/* <RenderTableChildren
-                                children={item?.[column?.id]}
-                              /> */}
                                                                 {RenderTableCell(item, column)}
                                                             </div>
                                                         }
