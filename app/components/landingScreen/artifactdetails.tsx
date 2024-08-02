@@ -7,6 +7,7 @@ import { Clipboard } from '../../constants/svgApplications';
 import { Item } from '@react-stately/collections';
 import { Check } from 'lucide-react';
 import { MdOutlineManageAccounts } from "react-icons/md";
+import "react18-json-view/src/style.css";
 type TableRow = {
     addedAt: string;
     processStartedAt: string;
@@ -94,7 +95,7 @@ const Artifactdetails = ({ nodeData }: any) => {
             setCopied(true);
             setTimeout(() => {
                 setCopied(false);
-            }, 2000);
+            }, 1000);
         } catch (err) {
             console.error('Failed to copy text: ', err);
         }
@@ -105,19 +106,23 @@ const Artifactdetails = ({ nodeData }: any) => {
             <div className="flex flex-col w-[20%] border mt-5 ml-2 mb-6   border-[#000000]/15  rounded-lg bg-white ">
                 <div className="flex flex-col border-b border-gray-300">
                     <div className="flex justify-between p-3">
-                        <h1 className="text-lg font-bold text-[#1C274C]">{artifact}</h1>
+                        <h1 className="text-lg mx-1 font-bold text-[#1C274C]">{artifact}</h1>
                         <p className="bg-[#0736C4] text-white rounded-full px-2 py-1 text-sm">{version}</p>
                     </div>
-                    <div className="flex items-center justify-between py-2 px-4 rounded-lg">
-                        <h2 className="text-sm text-[#1C274C]">
-                            <div onClick={handleCopyToClipboard} className="cursor-pointer flex items-center">
+                    <div className="flex mx-3 mb-2 text-[#1C274C] bg-[#F4F5FA] justify-between border-border-[#1C274C]/15 py-2 px-3 rounded-lg">
+                        <h2 className="text-xs text-[#1C274C]">
+                            <span onClick={handleCopyToClipboard} className="cursor-pointer gap-2 flex items-center">
+                                UID: {uid}
                                 {copied ? (
-                                    <Check className="text-green-500" />
+                                    <FaClipboardCheck className="text-green-500" />
                                 ) : (
                                     <Clipboard />
                                 )}
-                            </div>
+                            </span>
                         </h2>
+
+
+
                     </div>
                 </div>
                 <div className="flex flex-col mt-4">
@@ -224,7 +229,7 @@ const Artifactdetails = ({ nodeData }: any) => {
                             <TabPanel id="ipc">
                                 {selectedNode ? (
                                     <div>
-                                        <JsonView src={selectedNode.ipc} theme="atom" enableClipboard={false} />
+                                        <JsonView src={selectedNode.ipc} theme="atom" enableClipboard={false} style={{ fill: '#1A2024' }} />
                                     </div>
                                 ) : (
                                     <p></p>
