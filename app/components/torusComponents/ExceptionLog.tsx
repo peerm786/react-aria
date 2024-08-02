@@ -36,6 +36,7 @@ const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[
                     errorDetails: item?.errorDetails
                 }));
                 setData(result);
+                setTabData(result[0]);
             } else {
                 toast.error("Exception log fetching process failed", {
                     autoClose: 2000,
@@ -139,7 +140,7 @@ const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[
                                         columns={[...filterColmns]}
                                         selectedKeys={selectedKeys}
                                         className={
-                                            `${item.timeStamp == tabdata.timeStamp ? "bg-[#F4F5FA] rounded-full" : ""}hover:bg-[#0736C4]/10 outline-none hover:cursor-pointer`
+                                            `${item.timeStamp == tabdata.timeStamp ? "bg-[#F4F5FA] rounded-full" : ""}hover:bg-[#F4F5FA] outline-none hover:cursor-pointer`
                                         }
                                         onAction={handleRowAction}
                                     >
@@ -177,7 +178,8 @@ const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[
                             theme='atom'
                             enableClipboard={false}
                             src={tabdata.errorDetails}
-                            collapsed={true}
+                        // collapsed={true}
+                        // collapseObjectsAfterLength={2}
                         />
                     ) : null}
                 </div>

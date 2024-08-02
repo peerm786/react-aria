@@ -201,7 +201,7 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
                   columns={[...filterColmns]}
                   selectedKeys={selectedKeys}
                   className={
-                    "border-1 hover:bg-[#0736C4]/10 outline-none hover:cursor-pointer border-b-slate-800 overflow-y-auto border-t-transparent border-l-transparent border-r-transparent"
+                    "border-1 hover:bg-[#F4F5FA] outline-none hover:cursor-pointer border-b-slate-800 overflow-y-auto border-t-transparent border-l-transparent border-r-transparent"
                   }
                 >
                   {({ columns, index, item }: any) => (

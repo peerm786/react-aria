@@ -8,11 +8,14 @@ import {
     SecurityFabric,
     ShopSvg,
     UserFabric,
-    LogDetailIcon
+    LogDetailIcon,
+    LogoutSvg
 } from "../../constants/svgApplications";
-import { Button } from "react-aria-components";
+import { Button, Dialog, DialogTrigger, Popover } from "react-aria-components";
 import TorusAvatar from "../Avatar";
 import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
+import { deleteAllCookies } from "../../../lib/utils/cookiemgmt";
 
 const BuilderSideNav = () => {
     const [fillIndex, setFillIndex] = useState(5);
@@ -35,6 +38,12 @@ const BuilderSideNav = () => {
             router.push(route);
         }
         setFillIndex(index);
+    }
+
+    const handleLogout = (close: any) => {
+        signOut();
+        deleteAllCookies();
+        router.push("/login")
     }
 
     return (
@@ -62,9 +71,24 @@ const BuilderSideNav = () => {
                 </section>
             </section>
 
-            <Button className={`outline-none mr-1 mb-2`}>
-                <TorusAvatar radius="full" size="lg" />
-            </Button>
+            <DialogTrigger>
+                <Button
+                    className={`outline-none mr-1 mb-2`}
+                >
+                    <TorusAvatar radius="full" size="lg" />
+                </Button>
+                <Popover placement="right top">
+                    <Dialog className="border bg-white focus:outline-none rounded-lg dark:bg-[#161616] dark:text-white">
+                        {({ close }) => (
+                            <div className="flex flex-col p-1 gap-2 dark:bg-[#161616] dark:text-white">
+                                <Button className={`outline-none `} onPress={() => handleLogout(close)}>
+                                    <LogoutSvg />
+                                </Button>
+                            </div>
+                        )}
+                    </Dialog>
+                </Popover>
+            </DialogTrigger>
         </aside>
     );
 };
