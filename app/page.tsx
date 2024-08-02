@@ -16,6 +16,7 @@ import BuilderSideNav from "./components/builderScreen/BuilderSideNav";
 import ProcessLogs from "./components/torusComponents/processLog";
 import { FilterIcon } from "./components/torusComponents/SVG_Application";
 import ExceptionLog from "./components/torusComponents/ExceptionLog";
+import Artifactdetails from "./components/landingScreen/artifactdetails";
 
 const page = () => {
   const [selectedAssemblerButton, setSelectedAssemblerButton] = useState(true);
@@ -48,6 +49,8 @@ const page = () => {
     "errorCode",
   ]
   const [visibleColumns, setVisibleColumns] = useState<any>(allProcessLogColumns);
+  const [showNodeData, setShowNodeData] = useState<null | any>(null)
+
 
   const handleBuildButtonSelect = () => {
     setSelectedAssemblerButton(true);
@@ -251,246 +254,251 @@ const page = () => {
 
   return (
     <div className="flex flex-col w-full h-screen">
-      <BuilderTopNav />
+      <BuilderTopNav showNodeData={showNodeData} setShowNodeData={setShowNodeData} />
       <div className="flex justify-between bg-[#F4F5FA] w-full h-[92%]">
         <BuilderSideNav />
-        <div className="flex flex-col w-[94%] h-[95%] border border-black/15 bg-white mt-5 overflow-y-hidden dark:bg-[#161616] rounded-md mr-3 scrollbar-hide">
-          <div className="flex w-full items-center justify-between">
-            <div className="flex gap-5 pt-2 pl-4">
-              <Button
-                className={`${selectedAssemblerButton ? "font-semibold" : ""
-                  } flex text-sm items-center gap-3 rounded-lg border-none outline-none dark:text-white`}
-                onPress={handleBuildButtonSelect}
-              >
-                <PushandPullIcon
-                  fill={isDarkMode ? "white" : "black"}
-                />
-                Assembler
-              </Button>
-              <Button
-                className={`${selectedLogsButton ? "font-semibold" : ""
-                  } flex text-sm items-center gap-3 rounded-lg border-none outline-none dark:text-white`}
-                onPress={handleHistoryButtonSelect}
-              >
-                {" "}
-                <HistoryIcon fill={isDarkMode ? "white" : "black"} />
-                Logs Hub
-              </Button>
-            </div>
-            {selectedAssemblerButton &&
-              <div className="flex pt-2 pr-3 gap-2 items-center">
+        {showNodeData ?
+          <div className="flex flex-col w-[94%] h-[95%] mt-5 mr-3 rounded-md">
+            <Artifactdetails nodeData={showNodeData} />
+          </div>
+          :
+          <div className="flex flex-col w-[94%] h-[95%] border border-black/15 bg-white mt-5 overflow-y-hidden dark:bg-[#161616] rounded-md mr-3 scrollbar-hide">
+            <div className="flex w-full items-center justify-between">
+              <div className="flex gap-5 pt-2 pl-4">
                 <Button
-                  onPress={handleUpdateBuild}
-                  isDisabled={!selectedVersion}
-                  className={`text-[12px] rounded-md border-none text-[#4CAF50] disabled:cursor-not-allowed bg-[#4CAF50]/15 px-5 py-2 outline-none`}
+                  className={`${selectedAssemblerButton ? "font-semibold" : ""
+                    } flex text-sm items-center gap-3 rounded-lg border-none outline-none dark:text-white`}
+                  onPress={handleBuildButtonSelect}
                 >
-                  Update
+                  <PushandPullIcon
+                    fill={isDarkMode ? "white" : "black"}
+                  />
+                  Assembler
                 </Button>
                 <Button
-                  onPress={handleSaveBuild}
-                  isDisabled={!selectApp}
-                  className={`text-[12px] rounded-md border-none text-[#0736C4] disabled:cursor-not-allowed bg-[#0736C4]/15 px-5 py-2 outline-none`}
+                  className={`${selectedLogsButton ? "font-semibold" : ""
+                    } flex text-sm items-center gap-3 rounded-lg border-none outline-none dark:text-white`}
+                  onPress={handleHistoryButtonSelect}
                 >
-                  Save
-                </Button>
-                <Button
-                  className={"text-[12px] rounded-md border-none text-white disabled:cursor-not-allowed bg-[#0736C4] px-5 py-2 outline-none"}
-                >
-                  Build
+                  {" "}
+                  <HistoryIcon fill={isDarkMode ? "white" : "black"} />
+                  Logs Hub
                 </Button>
               </div>
-            }
-            {
-              selectedLogsButton &&
-              <div className="flex gap-2 items-center">
-                <div className="flex w-full gap-2 items-center pt-2">
-                  <div className="relative">
-                    <span className="absolute inset-y-0 left-0 flex items-center p-2 h-7 w-7">
-                      <SearchIcon />
-                    </span>
-                    <Input
-                      value={searchValue}
-                      onChange={(e) => setSearchValue(e.target.value)}
-                      placeholder="Search"
-                      className={`w- p-1 focus:outline-none focus:border-blue-400 border pl-6 text-sm font-medium rounded-md`}
+              {selectedAssemblerButton &&
+                <div className="flex pt-2 pr-3 gap-2 items-center">
+                  <Button
+                    onPress={handleUpdateBuild}
+                    isDisabled={!selectedVersion}
+                    className={`text-[12px] rounded-md border-none text-[#4CAF50] disabled:cursor-not-allowed bg-[#4CAF50]/15 px-5 py-2 outline-none`}
+                  >
+                    Update
+                  </Button>
+                  <Button
+                    onPress={handleSaveBuild}
+                    isDisabled={!selectApp}
+                    className={`text-[12px] rounded-md border-none text-[#0736C4] disabled:cursor-not-allowed bg-[#0736C4]/15 px-5 py-2 outline-none`}
+                  >
+                    Save
+                  </Button>
+                  <Button
+                    className={"text-[12px] rounded-md border-none text-white disabled:cursor-not-allowed bg-[#0736C4] px-5 py-2 outline-none"}
+                  >
+                    Build
+                  </Button>
+                </div>
+              }
+              {
+                selectedLogsButton &&
+                <div className="flex gap-2 items-center">
+                  <div className="flex w-full gap-2 items-center pt-2">
+                    <div className="relative">
+                      <span className="absolute inset-y-0 left-0 flex items-center p-2 h-7 w-7">
+                        <SearchIcon />
+                      </span>
+                      <Input
+                        value={searchValue}
+                        onChange={(e) => setSearchValue(e.target.value)}
+                        placeholder="Search"
+                        className={`w- p-1 focus:outline-none focus:border-blue-400 border pl-6 text-sm font-medium rounded-md`}
+                      />
+                    </div>
+                    <DropDown
+                      classNames={{
+                        popover: "w-[200px]",
+                        triggerButton: "w-[100px] h-[30px] border border-black/15 rounded-lg bg-[#F4F5FA]",
+                      }}
+                      triggerButton={
+                        <div className="flex text-xs font-medium items-center gap-2">
+                          <ColumnIcon /> Columns
+                        </div>
+                      }
+                      items={logsTabList == "exception" ? allExceptionLogColumns : allProcessLogColumns}
+                      selectedKeys={visibleColumns}
+                      setSelectedKeys={setVisibleColumns}
+                      multiple
+                      displaySelectedKeys={false}
+                    />
+                    <DropDown
+                      classNames={{
+                        popover: "w-[200px]",
+                        triggerButton: "w-[90px] h-[30px] border border-black/15 rounded-lg bg-[#F4F5FA]",
+                      }}
+                      triggerButton={
+                        <div className="flex text-xs font-medium items-center gap-2">
+                          <FilterIcon /> Filter
+                        </div>
+                      }
+                      items={logsTabList == "exception" ? allExceptionLogColumns : allProcessLogColumns}
+                      selectedKeys={visibleColumns}
+                      setSelectedKeys={setVisibleColumns}
+                      multiple
+                      displaySelectedKeys={false}
                     />
                   </div>
-                  <DropDown
-                    classNames={{
-                      popover: "w-[200px]",
-                      triggerButton: "w-[100px] h-[30px] border border-black/15 rounded-lg bg-[#F4F5FA]",
-                    }}
-                    triggerButton={
-                      <div className="flex text-xs font-medium items-center gap-2">
-                        <ColumnIcon /> Columns
-                      </div>
-                    }
-                    items={logsTabList == "exception" ? allExceptionLogColumns : allProcessLogColumns}
-                    selectedKeys={visibleColumns}
-                    setSelectedKeys={setVisibleColumns}
-                    multiple
-                    displaySelectedKeys={false}
-                  />
-                  <DropDown
-                    classNames={{
-                      popover: "w-[200px]",
-                      triggerButton: "w-[90px] h-[30px] border border-black/15 rounded-lg bg-[#F4F5FA]",
-                    }}
-                    triggerButton={
-                      <div className="flex text-xs font-medium items-center gap-2">
-                        <FilterIcon /> Filter
-                      </div>
-                    }
-                    items={logsTabList == "exception" ? allExceptionLogColumns : allProcessLogColumns}
-                    selectedKeys={visibleColumns}
-                    setSelectedKeys={setVisibleColumns}
-                    multiple
-                    displaySelectedKeys={false}
-                  />
+                  <div>
+                    <Tabs className={"pt-2 pr-2"} selectedKey={logsTabList} onSelectionChange={setLogTabList}>
+                      <TabList className="flex w-full p-1 gap-2 bg-[#F4F5FA] items-center text-nowrap rounded-md">
+                        <Tab id="log" className={`p-2 outline-none text-xs rounded-md font-semibold cursor-pointer ${logsTabList === 'log' ? 'bg-white' : ''}`}>
+                          Log Details
+                        </Tab>
+                        <Tab id="exception" className={`p-2 outline-none text-xs rounded-md font-semibold cursor-pointer ${logsTabList === 'exception' ? 'bg-white' : ''}`}>
+                          Exception Details
+                        </Tab>
+                      </TabList>
+                    </Tabs>
+                  </div>
+                </div>
+              }
+            </div>
+            <div className="pt-2">
+              <Separator className="dark:border-[#212121]" />
+            </div>
+            {selectedAssemblerButton &&
+              <div>
+                <div className="flex w-full justify-between items-center">
+                  <div className="flex outline-none gap-5 pl-4">
+                    <DropDown
+                      isDarkMode={isDarkMode}
+                      triggerButton="Tenant"
+                      selectedKeys={selectedTenant}
+                      setSelectedKeys={handleTenantselect}
+                      items={tenantList}
+                      classNames={{
+                        triggerButton:
+                          `min-w-40 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white`,
+                        popover: "w-40",
+                        listbox: "overflow-y-auto",
+                        listboxItem: "flex text-sm justify-between",
+                      }}
+                    />
+
+                    <DropDown
+                      isDarkMode={isDarkMode}
+                      triggerButton="AppGroup"
+                      selectedKeys={selectAppGroup}
+                      setSelectedKeys={handleAppGroupselect}
+                      items={appGrpList}
+                      classNames={{
+                        triggerButton: `${selectedTenant
+                          ? "min-w-40 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                          : "backdrop-blur-3xl min-w-40 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                          }`,
+                        popover: "w-40",
+                        listbox: "overflow-y-auto",
+                        listboxItem: "flex text-sm justify-between",
+                      }}
+                    />
+
+                    <DropDown
+                      isDarkMode={isDarkMode}
+                      triggerButton="App"
+                      selectedKeys={selectApp}
+                      setSelectedKeys={handleAppselect}
+                      items={appList}
+                      classNames={{
+                        triggerButton: `${selectAppGroup
+                          ? "min-w-40 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                          : "backdrop-blur-3xl min-w-40 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                          }`,
+                        popover: "w-40",
+                        listbox: "overflow-y-auto",
+                        listboxItem: "flex text-sm justify-between",
+                      }}
+                    />
+
+                    <DropDown
+                      isDarkMode={isDarkMode}
+                      triggerButton="version"
+                      selectedKeys={selectedVersion}
+                      setSelectedKeys={handleVersionselect}
+                      items={versionList}
+                      classNames={{
+                        triggerButton: `${selectApp
+                          ? "min-w-20 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                          : "backdrop-blur-3xl min-w-20 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                          }`,
+                        popover: "w-40",
+                        listbox: "overflow-y-auto",
+                        listboxItem: "flex text-sm justify-between",
+                      }}
+                    />
+                  </div>
+                  <div className="flex gap-2 justify-end mr-3 mt-2">
+                    <Button
+                      className={
+                        "bg-[#FFF6F6] dark:bg-[#EF4444]/15 text-sm font-semibold outline-none rounded-md text-[#EF4444] px-5 py-1"
+                      }
+                    >
+                      Clear
+                    </Button>
+                    <Button
+                      className={
+                        "bg-[#F1F1F1] dark:bg-[#0F0F0F] dark:text-white text-sm font-medium outline-none rounded-md text-black px-3 py-1"
+                      }
+                    >
+                      Clear All
+                    </Button>
+                    <IoToggleSharp
+                      size={25}
+                      onClick={toggleDarkMode}
+                      className="dark:text-white text-black/70"
+                    />
+                  </div>
                 </div>
                 <div>
-                  <Tabs className={"pt-2 pr-2"} selectedKey={logsTabList} onSelectionChange={setLogTabList}>
-                    <TabList className="flex w-full p-1 gap-2 bg-[#F4F5FA] items-center text-nowrap rounded-md">
-                      <Tab id="log" className={`p-2 outline-none text-xs rounded-md font-semibold cursor-pointer ${logsTabList === 'log' ? 'bg-white' : ''}`}>
-                        Log Details
-                      </Tab>
-                      <Tab id="exception" className={`p-2 outline-none text-xs rounded-md font-semibold cursor-pointer ${logsTabList === 'exception' ? 'bg-white' : ''}`}>
-                        Exception Details
-                      </Tab>
-                    </TabList>
-                  </Tabs>
+                  <Separator className="mt-2 dark:border-[#212121]" />
+                </div>
+                <div className="flex w-full h-full">
+                  <div className="w-[25%] pt-3 pl-4 rounded-lg">
+                    <FabricSelector
+                      tenant={selectedTenant}
+                      appGrp={selectAppGroup}
+                      app={selectApp}
+                      isDarkMode={isDarkMode}
+                    />
+                  </div>
+                  <div className="w-[75%] pt-3 pr-2">
+                    <MenuItemAccordian
+                      data={menuItemData}
+                      setData={setMenuItemData}
+                      isDarkMode={isDarkMode}
+                    />
+                  </div>
                 </div>
               </div>
             }
-          </div>
-          <div className="pt-2">
-            <Separator className="dark:border-[#212121]" />
-          </div>
-          {selectedAssemblerButton &&
-            <div>
-              <div className="flex w-full justify-between items-center">
-                <div className="flex outline-none gap-5 pl-4">
-                  <DropDown
-                    isDarkMode={isDarkMode}
-                    triggerButton="Tenant"
-                    selectedKeys={selectedTenant}
-                    setSelectedKeys={handleTenantselect}
-                    items={tenantList}
-                    classNames={{
-                      triggerButton:
-                        `min-w-40 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white`,
-                      popover: "w-40",
-                      listbox: "overflow-y-auto",
-                      listboxItem: "flex text-sm justify-between",
-                    }}
-                  />
-
-                  <DropDown
-                    isDarkMode={isDarkMode}
-                    triggerButton="AppGroup"
-                    selectedKeys={selectAppGroup}
-                    setSelectedKeys={handleAppGroupselect}
-                    items={appGrpList}
-                    classNames={{
-                      triggerButton: `${selectedTenant
-                        ? "min-w-40 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                        : "backdrop-blur-3xl min-w-40 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                        }`,
-                      popover: "w-40",
-                      listbox: "overflow-y-auto",
-                      listboxItem: "flex text-sm justify-between",
-                    }}
-                  />
-
-                  <DropDown
-                    isDarkMode={isDarkMode}
-                    triggerButton="App"
-                    selectedKeys={selectApp}
-                    setSelectedKeys={handleAppselect}
-                    items={appList}
-                    classNames={{
-                      triggerButton: `${selectAppGroup
-                        ? "min-w-40 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                        : "backdrop-blur-3xl min-w-40 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                        }`,
-                      popover: "w-40",
-                      listbox: "overflow-y-auto",
-                      listboxItem: "flex text-sm justify-between",
-                    }}
-                  />
-
-                  <DropDown
-                    isDarkMode={isDarkMode}
-                    triggerButton="version"
-                    selectedKeys={selectedVersion}
-                    setSelectedKeys={handleVersionselect}
-                    items={versionList}
-                    classNames={{
-                      triggerButton: `${selectApp
-                        ? "min-w-20 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                        : "backdrop-blur-3xl min-w-20 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                        }`,
-                      popover: "w-40",
-                      listbox: "overflow-y-auto",
-                      listboxItem: "flex text-sm justify-between",
-                    }}
-                  />
-                </div>
-                <div className="flex gap-2 justify-end mr-3 mt-2">
-                  <Button
-                    className={
-                      "bg-[#FFF6F6] dark:bg-[#EF4444]/15 text-sm font-semibold outline-none rounded-md text-[#EF4444] px-5 py-1"
-                    }
-                  >
-                    Clear
-                  </Button>
-                  <Button
-                    className={
-                      "bg-[#F1F1F1] dark:bg-[#0F0F0F] dark:text-white text-sm font-medium outline-none rounded-md text-black px-3 py-1"
-                    }
-                  >
-                    Clear All
-                  </Button>
-                  <IoToggleSharp
-                    size={25}
-                    onClick={toggleDarkMode}
-                    className="dark:text-white text-black/70"
-                  />
-                </div>
+            {selectedLogsButton &&
+              <div className="w-full h-full">
+                {logsTabList == "log" ? (
+                  <ProcessLogs visibleColumns={visibleColumns} searchValue={searchValue} setShowNodeData={setShowNodeData} showNodeData={showNodeData} />
+                ) : (logsTabList == "exception" && (
+                  <ExceptionLog visibleColumns={visibleColumns} searchValue={searchValue} />
+                ))
+                }
               </div>
-              <div>
-                <Separator className="mt-2 dark:border-[#212121]" />
-              </div>
-              <div className="flex w-full h-full">
-                <div className="w-[25%] pt-3 pl-4 rounded-lg">
-                  <FabricSelector
-                    tenant={selectedTenant}
-                    appGrp={selectAppGroup}
-                    app={selectApp}
-                    isDarkMode={isDarkMode}
-                  />
-                </div>
-                <div className="w-[75%] pt-3 pr-2">
-                  <MenuItemAccordian
-                    data={menuItemData}
-                    setData={setMenuItemData}
-                    isDarkMode={isDarkMode}
-                  />
-                </div>
-              </div>
-            </div>
-          }
-          {selectedLogsButton &&
-            <div className="w-full h-full">
-              {logsTabList == "log" ? (
-                <ProcessLogs visibleColumns={visibleColumns} searchValue={searchValue} />
-              ) : (logsTabList == "exception" && (
-                <ExceptionLog visibleColumns={visibleColumns} searchValue={searchValue} />
-              ))
-              }
-            </div>
-          }
-        </div>
+            }
+          </div>}
       </div>
     </div>
   )

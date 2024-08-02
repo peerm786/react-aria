@@ -8,6 +8,7 @@ import { Item } from '@react-stately/collections';
 import { Check } from 'lucide-react';
 import { MdOutlineManageAccounts } from "react-icons/md";
 import "react18-json-view/src/style.css";
+
 type TableRow = {
     addedAt: string;
     processStartedAt: string;
@@ -35,8 +36,7 @@ const Artifactdetails = ({ nodeData }: any) => {
     const [activeTab, setActiveTab] = useState<any>('');
     const [selectedNode, setSelectedNode] = useState<any>(null);
     console.log(nodeData)
-    const key = nodeData.key;
-    const array = nodeData.key.split(":")
+    const array = nodeData.jobName.split(":")
     const artifact = array[5]
     const uid = array[7]
     const version = array[6]
@@ -59,7 +59,6 @@ const Artifactdetails = ({ nodeData }: any) => {
             status: 'Failed',
             statusColor: 'red',
             title: 'Lorem Ipsum',
-
         }
     ];
     const handleNodeClick = (node: any) => {
@@ -86,9 +85,6 @@ const Artifactdetails = ({ nodeData }: any) => {
         }
     };
 
-
-
-
     const handleCopyToClipboard = async () => {
         try {
             await navigator.clipboard.writeText(uid);
@@ -101,17 +97,16 @@ const Artifactdetails = ({ nodeData }: any) => {
         }
     };
     return (
-
-        <div className="flex w-full gap-2 h-screen overflow-hidden  ">
-            <div className="flex flex-col w-[20%] border mt-5 ml-2 mb-6   border-[#000000]/15  rounded-lg bg-white ">
+        <div className="flex w-full gap-2 h-full overflow-hidden  ">
+            <div className="flex flex-col h-full w-[20%] border border-[#000000]/15  rounded-lg bg-white">
                 <div className="flex flex-col border-b border-gray-300">
                     <div className="flex justify-between p-3">
-                        <h1 className="text-lg mx-1 font-bold text-[#1C274C]">{artifact}</h1>
+                        <h1 className="text-lg mx-1 font-bold text-[#1C274C]">{artifact.toUpperCase()}</h1>
                         <p className="bg-[#0736C4] text-white rounded-full px-2 py-1 text-sm">{version}</p>
                     </div>
                     <div className="flex mx-3 mb-2 text-[#1C274C] bg-[#F4F5FA] justify-between border-border-[#1C274C]/15 py-2 px-3 rounded-lg">
                         <h2 className="text-xs text-[#1C274C]">
-                            <span onClick={handleCopyToClipboard} className="cursor-pointer gap-2 flex items-center">
+                            <span onClick={handleCopyToClipboard} className="text-nowrap cursor-pointer gap-2 flex items-center">
                                 UID: {uid}
                                 {copied ? (
                                     <FaClipboardCheck className="text-green-500" />
@@ -120,9 +115,6 @@ const Artifactdetails = ({ nodeData }: any) => {
                                 )}
                             </span>
                         </h2>
-
-
-
                     </div>
                 </div>
                 <div className="flex flex-col mt-4">
@@ -141,7 +133,7 @@ const Artifactdetails = ({ nodeData }: any) => {
                 </div>
             </div>
 
-            <div className='flex flex-col border w-[90%] mt-6 mb-6 mr-6 rounded-lg'>
+            <div className='flex flex-col border w-[90%] h-full bg-white rounded-lg'>
                 <div className=' flex gap-5 text-black border-b-2 rounded-lg pb-4 p-2 '>
                     <h3 className='text-[#1A2024] text-sm font-bold'>Completed</h3>
                     <h4 className='text-[#1A2024]/35 text-sm'>Waiting</h4>
@@ -153,16 +145,13 @@ const Artifactdetails = ({ nodeData }: any) => {
 
                 <div className='flex w-full h-full'>
                     <div className='w-[75%] h-full p-4'>
-
                         {Table.map((item: any) => (
-
                             <div className="flex w-[96%] mx-4 bg-[#F4F5FA] p-2 gap-2 border-t rounded-lg  mt-5 ">
                                 <div className="flex  gap-3 text-gray-500">
                                     <div className='flex flex-col gap-5'>
                                         <div className='flex flex-col '>
                                             <p className='text-[#1A2024]/35 text-end text-sm'>Added at</p>
                                             <p className='text-[#1A2024]/35 text-nowrap text-sm  '>{item?.addedAt}</p>
-
                                         </div>
                                         <div className="text-gray-500">
                                             <p className='text-[#1A2024]/35  text-end text-sm'>Process started at</p>
@@ -241,6 +230,6 @@ const Artifactdetails = ({ nodeData }: any) => {
             </div>
         </div >
     );
-};
+}
 
 export default Artifactdetails;

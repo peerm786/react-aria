@@ -2,16 +2,21 @@ import React from "react";
 import { Button, Separator } from "react-aria-components";
 import { Avatars, Debugger, Preview, BuilderShareIcon, TorusLogo } from "../../constants/svgApplications";
 
-const BuilderTopNav = () => {
+const BuilderTopNav = ({ showNodeData, setShowNodeData }: any) => {
     return (
         <nav
             aria-label="Navbar"
             className="w-full h-[8%] flex flex-col justify-center items-center border border-[#000000]/15"
         >
             <div className="flex w-full h-full justify-between items-center">
-                <div className="flex">
-                    <TorusLogo />
-                    <h2 className="font-semibold">TORUS</h2>
+                <div className="flex gap-4">
+                    <div className="flex">
+                        <TorusLogo />
+                        <h2 className="font-semibold">TORUS</h2>
+                    </div>
+                    {showNodeData ? <div>
+                        <Button onPress={() => setShowNodeData(null)}>back</Button>
+                    </div> : null}
                 </div>
                 <div className="flex h-full gap-3 items-center">
                     <Avatars />

@@ -84,15 +84,16 @@ const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[
 
     const handleRowAction = (item: any) => {
         if (item.errorDetails) {
-            setTabData(item.errorDetails)
+            setTabData(item)
         } else {
             console.log("Action not found")
         }
     }
+    console.log(tabdata);
 
     return (
         <div className='flex w-full h-full gap-5'>
-            <div className='w-[75%] h-full'>
+            <div className='w-[75%] h-full ml-2'>
                 <TorusTable
                     primaryColumn="key"
                     tableData={data}
@@ -138,7 +139,7 @@ const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[
                                         columns={[...filterColmns]}
                                         selectedKeys={selectedKeys}
                                         className={
-                                            `border-1 border-b-slate-800 overflow-y-auto border-t-transparent border-l-transparent border-r-transparent`
+                                            `${item.timeStamp == tabdata.timeStamp ? "bg-[#F4F5FA] rounded-full" : ""}hover:bg-[#0736C4]/10 outline-none hover:cursor-pointer`
                                         }
                                         onAction={handleRowAction}
                                     >
@@ -168,14 +169,14 @@ const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[
                 </TorusTable>
             </div>
             <hr className="w-[1px] h-[90%] bg-black/10" />
-            <div className='w-[25%] h-[85%] mt-2 mr-3 items-center bg-[#F4F5FA] rounded-lg'>
+            <div className='w-[28%] h-[85%] mt-2 mr-3 items-center bg-[#F4F5FA] rounded-lg'>
                 <p className="text-l p-3 font-semibold text-left">Error Details</p>
-                <div className='w-full h-[88%] overflow-scroll scrollbar-hide'>
+                <div className='w-full h-[88%] overflow-scroll scrollbar-thin'>
                     {(tabdata) ? (
                         <JsonView
                             theme='atom'
                             enableClipboard={false}
-                            src={tabdata}
+                            src={tabdata.errorDetails}
                             collapsed={true}
                         />
                     ) : null}

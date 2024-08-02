@@ -8,8 +8,9 @@ import {
   TorusTableHeader,
 } from "./torusTable";
 import { Cell, Separator, TableBody } from "react-aria-components";
+import { Clipboard } from "../../constants/svgApplications";
 
-const ProcessLogs = ({ visibleColumns, searchValue }: any) => {
+const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeData }: any) => {
   const [data, setData] = useState<any>([]);
 
   const getProcessLogs = async () => {
@@ -45,16 +46,7 @@ const ProcessLogs = ({ visibleColumns, searchValue }: any) => {
           const timeStampArray = groupedData[key].map((item) => item.time);
           const isProcess = key.split(":")[1] == "PF" ? true : false;
           return {
-            jobName: {
-              artifact: key.split(":")[5],
-              tenantDetail: key
-                .split(":")
-                .map((item, index) => (index < 3 ? item + ">" : ""))
-                .join(""),
-              processKey: isProcess
-                ? key.split(":")[key.split(":").length - 1]
-                : undefined,
-            },
+            jobName: key,
             version: key.split(":")[6],
             fabric: key.split(":")[1],
             jobType: key.split(":")[1] == "PF" ? "Process" : "Push",
@@ -119,17 +111,23 @@ const ProcessLogs = ({ visibleColumns, searchValue }: any) => {
     }
   };
 
-  const displayjobname = (data: any) => {
-    const { artifact, tenantDetail, processKey } = data;
+  const displayjobname = (datas: any) => {
+    const { jobName } = datas;
+    const artifact = jobName.split(":")[5];
+    const tenantDetail = jobName.split(":").map((item: string, index: number) => (index < 3 ? item + ">" : "")).join("");
+    const isProcess = jobName.split(":")[1] == "PF" ? true : false;
+    const processKey = isProcess ? jobName.split(":")[jobName.split(":").length - 1] : undefined;
 
     return (
-      <div>
+      <div onClick={() => setShowNodeData(datas)}>
         <div className="text-sm font-bold">
           {artifact.charAt(0).toUpperCase() + artifact.slice(1)}
         </div>
         <div className="text-xs text-black/35">{tenantDetail}</div>
         {processKey && (
-          <div className="text-xs text-black/35">{processKey}</div>
+          <div className="flex gap-1 text-xs text-[#1C274C] border border-[#1C274C]/15 rounded-full p-1 bg-[#F4F5FA]">
+            UID:{processKey} <Clipboard />
+          </div>
         )}
       </div>
     );
@@ -138,7 +136,7 @@ const ProcessLogs = ({ visibleColumns, searchValue }: any) => {
   const RenderTableCell = (item: any, column: any) => {
     switch (column?.id) {
       case "jobName":
-        return displayjobname(item.jobName);
+        return displayjobname(item);
       case "version":
         return item.version;
       case "fabric":
@@ -203,7 +201,7 @@ const ProcessLogs = ({ visibleColumns, searchValue }: any) => {
                   columns={[...filterColmns]}
                   selectedKeys={selectedKeys}
                   className={
-                    "border-1 border-b-slate-800 overflow-y-auto border-t-transparent border-l-transparent border-r-transparent"
+                    "border-1 hover:bg-[#0736C4]/10 outline-none hover:cursor-pointer border-b-slate-800 overflow-y-auto border-t-transparent border-l-transparent border-r-transparent"
                   }
                 >
                   {({ columns, index, item }: any) => (
