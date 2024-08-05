@@ -19,6 +19,7 @@ import { TiDelete } from "react-icons/ti";
 import { FaPlusCircle } from "react-icons/fa";
 import { MdOutlineAutoDelete } from "react-icons/md";
 import { AxiosService } from "../../lib/utils/axiosService";
+import TorusToast from "../components/torusComponents/torusToast";
 interface componentprops {
     json: null | any;
     setjson: any;
@@ -28,6 +29,7 @@ const ModalWindow = ({ json = null, setjson }: componentprops) => {
     const [dupjson, setDupjson] = useState<any>(json);
     const [fileUrl, setFileUrl] = useState("");
     const [handleValue, setHandleValue] = useState(null);
+    const [wordLength, setWordLength] = useState(0);
 
     const handlejs = (newContent: any, path: any) => {
         if (path) {
@@ -75,10 +77,32 @@ const ModalWindow = ({ json = null, setjson }: componentprops) => {
                 setFileUrl(responseData.filename);
                 handlejs(responseData.filename, path);
             } else {
-                toast.error(res.statusText ?? "Error occurred", { autoClose: 2000 });
+                toast(
+                    <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+                    {
+                        type: "error",
+                        position: "bottom-right",
+                        autoClose: 2000,
+                        hideProgressBar: true,
+                        title: "Error",
+                        text: `${res.statusText ?? "Error Occurred"}`,
+                        closeButton: false,
+                    } as any
+                );
             }
         } catch (error) {
-            toast.error("Error occurred", { autoClose: 2000 });
+            toast(
+                <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+                {
+                    type: "error",
+                    position: "bottom-right",
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    title: "Error",
+                    text: `Error Occured`,
+                    closeButton: false,
+                } as any
+            );
         }
     };
 

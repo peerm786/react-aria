@@ -13,11 +13,13 @@ import { toast } from "react-toastify";
 import ModalWindow from "../settings/ModalWindow";
 import { RenderJson } from "./jsonUi/renderData";
 import { sample } from "./jsonUi/samplejson";
+import TorusToast from "./torusComponents/torusToast";
 
 const Settings = () => {
   const [tenantInfo, setTenantInfo] = useState<null | any>(null);
   const [selectedButton, setSelectedButton] = useState("Tenant Setup");
   const [state, setState] = useState(sample);
+  const [wordLength, setWordLength] = useState(0);
 
   const getFunction = (json: any) => {
     console.log(json);
@@ -28,7 +30,18 @@ const Settings = () => {
     if (response.status === 200) {
       setTenantInfo(response.data);
     } else {
-      toast.error("Failed to fetch tenant info");
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Failed to fetch tenant info`,
+          closeButton: false,
+        } as any
+      );
     }
   };
 

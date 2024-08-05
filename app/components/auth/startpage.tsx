@@ -18,6 +18,7 @@ import { signIn } from "next-auth/react";
 import { AxiosService } from "../../../lib/utils/axiosService";
 import DropDown from "../multiDropdownnew";
 import ProgressButton from "../progressbar";
+import TorusToast from "../torusComponents/torusToast";
 
 interface LoginFormProps {
   variant?: "TP" | "CG";
@@ -35,6 +36,7 @@ function LoginForm({ variant = "TP", isDarkMode }: LoginFormProps) {
   const [selectedOption, setSelectedOption] = useState<"Individual" | "Teams">(
     "Individual"
   );
+  const [wordLength, setWordLength] = useState(0);
 
   const fetchClients = async () => {
     try {
@@ -43,7 +45,18 @@ function LoginForm({ variant = "TP", isDarkMode }: LoginFormProps) {
         setClientList(res.data);
       }
     } catch (error) {
-      toast.error("Error fetching clients");
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Error fetching clients`,
+          closeButton: false,
+        } as any
+      );
     }
   };
 
@@ -60,15 +73,46 @@ function LoginForm({ variant = "TP", isDarkMode }: LoginFormProps) {
         const res = await login({ client, username, password });
         if (res?.error) {
           setLoading(false);
-          toast.error("failed to login , check credentials", {
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+            {
+              type: "error",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Error",
+              text: `Failed to login, check credentials`,
+              closeButton: false,
+            } as any
+          )
         } else {
-          toast.success("Logged in successfully");
+          toast(
+            <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+            {
+              type: "success",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Success",
+              text: `Logged in successfully`,
+              closeButton: false,
+            } as any
+          );
           setLoading(false);
         }
       } else {
-        toast.error("Please fill all the fields");
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "warning",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Warning",
+            text: `Please fill all the fields`,
+            closeButton: false,
+          } as any
+        )
         setLoading(false);
       }
     } catch (error) {
@@ -89,7 +133,18 @@ function LoginForm({ variant = "TP", isDarkMode }: LoginFormProps) {
       });
       setOpen(false);
     } else {
-      toast.error("No response");
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `No Response`,
+          closeButton: false,
+        } as any
+      );
     }
   };
 
@@ -117,22 +172,20 @@ function LoginForm({ variant = "TP", isDarkMode }: LoginFormProps) {
           <Button
             onPress={() => setSelectedOption("Individual")}
             className={`px-4 py-2 w-1/2 transition-colors duration-700 ease-in-out
-                             ${
-                               selectedOption === "Individual"
-                                 ? "bg-[#FFFFFF] dark:bg-[#000]  text-sm outline-none"
-                                 : " bg-inherit text-sm outline-none"
-                             } dark:text-white text-black`}
+                             ${selectedOption === "Individual"
+                ? "bg-[#FFFFFF] dark:bg-[#000]  text-sm outline-none"
+                : " bg-inherit text-sm outline-none"
+              } dark:text-white text-black`}
           >
             Individual
           </Button>
           <Button
             onPress={() => setSelectedOption("Teams")}
             className={`px-4 py-2 w-1/2 transition-colors duration-700 ease-in-out
-                            ${
-                              selectedOption === "Teams"
-                                ? "bg-[#FFFFFF] dark:bg-[#000]  text-sm outline-none"
-                                : " bg-inherit text-sm outline-none"
-                            } dark:text-white text-black`}
+                            ${selectedOption === "Teams"
+                ? "bg-[#FFFFFF] dark:bg-[#000]  text-sm outline-none"
+                : " bg-inherit text-sm outline-none"
+              } dark:text-white text-black`}
           >
             Team
           </Button>

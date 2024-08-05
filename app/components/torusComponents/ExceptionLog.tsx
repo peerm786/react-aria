@@ -11,11 +11,13 @@ import { toast } from 'react-toastify';
 import JsonView from "react18-json-view";
 import "react18-json-view/src/style.css";
 import { tree } from 'next/dist/build/templates/app-page';
+import TorusToast from './torusToast';
 
 const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[], searchValue: string }) => {
     const [data, setData] = useState<any[]>([]);
     const [tabdata, setTabData] = useState<any>({});
     const [teamName, setTeamName] = useState<string>("TP");
+    const [wordLength, setWordLength] = useState(0);
 
     const ExceptionLogData = async () => {
         try {
@@ -38,12 +40,33 @@ const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[
                 setData(result);
                 setTabData(result[0]);
             } else {
-                toast.error("Exception log fetching process failed", {
-                    autoClose: 2000,
-                });
+                toast(
+                    <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+                    {
+                        type: "error",
+                        position: "bottom-right",
+                        autoClose: 2000,
+                        hideProgressBar: true,
+                        title: "Error",
+                        text: `Exception log fetching process failed`,
+                        closeButton: false,
+                    } as any
+                )
             }
-        } catch (error) {
-            toast.error("Exception log fetching process failed", { autoClose: 2000 });
+        } catch (error: any) {
+            const { data } = error.response
+            toast(
+                <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+                {
+                    type: "error",
+                    position: "bottom-right",
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    title: "Error Fetching Tenant",
+                    text: `${data.errorDetails.message}`,
+                    closeButton: false,
+                } as any
+            )
         }
     };
 

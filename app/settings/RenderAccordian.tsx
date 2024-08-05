@@ -18,6 +18,7 @@ import _ from "lodash";
 import { MdOutlineAutoDelete } from "react-icons/md";
 import { AxiosService } from "../../lib/utils/axiosService"
 import { getCookie } from "../../lib/utils/cookiemgmt"
+import TorusToast from "../components/torusComponents/torusToast";
 
 const RenderAccordion = ({
     data,
@@ -29,6 +30,7 @@ const RenderAccordion = ({
 }: any) => {
     const [handleValue, setHandleValue] = useState(null);
     const [fileUrl, setFileUrl] = useState("");
+    const [wordLength, setWordLength] = useState(0);
 
     const handleUploads = async (e: any, path: any) => {
         const file = e.target.files[0];
@@ -63,11 +65,33 @@ const RenderAccordion = ({
                     setFileUrl(responseData.filename);
                     handlejs(responseData.filename, path);
                 } else {
-                    toast.error(res.statusText ?? "Error occurred", { autoClose: 2000 });
+                    toast(
+                        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+                        {
+                            type: "error",
+                            position: "bottom-right",
+                            autoClose: 2000,
+                            hideProgressBar: true,
+                            title: "Error",
+                            text: `${res.statusText ?? "Error Occurred"}`,
+                            closeButton: false,
+                        } as any
+                    );
                 }
             }
         } catch (error) {
-            toast.error("Error occurred", { autoClose: 2000 });
+            toast(
+                <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+                {
+                    type: "error",
+                    position: "bottom-right",
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    title: "Error",
+                    text: `Error Occurred`,
+                    closeButton: false,
+                } as any
+            );
         }
     };
 
