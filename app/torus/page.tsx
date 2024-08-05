@@ -51,9 +51,9 @@ const page = () => {
     return (
         <div className='flex flex-col w-full h-screen bg-[#F4F5FA] pt-1 dark:bg-[#161616] dark:text-[#FFFFFF]'>
             <Topbar tenant={tenant} setTenant={setTenant} tenantInfo={data} />
-            <div className='flex h-[85%]'>
+            <div className='flex h-[88%]'>
                 <Sidebar />
-                <div className='flex flex-col w-full h-full pt-3'>
+                <div className='flex flex-col w-full h-full'>
                     <DateandTime />
                     <div className='flex justify-between w-full gap-2 h-[93%]'>
                         <div className='flex flex-col gap-3 w-[36%]'>

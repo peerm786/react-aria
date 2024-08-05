@@ -47,7 +47,7 @@ const DateandTime = () => {
     return (
         <div className='flex justify-between ml-5'>
             <div className='flex flex-col'>
-                <h1 className='text-sm font-bold'>{greeting},{getCookie("loginId")}!</h1>
+                <h1 className='text-lg font-bold'>{greeting},{getCookie("loginId")}!</h1>
                 <p className='text-xs'>{formattedDate}</p>
             </div>
             <div className='flex gap-2 mr-3'>

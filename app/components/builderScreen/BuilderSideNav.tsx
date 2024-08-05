@@ -49,17 +49,17 @@ const BuilderSideNav = () => {
     return (
         <aside
             aria-label="Sidebar"
-            className="w-10 h-[95%] mt-5 flex ml-5 flex-col items-center justify-between bg-white border border-[#000000]/15 rounded-md"
+            className="w-12 h-[95%] mt-5 flex ml-3 flex-col items-center justify-between bg-white border border-[#000000]/15 rounded-md"
         >
-            <section className="flex flex-col justify-center items-center">
+            <section className="flex flex-col w-full">
                 <section
                     aria-label="Actions"
-                    className="w-12 flex flex-col items-center justify-center gap-1 mt-3"
+                    className="flex flex-col w-full items-center justify-center gap-1 mt-3"
                 >
                     {actionIcons.map(({ Icon, route }, index) => (
                         <Button
                             key={index}
-                            className={`${index === 5 ? "border-b border-b-black/35" : ""} p-2 focus:outline-none ${index === fillIndex ? "border-l-2 border-l-[#0736C4]" : ""}`}
+                            className={`${index === 5 ? "border-b border-b-black/35" : ""} p-2 items-center justify-center focus:outline-none ${index === fillIndex ? "flex border-l-2 border-l-[#0736C4] w-full" : ""}`}
                             onPress={() => handleRoutes(index, route)}
                         >
                             <Icon

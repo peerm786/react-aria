@@ -10,6 +10,7 @@ import {
 } from "../constants/svgApplications";
 import { AxiosService } from "../../lib/utils/axiosService";
 import { toast } from "react-toastify";
+import TorusToast from "./torusComponents/torusToast";
 
 interface BuilderProps {
   tenant: string;
@@ -21,6 +22,7 @@ interface BuilderProps {
 function FabricSelector({ tenant, appGrp, app, isDarkMode }: BuilderProps) {
   const [selectedTab, setSelectedTab] = useState("df");
   const [modelKeys, setModelKeys] = useState<any[]>([]);
+  const [wordLength, setWordLength] = useState(0);
 
   const IconColors = {
     df: "#0736C4",
@@ -89,20 +91,47 @@ function FabricSelector({ tenant, appGrp, app, isDarkMode }: BuilderProps) {
           // setModelKeys([...new Set(data)]);
         } else {
           setModelKeys([]);
-          toast.error("There is no ModelKey found for the application", {
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+            {
+              type: "error",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Error Fetching ModelKeys",
+              text: `There is no ModelKey found for the application`,
+              closeButton: false,
+            } as any
+          )
         }
       } else {
         setModelKeys([]);
-        toast.error("Please select valid application", {
-          autoClose: 2000,
-        });
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "error",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Error Fetching ModelKeys",
+            text: `Please select valid application`,
+            closeButton: false,
+          } as any
+        );
       }
     } else {
-      toast.error("Please select valid application", {
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error Fetching ModelKeys",
+          text: `Please select valid application`,
+          closeButton: false,
+        } as any
+      )
     }
   };
 
@@ -159,10 +188,9 @@ function MyTab({ id, children, label }: TabProps & { label: string }) {
       id={id}
       className={({ isSelected }) => `
         w-full flex items-center justify-center text-[12px] cursor-pointer
-        ${
-          isSelected
-            ? "bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white transition duration-300 ease-in-out rounded-lg outline-none p-1"
-            : ""
+        ${isSelected
+          ? "bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white transition duration-300 ease-in-out rounded-lg outline-none p-1"
+          : ""
         }
       `}
     >

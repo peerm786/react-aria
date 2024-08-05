@@ -44,12 +44,12 @@ const Sidebar = () => {
   return (
     <aside
       aria-label="Sidebar"
-      className="w-10 flex ml-5 flex-col items-center justify-between h-full bg-white border border-[#000000]/15 rounded-md dark:bg-[#1D1D1D] dark:text-[#FFFFFF]"
+      className="w-12 flex ml-3 flex-col items-center justify-between h-full bg-white border border-[#000000]/15 rounded-md dark:bg-[#1D1D1D] dark:text-[#FFFFFF]"
     >
       <section className="flex flex-col justify-center items-center dark:text-[#FFFFFF]">
         <section
           aria-label="Actions"
-          className="w-12 flex flex-col items-center justify-center gap-3 mt-3 dark:bg-[#1D1D1D] dark:text-[#FFFFFF]"
+          className="flex flex-col items-center justify-center gap-3 mt-3 dark:bg-[#1D1D1D] dark:text-[#FFFFFF]"
         >
           {actionIcons.map(({ Icon, route }, index) => (
             <Button
@@ -68,13 +68,14 @@ const Sidebar = () => {
           ))}
         </section>
       </section>
-      <Button className="outline-none dark:text-[#FFFFFF]" onPress={toggleDarkMode}>
-        <RxSwitch />
-      </Button>
+
       <section
         aria-label="Theme and Logout"
         className="w-full flex flex-col justify-center items-center mb-3 "
       >
+        <Button className="outline-none dark:text-[#FFFFFF]" onPress={toggleDarkMode}>
+          <RxSwitch />
+        </Button>
         <Button className="outline-none dark:text-[#FFFFFF]" >
           <BellIcon fill={isDarkMode ? "white" : "black"} />
         </Button>

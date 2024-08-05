@@ -18,6 +18,7 @@ import { FilterIcon } from "./components/torusComponents/SVG_Application";
 import ExceptionLog from "./components/torusComponents/ExceptionLog";
 import Artifactdetails from "./components/landingScreen/artifactdetails";
 import ProgressButton from "./components/progressbar";
+import TorusToast from "./components/torusComponents/torusToast";
 
 const page = () => {
   const [selectedAssemblerButton, setSelectedAssemblerButton] = useState(true);
@@ -52,6 +53,7 @@ const page = () => {
   const [visibleColumns, setVisibleColumns] = useState<any>(allProcessLogColumns);
   const [showNodeData, setShowNodeData] = useState<null | any>(null)
   const [isLoading, setLoading] = useState(true)
+  const [wordLength, setWordLength] = useState(0);
 
 
   const handleBuildButtonSelect = () => {
@@ -98,8 +100,20 @@ const page = () => {
       if (res.status == 200) {
         setTenantList(res.data as string[]);
       }
-    } catch (error) {
-      toast.error("Error fetching tenants");
+    } catch (error: any) {
+      const { data } = error.response
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error Fetching Tenant",
+          text: `${data.errorDetails.message}`,
+          closeButton: false,
+        } as any
+      );
     }
   };
 
@@ -111,8 +125,20 @@ const page = () => {
       if (res.status == 200) {
         setAppGrpList(res.data);
       }
-    } catch (error) {
-      toast.error("Error fetching Appgrp");
+    } catch (error: any) {
+      const { data } = error.response
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error Fetching Tenant",
+          text: `${data.errorDetails.message}`,
+          closeButton: false,
+        } as any
+      );
     }
   };
 
@@ -124,8 +150,20 @@ const page = () => {
       if (res.status == 200) {
         setAppList(res.data);
       }
-    } catch (error) {
-      toast.error("Error fetching Appgrp");
+    } catch (error: any) {
+      const { data } = error.response
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error Fetching Tenant",
+          text: `${data.errorDetails.message}`,
+          closeButton: false,
+        } as any
+      )
     }
   };
 
@@ -175,10 +213,33 @@ const page = () => {
         data: menuItemData,
       });
       if (res.status == 201) {
-        toast.success("Build saved successfully");
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "success",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Success",
+            text: `Build saved successfully`,
+            closeButton: false,
+          } as any
+        );
       }
-    } catch (error) {
-      toast.error("Error saving build");
+    } catch (error: any) {
+      const { data } = error.response
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error saving build",
+          text: `${typeof data.errorDetails == "string" ? data.errorDetails : data.errorDetails.message}`,
+          closeButton: false,
+        } as any,
+      );
     }
   };
 
@@ -189,10 +250,33 @@ const page = () => {
         data: menuItemData,
       });
       if (res.status == 201) {
-        toast.success("Build saved successfully");
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "success",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Success",
+            text: `Build saved successfully`,
+            closeButton: false,
+          } as any
+        );
       }
-    } catch (error) {
-      toast.error("Error saving build");
+    } catch (error: any) {
+      const { data } = error.response
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error updating build",
+          text: `${typeof data.errorDetails == "string" ? data.errorDetails : data.errorDetails.message}`,
+          closeButton: false,
+        } as any,
+      );
     }
   };
 
@@ -340,7 +424,7 @@ const page = () => {
                       items={tenantList}
                       classNames={{
                         triggerButton:
-                          `min-w-40 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white`,
+                          `min-w-40  pressed:animate-torusButtonActive rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white`,
                         popover: "w-40",
                         listbox: "overflow-y-auto",
                         listboxItem: "flex text-sm justify-between",
@@ -355,7 +439,7 @@ const page = () => {
                       items={appGrpList}
                       classNames={{
                         triggerButton: `${selectedTenant
-                          ? "min-w-40 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                          ? "min-w-40 pressed:animate-torusButtonActive rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
                           : "backdrop-blur-3xl min-w-40 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
                           }`,
                         popover: "w-40",
@@ -372,7 +456,7 @@ const page = () => {
                       items={appList}
                       classNames={{
                         triggerButton: `${selectAppGroup
-                          ? "min-w-40 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                          ? "min-w-40 pressed:animate-torusButtonActive rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
                           : "backdrop-blur-3xl min-w-40 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
                           }`,
                         popover: "w-40",
@@ -389,7 +473,7 @@ const page = () => {
                       items={versionList}
                       classNames={{
                         triggerButton: `${selectApp
-                          ? "min-w-20 rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                          ? "min-w-20 pressed:animate-torusButtonActive rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
                           : "backdrop-blur-3xl min-w-20 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
                           }`,
                         popover: "w-40",
@@ -444,8 +528,8 @@ const page = () => {
             }
             {selectedLogsButton &&
               <div className="w-full h-full">
-                {logsTabList == "log" ? (
-                  <ProcessLogs visibleColumns={visibleColumns} searchValue={searchValue} setShowNodeData={setShowNodeData} showNodeData={showNodeData} />
+                {logsTabList == "log" ? (<div className="w-[98%] ml-2 h-full">
+                  <ProcessLogs visibleColumns={visibleColumns} searchValue={searchValue} setShowNodeData={setShowNodeData} showNodeData={showNodeData} /></div>
                 ) : (logsTabList == "exception" && (
                   <ExceptionLog visibleColumns={visibleColumns} searchValue={searchValue} />
                 ))

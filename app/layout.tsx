@@ -19,7 +19,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>{children}
-        <ToastContainer />
+        <ToastContainer
+          newestOnTop
+          icon={false}
+          pauseOnHover={false}
+          hideProgressBar={true}
+          className={`z-[999] flex min-h-11 min-w-[0%] max-w-[85%] flex-col items-center justify-end`}
+        />
       </body>
     </html>
   );
