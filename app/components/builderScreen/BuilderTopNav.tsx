@@ -26,7 +26,7 @@ const BuilderTopNav = ({ showNodeData, setShowNodeData }: any) => {
                         <h2 className="font-semibold">TORUS</h2>
                     </div>
                     {showNodeData ? <div>
-                        <Button className={"outline-none dark:text-[#FFFFFF]"} onPress={() => setShowNodeData(null)}><BackwardIcon /></Button>
+                        <Button className={"outline-none "} onPress={() => setShowNodeData(null)}><BackwardIcon fill={isDarkMode ? "white" : "black"} /></Button>
                     </div> : null}
                 </div>
                 <div className="flex h-full gap-3 items-center ">

@@ -177,10 +177,10 @@ const Artifactdetails = ({ nodeData }: any) => {
                     <div className="flex flex-row text-center  w-[30%] h-full p-6 dark:bg-[#0F0F0F] dark:text-[#FFFFFF] overflow-y-auto scrollbar-hide">
                         <Tabs selectedKey={activeTab} onSelectionChange={setActiveTab}>
                             <TabList className="flex p-1  w-full border border-[#000000]/15 gap-2 bg-[#F4F5FA] items-center  rounded-md dark:bg-[#161616] dark:text-[#FFFFFF]">
-                                <Tab id="npc" className={`px-10 py-2 text-center outline-none text-sm rounded-md dark:bg-[#161616]  ${activeTab === 'npc' ? 'bg-white' : ''}`}>
+                                <Tab id="npc" className={`px-10 py-2 text-center outline-none text-sm rounded-md dark:bg-[#161616]  ${activeTab === 'npc' ? 'bg-white dark:bg-[#161616]' : ''}`}>
                                     NPC
                                 </Tab>
-                                <Tab id="ipc" className={`px-10 py-2 outline-none text-sm rounded-md dark:bg-[#161616] ${activeTab === 'ipc' ? 'bg-white' : ''}`}>
+                                <Tab id="ipc" className={`px-10 py-2 outline-none text-sm rounded-md dark:bg-[#161616] ${activeTab === 'ipc' ? 'bg-white dark:bg-[#161616]' : ''}`}>
                                     IPC
                                 </Tab>
                             </TabList>
