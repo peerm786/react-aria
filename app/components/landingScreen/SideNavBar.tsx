@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   BellIcon,
   CallChatSvg,
@@ -13,8 +13,6 @@ import TorusAvatar from "../Avatar";
 import TorusDialog from "../torusdialogmodal";
 import Settings from "../settings";
 import { useRouter } from "next/navigation";
-import { RxSwitch } from "react-icons/rx";
-
 
 const Sidebar = () => {
   const [fillIndex, setFillIndex] = useState(0);
@@ -28,15 +26,12 @@ const Sidebar = () => {
   ];
   const router = useRouter();
 
-
   const handleRoutes = (index: number, route: string | undefined) => {
     if (route) {
       router.push(route);
     }
     setFillIndex(index);
   }
-
-
 
   return (
     <aside
@@ -64,9 +59,6 @@ const Sidebar = () => {
             </Button>
           ))}
         </section>
-        <Button className="outline-none dark:text-[#FFFFFF]">
-          <RxSwitch />
-        </Button>
       </section>
 
       <section

@@ -1,10 +1,11 @@
 "use client";
-import { Tab, TabList, TabPanel, Tabs } from "react-aria-components";
+import { Input, Tab, TabList, TabPanel, Tabs } from "react-aria-components";
 import type { TabPanelProps, TabProps } from "react-aria-components";
 import React, { useEffect, useState } from "react";
 import {
   DataFabric,
   ProcessFabric,
+  SearchIcon,
   SecurityFabric,
   UserFabric,
 } from "../constants/svgApplications";
@@ -26,7 +27,7 @@ function FabricSelector({ tenant, appGrp, app }: any) {
   const [modelKeys, setModelKeys] = useState<any[]>([]);
   const [wordLength, setWordLength] = useState(0);
   const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
-
+  const [searchValue, setSearchValue] = useState<string>("");
 
   const IconColors = {
     df: "#0736C4",
@@ -168,13 +169,24 @@ function FabricSelector({ tenant, appGrp, app }: any) {
             </MyTab>
           ))}
         </TabList>
-        <div className="h-[85%] overflow-y-auto mt-3 ">
-          {modelKeys.map((key: any, index: number) => (
+        <div className="relative mt-3 ml-2">
+          <span className="absolute inset-y-0 left-0 flex items-center p-2 h-7 w-7 ">
+            <SearchIcon fill={isDarkMode ? "white" : "black"} />
+          </span>
+          <Input
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            placeholder="Search Artifacts"
+            className={`w-[92%] bg-[#F4F5FA] text-sm font-medium p-1 focus:outline-none focus:border-blue-400 border border-black/15 pl-6 rounded-md dark:border-[#212121]`}
+          />
+        </div>
+        <div className="h-[85%] overflow-y-auto">
+          {modelKeys.filter((key: any) => key.label.toLowerCase().includes(searchValue.toLowerCase())).map((key: any, index: number) => (
             <MyTabPanel key={index} id={selectedTab}>
               <div
                 draggable
                 onDragStart={(e) => handleDragKey(e, key.key)}
-                className="w-[90%] border border-black/20 dark:border-[#212121] dark:text-white p-1 ml-2 text-sm rounded-md"
+                className="w-[90%] bg-white dark:bg-[#161616] border border-black/20 dark:border-[#212121] dark:text-white p-1 ml-2 text-sm rounded-md"
               >
                 {key.label}
               </div>

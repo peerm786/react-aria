@@ -146,7 +146,7 @@ const ModalWindow = ({ json = null, setjson }: componentprops) => {
 
     return (
         <div
-            className="mt-2 h-[90%]"
+            className="mt-2 h-[85%]"
         >
             <Tabs fullWidth>
                 {dupjson ? (

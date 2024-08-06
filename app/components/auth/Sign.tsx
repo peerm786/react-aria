@@ -3,22 +3,18 @@ import React from "react";
 import Image from "next/image";
 import DashBoard from "../../constants/image.png";
 import DarkModeDashboard from "../../constants/darkDashboard.png";
-import { useDarkMode } from "../../../lib/utils/useDarkmode";
 import LoginForm from "../../components/auth/startpage"
 import { IoIosArrowForward } from "react-icons/io";
-import { IoToggleSharp } from "react-icons/io5";
-import { getCookie } from "../../../lib/utils/cookiemgmt";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../lib/Store/store";
 
 const Login = () => {
-
-    const { isDarkMode, toggleDarkMode } = useDarkMode();
+    const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
 
     return (
         <div className="flex justify-between w-full h-screen bg-[#F4F4F6] overflow-hidden  dark:bg-[#171717] transition-colors duration-700 ease">
-
             <div className="w-[30%] flex items-center justify-center  ">
                 <LoginForm
-                    isDarkMode={isDarkMode}
                 />
             </div>
             <div
@@ -33,7 +29,6 @@ const Login = () => {
                             <IoIosArrowForward className="ml-1" />
                         </p>
                     </div>
-                    <IoToggleSharp onClick={toggleDarkMode} className="dark:text-white" />
 
                     <p className="text-black dark:text-white text-2xl  font-bold  ">
                         Discover the New Torus 9

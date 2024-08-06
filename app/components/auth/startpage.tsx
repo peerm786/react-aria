@@ -19,13 +19,14 @@ import { AxiosService } from "../../../lib/utils/axiosService";
 import DropDown from "../multiDropdownnew";
 import ProgressButton from "../progressbar";
 import TorusToast from "../torusComponents/torusToast";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../lib/Store/store";
 
 interface LoginFormProps {
   variant?: "TP" | "CG";
-  isDarkMode: boolean;
 }
 
-function LoginForm({ variant = "TP", isDarkMode }: LoginFormProps) {
+function LoginForm({ variant = "TP" }: LoginFormProps) {
   const [clientList, setClientList] = useState<string[]>([]);
   const [client, setClient] = useState<any>("");
   const [loading, setLoading] = useState(false);
@@ -37,6 +38,7 @@ function LoginForm({ variant = "TP", isDarkMode }: LoginFormProps) {
     "Individual"
   );
   const [wordLength, setWordLength] = useState(0);
+  const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
 
   const fetchClients = async () => {
     try {

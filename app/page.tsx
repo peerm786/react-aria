@@ -7,11 +7,8 @@ import MenuItemAccordian from "./components/builderScreen/MenuItemAccordian";
 import { AxiosService } from "../lib/utils/axiosService";
 import { toast } from "react-toastify";
 import DropDown from "./components/multiDropdownnew";
-
-
-import { IoToggleSharp } from "react-icons/io5";
 import { ColumnIcon, HistoryIcon, PushandPullIcon, SearchIcon } from "./constants/svgApplications";
-import { TreeNode } from "./constants/MenuItemTree";
+import { menuItems, TreeNode } from "./constants/MenuItemTree";
 import BuilderTopNav from "./components/builderScreen/BuilderTopNav";
 import BuilderSideNav from "./components/builderScreen/BuilderSideNav";
 import ProcessLogs from "./components/torusComponents/processLog";
@@ -23,10 +20,6 @@ import TorusToast from "./components/torusComponents/torusToast";
 import { useSelector } from "react-redux";
 import { RootState } from "../lib/Store/store";
 
-
-
-
-
 const page = () => {
   const [selectedAssemblerButton, setSelectedAssemblerButton] = useState(true);
   const [selectedLogsButton, setSelectedLogsButton] = useState(false);
@@ -36,13 +29,10 @@ const page = () => {
   const [tenantList, setTenantList] = useState<string[]>([]);
   const [appGrpList, setAppGrpList] = useState<string[]>([]);
   const [appList, setAppList] = useState<string[]>([]);
-  const [menuItemData, setMenuItemData] = useState<TreeNode[]>([]);
+  const [menuItemData, setMenuItemData] = useState<TreeNode[]>(menuItems);
   const [versionList, setVersionList] = useState<string[]>([]);
   const [selectedVersion, setSelectedVersion] = useState<string>("");
   const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
-
-
-
   const [logsTabList, setLogTabList] = useState<"exception" | "log" | any>("log")
   const [searchValue, setSearchValue] = useState<string>("");
   const allProcessLogColumns = [
@@ -64,11 +54,6 @@ const page = () => {
   const [showNodeData, setShowNodeData] = useState<null | any>(null)
   const [isLoading, setLoading] = useState(true)
   const [wordLength, setWordLength] = useState(0);
-
-
-
-
-
 
   const handleBuildButtonSelect = () => {
     setSelectedAssemblerButton(true);
@@ -190,7 +175,6 @@ const page = () => {
     }
   }, []);
 
-
   const getAssemblerVersion = async (app: string) => {
     try {
       const res = await AxiosService.get(
@@ -198,7 +182,7 @@ const page = () => {
       );
 
       if (res.status == 200) {
-        setVersionList(res.data);
+        setVersionList(res.data.sort((a: any, b: any) => parseInt(b.replace('v', '')) - parseInt(a.replace('v', ''))));
       }
     } catch (err) {
       setVersionList([]);
@@ -314,7 +298,7 @@ const page = () => {
             <Artifactdetails nodeData={showNodeData} />
           </div>
           :
-          <div className="flex flex-col w-[94%] h-[95%] border border-black/15 bg-white mt-5 overflow-y-hidden dark:bg-[#161616] rounded-md mr-3 scrollbar-hide">
+          <div className="flex flex-col w-[94%] h-[95%] border border-black/15 dark:border-black/15 bg-white mt-5 overflow-y-hidden dark:bg-[#161616] rounded-md mr-3 scrollbar-hide">
             <div className="flex w-full items-center justify-between">
               <div className="flex gap-5 pt-2 pl-4">
                 <Button
@@ -408,16 +392,13 @@ const page = () => {
                       displaySelectedKeys={false}
                     />
                   </div>
-                  {/* <Button className="outline-none dark:text-[#FFFFFF]" onPress={toggleDarkMode}>
-                    <RxSwitch />
-                  </Button> */}
                   <div>
                     <Tabs className={"pt-2 pr-2"} selectedKey={logsTabList} onSelectionChange={setLogTabList} >
                       <TabList className="flex w-full p-1 gap-2 bg-[#F4F5FA] items-center text-nowrap rounded-md dark:bg-[#0F0F0F] dark:text-[#FFFFFF]">
-                        <Tab id="log" className={`p-2 outline-none text-xs rounded-md font-semibold cursor-pointer dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ${logsTabList === 'log' ? 'bg-white' : ''}`}>
+                        <Tab id="log" className={`p-2 outline-none text-xs rounded-md font-semibold cursor-pointer dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ${logsTabList === 'log' ? 'bg-white dark:bg-[#161616]' : ''}`}>
                           Log Details
                         </Tab>
-                        <Tab id="exception" className={`p-2 outline-none text-xs rounded-md font-semibold cursor-pointer dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ${logsTabList === 'exception' ? 'bg-white' : ''}`}>
+                        <Tab id="exception" className={`p-2 outline-none text-xs rounded-md font-semibold cursor-pointer dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ${logsTabList === 'exception' ? 'bg-white dark:bg-[#161616]' : ''}`}>
                           Exception Details
                         </Tab>
                       </TabList>
@@ -514,7 +495,6 @@ const page = () => {
                     >
                       Clear All
                     </Button>
-
                   </div>
                 </div>
                 <div>
@@ -526,7 +506,6 @@ const page = () => {
                       tenant={selectedTenant}
                       appGrp={selectAppGroup}
                       app={selectApp}
-
                     />
                   </div>
                   <div className="w-[75%] pt-3 pr-2">

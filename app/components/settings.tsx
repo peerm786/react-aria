@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AccountSettingsIcon,
   AppearanceIcon,
@@ -14,19 +14,52 @@ import ModalWindow from "../settings/ModalWindow";
 import { RenderJson } from "./jsonUi/renderData";
 import { sample } from "./jsonUi/samplejson";
 import TorusToast from "./torusComponents/torusToast";
+import DropDown from "./multiDropdownnew";
+import { getCookie } from "../../lib/utils/cookiemgmt";
 
 const Settings = () => {
   const [tenantInfo, setTenantInfo] = useState<null | any>(null);
   const [selectedButton, setSelectedButton] = useState("Tenant Setup");
   const [state, setState] = useState(sample);
+  const [tenant, setTenant] = useState("");
   const [wordLength, setWordLength] = useState(0);
+  const token = getCookie('token')
+  const [tenantList, setTenantList] = useState<string[]>([]);
+
+  const AuthorizedTenantDetails = async () => {
+    try {
+      if (token) {
+        const res = await AxiosService.get(`/tp/AuthorizedTenantDetails`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        setTenantList(res.data.map((item: any) => item.name))
+      } else {
+        console.log("no token")
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    AuthorizedTenantDetails()
+  }, [])
+
+  const handleSelectTenant = (e: string) => {
+    setTenant(e);
+    handleTenant(e);
+  }
 
   const getFunction = (json: any) => {
     console.log(json);
   };
 
-  const handleTenant = async () => {
-    const response = await AxiosService.get(`/tp/getTenantInfo?tenant=ABC`);
+  const handleTenant = async (tenant?: string) => {
+    setTenantInfo(null);
+    const givenTenant = tenant || tenantList[0];
+    const response = await AxiosService.get(`/tp/getTenantInfo?tenant=${givenTenant}`);
     if (response.status === 200) {
       setTenantInfo(response.data);
     } else {
@@ -42,6 +75,22 @@ const Settings = () => {
           closeButton: false,
         } as any
       );
+    }
+  };
+
+  const handleTenantProfile = async () => {
+    try {
+      const response = await AxiosService.post("tp/postTenantInfo", {
+        tenant: tenant,
+        data: tenantInfo,
+      });
+      if (response.status == 201) {
+        toast.success("Tenant profile info updated");
+      } else {
+        toast.error("Some error occured");
+      }
+    } catch (error) {
+      toast.error("Error occured");
     }
   };
 
@@ -62,6 +111,7 @@ const Settings = () => {
     { color: "Yellow", bgClass: "bg-yellow-500" },
     { color: "Orange", bgClass: "bg-orange-500" },
   ];
+
   return (
     <div className="p-4 w-[60vw] h-[80vh] bg-white rounded-md shadow-md flex">
       <div className="w-[20%] border-r">
@@ -70,10 +120,10 @@ const Settings = () => {
           <Button
             onPress={() => {
               setSelectedButton(name);
-              handleTenant();
+              { selectedButton === "App Setup" && handleTenant() };
             }}
             key={index}
-            className="flex text-xs gap-2 items-center p-2 rounded-md cursor-pointer hover:bg-gray-200 outline-none"
+            className={`mt-2 text-xs gap-2 items-center p-2 rounded-md outline-none ${selectedButton == name ? "flex bg-[#F4F5FA]" : "flex cursor-pointer hover:bg-[#F4F5FA]"}`}
           >
             <Icon />
             {name}
@@ -83,7 +133,30 @@ const Settings = () => {
 
       <div className="w-3/4 ml-4 mt-2">
         {selectedButton == "App Setup" && tenantInfo ? (
-          <ModalWindow json={tenantInfo} setjson={setTenantInfo} />
+          <div className="flex flex-col h-full">
+            <div className="flex ml-auto">
+              <DropDown
+                triggerButton="Tenant Selector"
+                selectedKeys={tenant}
+                setSelectedKeys={handleSelectTenant}
+                items={tenantList}
+                classNames={{
+                  triggerButton:
+                    "min-w-40 rounded-lg text-xs font-medium mt-2 bg-[#F4F5FA]",
+                  popover: "w-40",
+                  listbox: "overflow-y-auto",
+                  listboxItem: "flex text-sm justify-between",
+                }}
+              />
+            </div>
+            {tenantInfo ? <ModalWindow json={tenantInfo} setjson={setTenantInfo} /> : null}
+            <Button
+              className={"flex outline-none bg-blue-500 text-white p-1 ml-auto rounded-lg"}
+              onPress={handleTenantProfile}
+            >
+              Update Changes
+            </Button>
+          </div>
         ) : null}
         {selectedButton == "Tenant Setup" ? (
           <RenderJson json={state} functionality={getFunction} />
