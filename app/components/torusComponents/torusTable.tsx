@@ -355,9 +355,9 @@ const Pagination = ({ currentPage, totalPages, setCurrentPage }: any) => {
   };
 
   return (
-    <div className="w-full flex items-center justify-center gap-4">
+    <div className="w-full flex items-center justify-center gap-4 ">
       <Button
-        className="px-2 py-1 border rounded shadow flex items-center text-xs text-[#344054] gap-2 focus:outline-none"
+        className="px-2 py-1 border rounded shadow flex items-center text-xs text-[#344054] gap-2 focus:outline-none dark:text-[#FFFFFF]"
         onPress={() => handlePageChange(currentPage - 1)}
         isDisabled={currentPage === 1}
       >
@@ -367,7 +367,7 @@ const Pagination = ({ currentPage, totalPages, setCurrentPage }: any) => {
         {getPageNumbers().map((page) => (
           <Button
             key={page}
-            className={`pagination-button text-xs focus:outline-none ${page === currentPage
+            className={`pagination-button text-xs focus:outline-none dark:focus:bg-[#3063FF]/35 dark:text-[#FFFFFF] ${page === currentPage
               ? "text-[#0736C4] bg-[#E3EAFF] px-2 py-1 rounded"
               : "text-[#667085]"
               }`}
@@ -377,12 +377,12 @@ const Pagination = ({ currentPage, totalPages, setCurrentPage }: any) => {
           </Button>
         ))}
         {totalPages > 4 && currentPage + 2 < totalPages && (
-          <span className="text-[#667085]">...</span>
+          <span className="text-[#667085] dark:text-[#FFFFFF]">...</span>
         )}
       </div>
       {totalPages > 4 && currentPage + 1 < totalPages && (
         <Button
-          className={`pagination-button text-xs focus:outline-none ${totalPages === currentPage
+          className={`pagination-button text-xs focus:outline-none dark:text-[#FFFFFF] ${totalPages === currentPage
             ? "text-[#0736C4] bg-[#E3EAFF] px-2 py-1 rounded"
             : "text-[#667085]"
             }`}
@@ -392,7 +392,7 @@ const Pagination = ({ currentPage, totalPages, setCurrentPage }: any) => {
         </Button>
       )}
       <Button
-        className="px-2 py-1 border rounded shadow flex items-center text-xs text-[#344054] gap-2 focus:outline-none aria-pressed:hidden"
+        className="px-2 py-1 border rounded shadow flex items-center text-xs text-[#344054] gap-2 focus:outline-none aria-pressed:hidden dark:text-[#FFFFFF]"
         onPress={() => handlePageChange(currentPage + 1)}
         isDisabled={currentPage === totalPages}
       >
@@ -439,7 +439,7 @@ export function TorusTable({
   const descriptions = (description: any) => {
     if (description) {
       return (
-        <div className="col-span-6 flex justify-start items-center">
+        <div className="col-span-6 flex justify-start items-center dark:text-[#FFFFFF]">
           <div className="w-[100%] whitespace-nowrap text-sm font-normal">
             {`Keep track of ${description} and display them in a table. `}
           </div>
@@ -881,7 +881,7 @@ export function TorusTable({
                   </div>
                 </div>
               </div> */}
-            <div className={`w-full h-full overflow-y-scroll mt-2 `}>
+            <div className={`w-full h-full overflow-y-scroll mt-2 border-b-1 border-transparent `}>
               <Table
                 aria-label="table"
                 selectedKeys={selectedKeys}
@@ -1044,7 +1044,7 @@ export const TableCellActions = ({ id }: any) => {
             }
             classNames={{
               dialogClassName:
-                " flex  border border-gray-300 rounded-lg flex-col bg-white",
+                " flex  border border-gray-300 dark: border-[#212121] rounded-lg flex-col bg-white",
             }}
             message={"Delete"}
             children={({ close }: any) => (
@@ -1079,7 +1079,7 @@ export const TableCellActions = ({ id }: any) => {
               />
             }
             classNames={{
-              dialogClassName: " flex  border-2 flex-col bg-white",
+              dialogClassName: " flex  border-2 dark: border-[#212121]  flex-col bg-white",
             }}
             title={"Edit"}
             message={"Edit"}

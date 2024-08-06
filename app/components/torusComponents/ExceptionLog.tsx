@@ -13,7 +13,7 @@ import "react18-json-view/src/style.css";
 import { tree } from 'next/dist/build/templates/app-page';
 import TorusToast from './torusToast';
 
-const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[], searchValue: string }) => {
+const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[], searchValue: string, }) => {
     const [data, setData] = useState<any[]>([]);
     const [tabdata, setTabData] = useState<any>({});
     const [teamName, setTeamName] = useState<string>("TP");
@@ -80,7 +80,7 @@ const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[
         return (
             <div>
                 <div className='text-sm font-bold'>{jobName}</div>
-                <div className='text-xs text-black/35'>
+                <div className='text-xs text-black/35 dark:text-[#FFFFFF]/35 '>
                     {array.map((item: any, index: any) => (
                         index < 3 && <span>{item + ">"}</span>
                     ))}
@@ -117,7 +117,7 @@ const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[
 
     return (
         <div className='flex w-full h-full gap-5'>
-            <div className='w-[75%] h-full ml-2'>
+            <div className='w-[75%] h-full ml-2 dark:bg-[#161616] '>
                 <TorusTable
                     primaryColumn="key"
                     tableData={data}
@@ -127,7 +127,7 @@ const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[
                 >
                     {({ selectedKeys, filterColmns, sortedItems, primaryColumn }: any) => (
                         <>
-                            <TorusTableHeader
+                            <TorusTableHeader className="dark:bg-[#0F0F0F] dark:text-[#FFFFFF]"
                                 selectedKeys={selectedKeys}
                                 columns={[...filterColmns]}
                             >
@@ -139,7 +139,7 @@ const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[
                                                 id={column.id}
                                                 allowsSorting={column.allowsSorting}
                                                 isRowHeader={column.isRowHeader}
-                                                className={`bg-[#F4F5FA] cursor-pointer ${i == 0 ? "rounded-tl-xl rounded-bl-xl" : ""} ${i == filterColmns.length - 1 ? "rounded-tr-xl rounded-br-xl" : ""}`}
+                                                className={`bg-[#F4F5FA] cursor-pointer dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ${i == 0 ? "rounded-tl-xl rounded-bl-xl" : ""} ${i == filterColmns.length - 1 ? "rounded-tr-xl rounded-br-xl" : ""}`}
                                             >
                                                 {column.name}
                                             </TorusColumn>
@@ -149,9 +149,9 @@ const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[
                             </TorusTableHeader>
                             {/* <hr className="w-[90%] h-[1px] bg-black/10" /> */}
                             <TableBody
-                                className={"overflow-y-auto"}
+                                className={"overflow-y-auto dark:bg-[#161616] dark:text-[#FFFFFF]"}
                                 renderEmptyState={() => (
-                                    <div className="text-center overflow-y-auto"> No Data </div>
+                                    <div className="text-center overflow-y-auto dark:bg-[#161616] dark:text-[#FFFFFF]"> No Data </div>
                                 )}
                             >
                                 {sortedItems.map((item: any, index: number) => (
@@ -163,7 +163,7 @@ const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[
                                         columns={[...filterColmns]}
                                         selectedKeys={selectedKeys}
                                         className={
-                                            `${item.timeStamp == tabdata.timeStamp ? "bg-[#F4F5FA] rounded-tl" : ""}hover:bg-[#F4F5FA] outline-none hover:cursor-pointer`
+                                            `${item.timeStamp == tabdata.timeStamp ? "bg-[#F4F5FA] dark:bg-[#0F0F0F] rounded-full" : ""}hover:bg-[#F4F5FA] dark:hover:bg-[#0F0F0F] dark:hover:text-white outline-none hover:cursor-pointer`
                                         }
                                         onAction={handleRowAction}
                                     >
@@ -174,7 +174,7 @@ const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[
                                                         key={i}
                                                         className={`border-b border-transparent ${item.timeStamp == tabdata.timeStamp ? (i == 0 ? " rounded-tl-2xl rounded-bl-2xl" : i == columns.length - 1 ? "rounded-tr-2xl rounded-br-2xl" : "") : ""}`}
                                                         children={
-                                                            <div className="w-full h-full flex flex-col items-center justify-center py-[1rem] text-xs font-normal ">
+                                                            <div className="w-full h-full flex flex-col items-center justify-center py-[1rem] text-xs font-normal dark:text-[#FFFFFF] ">
                                                                 {RenderTableCell(item, column)}
                                                             </div>
                                                         }
@@ -190,7 +190,7 @@ const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[
                 </TorusTable>
             </div>
             <hr className="w-[1px] h-[90%] bg-black/10" />
-            <div className='w-[28%] h-[85%] mt-2 mr-3 items-center bg-[#F4F5FA] rounded-lg'>
+            <div className='w-[28%] h-[85%] mt-2 mr-3 items-center bg-[#F4F5FA] rounded-lg dark:bg-[#0F0F0F] dark:text-[#FFFFFF]'>
                 <p className="text-l p-3 font-semibold text-left">Error Details</p>
                 <div className='w-full h-[88%] overflow-scroll scrollbar-thin'>
                     {(tabdata) ? (

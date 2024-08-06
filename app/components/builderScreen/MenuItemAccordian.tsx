@@ -20,6 +20,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { TreeNode, menuItems } from "../../constants/MenuItemTree";
 import _ from "lodash";
 import { Dialog, DialogTrigger, Popover } from "react-aria-components";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../lib/Store/store";
 
 type HandleUpdateJsonType = (
   path: string,
@@ -58,7 +60,7 @@ interface TreeNodeProps {
 interface TreeProps {
   data: TreeNode[];
   setData: (data: TreeNode[]) => void;
-  isDarkMode: boolean;
+
 }
 
 const RenderAccordian: React.FC<TreeNodeProps> = ({
@@ -135,7 +137,7 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
               onPress={() => handleDeleteMenuGrp(`${path}`)}
               className="ml-auto focus:outline-none h-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
             >
-              <DeleteIcon />
+              <DeleteIcon fill={isDarkMode ? 'white' : 'black'} />
             </RACButton>
             <RACButton
               className="ml-auto p-2 transition-all duration-300 ease-in-out focus:outline-none dark:bg-[#161616] dark:text-white"
@@ -177,7 +179,7 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
                         onPress={() => handleDeleteKeys(`${path}.keys`, fab)}
                         className="absolute right-2 top-3 focus:outline-none"
                       >
-                        <DeleteIcon />
+                        <DeleteIcon fill={isDarkMode ? 'white' : 'black'} />
                       </Button>
                     ) : null}
                     <Text slot="description" />
@@ -224,12 +226,13 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
   );
 };
 
-const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData, isDarkMode }) => {
+const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
   const [menuGroups, setMenuGroups] = useState<TreeNode[]>([]);
   const [isInput, setInput] = useState(false);
   const headerSectionRef = useRef<HTMLDivElement>(null)
   const contentSectionRef = useRef<HTMLDivElement>(null)
   const plusIconRef = useRef<HTMLDivElement>(null)
+  const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
 
   useEffect(() => {
     if (data?.length) {
@@ -523,9 +526,9 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData, isDarkMode }) =
               )}
               <RACButton
                 onPress={() => handleDeleteMenuGrp(`${id}`, true)}
-                className="ml-auto mr-2 focus:outline-none h-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                className="ml-auto mr-2 focus:outline-none h-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity dark:hover:text-[#f0f0f0]"
               >
-                <DeleteIcon />
+                <DeleteIcon fill={isDarkMode ? 'white' : 'black'} />
               </RACButton>
             </div>
           ))}
@@ -637,7 +640,7 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData, isDarkMode }) =
                           onPress={() => handleDeleteKeys(`${id}.keys`, fab)}
                           className={'absolute right-2 top-3 focus:outline-none dark:bg-[#161616] dark:text-white'}
                         >
-                          <DeleteIcon />
+                          <DeleteIcon fill={isDarkMode ? 'white' : 'black'} />
                         </Button>
                       ) : null}
                       <Text slot="description" />

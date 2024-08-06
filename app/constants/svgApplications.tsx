@@ -443,7 +443,7 @@ export const ThemeIcon = () => {
   );
 };
 
-export const LogoutSvg = () => {
+export const LogoutSvg = ({ fill = "black" }) => {
   return (
     <svg
       width="20"
@@ -454,14 +454,14 @@ export const LogoutSvg = () => {
     >
       <path
         d="M2.00098 11.999H16.001M16.001 11.999L12.501 8.99902M16.001 11.999L12.501 14.999"
-        stroke="#F14336"
+        stroke={fill}
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M9.00195 7C9.01406 4.82497 9.11051 3.64706 9.87889 2.87868C10.7576 2 12.1718 2 15.0002 2H16.0002C18.8286 2 20.2429 2 21.1215 2.87868C22.0002 3.75736 22.0002 5.17157 22.0002 8V16C22.0002 18.8284 22.0002 20.2426 21.1215 21.1213C20.2429 22 18.8286 22 16.0002 22H15.0002C12.1718 22 10.7576 22 9.87889 21.1213C9.11051 20.3529 9.01406 19.175 9.00195 17"
-        stroke="#F14336"
+        stroke={fill}
         strokeWidth="1.5"
         strokeLinecap="round"
       />
@@ -1137,7 +1137,7 @@ export const FileGallery = () => {
   );
 };
 
-export const DeleteIcon = () => {
+export const DeleteIcon = ({ fill = "black" }) => {
   return (
     <svg
       width="16"
@@ -1149,35 +1149,35 @@ export const DeleteIcon = () => {
       <g opacity="0.35">
         <path
           d="M6.66406 7.3335V11.3335"
-          stroke="black"
+          stroke={fill}
           strokeWidth="1.33333"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
           d="M9.33594 7.3335V11.3335"
-          stroke="black"
+          stroke={fill}
           strokeWidth="1.33333"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
           d="M2.66406 4.6665H13.3307"
-          stroke="black"
+          stroke={fill}
           strokeWidth="1.33333"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
           d="M4 4.6665H8H12V11.9998C12 13.1044 11.1046 13.9998 10 13.9998H6C4.89543 13.9998 4 13.1044 4 11.9998V4.6665Z"
-          stroke="black"
+          stroke={fill}
           strokeWidth="1.33333"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
           d="M6 3.33333C6 2.59695 6.59695 2 7.33333 2H8.66667C9.40307 2 10 2.59695 10 3.33333V4.66667H6V3.33333Z"
-          stroke="black"
+          stroke={fill}
           strokeWidth="1.33333"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -1463,38 +1463,38 @@ export const Avatars = () => {
   )
 }
 
-export const Preview = () => {
+export const Preview = ({ fill = "black" }) => {
   return (
     <svg width="35" height="35" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12.2749 24.2957C11.425 23.1915 11 22.6394 11 21C11 19.3606 11.425 18.8085 12.2749 17.7043C13.972 15.4996 16.8181 13 21 13C25.1819 13 28.028 15.4996 29.7251 17.7043C30.575 18.8085 31 19.3606 31 21C31 22.6394 30.575 23.1915 29.7251 24.2957C28.028 26.5004 25.1819 29 21 29C16.8181 29 13.972 26.5004 12.2749 24.2957Z" stroke="black" strokeWidth="1.5" />
-      <path d="M24 21C24 22.6569 22.6569 24 21 24C19.3431 24 18 22.6569 18 21C18 19.3431 19.3431 18 21 18C22.6569 18 24 19.3431 24 21Z" stroke="black" strokeWidth="1.5" />
+      <path d="M12.2749 24.2957C11.425 23.1915 11 22.6394 11 21C11 19.3606 11.425 18.8085 12.2749 17.7043C13.972 15.4996 16.8181 13 21 13C25.1819 13 28.028 15.4996 29.7251 17.7043C30.575 18.8085 31 19.3606 31 21C31 22.6394 30.575 23.1915 29.7251 24.2957C28.028 26.5004 25.1819 29 21 29C16.8181 29 13.972 26.5004 12.2749 24.2957Z" stroke={fill} strokeWidth="1.5" />
+      <path d="M24 21C24 22.6569 22.6569 24 21 24C19.3431 24 18 22.6569 18 21C18 19.3431 19.3431 18 21 18C22.6569 18 24 19.3431 24 21Z" stroke={fill} strokeWidth="1.5" />
     </svg>
   )
 }
 
-export const Debugger = () => {
+export const Debugger = ({ fill = "black" }) => {
   return (
     <svg width="35" height="35" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M28 24V20.9375C28 18.7629 26.2371 17 24.0625 17H17.9375C15.7629 17 14 18.7629 14 20.9375V24C14 27.866 17.134 31 21 31C24.866 31 28 27.866 28 24Z" stroke="black" strokeWidth="1.5" />
-      <path d="M25.5 17.5V16.5C25.5 14.0147 23.4853 12 21 12C18.5147 12 16.5 14.0147 16.5 16.5V17.5" stroke="black" strokeWidth="1.5" />
-      <path d="M28 23H31" stroke="black" strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M14 23H11" stroke="black" strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M23.5 12.5L26 11" stroke="black" strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M18.5 12.5L16 11" stroke="black" strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M29.5 29.0002L27.5 28.2002" stroke="black" strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M29.5 16.9998L27.5 17.7998" stroke="black" strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M12.5 29.0002L14.5 28.2002" stroke="black" strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M12.5 16.9998L14.5 17.7998" stroke="black" strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M21 30.5V24" stroke="black" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M28 24V20.9375C28 18.7629 26.2371 17 24.0625 17H17.9375C15.7629 17 14 18.7629 14 20.9375V24C14 27.866 17.134 31 21 31C24.866 31 28 27.866 28 24Z" stroke={fill} strokeWidth="1.5" />
+      <path d="M25.5 17.5V16.5C25.5 14.0147 23.4853 12 21 12C18.5147 12 16.5 14.0147 16.5 16.5V17.5" stroke={fill} strokeWidth="1.5" />
+      <path d="M28 23H31" stroke={fill} strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M14 23H11" stroke={fill} strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M23.5 12.5L26 11" stroke={fill} strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M18.5 12.5L16 11" stroke={fill} strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M29.5 29.0002L27.5 28.2002" stroke={fill} strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M29.5 16.9998L27.5 17.7998" stroke={fill} strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M12.5 29.0002L14.5 28.2002" stroke={fill} strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M12.5 16.9998L14.5 17.7998" stroke={fill} strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M21 30.5V24" stroke={fill} strokeWidth="1.5" strokeLinecap="round" />
     </svg>
   )
 }
 
-export const BuilderShareIcon = () => {
+export const BuilderShareIcon = ({ fill = "black" }) => {
   return (
     <svg width="35" height="35" viewBox="0 0 43 41" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M32 22.9979C31.9711 26.4119 31.7815 28.294 30.5404 29.5352C29.0755 31 26.7179 31 22.0026 31C17.2873 31 14.9297 31 13.4648 29.5352C12 28.0703 12 25.7127 12 20.9974C12 16.2821 12 13.9245 13.4648 12.4596C14.706 11.2185 16.5881 11.029 20.0021 11" stroke="black" strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M32 16H24C22.1824 16 21.0867 16.892 20.6804 17.3003C20.5546 17.4267 20.4917 17.49 20.4908 17.4908C20.49 17.4917 20.4267 17.5546 20.3003 17.6804C19.892 18.0867 19 19.1824 19 21V24M32 16L27 11M32 16L27 21" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M32 22.9979C31.9711 26.4119 31.7815 28.294 30.5404 29.5352C29.0755 31 26.7179 31 22.0026 31C17.2873 31 14.9297 31 13.4648 29.5352C12 28.0703 12 25.7127 12 20.9974C12 16.2821 12 13.9245 13.4648 12.4596C14.706 11.2185 16.5881 11.029 20.0021 11" stroke={fill} strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M32 16H24C22.1824 16 21.0867 16.892 20.6804 17.3003C20.5546 17.4267 20.4917 17.49 20.4908 17.4908C20.49 17.4917 20.4267 17.5546 20.3003 17.6804C19.892 18.0867 19 19.1824 19 21V24M32 16L27 11M32 16L27 21" stroke={fill} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }

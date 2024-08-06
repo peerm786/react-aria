@@ -11,6 +11,8 @@ import {
 import { AxiosService } from "../../lib/utils/axiosService";
 import { toast } from "react-toastify";
 import TorusToast from "./torusComponents/torusToast";
+import { RootState } from "../../lib/Store/store";
+import { useSelector } from "react-redux";
 
 interface BuilderProps {
   tenant: string;
@@ -19,10 +21,12 @@ interface BuilderProps {
   isDarkMode: boolean;
 }
 
-function FabricSelector({ tenant, appGrp, app, isDarkMode }: BuilderProps) {
+function FabricSelector({ tenant, appGrp, app }: any) {
   const [selectedTab, setSelectedTab] = useState("df");
   const [modelKeys, setModelKeys] = useState<any[]>([]);
   const [wordLength, setWordLength] = useState(0);
+  const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
+
 
   const IconColors = {
     df: "#0736C4",

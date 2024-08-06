@@ -7,7 +7,8 @@ import MenuItemAccordian from "./components/builderScreen/MenuItemAccordian";
 import { AxiosService } from "../lib/utils/axiosService";
 import { toast } from "react-toastify";
 import DropDown from "./components/multiDropdownnew";
-import { useDarkMode } from "../lib/utils/useDarkmode";
+
+
 import { IoToggleSharp } from "react-icons/io5";
 import { ColumnIcon, HistoryIcon, PushandPullIcon, SearchIcon } from "./constants/svgApplications";
 import { TreeNode } from "./constants/MenuItemTree";
@@ -19,6 +20,12 @@ import ExceptionLog from "./components/torusComponents/ExceptionLog";
 import Artifactdetails from "./components/landingScreen/artifactdetails";
 import ProgressButton from "./components/progressbar";
 import TorusToast from "./components/torusComponents/torusToast";
+import { useSelector } from "react-redux";
+import { RootState } from "../lib/Store/store";
+
+
+
+
 
 const page = () => {
   const [selectedAssemblerButton, setSelectedAssemblerButton] = useState(true);
@@ -32,7 +39,10 @@ const page = () => {
   const [menuItemData, setMenuItemData] = useState<TreeNode[]>([]);
   const [versionList, setVersionList] = useState<string[]>([]);
   const [selectedVersion, setSelectedVersion] = useState<string>("");
-  const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
+
+
+
   const [logsTabList, setLogTabList] = useState<"exception" | "log" | any>("log")
   const [searchValue, setSearchValue] = useState<string>("");
   const allProcessLogColumns = [
@@ -54,6 +64,10 @@ const page = () => {
   const [showNodeData, setShowNodeData] = useState<null | any>(null)
   const [isLoading, setLoading] = useState(true)
   const [wordLength, setWordLength] = useState(0);
+
+
+
+
 
 
   const handleBuildButtonSelect = () => {
@@ -291,9 +305,9 @@ const page = () => {
   }
 
   return (
-    <div className="flex flex-col w-full h-screen">
+    <div className="flex flex-col w-full h-screen dark:bg-[#161616]">
       <BuilderTopNav showNodeData={showNodeData} setShowNodeData={setShowNodeData} />
-      <div className="flex justify-between bg-[#F4F5FA] w-full h-[92%]">
+      <div className="flex justify-between bg-[#F4F5FA] w-full h-[92%] dark:bg-[#161616]">
         <BuilderSideNav />
         {showNodeData ?
           <div className="flex flex-col w-[94%] h-[95%] mt-5 mr-3 rounded-md">
@@ -351,24 +365,24 @@ const page = () => {
                 <div className="flex gap-2 items-center">
                   <div className="flex w-full gap-2 items-center pt-2">
                     <div className="relative">
-                      <span className="absolute inset-y-0 left-0 flex items-center p-2 h-7 w-7">
-                        <SearchIcon />
+                      <span className="absolute inset-y-0 left-0 flex items-center p-2 h-7 w-7 ">
+                        <SearchIcon fill={isDarkMode ? "white" : "black"} />
                       </span>
                       <Input
                         value={searchValue}
                         onChange={(e) => setSearchValue(e.target.value)}
                         placeholder="Search"
-                        className={`w- p-1 focus:outline-none focus:border-blue-400 border pl-6 text-sm font-medium rounded-md`}
+                        className={`w- p-1 focus:outline-none focus:border-blue-400 border pl-6 text-sm font-medium rounded-md dark:border-[#212121]`}
                       />
                     </div>
                     <DropDown
                       classNames={{
                         popover: "w-[200px]",
-                        triggerButton: "w-[100px] h-[30px] border border-black/15 rounded-lg bg-[#F4F5FA]",
+                        triggerButton: "w-[100px] h-[30px] border border-black/15 rounded-lg bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-[#FFFFFF]",
                       }}
                       triggerButton={
-                        <div className="flex text-xs font-medium items-center gap-2">
-                          <ColumnIcon /> Columns
+                        <div className="flex text-xs font-medium items-center gap-2 dark:bg-[#0F0F0F] dark:text-[#FFFFFF]">
+                          <ColumnIcon fill={isDarkMode ? "white" : "black"} /> Columns
                         </div>
                       }
                       items={logsTabList == "exception" ? allExceptionLogColumns : allProcessLogColumns}
@@ -380,11 +394,11 @@ const page = () => {
                     <DropDown
                       classNames={{
                         popover: "w-[200px]",
-                        triggerButton: "w-[90px] h-[30px] border border-black/15 rounded-lg bg-[#F4F5FA]",
+                        triggerButton: "w-[90px] h-[30px] border border-black/15 rounded-lg bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-[#FFFFFF]",
                       }}
                       triggerButton={
-                        <div className="flex text-xs font-medium items-center gap-2">
-                          <FilterIcon /> Filter
+                        <div className="flex text-xs font-medium items-center gap-2 dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ">
+                          <FilterIcon fill={isDarkMode ? "white" : "black"} /> Filter
                         </div>
                       }
                       items={logsTabList == "exception" ? allExceptionLogColumns : allProcessLogColumns}
@@ -394,13 +408,16 @@ const page = () => {
                       displaySelectedKeys={false}
                     />
                   </div>
+                  {/* <Button className="outline-none dark:text-[#FFFFFF]" onPress={toggleDarkMode}>
+                    <RxSwitch />
+                  </Button> */}
                   <div>
-                    <Tabs className={"pt-2 pr-2"} selectedKey={logsTabList} onSelectionChange={setLogTabList}>
-                      <TabList className="flex w-full p-1 gap-2 bg-[#F4F5FA] items-center text-nowrap rounded-md">
-                        <Tab id="log" className={`p-2 outline-none text-xs rounded-md font-semibold cursor-pointer ${logsTabList === 'log' ? 'bg-white' : ''}`}>
+                    <Tabs className={"pt-2 pr-2"} selectedKey={logsTabList} onSelectionChange={setLogTabList} >
+                      <TabList className="flex w-full p-1 gap-2 bg-[#F4F5FA] items-center text-nowrap rounded-md dark:bg-[#0F0F0F] dark:text-[#FFFFFF]">
+                        <Tab id="log" className={`p-2 outline-none text-xs rounded-md font-semibold cursor-pointer dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ${logsTabList === 'log' ? 'bg-white' : ''}`}>
                           Log Details
                         </Tab>
-                        <Tab id="exception" className={`p-2 outline-none text-xs rounded-md font-semibold cursor-pointer ${logsTabList === 'exception' ? 'bg-white' : ''}`}>
+                        <Tab id="exception" className={`p-2 outline-none text-xs rounded-md font-semibold cursor-pointer dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ${logsTabList === 'exception' ? 'bg-white' : ''}`}>
                           Exception Details
                         </Tab>
                       </TabList>
@@ -497,11 +514,7 @@ const page = () => {
                     >
                       Clear All
                     </Button>
-                    <IoToggleSharp
-                      size={25}
-                      onClick={toggleDarkMode}
-                      className="dark:text-white text-black/70"
-                    />
+
                   </div>
                 </div>
                 <div>
@@ -513,14 +526,13 @@ const page = () => {
                       tenant={selectedTenant}
                       appGrp={selectAppGroup}
                       app={selectApp}
-                      isDarkMode={isDarkMode}
+
                     />
                   </div>
                   <div className="w-[75%] pt-3 pr-2">
                     <MenuItemAccordian
                       data={menuItemData}
                       setData={setMenuItemData}
-                      isDarkMode={isDarkMode}
                     />
                   </div>
                 </div>

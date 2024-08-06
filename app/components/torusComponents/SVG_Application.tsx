@@ -1322,7 +1322,7 @@ const Question = () => {
   );
 };
 
-const FilterIcon = () => {
+const FilterIcon = ({ fill = "black" }) => {
   return (
     <svg
       width="20"
@@ -1333,7 +1333,7 @@ const FilterIcon = () => {
     >
       <path
         d="M5 10H15M2.5 5H17.5M7.5 15H12.5"
-        stroke="#344054"
+        stroke={fill}
         stroke-width="1.67"
         stroke-linecap="round"
         stroke-linejoin="round"

@@ -9,9 +9,12 @@ import {
 } from "./torusTable";
 import { Cell, Separator, TableBody } from "react-aria-components";
 import { Clipboard } from "../../constants/svgApplications";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../lib/Store/store";
 
 const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeData }: any) => {
   const [data, setData] = useState<any>([]);
+  const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
 
   const getProcessLogs = async () => {
     try {
@@ -81,7 +84,8 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
         return (
           <div>
             {data.nodeData.map((item: any) => (
-              <div className="text-xs text-black/50">{item.time}</div>
+              <div className="text-xs text-black/50 
+           dark:text-[#FFFFFF]">{item.time}</div>
             ))}
           </div>
         );
@@ -111,7 +115,7 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
     }
   };
 
-  const displayjobname = (datas: any) => {
+  const displayjobname = (datas: any,) => {
     const { jobName } = datas;
     const artifact = jobName.split(":")[5];
     const tenantDetail = jobName.split(":").map((item: string, index: number) => (index < 3 ? item + ">" : "")).join("");
@@ -123,10 +127,10 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
         <div className="text-sm font-bold">
           {artifact.charAt(0).toUpperCase() + artifact.slice(1)}
         </div>
-        <div className="text-xs text-black/35">{tenantDetail}</div>
+        <div className="text-xs text-black/35  dark:text-[#FFFFFF]/35">{tenantDetail}</div>
         {processKey && (
-          <div className="flex gap-1 text-xs text-[#1C274C] border border-[#1C274C]/15 rounded-full p-1 bg-[#F4F5FA]">
-            UID:{processKey} <Clipboard />
+          <div className="flex gap-1 text-xs text-[#1C274C] border border-[#1C274C]/15 rounded-full p-1 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-[#FFFFFF] dark:border-[#FFFFFF]/15">
+            UID:{processKey} <Clipboard fill={isDarkMode ? "white" : "black"} />
           </div>
         )}
       </div>
@@ -156,7 +160,7 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
 
   return (
     <div>
-      <TorusTable
+      <TorusTable className=""
         primaryColumn="jobName"
         tableData={data}
         visibleColumns={visibleColumns}
@@ -177,7 +181,7 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
                       id={column.id}
                       allowsSorting={column.allowsSorting}
                       isRowHeader={column.isRowHeader}
-                      className={`bg-[#F4F5FA] cursor-pointer ${i == 0 ? "rounded-tl-xl rounded-bl-xl" : ""} ${i == filterColmns.length - 1 ? "rounded-tr-xl rounded-br-xl" : ""}`}
+                      className={`bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-[#FFFFFF] cursor-pointer ${i == 0 ? "rounded-tl-xl rounded-bl-xl" : ""} ${i == filterColmns.length - 1 ? "rounded-tr-xl rounded-br-xl" : ""}`}
 
                     >
                       {column.name}
@@ -190,7 +194,7 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
             {/* <span className="h-[500px] overflow-y-scroll"> */}
             <TableBody
               renderEmptyState={() => (
-                <div className="text-center overflow-y-auto"> No Process log detail found </div>
+                <div className="text-center overflow-y-auto "> No Process log detail found </div>
               )}
             >
               {sortedItems.map((item: any, index: number) => (
@@ -202,7 +206,7 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
                   columns={[...filterColmns]}
                   selectedKeys={selectedKeys}
                   className={
-                    "border-1 hover:bg-[#F4F5FA] outline-none hover:cursor-pointer border-b-slate-800 overflow-y-auto border-t-transparent border-l-transparent border-r-transparent"
+                    "border-1 hover:bg-[#F4F5FA] dark:hover:bg-[#0F0F0F] dark:hover:text-white outline-none hover:cursor-pointer border-b-slate-800 overflow-y-auto border-t-transparent border-l-transparent border-r-transparent dark:bg-[#161616] dark:text-[#FFFFFF]"
                   }
                 >
                   {({ columns, index, item }: any) => (
@@ -210,9 +214,9 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
                       {columns.map((column: any, i: number) => (
                         <Cell
                           key={i}
-                          className={"border-b border-transparent"}
+                          className={"border-b border-transparent "}
                           children={
-                            <div className="w-full h-full flex flex-col items-center justify-center py-[1rem] text-xs font-normal ">
+                            <div className="w-full h-full flex flex-col items-center justify-center py-[1rem] text-xs font-normal  ">
                               {/* <RenderTableChildren
                                 children={item?.[column?.id]}
                               /> */}
