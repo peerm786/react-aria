@@ -3,6 +3,8 @@ import { Button } from "react-aria-components";
 import { PiAirplaneTiltFill } from "react-icons/pi";
 import { RiBankFill } from "react-icons/ri";
 import { ThreeDots } from "../../constants/svgApplications";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../lib/Store/store";
 
 const Card = ({
   tenant,
@@ -14,6 +16,7 @@ const Card = ({
   searchTerm: string;
 }) => {
   const [mappingAppGrp, setMappingAppGrp] = useState<any[]>([]);
+  const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
 
   // const banks = [
   //     { name: 'First Abu Dhabi Bank', icon: <PiAirplaneTiltFill />, apps: ['4 Apps'] },
@@ -100,7 +103,7 @@ const Card = ({
                       </div>
                     </div>
                   </div>
-                  <ThreeDots />
+                  <ThreeDots fill={isDarkMode ? "white" : "black"} />
                 </div>
               </Button>
             </div>

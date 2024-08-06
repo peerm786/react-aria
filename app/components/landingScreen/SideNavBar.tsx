@@ -13,10 +13,14 @@ import TorusAvatar from "../Avatar";
 import TorusDialog from "../torusdialogmodal";
 import Settings from "../settings";
 import { useRouter } from "next/navigation";
+import { BiMoon, BiSun } from "react-icons/bi";
+import { toggleDarkMode } from "../../../lib/Store/Reducers/MainSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../lib/Store/store";
 
 const Sidebar = () => {
   const [fillIndex, setFillIndex] = useState(0);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+
   const actionIcons = [
     { Icon: HomeSvg, route: "/torus" },
     { Icon: ShopSvg },
@@ -25,6 +29,8 @@ const Sidebar = () => {
     { Icon: LogDetailIcon, route: "/" }
   ];
   const router = useRouter();
+  const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
+  const dispatch = useDispatch();
 
   const handleRoutes = (index: number, route: string | undefined) => {
     if (route) {
@@ -32,6 +38,9 @@ const Sidebar = () => {
     }
     setFillIndex(index);
   }
+  const handleDarkModeToggle = () => {
+    dispatch(toggleDarkMode(!isDarkMode));
+  };
 
   return (
     <aside
@@ -65,6 +74,21 @@ const Sidebar = () => {
         aria-label="Theme and Logout"
         className="w-full flex flex-col justify-center items-center mb-3 "
       >
+        <Button onPress={handleDarkModeToggle} className="p-2 focus:outline-none">
+          {isDarkMode ? (
+            <BiSun
+              color={"#A59E92"}
+              size={25}
+              className="dark:text-white text-black/70"
+            />
+          ) : (
+            <BiMoon
+              color={"#A59E92"}
+              size={25}
+              className="dark:text-white text-black/70"
+            />
+          )}
+        </Button>
         <Button className="outline-none dark:text-[#FFFFFF]" >
           <BellIcon fill={isDarkMode ? "white" : "black"} />
         </Button>

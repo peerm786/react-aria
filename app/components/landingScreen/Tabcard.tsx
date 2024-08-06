@@ -13,6 +13,8 @@ import { TfiAlignCenter } from "react-icons/tfi";
 import { AxiosService } from "../../../lib/utils/axiosService";
 import { getCookie } from "../../../lib/utils/cookiemgmt";
 import DropDown from "../multiDropdownnew";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../lib/Store/store";
 
 const Tabcard = ({
   fabric,
@@ -24,6 +26,7 @@ const Tabcard = ({
   const [artifactType, setArtifactType] = useState<any>("frk");
   const [artifactList, setArtifactList] = useState<any>([]);
   const [fabricList, setFabricList] = useState(["df", "pf", "sf", "uf"]);
+  const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
 
   const client = getCookie("client");
   const loginId = getCookie("loginId");
@@ -115,10 +118,9 @@ const Tabcard = ({
           <Tab
             id={"frk"}
             className={({ isSelected }) =>
-              `${
-                isSelected
-                  ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
-                  : "outline-none text-xs font-semibold ml-2 "
+              `${isSelected
+                ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
+                : "outline-none text-xs font-semibold ml-2 "
               } cursor-pointer`
             }
           >
@@ -128,10 +130,9 @@ const Tabcard = ({
           <Tab
             id={"crk"}
             className={({ isSelected }) =>
-              `${
-                isSelected
-                  ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
-                  : "outline-none text-xs font-semibold ml-2"
+              `${isSelected
+                ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
+                : "outline-none text-xs font-semibold ml-2"
               } cursor-pointer`
             }
           >
@@ -140,10 +141,9 @@ const Tabcard = ({
           <Tab
             id={"tpfrk"}
             className={({ isSelected }) =>
-              `${
-                isSelected
-                  ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
-                  : "outline-none text-xs font-semibold ml-2"
+              `${isSelected
+                ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
+                : "outline-none text-xs font-semibold ml-2"
               } cursor-pointer`
             }
           >
@@ -169,7 +169,7 @@ const Tabcard = ({
                 {item.isLocked ? (
                   <LuLock className="ml-1 text-red-500" />
                 ) : null}
-                <ThreeDots />
+                <ThreeDots fill={isDarkMode ? "white" : "black"} />
               </div>
               <div className=" mr-auto bg-[#0736C4]/5 rounded-md mb-3 p-1">
                 {getFabricIcon(item.fabric)}

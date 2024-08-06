@@ -98,7 +98,7 @@ const Artifactdetails = ({ nodeData }: any) => {
                     {nodeData.nodeData.map((item: any, index: number) => (
                         <div
                             key={index}
-                            className={`text-[#000000] p-3 cursor-pointer rounded-lg transition-colors duration-300 ease-in-out dark:text-[#FFFFFF] ${selectedNode === item ? 'bg-[#F4F5FA] dark:bg-[#161616]' : 'hover:bg-[#F4F5FA] dark:hover:text-black dark:text-black'}`}
+                            className={`text-[#000000] p-3 cursor-pointer rounded-lg transition-colors duration-300 ease-in-out dark:text-[#FFFFFF] ${selectedNode === item ? 'bg-[#F4F5FA] dark:bg-[#161616]' : 'hover:bg-[#F4F5FA] dark:hover:bg-[#161616] '}`}
                             onClick={() => handleNodeClick(item)}
                         >
                             <div className='flex items-center gap-2 dark:text-[#FFFFFF]'>
@@ -175,34 +175,36 @@ const Artifactdetails = ({ nodeData }: any) => {
                     </div>
                     <hr className="w-[1px] h-full bg-black/10" />
                     <div className="flex flex-row text-center  w-[30%] h-full p-6 dark:bg-[#0F0F0F] dark:text-[#FFFFFF] overflow-y-auto scrollbar-hide">
-                        <Tabs selectedKey={activeTab} onSelectionChange={setActiveTab}>
-                            <TabList className="flex p-1  w-full border border-[#000000]/15 gap-2 bg-[#F4F5FA] items-center  rounded-md dark:bg-[#161616] dark:text-[#FFFFFF]">
-                                <Tab id="npc" className={`px-10 py-2 text-center outline-none text-sm rounded-md dark:bg-[#161616]  ${activeTab === 'npc' ? 'bg-white dark:bg-[#161616]' : ''}`}>
-                                    NPC
-                                </Tab>
-                                <Tab id="ipc" className={`px-10 py-2 outline-none text-sm rounded-md dark:bg-[#161616] ${activeTab === 'ipc' ? 'bg-white dark:bg-[#161616]' : ''}`}>
-                                    IPC
-                                </Tab>
-                            </TabList>
-                            <TabPanel id="npc">
-                                {selectedNode ? (
-                                    <div>
-                                        <JsonView src={selectedNode.npc} theme="atom" enableClipboard={false} displaySize={10} className='w-full' />
-                                    </div>
-                                ) : (
-                                    <p></p>
-                                )}
-                            </TabPanel>
-                            <TabPanel id="ipc">
-                                {selectedNode ? (
-                                    <div>
-                                        <JsonView src={selectedNode.ipc} theme="atom" enableClipboard={false} style={{ fill: '#1A2024' }} className='w-full' />
-                                    </div>
-                                ) : (
-                                    <p></p>
-                                )}
-                            </TabPanel>
-                        </Tabs>
+                        <div className='w-full  '>
+                            <Tabs selectedKey={activeTab} onSelectionChange={setActiveTab}>
+                                <TabList className="flex p-1  w-full border border-[#000000]/15 gap-2 bg-[#F4F5FA] items-center  rounded-md dark:bg-[#161616] dark:text-[#FFFFFF]">
+                                    <Tab id="npc" className={`px-10 py-2 text-center outline-none text-sm rounded-md dark:bg-[#161616]  ${activeTab === 'npc' ? 'bg-white dark:bg-[#161616]' : ''}`}>
+                                        NPC
+                                    </Tab>
+                                    <Tab id="ipc" className={`px-10 py-2 outline-none text-sm rounded-md dark:bg-[#161616] ${activeTab === 'ipc' ? 'bg-white dark:bg-[#161616]' : ''}`}>
+                                        IPC
+                                    </Tab>
+                                </TabList>
+                                <TabPanel id="npc">
+                                    {selectedNode ? (
+                                        <div>
+                                            <JsonView src={selectedNode.npc} theme="atom" enableClipboard={false} displaySize={10} />
+                                        </div>
+                                    ) : (
+                                        <p></p>
+                                    )}
+                                </TabPanel>
+                                <TabPanel id="ipc">
+                                    {selectedNode ? (
+                                        <div>
+                                            <JsonView src={selectedNode.ipc} theme="atom" enableClipboard={false} style={{ fill: '#1A2024' }} />
+                                        </div>
+                                    ) : (
+                                        <p></p>
+                                    )}
+                                </TabPanel>
+                            </Tabs>
+                        </div>
                     </div>
                 </div>
             </div>
