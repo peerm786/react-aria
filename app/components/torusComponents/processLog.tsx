@@ -7,14 +7,16 @@ import {
   TorusTable,
   TorusTableHeader,
 } from "./torusTable";
-import { Cell, Separator, TableBody } from "react-aria-components";
+import { Button, Cell, Separator, TableBody } from "react-aria-components";
 import { Clipboard } from "../../constants/svgApplications";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../lib/Store/store";
+import { FaClipboardCheck } from "react-icons/fa";
 
 const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeData }: any) => {
   const [data, setData] = useState<any>([]);
   const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
+  const [copied, setCopied] = useState(false);
 
   const getProcessLogs = async () => {
     try {
@@ -115,12 +117,24 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
     }
   };
 
-  const displayjobname = (datas: any,) => {
+  const displayjobname = (datas: any) => {
     const { jobName } = datas;
     const artifact = jobName.split(":")[5];
     const tenantDetail = jobName.split(":").map((item: string, index: number) => (index < 3 ? item + ">" : "")).join("");
     const isProcess = jobName.split(":")[1] == "PF" ? true : false;
     const processKey = isProcess ? jobName.split(":")[jobName.split(":").length - 1] : undefined;
+
+    const handleCopyToClipboard = async () => {
+      try {
+        await navigator.clipboard.writeText(processKey);
+        setCopied(true);
+        setTimeout(() => {
+          setCopied(false);
+        }, 1000);
+      } catch (err) {
+        console.error('Failed to copy text: ', err);
+      }
+    };
 
     return (
       <div onClick={() => setShowNodeData(datas)}>
@@ -130,7 +144,14 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
         <div className="text-xs text-black/35  dark:text-[#FFFFFF]/35">{tenantDetail}</div>
         {processKey && (
           <div className="flex gap-1 text-xs text-[#1C274C] border border-[#1C274C]/15 rounded-full p-1 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-[#FFFFFF] dark:border-[#FFFFFF]/15">
-            UID:{processKey} <Clipboard fill={isDarkMode ? "white" : "black"} />
+            UID:{processKey}
+            <Button onPress={handleCopyToClipboard}>
+              {copied ? (
+                <FaClipboardCheck className="text-green-500" />
+              ) : (
+                <Clipboard fill={isDarkMode ? 'white' : 'black'} />
+              )}
+            </Button>
           </div>
         )}
       </div>

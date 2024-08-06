@@ -81,7 +81,7 @@ const BuilderSideNav = () => {
                     {actionIcons.map(({ Icon, route }, index) => (
                         <Button
                             key={index}
-                            className={`${index === 5 ? "border-b border-b-black/35" : ""} p-2 items-center justify-center focus:outline-none ${index === fillIndex ? "flex border-l-2 border-l-[#0736C4] w-full" : ""}`}
+                            className={`${index === 5 ? "border-b border-b-black/35 dark:border-b-white/35" : ""} p-2 items-center justify-center focus:outline-none ${index === fillIndex ? "flex border-l-2 border-l-[#0736C4] w-full" : ""}`}
                             onPress={() => handleRoutes(index, route)}
                         >
                             <Icon
@@ -92,41 +92,42 @@ const BuilderSideNav = () => {
                     ))}
                 </section>
             </section>
-            <Button onPress={handleDarkModeToggle} className="p-2 focus:outline-none">
-                {isDarkMode ? (
-                    <BiSun
-                        color={"#A59E92"}
-                        size={25}
-                        className="dark:text-white text-black/70"
-                    />
-                ) : (
-                    <BiMoon
-                        color={"#A59E92"}
-                        size={25}
-                        className="dark:text-white text-black/70"
-                    />
-                )}
-            </Button>
-
-            <DialogTrigger>
-                <Button
-                    className={`outline-none mr-1 mb-2`}
-                >
-                    <TorusAvatar radius="full" size="lg" />
+            <div className="flex flex-col justify-center">
+                <Button onPress={handleDarkModeToggle} className="p-2 focus:outline-none">
+                    {isDarkMode ? (
+                        <BiSun
+                            color={"#A59E92"}
+                            size={25}
+                            className="dark:text-white text-black/70"
+                        />
+                    ) : (
+                        <BiMoon
+                            color={"#A59E92"}
+                            size={25}
+                            className="dark:text-white text-black/70"
+                        />
+                    )}
                 </Button>
 
-                <Popover placement="right top">
-                    <Dialog className="border bg-white focus:outline-none rounded-lg dark:bg-[#161616] dark:text-white">
-                        {({ close }) => (
-                            <div className="flex flex-col p-1 gap-2 dark:bg-[#161616] dark:text-white">
-                                <Button className={`outline-none `} onPress={() => handleLogout(close)}>
-                                    <LogoutSvg fill={isDarkMode ? "white" : "black"} />
-                                </Button>
-                            </div>
-                        )}
-                    </Dialog>
-                </Popover>
-            </DialogTrigger>
+                <DialogTrigger>
+                    <Button
+                        className={`outline-none mr-1 mb-2`}
+                    >
+                        <TorusAvatar radius="full" size="lg" />
+                    </Button>
+                    <Popover placement="right top">
+                        <Dialog className="bg-white focus:outline-none rounded-lg dark:bg-[#161616]">
+                            {({ close }) => (
+                                <div className="flex flex-col p-2 gap-2 border border-black/15 rounded-lg dark:bg-[#0F0F0F] dark:text-white dark:border-white/15">
+                                    <Button className={`outline-none`} onPress={() => handleLogout(close)}>
+                                        <LogoutSvg fill={isDarkMode ? "white" : "black"} />
+                                    </Button>
+                                </div>
+                            )}
+                        </Dialog>
+                    </Popover>
+                </DialogTrigger>
+            </div>
         </aside>
     );
 };

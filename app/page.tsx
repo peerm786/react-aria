@@ -289,9 +289,9 @@ const page = () => {
   }
 
   return (
-    <div className="flex flex-col w-full h-screen dark:bg-[#161616]">
+    <div className="flex flex-col w-full h-screen">
       <BuilderTopNav showNodeData={showNodeData} setShowNodeData={setShowNodeData} />
-      <div className="flex justify-between bg-[#F4F5FA] w-full h-[92%] dark:bg-[#161616]">
+      <div className="flex justify-between bg-[#F4F5FA] w-full h-[92%] dark:bg-[#0F0F0F]">
         <BuilderSideNav />
         {showNodeData ?
           <div className="flex flex-col w-[94%] h-[95%] mt-5 mr-3 rounded-md">
@@ -356,7 +356,7 @@ const page = () => {
                         value={searchValue}
                         onChange={(e) => setSearchValue(e.target.value)}
                         placeholder="Search"
-                        className={`w- p-1 focus:outline-none focus:border-blue-400 border pl-6 text-sm font-medium rounded-md dark:border-[#212121]`}
+                        className={`w- p-1 focus:outline-none focus:border-blue-400 border pl-6 text-sm font-medium rounded-md dark:border-[#212121] dark:text-white`}
                       />
                     </div>
                     <DropDown

@@ -177,7 +177,7 @@ function FabricSelector({ tenant, appGrp, app }: any) {
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             placeholder="Search Artifacts"
-            className={`w-[92%] bg-[#F4F5FA] text-sm font-medium p-1 focus:outline-none focus:border-blue-400 border border-black/15 pl-6 rounded-md dark:border-[#212121]`}
+            className={`w-[92%] bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white text-sm font-medium p-1 focus:outline-none focus:border-blue-400 border border-black/15 pl-6 rounded-md dark:border-[#212121]`}
           />
         </div>
         <div className="h-[85%] overflow-y-auto">

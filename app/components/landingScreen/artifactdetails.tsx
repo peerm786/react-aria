@@ -74,7 +74,7 @@ const Artifactdetails = ({ nodeData }: any) => {
         }
     };
     return (
-        <div className="flex w-full gap-2 h-full overflow-hidden dark:bg-[#161616] dark:text-[#FFFFFF] ">
+        <div className="flex w-full gap-5 h-full overflow-hidden">
             <div className="flex flex-col h-full w-[20%] border border-[#000000]/15  rounded-lg bg-white dark:bg-[#161616] dark:text-[#FFFFFF]">
                 <div className="flex flex-col border-b dark:border-[#212121] border-gray-300">
                     <div className="flex justify-between p-3 ">
@@ -98,7 +98,8 @@ const Artifactdetails = ({ nodeData }: any) => {
                     {nodeData.nodeData.map((item: any, index: number) => (
                         <div
                             key={index}
-                            className={`text-[#000000] p-3 cursor-pointer rounded-lg transition-colors duration-300 ease-in-out dark:text-[#FFFFFF] ${selectedNode === item ? 'bg-[#F4F5FA] dark:bg-[#161616]' : 'hover:bg-[#F4F5FA] dark:hover:bg-[#161616] '}`}
+                            className={`p-3 cursor-pointer rounded-lg transition-colors duration-300 ease-in-out dark:text-[#FFFFFF] hover:bg-[#F4F5FA] dark:hover:bg-[#0F0F0F]
+                                ${selectedNode === item ? 'bg-[#F4F5FA] dark:bg-[#0F0F0F]' : ''}`}
                             onClick={() => handleNodeClick(item)}
                         >
                             <div className='flex items-center gap-2 dark:text-[#FFFFFF]'>
@@ -174,37 +175,35 @@ const Artifactdetails = ({ nodeData }: any) => {
                         ))}
                     </div>
                     <hr className="w-[1px] h-full bg-black/10" />
-                    <div className="flex flex-row text-center  w-[30%] h-full p-6 dark:bg-[#0F0F0F] dark:text-[#FFFFFF] overflow-y-auto scrollbar-hide">
-                        <div className='w-full  '>
-                            <Tabs selectedKey={activeTab} onSelectionChange={setActiveTab}>
-                                <TabList className="flex p-1  w-full border border-[#000000]/15 gap-2 bg-[#F4F5FA] items-center  rounded-md dark:bg-[#161616] dark:text-[#FFFFFF]">
-                                    <Tab id="npc" className={`px-10 py-2 text-center outline-none text-sm rounded-md dark:bg-[#161616]  ${activeTab === 'npc' ? 'bg-white dark:bg-[#161616]' : ''}`}>
-                                        NPC
-                                    </Tab>
-                                    <Tab id="ipc" className={`px-10 py-2 outline-none text-sm rounded-md dark:bg-[#161616] ${activeTab === 'ipc' ? 'bg-white dark:bg-[#161616]' : ''}`}>
-                                        IPC
-                                    </Tab>
-                                </TabList>
-                                <TabPanel id="npc">
-                                    {selectedNode ? (
-                                        <div>
-                                            <JsonView src={selectedNode.npc} theme="atom" enableClipboard={false} displaySize={10} />
-                                        </div>
-                                    ) : (
-                                        <p></p>
-                                    )}
-                                </TabPanel>
-                                <TabPanel id="ipc">
-                                    {selectedNode ? (
-                                        <div>
-                                            <JsonView src={selectedNode.ipc} theme="atom" enableClipboard={false} style={{ fill: '#1A2024' }} />
-                                        </div>
-                                    ) : (
-                                        <p></p>
-                                    )}
-                                </TabPanel>
-                            </Tabs>
-                        </div>
+                    <div className="flex text-center w-[30%] h-full p-6 dark:bg-[#0F0F0F] dark:text-[#FFFFFF] overflow-y-auto scrollbar-hide">
+                        <Tabs selectedKey={activeTab} onSelectionChange={setActiveTab}>
+                            <TabList className="flex p-1 w-full border border-[#000000]/15 gap-2 bg-[#F4F5FA] items-center rounded-md dark:bg-[#0F0F0F] dark:text-[#FFFFFF] dark:border-[#212121]">
+                                <Tab id="npc" className={`px-10 py-2 text-center outline-none text-sm rounded-md ${activeTab === 'npc' ? 'bg-white dark:bg-[#161616]' : ''}`}>
+                                    NPC
+                                </Tab>
+                                <Tab id="ipc" className={`px-10 py-2 outline-none text-sm rounded-md ${activeTab === 'ipc' ? 'bg-white dark:bg-[#161616]' : ''}`}>
+                                    IPC
+                                </Tab>
+                            </TabList>
+                            <TabPanel id="npc">
+                                {selectedNode ? (
+                                    <div>
+                                        <JsonView src={selectedNode.npc} theme="atom" enableClipboard={false} displaySize={10} />
+                                    </div>
+                                ) : (
+                                    <p></p>
+                                )}
+                            </TabPanel>
+                            <TabPanel id="ipc">
+                                {selectedNode ? (
+                                    <div>
+                                        <JsonView src={selectedNode.ipc} theme="atom" enableClipboard={false} style={{ fill: '#1A2024' }} />
+                                    </div>
+                                ) : (
+                                    <p></p>
+                                )}
+                            </TabPanel>
+                        </Tabs>
                     </div>
                 </div>
             </div>
