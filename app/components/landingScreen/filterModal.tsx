@@ -31,8 +31,10 @@ const FilterModal = ({ fabrics, setFabrics, artifactType }: FilteringModalProps)
     { key: "pf", label: "Process Fabric" },
     { key: "sf", label: "Security Fabric" },
   ];
+
   const [catalogList, setCatalogList] = useState(["dj", "sh"]);
   const [artifactGrpList, setArtifactGrpList] = useState(["ddj", "ssj"]);
+  const [selectedSortButton, setSelectedSortButton] = useState("Newest");
 
   //Overall conditions to map
   const mappingCondtions = [
@@ -88,8 +90,15 @@ const FilterModal = ({ fabrics, setFabrics, artifactType }: FilteringModalProps)
     setFabrics(new Set([]));
   };
 
+  const sortbutton = [
+    { name : "Newest" },
+    { name : "Oldest" },
+    { name : "Recently Modified" },
+    { name : "Recently Created" },
+  ]
+
   return (
-    <div className="w-full">
+    <div className="flex flex-col gap-1 w-full">
       <div className="flex w-full justify-between items-center px-1 py-2">
         <span className="flex items-center gap-1 text-[16px] font-semibold">
           <FilterIcon /> Filter
@@ -119,6 +128,22 @@ const FilterModal = ({ fabrics, setFabrics, artifactType }: FilteringModalProps)
           </div>
         ))}
       </div>
+
+    <div className="flex flex-col gap-2">
+      <h1 className="text-xs font-semibold">SORT BY</h1>
+        <div className="flex gap-2 flex-wrap text-nowrap">
+          {sortbutton.map((item) => (
+          <Button 
+            onPress={() => setSelectedSortButton(item.name)}
+            className={`flex outline-none p-1 text-xs border border-black/15
+              rounded-lg ${selectedSortButton == item.name ? "bg-[#0736C4] text-white" : "bg-[#F4F5FA]"}`}
+          >
+          {item.name}
+          </Button>
+          ))}
+        </div>
+      </div>
+
       <div className="flex flex-col gap-4 mt-2">
         {mappingCondtions.map((state, index) => (
           <FilterItems

@@ -28,7 +28,6 @@ const Tabcard = ({
   const [artifactList, setArtifactList] = useState<any>([]);
   const [fabricList, setFabricList] = useState<Set<string>>(new Set([]));
   const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
-
   const client = getCookie("client");
   const loginId = getCookie("loginId");
 
@@ -107,7 +106,7 @@ const Tabcard = ({
           classNames={{
             modalClassName: "justify-end pr-2 pt-16 ",
             dialogClassName:
-              "bg-white border rounded p-2 h-[85vh] w-[18vw] overflow-y-auto outline-none",
+              "bg-white border rounded p-2 h-[85vh] w-[20vw] overflow-y-auto outline-none",
           }}
         >
           <FilterModal fabrics={fabricList} setFabrics={setFabricList} artifactType={artifactType} />
