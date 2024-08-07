@@ -73,6 +73,7 @@ const Artifactdetails = ({ nodeData }: any) => {
             console.error('Failed to copy text: ', err);
         }
     };
+
     return (
         <div className="flex w-full gap-5 h-full overflow-hidden">
             <div className="flex flex-col h-full w-[20%] border border-[#000000]/15  rounded-lg bg-white dark:bg-[#161616] dark:text-[#FFFFFF]">
@@ -111,8 +112,8 @@ const Artifactdetails = ({ nodeData }: any) => {
                 </div>
             </div>
 
-            <div className='flex flex-col border border-transparent w-[90%] h-full text-black bg-white rounded-lg dark:bg-[#161616] dark:text-[#FFFFFF]  '>
-                <div className='flex gap-5 text-black pb-4 p-2 dark:text-[#FFFFFF] '>
+            <div className=' flex flex-col w-[80%] bg-white dark:bg-[#161616] h-full border rounded-lg dark:border-[#212121] '>
+                <div className='flex gap-5 p-3 dark:text-[#FFFFFF] '>
                     <h3 className='text-[#1A2024] text-sm font-bold dark:text-[#FFFFFF]'>Completed</h3>
                     <h4 className='text-[#1A2024]/35 text-sm dark:text-[#FFFFFF]'>Waiting</h4>
                     <h5 className='text-[#1A2024]/35 text-sm dark:text-[#FFFFFF]'>Active</h5>
@@ -120,12 +121,13 @@ const Artifactdetails = ({ nodeData }: any) => {
                     <p className='text-[#1A2024]/35 text-sm dark:text-[#FFFFFF]'>Failed</p>
                     <p className='text-[#1A2024]/35 text-sm dark:text-[#FFFFFF]'>Waiting</p>
                 </div>
+
                 <hr className='w-full border-[#E5E9EB] dark:border-[#212121]' />
 
-                <div className='flex w-full h-full  '>
-                    <div className='w-[70%] h-full '>
+                <div className='flex  w-full h-[92%] text-black bg-white rounded-lg dark:bg-[#161616] dark:text-[#FFFFFF]  '>
+                    <div className='flex flex-col p-2 gap-3 w-[70%] h-full   '>
                         {Table.map((item: any) => (
-                            <div className="flex w-[96%] mx-4 bg-[#F4F5FA] p-2 gap-2 border-t border-transparent rounded-lg  mt-5 dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ">
+                            <div className="flex w-full  bg-[#F4F5FA] p-2 gap-2 border-t border-transparent rounded-lg   dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ">
                                 <div className="flex  gap-3 text-gray-500 ">
                                     <div className='flex flex-col gap-5 '>
                                         <div className='flex flex-col '>
@@ -160,6 +162,7 @@ const Artifactdetails = ({ nodeData }: any) => {
                                         </div>
                                     </div>
                                 </div>
+
                                 <div className='flex w-full justify-between '>
                                     <div>
                                         <p className='text-black font-semibold text-nowrap text-sm dark:text-[#FFFFFF] '>{item?.title}</p>
@@ -174,10 +177,12 @@ const Artifactdetails = ({ nodeData }: any) => {
                             </div>
                         ))}
                     </div>
-                    <hr className="w-[1px] h-full bg-black/10" />
-                    <div className="flex text-center w-[30%] h-full p-6 dark:bg-[#0F0F0F] dark:text-[#FFFFFF] overflow-y-auto scrollbar-hide">
-                        <Tabs selectedKey={activeTab} onSelectionChange={setActiveTab}>
-                            <TabList className="flex p-1 w-full border border-[#000000]/15 gap-2 bg-[#F4F5FA] items-center rounded-md dark:bg-[#0F0F0F] dark:text-[#FFFFFF] dark:border-[#212121]">
+
+                    <hr className="w-[1px] h-full  bg-black/10  dark:border:[#FFFFFF] dark:bg-[#212121] " />
+
+                    <div className="flex text-center p-5 w-[30%] h-[98%] dark:bg-[#0F0F0F] dark:text-[#FFFFFF]">
+                        <Tabs className={"bg-[#F4F5FA]/15 w-full dark:bg-[#0F0F0F]"} selectedKey={activeTab} onSelectionChange={setActiveTab}>
+                            <TabList className="flex p-1 border border-[#000000]/15 gap-2 bg-[#F4F5FA]  items-center rounded-md dark:bg-[#0F0F0F] dark:text-[#FFFFFF] dark:border-[#212121]">
                                 <Tab id="npc" className={`px-10 py-2 text-center outline-none text-sm rounded-md ${activeTab === 'npc' ? 'bg-white dark:bg-[#161616]' : ''}`}>
                                     NPC
                                 </Tab>
@@ -185,24 +190,26 @@ const Artifactdetails = ({ nodeData }: any) => {
                                     IPC
                                 </Tab>
                             </TabList>
-                            <TabPanel id="npc">
-                                {selectedNode ? (
-                                    <div>
-                                        <JsonView src={selectedNode.npc} theme="atom" enableClipboard={false} displaySize={10} />
-                                    </div>
-                                ) : (
-                                    <p></p>
-                                )}
-                            </TabPanel>
-                            <TabPanel id="ipc">
-                                {selectedNode ? (
-                                    <div>
-                                        <JsonView src={selectedNode.ipc} theme="atom" enableClipboard={false} style={{ fill: '#1A2024' }} />
-                                    </div>
-                                ) : (
-                                    <p></p>
-                                )}
-                            </TabPanel>
+                            <div className={"h-full overflow-scroll scrollbar-thin "}>
+                                <TabPanel id="npc">
+                                    {selectedNode ? (
+                                        <div>
+                                            <JsonView src={selectedNode.npc} theme="atom" enableClipboard={false} displaySize={10} />
+                                        </div>
+                                    ) : (
+                                        <p></p>
+                                    )}
+                                </TabPanel>
+                                <TabPanel id="ipc">
+                                    {selectedNode ? (
+                                        <div>
+                                            <JsonView className='' src={selectedNode.ipc} theme="atom" enableClipboard={false} style={{ fill: '#1A2024' }} />
+                                        </div>
+                                    ) : (
+                                        <p></p>
+                                    )}
+                                </TabPanel>
+                            </div>
                         </Tabs>
                     </div>
                 </div>
