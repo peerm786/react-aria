@@ -1019,7 +1019,7 @@ export function TorusTable({
             </div> */}
         </div>
       ) : (
-        <div className="flex items-center justify-center w-full h-[80vh]">
+        <div className="flex items-center justify-center w-full h-[80vh] dark:text-white">
           No Data available
         </div>
       )}

@@ -346,9 +346,9 @@ const page = () => {
               }
               {
                 selectedLogsButton &&
-                <div className="flex gap-2 items-center">
+                <div className="flex gap-2 items-center justify-between w-[70%]">
                   <div className="flex w-full gap-2 items-center pt-2">
-                    <div className="relative">
+                    <div className="relative w-[60%]">
                       <span className="absolute inset-y-0 left-0 flex items-center p-2 h-7 w-7 ">
                         <SearchIcon fill={isDarkMode ? "white" : "black"} />
                       </span>
@@ -356,13 +356,13 @@ const page = () => {
                         value={searchValue}
                         onChange={(e) => setSearchValue(e.target.value)}
                         placeholder="Search"
-                        className={`w- p-1 focus:outline-none focus:border-blue-400 border pl-6 text-sm font-medium rounded-md dark:border-[#212121] dark:text-white`}
+                        className={`w-full p-1 focus:outline-none focus:border-blue-400 dark:focus:border-blue-400 border pl-6 text-sm font-medium rounded-md dark:border-[#212121] dark:text-white`}
                       />
                     </div>
                     <DropDown
                       classNames={{
-                        popover: "w-[200px]",
-                        triggerButton: "w-[100px] h-[30px] border border-black/15 rounded-lg bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-[#FFFFFF]",
+                        popover: "w-[180px]",
+                        triggerButton: "w-[100px] h-[30px] border border-black/15 rounded-lg bg-[#F4F5FA] dark:border-[#212121] dark:bg-[#0F0F0F] dark:text-[#FFFFFF]",
                       }}
                       triggerButton={
                         <div className="flex text-xs font-medium items-center gap-2 dark:bg-[#0F0F0F] dark:text-[#FFFFFF]">
@@ -377,8 +377,8 @@ const page = () => {
                     />
                     <DropDown
                       classNames={{
-                        popover: "w-[200px]",
-                        triggerButton: "w-[90px] h-[30px] border border-black/15 rounded-lg bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-[#FFFFFF]",
+                        popover: "w-[180px]",
+                        triggerButton: "w-[80px] h-[30px] border border-black/15 rounded-lg dark:border-[#212121] bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-[#FFFFFF]",
                       }}
                       triggerButton={
                         <div className="flex text-xs font-medium items-center gap-2 dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ">

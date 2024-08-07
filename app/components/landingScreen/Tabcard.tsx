@@ -4,12 +4,12 @@ import { LuLock } from "react-icons/lu";
 import {
   Avatars,
   DataFabric,
+  FilterIcon,
   ProcessFabric,
   SecurityFabric,
   ThreeDots,
   UserFabric,
 } from "../../constants/svgApplications";
-import { TfiAlignCenter } from "react-icons/tfi";
 import { AxiosService } from "../../../lib/utils/axiosService";
 import { getCookie } from "../../../lib/utils/cookiemgmt";
 import { useSelector } from "react-redux";
@@ -41,8 +41,8 @@ const Tabcard = ({
         fabric: fabric
           ? fabric
           : fabricList.size
-          ? Array.from(fabricList)
-          : fabric,
+            ? Array.from(fabricList)
+            : fabric,
         torusVersion: "torus9.0",
       });
       setArtifactList(res.data);
@@ -101,7 +101,7 @@ const Tabcard = ({
           triggerElement={
             <Button className=" outline-none flex items-center gap-2 text-xs dark:bg-[#0F0F0F] dark:border-[#212121] text-black font-medium border border-black/15 rounded-md px-3 h-6 cursor-pointer dark:text-[#FFFFFF]">
               Filter
-              <TfiAlignCenter />
+              <FilterIcon />
             </Button>
           }
           classNames={{
@@ -110,7 +110,7 @@ const Tabcard = ({
               "bg-white border rounded p-2 h-[85vh] w-[18vw] overflow-y-auto outline-none",
           }}
         >
-          <FilterModal fabrics={fabricList} setFabrics={setFabricList} artifactType={artifactType}/>
+          <FilterModal fabrics={fabricList} setFabrics={setFabricList} artifactType={artifactType} />
         </TorusDialog>
       </div>
       <Tabs selectedKey={artifactType} onSelectionChange={setArtifactType}>
@@ -121,10 +121,9 @@ const Tabcard = ({
           <Tab
             id={"frk"}
             className={({ isSelected }) =>
-              `${
-                isSelected
-                  ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
-                  : "outline-none text-xs font-semibold ml-2 "
+              `${isSelected
+                ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
+                : "outline-none text-xs font-semibold ml-2 "
               } cursor-pointer`
             }
           >
@@ -134,10 +133,9 @@ const Tabcard = ({
           <Tab
             id={"crk"}
             className={({ isSelected }) =>
-              `${
-                isSelected
-                  ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
-                  : "outline-none text-xs font-semibold ml-2"
+              `${isSelected
+                ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
+                : "outline-none text-xs font-semibold ml-2"
               } cursor-pointer`
             }
           >
@@ -146,10 +144,9 @@ const Tabcard = ({
           <Tab
             id={"tpfrk"}
             className={({ isSelected }) =>
-              `${
-                isSelected
-                  ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
-                  : "outline-none text-xs font-semibold ml-2"
+              `${isSelected
+                ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
+                : "outline-none text-xs font-semibold ml-2"
               } cursor-pointer`
             }
           >

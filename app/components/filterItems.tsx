@@ -34,10 +34,10 @@ const FilterItems = ({
 }: Props) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isFocused, setIsFocused] = useState(false);
-  const [filteredItems , setFilteredItems] = useState<Iterable<any>>(items);
+  const [filteredItems, setFilteredItems] = useState<Iterable<any>>(items);
 
-  useEffect(()=> {
-    const filtered = (items as any).filter((item:any) => item.label.includes(searchTerm));
+  useEffect(() => {
+    const filtered = (items as any).filter((item: any) => item.label.includes(searchTerm));
     setFilteredItems(filtered);
   }, [searchTerm])
 
@@ -48,7 +48,7 @@ const FilterItems = ({
         <h1 className="text-xs font-semibold">{title.toUpperCase()}</h1>
         <Button
           onPress={() => setSelectedKeys(new Set([]))}
-          className={"outline-none text-[#000000/35] text-[10px]"}
+          className={"outline-none text-[#000000]/35 text-[10px]"}
         >
           Clear All
         </Button>
@@ -57,7 +57,7 @@ const FilterItems = ({
         <div className="relative w-full my-2 px-1">
           <Input
             type="text"
-            className={`w-full py-1 outline-none border-[#E7EAEE] rounded bg-[#F4F5FA] group focus:ring-2 focus:px-0 ${searchTerm ? "px-0": "px-6"}`}
+            className={`w-full py-1 outline-none border-[#E7EAEE] rounded bg-[#F4F5FA] group focus:ring-2 focus:px-0 ${searchTerm ? "px-0" : "px-6"}`}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -78,7 +78,7 @@ const FilterItems = ({
         onSelectionChange={setSelectedKeys}
         items={filteredItems}
         className={twMerge("w-[95%] mt-1 px-1", classNames?.listbox)}
-        renderEmptyState={()=> 'No data Available'}
+        renderEmptyState={() => 'No data Available'}
       >
         {(item) => (
           <ListBoxItem

@@ -1,8 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Button } from "react-aria-components";
-import { TfiAlignCenter } from "react-icons/tfi";
-import { CloseIcon } from "../../constants/svgApplications";
+import { CloseIcon, FilterIcon } from "../../constants/svgApplications";
 import FilterItems from "../filterItems";
 
 interface FilteringModalProps {
@@ -11,7 +10,7 @@ interface FilteringModalProps {
   artifactType?: "frk" | "crk" | "tpfrk" | string[];
 }
 
-const FilterModal = ({ fabrics, setFabrics , artifactType }: FilteringModalProps) => {
+const FilterModal = ({ fabrics, setFabrics, artifactType }: FilteringModalProps) => {
   // Seperate filtering States
   const [catalogs, setCatalogs] = useState<Set<string>>(new Set());
   const [artifactGrps, setArtifactGrps] = useState<Set<string>>(new Set());
@@ -92,12 +91,12 @@ const FilterModal = ({ fabrics, setFabrics , artifactType }: FilteringModalProps
   return (
     <div className="w-full">
       <div className="flex w-full justify-between items-center px-1 py-2">
-        <span className="flex items-center gap-2 font-semibold">
-          <TfiAlignCenter /> Filter
+        <span className="flex items-center gap-1 text-[16px] font-semibold">
+          <FilterIcon /> Filter
         </span>
         <Button
           onPress={handleResetAllFilters}
-          className={"outline-none text-[#000000/35] text-[10px]"}
+          className={"outline-none text-xs text-[#000000]/35"}
         >
           Clear All
         </Button>

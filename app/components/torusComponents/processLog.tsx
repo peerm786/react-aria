@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { AxiosService } from "../../../lib/utils/axiosService";
 import {
-  RenderTableChildren,
   TorusColumn,
   TorusRow,
   TorusTable,
@@ -11,12 +10,12 @@ import { Button, Cell, Separator, TableBody } from "react-aria-components";
 import { Clipboard } from "../../constants/svgApplications";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../lib/Store/store";
-import { FaClipboardCheck } from "react-icons/fa";
+import { SiTicktick } from "react-icons/si";
 
 const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeData }: any) => {
   const [data, setData] = useState<any>([]);
   const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState(null);
 
   const getProcessLogs = async () => {
     try {
@@ -78,7 +77,7 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
         return (
           <div>
             {data.nodeData.map((item: any) => (
-              <div>{item.node}</div>
+              <div className="text-sm font-medium">{item.node}</div>
             ))}
           </div>
         );
@@ -87,7 +86,7 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
           <div>
             {data.nodeData.map((item: any) => (
               <div className="text-xs text-black/50 
-           dark:text-[#FFFFFF]">{item.time}</div>
+           dark:text-[#FFFFFF]/50">{item.time}</div>
             ))}
           </div>
         );
@@ -106,7 +105,7 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
         } else {
           return (
             <div
-              className={`px-2 py-1 text-center text-xs rounded-full text-white bg-green-500`}
+              className={`px-3 py-1 text-center text-xs rounded-full text-white bg-green-500`}
             >
               Success
             </div>
@@ -127,9 +126,9 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
     const handleCopyToClipboard = async () => {
       try {
         await navigator.clipboard.writeText(processKey);
-        setCopied(true);
+        setCopied(processKey);
         setTimeout(() => {
-          setCopied(false);
+          setCopied(null);
         }, 1000);
       } catch (err) {
         console.error('Failed to copy text: ', err);
@@ -141,13 +140,13 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
         <div className="text-sm font-bold">
           {artifact.charAt(0).toUpperCase() + artifact.slice(1)}
         </div>
-        <div className="text-xs text-black/35  dark:text-[#FFFFFF]/35">{tenantDetail}</div>
+        <div className="text-xs text-black/35 dark:text-[#FFFFFF]/35">{tenantDetail}</div>
         {processKey && (
-          <div className="flex gap-1 text-xs text-[#1C274C] border border-[#1C274C]/15 rounded-full p-1 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-[#FFFFFF] dark:border-[#FFFFFF]/15">
-            UID:{processKey}
-            <Button onPress={handleCopyToClipboard}>
-              {copied ? (
-                <FaClipboardCheck className="text-green-500" />
+          <div className="flex gap-1 text-xs font-medium border border-[#1C274C]/15 rounded-full p-1 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-[#FFFFFF] dark:border-[#FFFFFF]/15">
+            UID: {processKey}
+            <Button className={"outline-none"} onPress={handleCopyToClipboard}>
+              {copied && copied === processKey ? (
+                <SiTicktick size={12} className="text-green-500" />
               ) : (
                 <Clipboard fill={isDarkMode ? 'white' : 'black'} />
               )}
@@ -163,11 +162,11 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
       case "jobName":
         return displayjobname(item);
       case "version":
-        return item.version;
+        return <div className="text-sm font-medium">{item.version}</div>
       case "fabric":
-        return item.fabric;
+        return <div className="text-sm font-medium">{item.fabric}</div>
       case "jobType":
-        return item.jobType;
+        return <div className="text-sm font-medium">{item.jobType}</div>;
       case "status":
         return displayNodeData(item, "status");
       case "node":
@@ -202,7 +201,7 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
                       id={column.id}
                       allowsSorting={column.allowsSorting}
                       isRowHeader={column.isRowHeader}
-                      className={`bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-[#FFFFFF] cursor-pointer ${i == 0 ? "rounded-tl-xl rounded-bl-xl" : ""} ${i == filterColmns.length - 1 ? "rounded-tr-xl rounded-br-xl" : ""}`}
+                      className={`text-sm font-medium bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-[#FFFFFF] cursor-pointer ${i == 0 ? "rounded-tl-xl rounded-bl-xl" : ""} ${i == filterColmns.length - 1 ? "rounded-tr-xl rounded-br-xl" : ""}`}
 
                     >
                       {column.name}
@@ -215,7 +214,7 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
             {/* <span className="h-[500px] overflow-y-scroll"> */}
             <TableBody
               renderEmptyState={() => (
-                <div className="text-center overflow-y-auto "> No Process log detail found </div>
+                <div className="text-center overflow-y-auto"> No Process log detail found </div>
               )}
             >
               {sortedItems.map((item: any, index: number) => (
@@ -237,10 +236,7 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
                           key={i}
                           className={"border-b border-transparent "}
                           children={
-                            <div className="w-full h-full flex flex-col items-center justify-center py-[1rem] text-xs font-normal  ">
-                              {/* <RenderTableChildren
-                                children={item?.[column?.id]}
-                              /> */}
+                            <div className="w-full h-full flex flex-col items-center justify-center py-[1rem]">
                               {RenderTableCell(item, column)}
                             </div>
                           }
