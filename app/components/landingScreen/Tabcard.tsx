@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Tab, TabList, Tabs } from "react-aria-components";
+import { Button, Tab, TabList, Tabs } from "react-aria-components";
 import { LuLock } from "react-icons/lu";
 import {
   Avatars,
@@ -12,9 +12,10 @@ import {
 import { TfiAlignCenter } from "react-icons/tfi";
 import { AxiosService } from "../../../lib/utils/axiosService";
 import { getCookie } from "../../../lib/utils/cookiemgmt";
-import DropDown from "../multiDropdownnew";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../lib/Store/store";
+import TorusDialog from "../torusdialogmodal";
+import FilterModal from "./filterModal";
 
 const Tabcard = ({
   fabric,
@@ -25,7 +26,7 @@ const Tabcard = ({
 }) => {
   const [artifactType, setArtifactType] = useState<any>("frk");
   const [artifactList, setArtifactList] = useState<any>([]);
-  const [fabricList, setFabricList] = useState(["df", "pf", "sf", "uf"]);
+  const [fabricList, setFabricList] = useState<Set<string>>(new Set([]));
   const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
 
   const client = getCookie("client");
@@ -37,7 +38,11 @@ const Tabcard = ({
         artifactType: type,
         client: client,
         loginId: loginId,
-        fabric: fabric ? fabric : fabricList.length ? fabricList : fabric,
+        fabric: fabric
+          ? fabric
+          : fabricList.size
+          ? Array.from(fabricList)
+          : fabric,
         torusVersion: "torus9.0",
       });
       setArtifactList(res.data);
@@ -89,26 +94,24 @@ const Tabcard = ({
   return (
     <div className="flex flex-col w-full h-full bg-white border border-gray-300 p-2 rounded-md dark:bg-[#1D1D1D] text-[#FFFFFF] dark:border-[#212121]">
       <div className="flex items-center justify-between">
-        <h1 className="text-base font-bold text-black dark:text-[#FFFFFF]">
+        <h1 className="text-base font-bold text-black dark:text-[#FFFFFF] py-2">
           My Library
         </h1>
-        <DropDown
-          triggerButton={
-            <h2 className="flex items-center gap-2 text-xs dark:bg-[#0F0F0F] dark:border-[#212121] text-black font-medium border border-black/15 rounded-md px-3 h-6 cursor-pointer dark:text-[#FFFFFF]">
+        <TorusDialog
+          triggerElement={
+            <Button className=" outline-none flex items-center gap-2 text-xs dark:bg-[#0F0F0F] dark:border-[#212121] text-black font-medium border border-black/15 rounded-md px-3 h-6 cursor-pointer dark:text-[#FFFFFF]">
               Filter
               <TfiAlignCenter />
-            </h2>
+            </Button>
           }
-          selectedKeys={fabricList}
-          setSelectedKeys={setFabricList}
-          items={["df", "pf", "sf", "uf"]}
-          multiple
-          displaySelectedKeys={false}
           classNames={{
-            popover: "w-24",
-            triggerButton: "w-40 justify-end",
+            modalClassName: "justify-end pr-2 pt-16 ",
+            dialogClassName:
+              "bg-white border rounded p-2 h-[85vh] w-[18vw] overflow-y-auto outline-none",
           }}
-        />
+        >
+          <FilterModal fabrics={fabricList} setFabrics={setFabricList} artifactType={artifactType}/>
+        </TorusDialog>
       </div>
       <Tabs selectedKey={artifactType} onSelectionChange={setArtifactType}>
         <TabList
@@ -118,9 +121,10 @@ const Tabcard = ({
           <Tab
             id={"frk"}
             className={({ isSelected }) =>
-              `${isSelected
-                ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
-                : "outline-none text-xs font-semibold ml-2 "
+              `${
+                isSelected
+                  ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
+                  : "outline-none text-xs font-semibold ml-2 "
               } cursor-pointer`
             }
           >
@@ -130,9 +134,10 @@ const Tabcard = ({
           <Tab
             id={"crk"}
             className={({ isSelected }) =>
-              `${isSelected
-                ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
-                : "outline-none text-xs font-semibold ml-2"
+              `${
+                isSelected
+                  ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
+                  : "outline-none text-xs font-semibold ml-2"
               } cursor-pointer`
             }
           >
@@ -141,9 +146,10 @@ const Tabcard = ({
           <Tab
             id={"tpfrk"}
             className={({ isSelected }) =>
-              `${isSelected
-                ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
-                : "outline-none text-xs font-semibold ml-2"
+              `${
+                isSelected
+                  ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
+                  : "outline-none text-xs font-semibold ml-2"
               } cursor-pointer`
             }
           >

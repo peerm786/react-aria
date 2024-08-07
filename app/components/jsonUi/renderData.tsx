@@ -1,7 +1,12 @@
 import { createElement, memo, useEffect, useState } from "react";
 import { unflatten } from "flat";
 import TorusToolTip from "./torusComponents/torusTooltip";
-import { MdBackupTable, MdDataObject, MdExpandLess, MdOutlineDataArray } from "react-icons/md";
+import {
+  MdBackupTable,
+  MdDataObject,
+  MdExpandLess,
+  MdOutlineDataArray,
+} from "react-icons/md";
 import { LuDatabase } from "react-icons/lu";
 import { TfiRulerPencil } from "react-icons/tfi";
 import { PiCodepenLogoLight } from "react-icons/pi";
@@ -13,7 +18,11 @@ import TorusInput from "./torusComponents/TorusInput";
 import _ from "lodash";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import TorusDropDown from "./torusComponents/torusDropdown";
-
+import TorusDialog from "../torusdialogmodal";
+import TorusButton from "../TorusButton";
+import { PlusIcon } from "../../constants/svgApplications";
+import { AddModalContentType } from "./AddModalContentType";
+import { CiTrash } from "react-icons/ci";
 
 const iconArray = [
   MdDataObject,
@@ -27,8 +36,6 @@ const iconArray = [
   LiaCreditCardSolid,
   SlSocialDropbox,
 ];
-
-
 
 const RenderJsonArraySidebarIcon = memo(
   ({
@@ -51,7 +58,6 @@ const RenderJsonArraySidebarIcon = memo(
               : " text-black cursor-pointer")
           }
         >
-
           <TorusToolTip
             hoverContent={
               shuffledIcons.length > 0 &&
@@ -64,7 +70,7 @@ const RenderJsonArraySidebarIcon = memo(
               )
             }
             tooltipFor="arr"
-            tooltipContent={obj.map((ele: any) => ele.label ? ele.label : fg)}
+            tooltipContent={obj.map((ele: any) => (ele.label ? ele.label : fg))}
             color={activeTab == fg ? "#6600ff" : "#09254D"}
             setShowObj={setShowObj}
             setActiveTab={setActiveTab}
@@ -77,7 +83,6 @@ const RenderJsonArraySidebarIcon = memo(
     );
   }
 );
-
 
 const RenderSwitch = ({ obj }: any) => {
   const handleDropdownClick = (event: any) => {
@@ -92,13 +97,14 @@ const RenderSwitch = ({ obj }: any) => {
   );
 };
 
-
 const RenderJsonArraySidebarDetail = ({
   obj,
   showObj,
   path,
   handlejs,
   objs,
+  handleAddjs,
+  handleDeletejs
 }: any) => {
   const [expandedItem, setExpandedItem] = useState<any[]>([]);
   const [showAccordianItem, setShowAccordianItem] = useState(null);
@@ -119,6 +125,54 @@ const RenderJsonArraySidebarDetail = ({
   };
 
   return (
+    <>
+     <div className="  flex h-[100%] w-full items-center">
+        <TorusDialog
+          key={"TableDelete"}
+          triggerElement={
+            <TorusButton
+              Children={`Add`}
+              size={"xs"}
+              btncolor={"#0736C4"}
+              radius={"lg"}
+              color={"#ffffff"}
+              gap={"py-[0.2rem] px-[0.2rem] mb-[0.3rem]"}
+              height={"md"}
+              borderColor={"3px solid #0736C4"}
+              startContent={<PlusIcon />}
+              fontStyle={"text-sm font-medium text-[#FFFFFF]"}
+            />
+          }
+          classNames={{
+            modalClassName: " w-full flex justify-center items-center  ",
+            dialogClassName: " w-[30vw] p-3 h-full rounded-lg flex-col bg-white",
+          }}
+          title={"Add"}
+          message={"Edit"}
+          children={({ close }:any) => (
+            <AddModalContentType
+              obj={obj}
+              showObj={showObj}
+              close={close}
+              handleAddjs={handleAddjs}
+              type="arr-0"
+            />
+          )}
+        />
+        <TorusButton
+          Children={`Delete`}
+          size={"xs"}
+          btncolor={"#0736C4"}
+          radius={"lg"}
+          color={"#f00"}
+          gap={"py-[0.2rem] px-[0.2rem] mb-[0.3rem]"}
+          height={"md"}
+          borderColor={"3px solid #0736C4"}
+          startContent={<CiTrash color="white" />}
+          fontStyle={"text-sm font-medium text-[#FFFFFF]"}
+          onPress={() => handleDeletejs(path)}
+        />
+      </div>
     <div className={`grid ${obj.length > 1 ? "grid-cols-2" : ""} gap-2`}>
       {obj &&
         obj.map((ele: any, index: number) => {
@@ -277,10 +331,9 @@ const RenderJsonArraySidebarDetail = ({
           ))}
       </select> */}
     </div>
+    </>
   );
 };
-
-
 
 const RenderDropdown = ({ obj, path, handlejs, item, showObj }: any) => {
   const [value, setValue] = useState(null);
@@ -324,7 +377,6 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }: any) => {
     setValue(e);
 
     handlejs(e, path + "." + item + "." + data, data, "dropdown", showObj);
-
   };
 
   return (
@@ -401,7 +453,6 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }: any) => {
   );
 };
 
-
 export default function JsonSidebarDetail({
   showObj,
   obj,
@@ -409,6 +460,8 @@ export default function JsonSidebarDetail({
   path,
   label,
   OgJson,
+  handleAddjs,
+  handleDeletejs,
 }: any) {
   const [value, setValue] = useState(null);
   const [selectedTab, setselectedTab] = useState("Tabs");
@@ -433,8 +486,6 @@ export default function JsonSidebarDetail({
           </span>
         </span>
 
-
-
         <span className="mt-1 font-normal m-2 w-[100%] text-black dark:text-white">
           Label :
           <span className="text-[#6600ff] dark:text-[#c4b707] m-2 font-poppins w-full  ">
@@ -443,12 +494,13 @@ export default function JsonSidebarDetail({
         </span>
       </span>
       <div className="scrollbar-none  overflow-y-scroll">
-        {(
+        {
           <div className="">
             {
               !Array.isArray(obj[showObj]) ? (
                 obj &&
                 showObj &&
+                obj[showObj] &&
                 Object.keys(obj[showObj]).map((ele) => {
                   if (
                     !Array.isArray(obj[showObj][ele]) &&
@@ -468,7 +520,9 @@ export default function JsonSidebarDetail({
                             outlineColor="torus-focus:ring-[#000000]/50"
                             placeholder=""
                             isDisabled={false}
-                            onChange={(e: any) => handleInput(e, path, ele, "obj")}
+                            onChange={(e: any) =>
+                              handleInput(e, path, ele, "obj")
+                            }
                             radius="lg"
                             width="xl"
                             height="xl"
@@ -511,6 +565,8 @@ export default function JsonSidebarDetail({
                   path={path}
                   handlejs={handlejs}
                   objs={obj}
+                  handleAddjs={handleAddjs}
+                  handleDeletejs={handleDeletejs}
                 />
               )
               // showObj &&
@@ -541,12 +597,11 @@ export default function JsonSidebarDetail({
               //   })
             }
           </div>
-        )}
+        }
       </div>
     </div>
   );
 }
-
 
 export const JsonSidebarIcon = memo(
   ({ obj, setShowObj, setPath, setLabel }: any) => {
@@ -578,7 +633,7 @@ export const JsonSidebarIcon = memo(
                           iconArray.length > 0 &&
                           createElement(
                             iconArray[
-                            Math.floor(Math.random() * iconArray.length)
+                              Math.floor(Math.random() * iconArray.length)
                             ],
                             {
                               size: 20,
@@ -621,12 +676,12 @@ export const JsonSidebarIcon = memo(
   }
 );
 
-
-
 export function FabricsSideBar({
   obj,
   handlejs,
-  OgJson
+  OgJson,
+  handleAddjs,
+  handleDeletejs,
 }: any) {
   const [showObj, setShowObj] = useState();
   const [label, setLabel] = useState(null);
@@ -635,209 +690,361 @@ export function FabricsSideBar({
   return (
     <div className="flex h-[100%] w-full max-w-full flex-row overflow-hidden ">
       <div className="max-w-[40%] h-[450px] border-r   bg-white  dark:border-[#212121]">
-        {<JsonSidebarIcon
-          key={"iconBar"}
-          showObj={showObj}
-          setShowObj={setShowObj}
-          obj={obj}
-          setPath={setPath}
-          setLabel={setLabel}
-        />}
-
+        {
+          <JsonSidebarIcon
+            key={"iconBar"}
+            showObj={showObj}
+            setShowObj={setShowObj}
+            obj={obj}
+            setPath={setPath}
+            setLabel={setLabel}
+          />
+        }
       </div>
       <div className="w-full max-w-[90%] bg-white dark:bg-[#161616]">
-
         <div className="h-[430px] relative w-full">
-
-          {<JsonSidebarDetail
-            showObj={showObj}
-            obj={obj}
-            handlejs={handlejs}
-            path={path}
-            label={label}
-            OgJson={OgJson}
-          />}
+          {
+            <JsonSidebarDetail
+              showObj={showObj}
+              obj={obj}
+              handlejs={handlejs}
+              path={path}
+              label={label}
+              OgJson={OgJson}
+              handleAddjs={handleAddjs}
+              handleDeletejs={handleDeletejs}
+            />
+          }
         </div>
       </div>
     </div>
   );
 }
 
-
-
 const RenderObject = ({
   obj,
   handlejs,
   OgJson,
   setDupJson,
+  handleAddjs,
+  handleDeletejs,
 }: any) => {
   return (
     <>
-      {(
+      {
         <FabricsSideBar
           obj={obj}
           handlejs={handlejs}
           OgJson={OgJson}
           setDupJson={setDupJson}
+          handleAddjs={handleAddjs}
+          handleDeletejs={handleDeletejs}
         />
-      )}
+      }
     </>
   );
 };
 
-
 // This will be the main render function which can be called from outside to list datas
-export const RenderJson = memo(
-  ({
-    json, functionality
-  }: any) => {
-    const [dupJson, setDupJson] = useState<any>(null);
-    const [convertedJson, setConvertedJson] = useState<any>(null);
+export const RenderJson = memo(({ json, functionality }: any) => {
+  const [dupJson, setDupJson] = useState<any>(null);
+  const [convertedJson, setConvertedJson] = useState<any>(null);
 
-    function convertJson(obj: any) {
-      const converted: any = {};
-      for (let key in obj) {
-        if (typeof obj[key] === "object" && !Array.isArray(obj[key])) {
-          converted[key.replace(/\//g, ".")] = convertJson(obj[key]);
-        } else if (Array.isArray(obj[key])) {
-          converted[key.replace(/\//g, ".")] = obj[key];
-        } else {
-          converted[key.replace(/\//g, ".")] = obj[key];
-        }
+  function convertJson(obj: any) {
+    const converted: any = {};
+    for (let key in obj) {
+      if (typeof obj[key] === "object" && !Array.isArray(obj[key])) {
+        converted[key.replace(/\//g, ".")] = convertJson(obj[key]);
+      } else if (Array.isArray(obj[key])) {
+        converted[key.replace(/\//g, ".")] = obj[key];
+      } else {
+        converted[key.replace(/\//g, ".")] = obj[key];
       }
-
-      return converted;
     }
 
-    // function replaceKeys(obj) {
-    //   if (Array.isArray(obj)) {
-    //     return obj.map((item) => replaceKeys(item));
-    //   } else if (typeof obj === "object" && obj !== null) {
-    //     let newObj = {};
-    //     for (let key in obj) {
-    //       if (obj.hasOwnProperty(key)) {
-    //         let newKey = key.replace(/\//g, ".");
-    //         newObj[newKey] = replaceKeys(obj[key]);
-    //       }
-    //     }
-    //     return newObj;
-    //   } else {
-    //     return obj;
-    //   }
-    // }
+    return converted;
+  }
 
-    const OgJson = () => {
-      const jss = convertJson(dupJson);
-      const newjson = JSON.stringify(jss, null, 2);
-      let newjs: any = unflatten(jss);
-      setConvertedJson(newjs);
-      functionality(newjs)
+  // function replaceKeys(obj) {
+  //   if (Array.isArray(obj)) {
+  //     return obj.map((item) => replaceKeys(item));
+  //   } else if (typeof obj === "object" && obj !== null) {
+  //     let newObj = {};
+  //     for (let key in obj) {
+  //       if (obj.hasOwnProperty(key)) {
+  //         let newKey = key.replace(/\//g, ".");
+  //         newObj[newKey] = replaceKeys(obj[key]);
+  //       }
+  //     }
+  //     return newObj;
+  //   } else {
+  //     return obj;
+  //   }
+  // }
 
-    };
+  const OgJson = () => {
+    const jss = convertJson(dupJson);
+    const newjson = JSON.stringify(jss, null, 2);
+    let newjs: any = unflatten(jss);
+    setConvertedJson(newjs);
+    functionality(newjs);
+  };
 
-    const handlejs = (e: any, i: any, key: any, type: any, jskey: any) => {
+  const handlejs = (e: any, i: any, key: any, type: any, jskey: any) => {
+    if (type == "obj") {
+      setDupJson((prev: any) => {
+        return {
+          ...prev,
+          [i]: {
+            ...prev[i],
+            [key]: e,
+          },
+        };
+      });
+    }
+    if (type == "arr-0" || type == "arr-1" || type == "arr") {
+      if (i) {
+        const js = structuredClone(dupJson);
+        _.set(js, i, e);
+        setDupJson(js);
+      }
+    }
 
-      if (type == "obj") {
-        setDupJson((prev: any) => {
-          return {
-            ...prev,
-            [i]: {
-              ...prev[i],
-              [key]: e,
+    if (type == "dropdown" || type == "boolean") {
+      if (i) {
+        const js = structuredClone(dupJson);
+        _.set(js, i, e);
+        setDupJson(js);
+      }
+    }
+  };
+
+  const handleAddjs = (
+    path: any,
+    key: any,
+    value: any,
+    type: any,
+    i: any,
+    selectedType: any
+  ) => {
+    console.log(path, key, value, type, i, selectedType, "handleAddjs");
+    if (type == "obj" && selectedType === "input") {
+      setDupJson((prev: any) => {
+        return {
+          ...prev,
+          [path]: {
+            ...prev[path],
+            [key]: value,
+          },
+        };
+      });
+    } else if (type == "obj" && selectedType === "boolean") {
+      setDupJson((prev: any) => {
+        return {
+          ...prev,
+          [path]: {
+            ...prev[path],
+            [key]: {
+              label: key,
+              type: "boolean",
+              selectedValue: false,
+              selectionList: [true, false],
             },
-          };
-        });
-      }
-      if (type == "arr") {
-        if (i) {
-          const js = structuredClone(dupJson);
-          _.set(js, i, e);
-          setDupJson(js);
-        }
-      }
+          },
+        };
+      });
+    } else if (type == "obj" && selectedType === "dropdown") {
+      setDupJson((prev: any) => {
+        return {
+          ...prev,
+          [path]: {
+            ...prev[path],
+            [key]: {
+              label: key,
+              type: "dropdown",
+              selectedValue: "",
+              selectionList: value,
+            },
+          },
+        };
+      });
+    } else if (type === "arr-1" && selectedType === "input") {
+      setDupJson((prev: any) => {
+        return {
+          ...prev,
+          [path]: prev[path].map((item: any, index: number) => {
+            if (index === i) {
+              return {
+                ...item,
+                [key]: value,
+              };
+            } else {
+              return item;
+            }
+          }),
+        };
+      });
+    } else if (type === "arr-1" && selectedType === "boolean") {
+      setDupJson((prev: any) => {
+        return {
+          ...prev,
+          [path]: prev[path].map((item: any, index: number) => {
+            if (index === i) {
+              return {
+                ...item,
+                [key]: {
+                  label: key,
+                  type: "boolean",
+                  selectedValue: false,
+                  selectionList: [true, false],
+                },
+              };
+            } else {
+              return item;
+            }
+          }),
+        };
+      });
+    } else if (type == "arr-1" && selectedType === "dropdown") {
+      setDupJson((prev: any) => {
+        return {
+          ...prev,
+          [path]: prev[path].map((item: any, index: number) => {
+            if (index === i) {
+              return {
+                ...item,
+                [key]: {
+                  label: key,
+                  type: "dropdown",
+                  selectedValue: "",
+                  selectionList: value,
+                },
+              };
+            } else {
+              return item;
+            }
+          }),
+        };
+      });
+    } else if (type === "arr-0" && selectedType === "object") {
+      setDupJson((prev: any) => {
+        return {
+          ...prev,
+          [path]: [
+            ...prev[path],
+            {
+              label: key,
+            },
+          ],
+        };
+      });
+    }
+  };
 
-      if (type == "dropdown") {
-        if (i) {
-          const js = structuredClone(dupJson);
-          _.set(js, i, e);
-          setDupJson(js);
-        }
-      }
-    };
+  const handleDeletejs = (path: any, type: any, label: any) => {
+    if (type === "arr-1") {
+      setDupJson((prev: any) => {
+        const updatedObj = _.cloneDeep(prev);
+        const events = _.get(updatedObj, path);
+        _.remove(events, (event: any) => event.label === label);
+        return updatedObj;
+      });
+    } else if (type === "obj") {
+      console.log(path, "bjp");
+      const js = structuredClone(dupJson);
+      _.unset(js, path);
+      setDupJson(js);
+    } else {
+      const js = structuredClone(dupJson);
+      const pathsToDelete = Object.keys(js).filter(
+        (key) => key == path || key.startsWith(path + "/")
+      );
+      pathsToDelete.forEach((key) => {
+        _.unset(js, key);
+      });
+      setDupJson(js);
+    }
+  };
 
-
-    function denormalizeJson(obj: any, prefix = "", result: any = {}, originalObj: any) {
-      const copy = JSON.parse(JSON.stringify(obj));
-      for (let key in copy) {
-        if (copy.hasOwnProperty(key)) {
-          let newKey = prefix ? `${prefix}/${key}` : key;
+  function denormalizeJson(
+    obj: any,
+    prefix = "",
+    result: any = {},
+    originalObj: any
+  ) {
+    const copy = JSON.parse(JSON.stringify(obj));
+    for (let key in copy) {
+      if (copy.hasOwnProperty(key)) {
+        let newKey = prefix ? `${prefix}/${key}` : key;
+        if (
+          typeof copy[key] === "object" &&
+          copy[key] !== null &&
+          !Array.isArray(copy[key])
+        ) {
           if (
-            typeof copy[key] === "object" &&
-            copy[key] !== null &&
-            !Array.isArray(copy[key])
+            !(copy[key].hasOwnProperty("type") && copy[key].type === "dropdown")
           ) {
-            if (
-              !(copy[key].hasOwnProperty("type") && copy[key].type === "dropdown")
-            ) {
-              if (copy[key] === originalObj) {
-                return result; // Return early if the object being processed is the same as the original object
-              }
-              result[newKey] = copy[key];
-              denormalizeJson(copy[key], newKey, result, originalObj);
-              delete copy[key];
+            if (copy[key] === originalObj) {
+              return result; // Return early if the object being processed is the same as the original object
             }
-          } else if (Array.isArray(copy[key]) && typeof copy[key][0] === "object") {
             result[newKey] = copy[key];
-            copy[key].forEach((item, index) => {
-              if (typeof item === "object" && item !== null) {
-                const nestedKey = `${newKey}/${index}`;
-                denormalizeJson(item, nestedKey, result, originalObj);
-              } else {
-                result[newKey][index] = item;
-              }
-            });
+            denormalizeJson(copy[key], newKey, result, originalObj);
             delete copy[key];
-          } else {
-            if (!prefix) {
-              result[copy["label"]] = copy;
+          }
+        } else if (
+          Array.isArray(copy[key]) &&
+          typeof copy[key][0] === "object"
+        ) {
+          result[newKey] = copy[key];
+          copy[key].forEach((item, index) => {
+            if (typeof item === "object" && item !== null) {
+              const nestedKey = `${newKey}/${index}`;
+              denormalizeJson(item, nestedKey, result, originalObj);
+            } else {
+              result[newKey][index] = item;
             }
+          });
+          delete copy[key];
+        } else {
+          if (!prefix) {
+            result[copy["label"]] = copy;
           }
         }
       }
-      return result;
     }
+    return result;
+  }
 
-    const haandledenormalize = () => {
-      if (json) {
-        const denormalized = denormalizeJson(json, "", {}, json);
-        console.log(denormalized, 'denormalized')
-        setDupJson(structuredClone(denormalized))
-      }
+  const haandledenormalize = () => {
+    if (json) {
+      const denormalized = denormalizeJson(json, "", {}, json);
+      console.log(denormalized, "denormalized");
+      setDupJson(structuredClone(denormalized));
     }
+  };
 
-    useEffect(() => {
-      haandledenormalize()
-    }, [json]);
+  useEffect(() => {
+    haandledenormalize();
+  }, [json]);
 
-    return (
-      <div
-        className="w-full  "
-      >
-        {dupJson && Object.keys(dupJson).length > 0 && (
-          <div className="">
-            {(
-              <>
-                <RenderObject
-                  obj={dupJson}
-                  handlejs={handlejs}
-                  OgJson={OgJson}
-                  setDupJson={setDupJson}
-                />
-              </>
-            )}
-          </div>
-        )}
-      </div>
-    );
-  },
-);
+  return (
+    <div className="w-full  ">
+      {dupJson && Object.keys(dupJson).length > 0 && (
+        <div className="">
+          {
+            <>
+              <RenderObject
+                obj={dupJson}
+                handlejs={handlejs}
+                OgJson={OgJson}
+                setDupJson={setDupJson}
+                handleAddjs={handleAddjs}
+                handleDeletejs={handleDeletejs}
+              />
+            </>
+          }
+        </div>
+      )}
+    </div>
+  );
+});

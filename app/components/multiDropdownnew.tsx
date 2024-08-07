@@ -85,7 +85,7 @@ const DropDown = ({
           }`,
           classNames?.triggerButton
         )}
-        isDisabled={items.length === 0}
+        // isDisabled={items.length === 0}
         onPress={() => setOpen(!open)}
       >
         {displaySelectedKeys
@@ -109,6 +109,7 @@ const DropDown = ({
               aria-label="Custom dropdown"
               selectionMode={multiple ? "multiple" : "single"}
               className={twMerge("", classNames?.listbox)}
+              renderEmptyState={()=> <div className="p-2 rounded dark:bg[#212121] dark:text-white">No data found</div>}
             >
               {items.map((item: any) => {
                 const isSelected = () => {

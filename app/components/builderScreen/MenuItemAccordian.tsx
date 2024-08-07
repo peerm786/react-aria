@@ -17,7 +17,7 @@ import {
   UpArrow,
 } from "../../constants/svgApplications";
 import { motion, AnimatePresence } from "framer-motion";
-import { TreeNode, menuItems } from "../../constants/MenuItemTree";
+import { TreeNode } from "../../constants/MenuItemTree";
 import _ from "lodash";
 import { Dialog, DialogTrigger, Popover } from "react-aria-components";
 import { useSelector } from "react-redux";
@@ -227,67 +227,54 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
 };
 
 const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
-  const [menuGroups, setMenuGroups] = useState<TreeNode[]>([]);
   const [isInput, setInput] = useState(false);
   const headerSectionRef = useRef<HTMLDivElement>(null)
   const contentSectionRef = useRef<HTMLDivElement>(null)
   const plusIconRef = useRef<HTMLDivElement>(null)
   const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
 
-  useEffect(() => {
-    if (data?.length) {
-      setMenuGroups(data);
-    } else {
-      setMenuGroups(menuItems);
-    }
-  }, [data]);
-
-  useEffect(() => {
-    setData(menuGroups);
-  }, [menuGroups]);
-
   const handleUpdateJson: HandleUpdateJsonType = (
     path: string,
     newContent: any,
     isDropContent: boolean = false
   ) => {
-    const js = structuredClone(menuGroups);
+    const js = structuredClone(data);
     if (isDropContent) {
       const getExistingContent = _.get(js, path);
       _.set(js, path, { ...getExistingContent, ...newContent });
-      setMenuGroups(js);
+      setData(js);
     } else {
       _.set(js, path, newContent);
-      setMenuGroups(js);
+      setData(js);
     }
   };
 
   const handleAddMenuGrp = (type: MenuType, close: () => void) => {
     if (type == "group") {
       const newMenuGrp: TreeNode = {
-        id: `${menuGroups.length + 1}`,
-        title: `Menu Item ${menuGroups.length + 1}`,
-        sortOrder: `${menuGroups.length + 1}`,
+        id: `${data.length + 1}`,
+        title: `Menu Item ${data.length + 1}`,
+        sortOrder: `${data.length + 1}`,
         type: "group",
         items: [],
       };
-      setMenuGroups((prev) => [...prev, newMenuGrp]);
+      setData([...data, newMenuGrp]);
       close();
     } else {
       const newMenuGrp: TreeNode = {
-        id: `${menuGroups.length + 1}`,
-        title: `Menu Item ${menuGroups.length + 1}`,
-        sortOrder: `${menuGroups.length + 1}`,
+        id: `${data.length + 1}`,
+        title: `Menu Item ${data.length + 1}`,
+        sortOrder: `${data.length + 1}`,
         type: "item",
         keys: {},
       };
-      setMenuGroups((prev) => [...prev, newMenuGrp]);
+      setData([...data, newMenuGrp]);
       close();
     }
   };
 
   const handleNewMenuItem = (id: number, type: MenuType, close: () => void) => {
-    const val: TreeNode[] | any = _.get(menuGroups, `${id}.items`);
+    const val: TreeNode[] | any = _.get(data, `${id}.items`);
     var newMenuItem: TreeNode;
     if (type == "group") {
       newMenuItem = {
@@ -334,22 +321,22 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
     pathOfTargetNode: string
   ) => {
     const pathOfSrcNode = e.dataTransfer.getData("pathOfSrcNode");
-    const srcNode = _.get(menuGroups, pathOfSrcNode);
-    const targetNode = _.get(menuGroups, pathOfTargetNode);
+    const srcNode = _.get(data, pathOfSrcNode);
+    const targetNode = _.get(data, pathOfTargetNode);
 
     //Code to sort node from within the same group at the Nav level working fine
     if (
       pathOfSrcNode.split(".").length == 1 &&
       pathOfTargetNode.split(".").length == 1
     ) {
-      const js = structuredClone(menuGroups);
+      const js = structuredClone(data);
       _.update(js, pathOfSrcNode, () => targetNode);
       _.update(js, pathOfTargetNode, () => srcNode);
       const updatedSortOrder = js.map((node, index) => ({
         ...node,
         sortOrder: `${index + 1}`,
       }));
-      setMenuGroups(updatedSortOrder);
+      setData(updatedSortOrder);
       return;
     }
 
@@ -365,7 +352,7 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
 
     //Code to sort node from within the same group working finely
     if (parentPathOfSrcNode == parentPathOfTargetNode) {
-      const js = structuredClone(menuGroups);
+      const js = structuredClone(data);
       _.update(js, pathOfSrcNode, () => targetNode);
       _.update(js, pathOfTargetNode, () => srcNode);
       const updatedParentNode = _.get(js, parentPathOfSrcNode);
@@ -381,7 +368,7 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
 
     //Code To Drop nodes from any group to any other group working finely
     if (pathOfSrcNode !== pathOfTargetNode && targetNode.type == "group") {
-      const js = structuredClone(menuGroups);
+      const js = structuredClone(data);
 
       if (!parentPathOfSrcNode) {
         const srcNode = js.splice(indexToModify, 1)[0];
@@ -394,7 +381,7 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
           sortOrder: `${index + 1}`,
         }))
         _.set(updatedMainGroup, pathOfTargetNode, targetNode);
-        setMenuGroups(updatedMainGroup);
+        setData(updatedMainGroup);
         return
       }
 
@@ -428,7 +415,7 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
         ...targetNode,
         items: sortedItemsOfTargetNode,
       });
-      setMenuGroups(js);
+      setData(js);
 
     } else {
       alert("Can't drop here");
@@ -437,18 +424,18 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
   };
 
   const handleDeleteKeys = (path: string, fab: string) => {
-    const js = structuredClone(menuGroups);
-    const data: any = _.get(js, path);
-    delete data[fab];
-    handleUpdateJson(path, data);
+    const js = structuredClone(data);
+    const datas: any = _.get(js, path);
+    delete datas[fab];
+    handleUpdateJson(path, datas);
   };
 
   const handleDeleteMenuGrp = (path: string, isCalledfromNav?: boolean) => {
-    const js = structuredClone(menuGroups);
+    const js = structuredClone(data);
     if (isCalledfromNav) {
       const indexToDelete = parseInt(path);
       js.splice(indexToDelete, 1);
-      setMenuGroups(js);
+      setData(js);
     } else {
       const parentPath = path.split(".").slice(0, -1).join(".");
       const indexToDelete = parseInt(
@@ -491,7 +478,7 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
           ref={headerSectionRef}
           className="flex w-full overflow-x-auto bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white p-2 rounded-tl-xl rounded-bl-xl gap-2 scrollbar-hide"
         >
-          {menuGroups.map((node: TreeNode, id: number) => (
+          {data.map((node: TreeNode, id: number) => (
             <div
               draggable
               onDragStart={(e) => handleDragStartOfNode(e, `${id}`)}
@@ -565,7 +552,7 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
           ref={contentSectionRef}
           className="flex h-[60vh] w-[95%] overflow-x-auto scrollbar-thin gap-4 dark:bg-[#161616] dark:text-white"
         >
-          {menuGroups.map((node: TreeNode, id: number) => {
+          {data.map((node: TreeNode, id: number) => {
             if (node.type === 'group') {
               return (
                 <div className="flex-[0_0_23%]" key={id}>
