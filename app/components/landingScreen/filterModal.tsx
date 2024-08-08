@@ -3,17 +3,26 @@ import React, { useEffect, useState } from "react";
 import { Button } from "react-aria-components";
 import { CloseIcon, FilterIcon } from "../../constants/svgApplications";
 import FilterItems from "../filterItems";
+import { sortingConditions } from "../../constants/MenuItemTree";
 
 interface FilteringModalProps {
   fabrics: Set<string>;
   setFabrics: (fabric: Set<string>) => void;
-  artifactType?: "frk" | "crk" | "tpfrk" | string[];
+  catalogs: Set<string>;
+  setCatalogs: (fabric: Set<string>) => void;
+  artifactGrps: Set<string>;
+  setArtifactGrps: (fabric: Set<string>) => void;
+  catalogList: string[];
+  artifactGrpList: string[];
+  selectedSortButton: sortingConditions;
+  setSelectedSortButton: (selectedSortButton: sortingConditions) => void
 }
 
-const FilterModal = ({ fabrics, setFabrics, artifactType }: FilteringModalProps) => {
-  // Seperate filtering States
-  const [catalogs, setCatalogs] = useState<Set<string>>(new Set());
-  const [artifactGrps, setArtifactGrps] = useState<Set<string>>(new Set());
+const FilterModal = (
+  { fabrics, setFabrics, catalogs, setCatalogs,
+    artifactGrps, setArtifactGrps, catalogList, artifactGrpList, 
+    selectedSortButton, setSelectedSortButton }: FilteringModalProps
+) => {
 
   // OverAll FilterState just for displaying purpose
   const [filteredItems, setFilteredItems] = React.useState(
@@ -31,10 +40,6 @@ const FilterModal = ({ fabrics, setFabrics, artifactType }: FilteringModalProps)
     { key: "pf", label: "Process Fabric" },
     { key: "sf", label: "Security Fabric" },
   ];
-
-  const [catalogList, setCatalogList] = useState(["dj", "sh"]);
-  const [artifactGrpList, setArtifactGrpList] = useState(["ddj", "ssj"]);
-  const [selectedSortButton, setSelectedSortButton] = useState("Newest");
 
   //Overall conditions to map
   const mappingCondtions = [
@@ -88,13 +93,14 @@ const FilterModal = ({ fabrics, setFabrics, artifactType }: FilteringModalProps)
     setArtifactGrps(new Set([]));
     setCatalogs(new Set([]));
     setFabrics(new Set([]));
+    setSelectedSortButton("")
   };
 
-  const sortbutton = [
-    { name : "Newest" },
-    { name : "Oldest" },
-    { name : "Recently Modified" },
-    { name : "Recently Created" },
+  const sortbutton: sortingConditions[] = [
+    "Newest",
+    "Oldest",
+    "Recently Modified",
+    "Recently Created",
   ]
 
   return (
@@ -129,17 +135,17 @@ const FilterModal = ({ fabrics, setFabrics, artifactType }: FilteringModalProps)
         ))}
       </div>
 
-    <div className="flex flex-col gap-2">
-      <h1 className="text-xs font-semibold">SORT BY</h1>
+      <div className="flex flex-col gap-2">
+        <h1 className="text-xs font-semibold">SORT BY</h1>
         <div className="flex gap-2 flex-wrap text-nowrap">
           {sortbutton.map((item) => (
-          <Button 
-            onPress={() => setSelectedSortButton(item.name)}
-            className={`flex outline-none p-1 text-xs border border-black/15
-              rounded-lg ${selectedSortButton == item.name ? "bg-[#0736C4] text-white" : "bg-[#F4F5FA]"}`}
-          >
-          {item.name}
-          </Button>
+            <Button
+              onPress={() => setSelectedSortButton(item)}
+              className={`flex outline-none p-1 text-xs border border-black/15
+              rounded-lg ${selectedSortButton == item ? "bg-[#0736C4] text-white" : "bg-[#F4F5FA]"}`}
+            >
+              {item}
+            </Button>
           ))}
         </div>
       </div>
@@ -158,7 +164,7 @@ const FilterModal = ({ fabrics, setFabrics, artifactType }: FilteringModalProps)
             title={state.title}
             isSearchNeeded={index == 0 ? false : true}
             classNames={{
-              listbox: "h-[25%] overflow-y-scroll",
+              listbox: "h-20 overflow-y-scroll",
               listboxItem: "p-1",
             }}
           />

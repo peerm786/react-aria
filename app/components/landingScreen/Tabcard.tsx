@@ -16,6 +16,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../lib/Store/store";
 import TorusDialog from "../torusdialogmodal";
 import FilterModal from "./filterModal";
+import { toast } from "react-toastify";
+import TorusToast from "../torusComponents/torusToast";
+import { sortingConditions } from "../../constants/MenuItemTree"
 
 const Tabcard = ({
   fabric,
@@ -27,9 +30,15 @@ const Tabcard = ({
   const [artifactType, setArtifactType] = useState<any>("frk");
   const [artifactList, setArtifactList] = useState<any>([]);
   const [fabricList, setFabricList] = useState<Set<string>>(new Set([]));
+  const [catalogs, setCatalogs] = useState<Set<string>>(new Set());
+  const [catalogList, setCatalogList] = useState([]);
+  const [artifactGrps, setArtifactGrps] = useState<Set<string>>(new Set());
+  const [artifactGrpList, setArtifactGrpList] = useState([]);
   const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
   const client = getCookie("client");
   const loginId = getCookie("loginId");
+  const [wordLength, setWordLength] = useState(0);
+  const [selectedSortButton, setSelectedSortButton] = useState<sortingConditions>("Newest");
 
   const getArtifact = async (type: string, fabric?: string) => {
     try {
@@ -42,7 +51,9 @@ const Tabcard = ({
           : fabricList.size
             ? Array.from(fabricList)
             : fabric,
-        torusVersion: "torus9.0",
+        catalog: catalogs.size ? Array.from(catalogs) : undefined,
+        artifactGrp: artifactGrps.size ? Array.from(artifactGrps) : undefined,
+        sortOrder: selectedSortButton ? selectedSortButton : "Newwest",
       });
       setArtifactList(res.data);
     } catch (error) {
@@ -50,9 +61,12 @@ const Tabcard = ({
     }
   };
 
+  console.log(artifactList, "artifactList");
+  
+
   useEffect(() => {
     getArtifact(artifactType, fabric);
-  }, [artifactType, fabric, fabricList]);
+  }, [artifactType, fabric, fabricList, catalogs, artifactGrps, selectedSortButton]);
 
   const getFabricIcon = (fab: string) => {
     switch (fab) {
@@ -90,6 +104,55 @@ const Tabcard = ({
     }
   };
 
+  const getAllCatelogs = async () => {
+    try {
+      const res = await AxiosService.post(`/tp/getAllCatalogs`, {
+        artifactType: artifactType,
+      })
+      setCatalogList(res.data);
+    } catch (error) {
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error Fetching Tenant",
+          text: `${error}`,
+          closeButton: false,
+        } as any
+      )
+    }
+  }
+
+  useEffect(() => {
+    getAllCatelogs();
+    getAllArtifactGrp();
+  }, [artifactType])
+
+  const getAllArtifactGrp = async () => {
+    try {
+      const res = await AxiosService.post(`/tp/getAllArtifactGrp`, {
+        artifactType: artifactType,
+      })
+      setArtifactGrpList(res.data.filter(Boolean));
+    } catch (error) {
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error Fetching Tenant",
+          text: `${error}`,
+          closeButton: false,
+        } as any
+      )
+    }
+  }
+
   return (
     <div className="flex flex-col w-full h-full bg-white border border-gray-300 p-2 rounded-md dark:bg-[#1D1D1D] text-[#FFFFFF] dark:border-[#212121]">
       <div className="flex items-center justify-between">
@@ -109,7 +172,18 @@ const Tabcard = ({
               "bg-white border rounded p-2 h-[85vh] w-[20vw] overflow-y-auto outline-none",
           }}
         >
-          <FilterModal fabrics={fabricList} setFabrics={setFabricList} artifactType={artifactType} />
+          <FilterModal
+            fabrics={fabricList}
+            setFabrics={setFabricList}
+            catalogs={catalogs}
+            setCatalogs={setCatalogs}
+            artifactGrps={artifactGrps}
+            setArtifactGrps={setArtifactGrps}
+            catalogList={catalogList}
+            artifactGrpList={artifactGrpList}
+            selectedSortButton={selectedSortButton}
+            setSelectedSortButton={setSelectedSortButton}
+          />
         </TorusDialog>
       </div>
       <Tabs selectedKey={artifactType} onSelectionChange={setArtifactType}>
@@ -188,7 +262,7 @@ const Tabcard = ({
 
               <div className="grid grid-cols-2 gap- ">
                 <p className="text-xs whitespace-nowrap text-black/40 dark:text-[#FFFFFF]/40">
-                  {item.project} - {client}
+                  {item.catalog} - {item.artifactGrp}
                 </p>
               </div>
               <div className="w-[110%] border-b border-b-black/15 my-2"></div>

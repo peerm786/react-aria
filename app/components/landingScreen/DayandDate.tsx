@@ -45,12 +45,12 @@ const DateandTime = () => {
     }
 
     return (
-        <div className='flex justify-between ml-5'>
+        <div className='flex justify-between mx-5'>
             <div className='flex flex-col'>
                 <h1 className='text-lg font-bold'>{greeting},{getCookie("loginId")}!</h1>
                 <p className='text-xs'>{formattedDate}</p>
             </div>
-            <div className='flex gap-2 mr-3'>
+            <div className='flex gap-2 self-end'>
                 <Button className="flex items-center gap-2 px-2 h-7 bg-[#0736C4]/15 text-[#0736C4] font-semibold rounded-3xl text-[10px]">Tenant Setup<ShareIcon /></Button>
                 <Button className="flex items-center gap-2 px-2 h-7 bg-[#0736C4]/15 text-[#0736C4] font-semibold rounded-3xl text-[10px]">App Setup<ShareIcon /></Button>
                 <Button className="flex items-center gap-2 px-2 h-7 bg-[#0736C4]/15 text-[#0736C4] font-semibold rounded-3xl text-[10px]">Build<ShareIcon /></Button>

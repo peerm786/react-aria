@@ -78,3 +78,6 @@ export const menuItems: TreeNode[] = [
   },
  
 ];
+
+export type sortingConditions = "Newest" | "Oldest" | "Recently Modified" | "Recently Created" | "";
+ 
