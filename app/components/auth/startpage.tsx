@@ -127,27 +127,9 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
   };
 
   const handlesociallogin = async () => {
-    if (client) {
-      await setServerCookie("client", client);
-
-      await signIn(social, {
-        callbackUrl: DEFAULT_LOGIN_REDIRECT,
-      });
-      setOpen(false);
-    } else {
-      toast(
-        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
-        {
-          type: "error",
-          position: "bottom-right",
-          autoClose: 2000,
-          hideProgressBar: true,
-          title: "Error",
-          text: `No Response`,
-          closeButton: false,
-        } as any
-      );
-    }
+    await signIn(social, {
+      callbackUrl: DEFAULT_LOGIN_REDIRECT,
+    });
   };
 
   const handleFormDataChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -280,64 +262,24 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
           </div>
         )}
         {selectedOption === "Individual" && (
-          <TorusDialog
-            triggerElement={
-              <div className="flex w-full justify-between ">
-                <Button
-                  onPress={() => {
-                    setSocial("github");
-                    setOpen(true);
-                  }}
-                  className="bg-[#D9D9D9] py-2 dark:bg-[#171717] dark:text-white text-sm text-black px-6 flex items-center justify-center  focus:outline-none rounded-lg"
-                >
-                  <Gitbutton fill={isDarkMode ? "white" : "black"} />
-                  GitHub
-                </Button>
-                <Button
-                  onPress={() => {
-                    setSocial("google");
-                    setOpen(true);
-                  }}
-                  className="bg-[#D9D9D9] py-2 text-black text-sm dark:bg-[#171717] dark:text-white px-6 flex items-center justify-center  focus:outline-none rounded-lg"
-                >
-                  <Googlebutton />
-                  Google
-                </Button>
-              </div>
-            }
-            classNames={{
-              dialogClassName:
-                "w-[405px] dark:bg-[#212121] dark:text-[#FFFFFF] p-4 rounded-xl bg-white focus:outline-none",
-            }}
-          >
-            <Heading
-              slot="title"
-              className="text-xl font-bold text-center mb-10 "
-            >
-              Login with {social}
-            </Heading>
+          <div className="flex w-full justify-between ">
+            <Button
+              onPress=
+              {handlesociallogin}
 
-            <DropDown
-              triggerButton="Select Client"
-              selectedKeys={client}
-              setSelectedKeys={(client) => setClient(client)}
-              items={clientList}
-              classNames={{
-                triggerButton:
-                  "w-[90%] bg-[#D9D9D9] text-black rounded-lg text-sm font-medium mt-2 dark:bg-[#171717] dark:text-[#FFFFFF] ",
-                popover: "w-[20%] bg-[#F4F5FA] dark:bg-[#212121]",
-                listboxItem: "dark:bg-[#212121] dark:text-[#FFFFFF] ",
-              }}
-            />
-            <div className="flex justify-end mt-4">
-              <Button
-                onPress={handlesociallogin}
-                className="bg-gray-500 text-white text-sm  py-2 px-4  rounded  hover:bg-gray-600  focus:outline-none"
-              >
-                Submit
-              </Button>
-            </div>
-          </TorusDialog>
+              className="bg-[#D9D9D9] py-2 dark:bg-[#171717] dark:text-white text-sm text-black px-6 flex items-center justify-center  focus:outline-none rounded-lg"
+            >
+              <Gitbutton fill={isDarkMode ? "white" : "black"} />
+              GitHub
+            </Button>
+            <Button
+              onPress={handlesociallogin}
+              className="bg-[#D9D9D9] py-2 text-black text-sm dark:bg-[#171717] dark:text-white px-6 flex items-center justify-center  focus:outline-none rounded-lg"
+            >
+              <Googlebutton />
+              Google
+            </Button>
+          </div>
         )}
         <div className="text-center mt-5 ">
           <p className="text-black dark:text-white text-sm">

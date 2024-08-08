@@ -4,10 +4,7 @@ import GoogleProvider from "next-auth/providers/google";
 import GitHub from "next-auth/providers/github";
 import { AxiosService } from "./lib/utils/axiosService";
 import { sign } from "jsonwebtoken";
-import {
-  getServerCookie,
-  registerIdentityProviderUser,
-} from "./lib/utils/registerIdentityProvider";
+import { registerIdentityProviderUser } from "./lib/utils/registerIdentityProvider";
 import { cookies } from "next/headers";
 
 const PUBLICK_KEY =
@@ -64,10 +61,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (user) {
           token.user = user;
           if (user.image) {
-            const role =
-              (await getServerCookie("role").then((res) => res?.value)) ?? "";
-            const client =
-              (await getServerCookie("client").then((res) => res?.value)) ?? "";
             const payload = {
               loginId: token?.name ?? "",
               firstName: token?.name ?? "",
@@ -75,8 +68,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               email: token?.email ?? "",
               mobile: "",
               "2FAFlag": "N",
-              role,
-              client: client,
+              client: "ABC",
               scope: "social profile",
             };
 

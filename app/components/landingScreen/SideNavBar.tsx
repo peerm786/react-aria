@@ -4,11 +4,12 @@ import {
   CallChatSvg,
   HomeSvg,
   LogDetailIcon,
+  LogoutSvg,
   QuestionSvg,
   SettingsIcon,
   ShopSvg,
 } from "../../constants/svgApplications";
-import { Button } from "react-aria-components";
+import { Button, Dialog, DialogTrigger, Popover } from "react-aria-components";
 import TorusAvatar from "../Avatar";
 import TorusDialog from "../torusdialogmodal";
 import Settings from "../settings";
@@ -17,6 +18,8 @@ import { BiMoon, BiSun } from "react-icons/bi";
 import { toggleDarkMode } from "../../../lib/Store/Reducers/MainSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../lib/Store/store";
+import { signOut } from "next-auth/react";
+import { deleteAllCookies } from "../../../lib/utils/cookiemgmt";
 
 const Sidebar = () => {
   const [fillIndex, setFillIndex] = useState(0);
@@ -40,6 +43,11 @@ const Sidebar = () => {
   }
   const handleDarkModeToggle = () => {
     dispatch(toggleDarkMode(!isDarkMode));
+  };
+  const handleLogout = (close: any) => {
+    signOut();
+    deleteAllCookies();
+    router.push("/login");
   };
 
   return (
@@ -104,9 +112,25 @@ const Sidebar = () => {
         >
           <Settings />
         </TorusDialog>
-        <Button className="outline-none mr-1 dark:text-[#FFFFFF]">
-          <TorusAvatar radius="full" size="lg" />
-        </Button>
+
+        <DialogTrigger>
+          <Button
+            className={`outline-none mr-1 mb-2`}
+          >
+            <TorusAvatar radius="full" size="lg" />
+          </Button>
+          <Popover placement="right top">
+            <Dialog className="bg-white focus:outline-none rounded-lg dark:bg-[#161616]">
+              {({ close }) => (
+                <div className="flex flex-col p-2 gap-2 border border-black/15 rounded-lg dark:bg-[#0F0F0F] dark:text-white dark:border-white/15">
+                  <Button className={`outline-none`} onPress={() => handleLogout(close)}>
+                    <LogoutSvg fill={isDarkMode ? "white" : "black"} />
+                  </Button>
+                </div>
+              )}
+            </Dialog>
+          </Popover>
+        </DialogTrigger>
       </section>
     </aside>
   );

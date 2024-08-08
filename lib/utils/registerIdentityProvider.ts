@@ -13,11 +13,9 @@ export async function getServerCookie(key: string) {
 }
 
 export async function registerIdentityProviderUser(user: any, account: any) {
-  const cookieStore = cookies();
-  const client = cookieStore.get("client");
   try {
     const res = await AxiosService.post("/tp/auth/identityprovider", {
-      client: client?.value,
+      client: "ABC",
       role: "seniordev",
       user,
       account,
