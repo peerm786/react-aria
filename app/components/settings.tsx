@@ -11,7 +11,7 @@ import { Button } from "react-aria-components";
 import { AxiosService } from "../../lib/utils/axiosService";
 import { toast } from "react-toastify";
 import ModalWindow from "../settings/ModalWindow";
-import { RenderJson } from "./jsonUi/renderData";
+import { RenderJson } from "./jsonUi/newJsonUi/renderData";
 import { sample } from "./jsonUi/samplejson";
 import TorusToast from "./torusComponents/torusToast";
 import DropDown from "./multiDropdownnew";

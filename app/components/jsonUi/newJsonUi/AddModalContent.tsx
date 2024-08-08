@@ -1,9 +1,9 @@
 import React from "react";
 import { useState } from "react";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
-import TorusDropDown from "./torusComponents/torusDropdown";
-import TorusInput from "./torusComponents/TorusInput";
-
+import TorusDropDown from "../torusComponents/torusDropdown";
+import TorusInput from "../torusComponents/TorusInput";
+ 
 const AddObj = ["object"];
 const AddKey = ["input", "boolean", "dropdown"];
 export const AddModalContentType = ({
@@ -15,11 +15,11 @@ export const AddModalContentType = ({
   path,
 }:any) => {
   const [value, setValue] = useState(null);
-
+ 
   const [keyinput, setkeyinput] = useState(null);
   const [valueinput, setvalueinput] = useState(null);
   const [dropdownValues, setdropdownValues] = useState([""]);
-
+ 
   const handleAdd = (selectedValue:any) => {
     if (selectedValue == "input" && keyinput && valueinput) {
       handleAddjs(showObj, keyinput, valueinput, type, path, selectedValue);
@@ -38,11 +38,7 @@ export const AddModalContentType = ({
       close();
     }
   };
-
-  console.log(value , "value from dropdown");
-  
-
-  console.log(obj, showObj, keyinput, valueinput, path, "df", type);
+ 
   return (
     <div className="mb-3 flex  h-[100%]  w-[100%] flex-col items-center rounded dark:bg-[#070707]">
       <p className="dark:text-white">Add key-values</p>
@@ -84,7 +80,7 @@ export const AddModalContentType = ({
             btWidth={"md"}
           />
         </div>
-
+ 
         <div>
           <div
             style={{
@@ -217,3 +213,5 @@ export const AddModalContentType = ({
     </div>
   );
 };
+ 
+ 
