@@ -6,6 +6,7 @@ import {
   SecurityFabric,
   UserFabric,
 } from "../../constants/svgApplications";
+import { getEncodedDetails } from "../../../lib/utils/cookiemgmt";
 
 const Fabrics = ({
   fabric,
@@ -15,11 +16,14 @@ const Fabrics = ({
   setFabric: (fabric: string) => void;
 }) => {
   const handleFabricChange = (fab: string) => {
-    if (fab !== fabric) {
-      setFabric(fab);
-    } else {
-      setFabric("");
-    }
+    const enCodedDetails = getEncodedDetails(fab);
+    window.location.href = `http://192.168.2.97:3000?data=${enCodedDetails}`;
+
+    // if (fab !== fabric) {
+    //   setFabric(fab);
+    // } else {
+    //   setFabric("");
+    // }
   };
 
   const fabricData = [
@@ -54,10 +58,11 @@ const Fabrics = ({
             onPress={() => handleFabricChange(fab.fabric)}
             key={fab.fabric}
             className={`flex flex-col gap-3 outline-none w-[24%] p-2 text-[0.9vw] font-medium rounded-md text-nowrap mt-1 dark:bg-[#0F0F0F]
-                        ${fabric === fab.fabric
-                ? "bg-[#0736C4]/15"
-                : "bg-[#F4F5FA]"
-              }`}
+                        ${
+                          fabric === fab.fabric
+                            ? "bg-[#0736C4]/15"
+                            : "bg-[#F4F5FA]"
+                        }`}
           >
             {fab.icon}
             {fab.displayParam}

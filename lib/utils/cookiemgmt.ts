@@ -36,3 +36,24 @@ export function deleteAllCookies() {
 export function deleteCookie(cookieName: string) {
   document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 }
+
+export function getEncodedDetails(
+  fabric: string,
+  artifactType?: string,
+  catalog?: string,
+  artifactGrp?: string,
+  artifactName?: string,
+  version?: string
+) {
+  let token = getCookie("token");
+  const dataObject = {
+    token,
+    accessKey: artifactType,
+    contextKey: fabric,
+    catalog,
+    artifactGrp,
+    artifactName,
+    version
+  };
+  return btoa(JSON.stringify(dataObject));
+}
