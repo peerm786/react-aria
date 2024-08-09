@@ -349,14 +349,13 @@ import React, { useEffect, useState } from "react";
 import { Button } from "react-aria-components";
 import { PiAirplaneTiltFill } from "react-icons/pi";
 import { RiBankFill } from "react-icons/ri";
-import { Avatars, DataFabric, ProcessFabric, SecurityFabric, ThreeDots, UserFabric } from "../../constants/svgApplications";
+import { DataFabric, ProcessFabric, SecurityFabric, ThreeDots, UserFabric } from "../../constants/svgApplications";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../lib/Store/store";
-import { Breadcrumbs, Breadcrumb, Link } from "react-aria-components";
+import { Breadcrumbs, Breadcrumb } from "react-aria-components";
 import { AxiosService } from "../../../lib/utils/axiosService";
 import { toast } from "react-toastify";
 import TorusToast from "../torusComponents/torusToast";
-import { LuLock } from "react-icons/lu";
 import { getEncodedDetails } from "../../../lib/utils/cookiemgmt";
 
 const Card = ({
@@ -509,24 +508,24 @@ const Card = ({
       </div>
       {selectedTenant ? (
         <>
-          <Breadcrumbs className="flex items-center text-lg text-[color:var(--text-color)] m-0 p-0">
-            <Breadcrumb className="text-[color:var(--text-color)] m-0 p-0 [&:not(:last-child)]:after:content-['›'_/_''] cursor-pointer outline-none">
-              <Link onPress={() => handleBreadcrumbClick("tenant")}>
+          <Breadcrumbs className="flex gap-1">
+            <Breadcrumb className={`flex items-center gap-1 m-0 p-0 [&:not(:last-child)]:after:content-['›'_/_''] cursor-pointer`}>
+              <Button onPress={() => handleBreadcrumbClick("tenant")} className={`outline-none text-[#a8a9ae] text-xs`}>
                 {selectedTenant}
-              </Link>
+              </Button>
             </Breadcrumb>
             {selectAppGroup && (
-              <Breadcrumb className="text-[color:var(--text-color)] m-0 p-0 [&:not(:last-child)]:after:content-['›'_/_''] cursor-pointer outline-none">
-                <Link onPress={() => handleBreadcrumbClick("appGroup")}>
+              <Breadcrumb className={`flex items-center gap-1 m-0 p-0 [&:not(:last-child)]:after:content-['›'_/_''] cursor-pointer`}>
+                <Button onPress={() => handleBreadcrumbClick("appGroup")} className={`outline-none text-[${!selectedApp ? "#000" : "#a8a9ae"}] text-xs`}>
                   {selectAppGroup}
-                </Link>
+                </Button>
               </Breadcrumb>
             )}
             {selectedApp && (
-              <Breadcrumb className="text-[color:var(--text-color)] m-0 p-0 [&:not(:last-child)]:after:content-['›'_/_''] cursor-pointer outline-none">
-                <Link onPress={() => handleBreadcrumbClick("app")}>
+              <Breadcrumb className={`flex items-center gap-1 m-0 p-0 [&:not(:last-child)]:after:content-['›'_/_''] cursor-pointer`}>
+                <Button onPress={() => handleBreadcrumbClick("app")} className={`outline-none text-[${selectedApp ? "#000" : "#a8a9ae"}] text-xs`}>
                   {selectedApp}
-                </Link>
+                </Button>
               </Breadcrumb>
             )}
           </Breadcrumbs>
