@@ -1,6 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Button, Input, Tab, TabList, Tabs } from "react-aria-components";
+import {
+  Button,
+  Dialog,
+  DialogTrigger,
+  Input,
+  Popover,
+  Tab,
+  TabList,
+  Tabs,
+} from "react-aria-components";
 import { Separator } from "react-aria-components";
 import FabricSelector from "./components/Tab";
 import MenuItemAccordian from "./components/builderScreen/MenuItemAccordian";
@@ -549,13 +558,35 @@ const page = () => {
                     >
                       Clear
                     </Button>
-                    <Button
-                      className={
-                        "bg-[#F1F1F1] dark:bg-[#0F0F0F] dark:text-white text-sm font-medium outline-none rounded-md text-black px-3 py-1"
-                      }
-                    >
-                      Clear All
-                    </Button>
+                    <DialogTrigger>
+                      <Button
+                        className={
+                          "bg-[#F1F1F1] dark:bg-[#0F0F0F] dark:text-white text-sm font-medium outline-none rounded-md text-black px-3 py-1"
+                        }
+                      >
+                        Clear All
+                      </Button>
+                      <Popover placement="bottom" className={`w-[20vw]`}>
+                        <Dialog className="border bg-white dark:bg-[#161616] dark:text-white dark:border-[#212121] focus:outline-none rounded-lg">
+                          {({ close }) => (
+                            <div className="p-4 rounded-2xl flex flex-col gap-3">
+                              <div>
+                                Are you sure you want to clear all Menu Items?
+                              </div>
+                              <Button
+                                className={`outline-none bg-red-500 px-2 py-1 self-end rounded text-white`}
+                                onPress={() => {
+                                  setMenuItemData([]);
+                                  close();
+                                }}
+                              >
+                                delete
+                              </Button>
+                            </div>
+                          )}
+                        </Dialog>
+                      </Popover>
+                    </DialogTrigger>
                   </div>
                 </div>
                 <div>

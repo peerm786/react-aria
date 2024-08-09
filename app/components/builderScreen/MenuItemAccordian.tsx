@@ -696,11 +696,13 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
           })}
         </div>
       </div>
+      {/* this below button is used to trigger the clear key functionality from the builder */}
       <button
         className="hidden"
         onClick={handleClearKeys}
         id="triggerClearKeyFunctionality"
       ></button>
+      {/* this above button is used to trigger the clear key functionality from the builder */}
     </div>
   );
 };
