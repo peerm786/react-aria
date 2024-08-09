@@ -7,7 +7,12 @@ import MenuItemAccordian from "./components/builderScreen/MenuItemAccordian";
 import { AxiosService } from "../lib/utils/axiosService";
 import { toast } from "react-toastify";
 import DropDown from "./components/multiDropdownnew";
-import { ColumnIcon, HistoryIcon, PushandPullIcon, SearchIcon } from "./constants/svgApplications";
+import {
+  ColumnIcon,
+  HistoryIcon,
+  PushandPullIcon,
+  SearchIcon,
+} from "./constants/svgApplications";
 import { menuItems, TreeNode } from "./constants/MenuItemTree";
 import BuilderTopNav from "./components/builderScreen/BuilderTopNav";
 import BuilderSideNav from "./components/builderScreen/BuilderSideNav";
@@ -33,7 +38,9 @@ const page = () => {
   const [versionList, setVersionList] = useState<string[]>([]);
   const [selectedVersion, setSelectedVersion] = useState<string>("");
   const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
-  const [logsTabList, setLogTabList] = useState<"exception" | "log" | any>("log")
+  const [logsTabList, setLogTabList] = useState<"exception" | "log" | any>(
+    "log"
+  );
   const [searchValue, setSearchValue] = useState<string>("");
   const allProcessLogColumns = [
     "jobName",
@@ -44,15 +51,11 @@ const page = () => {
     "node",
     "time",
   ];
-  const allExceptionLogColumns = [
-    "key",
-    "version",
-    "timeStamp",
-    "errorCode",
-  ]
-  const [visibleColumns, setVisibleColumns] = useState<any>(allProcessLogColumns);
-  const [showNodeData, setShowNodeData] = useState<null | any>(null)
-  const [isLoading, setLoading] = useState(true)
+  const allExceptionLogColumns = ["key", "version", "timeStamp", "errorCode"];
+  const [visibleColumns, setVisibleColumns] =
+    useState<any>(allProcessLogColumns);
+  const [showNodeData, setShowNodeData] = useState<null | any>(null);
+  const [isLoading, setLoading] = useState(true);
   const [wordLength, setWordLength] = useState(0);
 
   const handleBuildButtonSelect = () => {
@@ -70,27 +73,27 @@ const page = () => {
     setSelectedTenant(e);
     setSelectAppGroup("");
     setSelectApp("");
-    setSelectedVersion("")
-    setVersionList([])
+    setSelectedVersion("");
+    setVersionList([]);
     fetchAppGroup(e);
   };
 
   const handleAppGroupselect = (e: any) => {
     setAppList([]);
     setVersionList([]);
-    setSelectedVersion("")
+    setSelectedVersion("");
     setSelectAppGroup(e);
     setSelectApp("");
     fetchApp(selectedTenant, e);
   };
   const handleAppselect = (e: any) => {
-    setSelectedVersion("")
+    setSelectedVersion("");
     setSelectApp(e);
-    getAssemblerVersion(e)
+    getAssemblerVersion(e);
   };
   const handleVersionselect = (e: any) => {
     setSelectedVersion(e);
-    getAssemblerData(e)
+    getAssemblerData(e);
   };
 
   const fetchTenants = async () => {
@@ -100,7 +103,7 @@ const page = () => {
         setTenantList(res.data as string[]);
       }
     } catch (error: any) {
-      const { data } = error.response
+      const { data } = error.response;
       toast(
         <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
         {
@@ -125,7 +128,7 @@ const page = () => {
         setAppGrpList(res.data);
       }
     } catch (error: any) {
-      const { data } = error.response
+      const { data } = error.response;
       toast(
         <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
         {
@@ -150,7 +153,7 @@ const page = () => {
         setAppList(res.data);
       }
     } catch (error: any) {
-      const { data } = error.response
+      const { data } = error.response;
       toast(
         <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
         {
@@ -162,7 +165,7 @@ const page = () => {
           text: `${data.errorDetails.message}`,
           closeButton: false,
         } as any
-      )
+      );
     }
   };
 
@@ -182,7 +185,12 @@ const page = () => {
       );
 
       if (res.status == 200) {
-        setVersionList(res.data.sort((a: any, b: any) => parseInt(b.replace('v', '')) - parseInt(a.replace('v', ''))));
+        setVersionList(
+          res.data.sort(
+            (a: any, b: any) =>
+              parseInt(b.replace("v", "")) - parseInt(a.replace("v", ""))
+          )
+        );
       }
     } catch (err) {
       setVersionList([]);
@@ -225,7 +233,7 @@ const page = () => {
         );
       }
     } catch (error: any) {
-      const { data } = error.response
+      const { data } = error.response;
       toast(
         <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
         {
@@ -234,9 +242,13 @@ const page = () => {
           autoClose: 2000,
           hideProgressBar: true,
           title: "Error saving build",
-          text: `${typeof data.errorDetails == "string" ? data.errorDetails : data.errorDetails.message}`,
+          text: `${
+            typeof data.errorDetails == "string"
+              ? data.errorDetails
+              : data.errorDetails.message
+          }`,
           closeButton: false,
-        } as any,
+        } as any
       );
     }
   };
@@ -262,7 +274,7 @@ const page = () => {
         );
       }
     } catch (error: any) {
-      const { data } = error.response
+      const { data } = error.response;
       toast(
         <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
         {
@@ -271,49 +283,60 @@ const page = () => {
           autoClose: 2000,
           hideProgressBar: true,
           title: "Error updating build",
-          text: `${typeof data.errorDetails == "string" ? data.errorDetails : data.errorDetails.message}`,
+          text: `${
+            typeof data.errorDetails == "string"
+              ? data.errorDetails
+              : data.errorDetails.message
+          }`,
           closeButton: false,
-        } as any,
+        } as any
       );
     }
   };
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setLoading(false)
+    if (typeof window !== "undefined") {
+      setLoading(false);
     }
-  }, [])
+  }, []);
 
   if (isLoading) {
-    return <div className="h-screen w-screen flex items-center justify-center"><ProgressButton isIndeterminate size={"xl"} /> </div>
+    return (
+      <div className="h-screen w-screen flex items-center justify-center">
+        <ProgressButton isIndeterminate size={"xl"} />{" "}
+      </div>
+    );
   }
 
   return (
     <div className="flex flex-col w-full h-screen">
-      <BuilderTopNav showNodeData={showNodeData} setShowNodeData={setShowNodeData} />
+      <BuilderTopNav
+        showNodeData={showNodeData}
+        setShowNodeData={setShowNodeData}
+      />
       <div className="flex justify-between bg-[#F4F5FA] w-full h-[92%] dark:bg-[#0F0F0F]">
         <BuilderSideNav />
-        {showNodeData ?
+        {showNodeData ? (
           <div className="flex flex-col w-[94%] h-[95%] mt-5 mr-3 rounded-md">
             <Artifactdetails nodeData={showNodeData} />
           </div>
-          :
+        ) : (
           <div className="flex flex-col w-[94%] h-[95%] border border-black/15 dark:border-black/15 bg-white mt-5 overflow-y-hidden dark:bg-[#161616] rounded-md mr-3 scrollbar-hide">
             <div className="flex w-full items-center justify-between">
               <div className="flex gap-5 pt-2 pl-4">
                 <Button
-                  className={`${selectedAssemblerButton ? "font-semibold" : ""
-                    } flex text-sm items-center gap-3 rounded-lg border-none outline-none dark:text-white`}
+                  className={`${
+                    selectedAssemblerButton ? "font-semibold" : ""
+                  } flex text-sm items-center gap-3 rounded-lg border-none outline-none dark:text-white`}
                   onPress={handleBuildButtonSelect}
                 >
-                  <PushandPullIcon
-                    fill={isDarkMode ? "white" : "black"}
-                  />
+                  <PushandPullIcon fill={isDarkMode ? "white" : "black"} />
                   Assembler
                 </Button>
                 <Button
-                  className={`${selectedLogsButton ? "font-semibold" : ""
-                    } flex text-sm items-center gap-3 rounded-lg border-none outline-none dark:text-white`}
+                  className={`${
+                    selectedLogsButton ? "font-semibold" : ""
+                  } flex text-sm items-center gap-3 rounded-lg border-none outline-none dark:text-white`}
                   onPress={handleHistoryButtonSelect}
                 >
                   {" "}
@@ -321,7 +344,7 @@ const page = () => {
                   Logs Hub
                 </Button>
               </div>
-              {selectedAssemblerButton &&
+              {selectedAssemblerButton && (
                 <div className="flex pt-2 pr-3 gap-2 items-center">
                   <Button
                     onPress={handleUpdateBuild}
@@ -338,14 +361,15 @@ const page = () => {
                     Save
                   </Button>
                   <Button
-                    className={"text-[12px] rounded-md border-none text-white disabled:cursor-not-allowed bg-[#0736C4] px-5 py-2 outline-none"}
+                    className={
+                      "text-[12px] rounded-md border-none text-white disabled:cursor-not-allowed bg-[#0736C4] px-5 py-2 outline-none"
+                    }
                   >
                     Build
                   </Button>
                 </div>
-              }
-              {
-                selectedLogsButton &&
+              )}
+              {selectedLogsButton && (
                 <div className="flex gap-2 items-center justify-between w-[70%]">
                   <div className="flex w-full gap-2 items-center pt-2">
                     <div className="relative w-[60%]">
@@ -362,14 +386,20 @@ const page = () => {
                     <DropDown
                       classNames={{
                         popover: "w-[180px]",
-                        triggerButton: "w-[100px] h-[30px] border border-black/15 rounded-lg bg-[#F4F5FA] dark:border-[#212121] dark:bg-[#0F0F0F] dark:text-[#FFFFFF]",
+                        triggerButton:
+                          "w-[100px] h-[30px] border border-black/15 rounded-lg bg-[#F4F5FA] dark:border-[#212121] dark:bg-[#0F0F0F] dark:text-[#FFFFFF]",
                       }}
                       triggerButton={
                         <div className="flex text-xs font-medium items-center gap-2 dark:bg-[#0F0F0F] dark:text-[#FFFFFF]">
-                          <ColumnIcon fill={isDarkMode ? "white" : "black"} /> Columns
+                          <ColumnIcon fill={isDarkMode ? "white" : "black"} />{" "}
+                          Columns
                         </div>
                       }
-                      items={logsTabList == "exception" ? allExceptionLogColumns : allProcessLogColumns}
+                      items={
+                        logsTabList == "exception"
+                          ? allExceptionLogColumns
+                          : allProcessLogColumns
+                      }
                       selectedKeys={visibleColumns}
                       setSelectedKeys={setVisibleColumns}
                       multiple
@@ -378,14 +408,20 @@ const page = () => {
                     <DropDown
                       classNames={{
                         popover: "w-[180px]",
-                        triggerButton: "w-[80px] h-[30px] border border-black/15 rounded-lg dark:border-[#212121] bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-[#FFFFFF]",
+                        triggerButton:
+                          "w-[80px] h-[30px] border border-black/15 rounded-lg dark:border-[#212121] bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-[#FFFFFF]",
                       }}
                       triggerButton={
                         <div className="flex text-xs font-medium items-center gap-2 dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ">
-                          <FilterIcon fill={isDarkMode ? "white" : "black"} /> Filter
+                          <FilterIcon fill={isDarkMode ? "white" : "black"} />{" "}
+                          Filter
                         </div>
                       }
-                      items={logsTabList == "exception" ? allExceptionLogColumns : allProcessLogColumns}
+                      items={
+                        logsTabList == "exception"
+                          ? allExceptionLogColumns
+                          : allProcessLogColumns
+                      }
                       selectedKeys={visibleColumns}
                       setSelectedKeys={setVisibleColumns}
                       multiple
@@ -393,24 +429,42 @@ const page = () => {
                     />
                   </div>
                   <div>
-                    <Tabs className={"pt-2 pr-2"} selectedKey={logsTabList} onSelectionChange={setLogTabList} >
+                    <Tabs
+                      className={"pt-2 pr-2"}
+                      selectedKey={logsTabList}
+                      onSelectionChange={setLogTabList}
+                    >
                       <TabList className="flex w-full p-1 gap-2 bg-[#F4F5FA] items-center text-nowrap rounded-md dark:bg-[#0F0F0F] dark:text-[#FFFFFF]">
-                        <Tab id="log" className={`p-2 outline-none text-xs rounded-md font-semibold cursor-pointer dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ${logsTabList === 'log' ? 'bg-white dark:bg-[#161616]' : ''}`}>
+                        <Tab
+                          id="log"
+                          className={`p-2 outline-none text-xs rounded-md font-semibold cursor-pointer dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ${
+                            logsTabList === "log"
+                              ? "bg-white dark:bg-[#161616]"
+                              : ""
+                          }`}
+                        >
                           Log Details
                         </Tab>
-                        <Tab id="exception" className={`p-2 outline-none text-xs rounded-md font-semibold cursor-pointer dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ${logsTabList === 'exception' ? 'bg-white dark:bg-[#161616]' : ''}`}>
+                        <Tab
+                          id="exception"
+                          className={`p-2 outline-none text-xs rounded-md font-semibold cursor-pointer dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ${
+                            logsTabList === "exception"
+                              ? "bg-white dark:bg-[#161616]"
+                              : ""
+                          }`}
+                        >
                           Exception Details
                         </Tab>
                       </TabList>
                     </Tabs>
                   </div>
                 </div>
-              }
+              )}
             </div>
             <div className="pt-2">
               <Separator className="dark:border-[#212121]" />
             </div>
-            {selectedAssemblerButton &&
+            {selectedAssemblerButton && (
               <div>
                 <div className="flex w-full justify-between items-center">
                   <div className="flex outline-none gap-5 pl-4">
@@ -421,8 +475,7 @@ const page = () => {
                       setSelectedKeys={handleTenantselect}
                       items={tenantList}
                       classNames={{
-                        triggerButton:
-                          `min-w-40  pressed:animate-torusButtonActive rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white`,
+                        triggerButton: `min-w-40  pressed:animate-torusButtonActive rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white`,
                         popover: "w-40",
                         listbox: "overflow-y-auto",
                         listboxItem: "flex text-sm justify-between",
@@ -436,10 +489,11 @@ const page = () => {
                       setSelectedKeys={handleAppGroupselect}
                       items={appGrpList}
                       classNames={{
-                        triggerButton: `${selectedTenant
-                          ? "min-w-40 pressed:animate-torusButtonActive rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                          : "backdrop-blur-3xl min-w-40 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                          }`,
+                        triggerButton: `${
+                          selectedTenant
+                            ? "min-w-40 pressed:animate-torusButtonActive rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                            : "backdrop-blur-3xl min-w-40 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                        }`,
                         popover: "w-40",
                         listbox: "overflow-y-auto",
                         listboxItem: "flex text-sm justify-between",
@@ -453,10 +507,11 @@ const page = () => {
                       setSelectedKeys={handleAppselect}
                       items={appList}
                       classNames={{
-                        triggerButton: `${selectAppGroup
-                          ? "min-w-40 pressed:animate-torusButtonActive rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                          : "backdrop-blur-3xl min-w-40 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                          }`,
+                        triggerButton: `${
+                          selectAppGroup
+                            ? "min-w-40 pressed:animate-torusButtonActive rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                            : "backdrop-blur-3xl min-w-40 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                        }`,
                         popover: "w-40",
                         listbox: "overflow-y-auto",
                         listboxItem: "flex text-sm justify-between",
@@ -470,10 +525,11 @@ const page = () => {
                       setSelectedKeys={handleVersionselect}
                       items={versionList}
                       classNames={{
-                        triggerButton: `${selectApp
-                          ? "min-w-20 pressed:animate-torusButtonActive rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                          : "backdrop-blur-3xl min-w-20 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                          }`,
+                        triggerButton: `${
+                          selectApp
+                            ? "min-w-20 pressed:animate-torusButtonActive rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                            : "backdrop-blur-3xl min-w-20 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                        }`,
                         popover: "w-40",
                         listbox: "overflow-y-auto",
                         listboxItem: "flex text-sm justify-between",
@@ -485,6 +541,11 @@ const page = () => {
                       className={
                         "bg-[#FFF6F6] dark:bg-[#EF4444]/15 text-sm font-semibold outline-none rounded-md text-[#EF4444] px-5 py-1"
                       }
+                      onPress={() => {
+                        document
+                          .getElementById("triggerClearKeyFunctionality")
+                          ?.click();
+                      }}
                     >
                       Clear
                     </Button>
@@ -516,21 +577,33 @@ const page = () => {
                   </div>
                 </div>
               </div>
-            }
-            {selectedLogsButton &&
+            )}
+            {selectedLogsButton && (
               <div className="w-full h-full">
-                {logsTabList == "log" ? (<div className="w-[98%] ml-2 h-full">
-                  <ProcessLogs visibleColumns={visibleColumns} searchValue={searchValue} setShowNodeData={setShowNodeData} showNodeData={showNodeData} /></div>
-                ) : (logsTabList == "exception" && (
-                  <ExceptionLog visibleColumns={visibleColumns} searchValue={searchValue} />
-                ))
-                }
+                {logsTabList == "log" ? (
+                  <div className="w-[98%] ml-2 h-full">
+                    <ProcessLogs
+                      visibleColumns={visibleColumns}
+                      searchValue={searchValue}
+                      setShowNodeData={setShowNodeData}
+                      showNodeData={showNodeData}
+                    />
+                  </div>
+                ) : (
+                  logsTabList == "exception" && (
+                    <ExceptionLog
+                      visibleColumns={visibleColumns}
+                      searchValue={searchValue}
+                    />
+                  )
+                )}
               </div>
-            }
-          </div>}
+            )}
+          </div>
+        )}
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default page;
