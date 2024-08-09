@@ -53,7 +53,7 @@ const Sidebar = () => {
   return (
     <aside
       aria-label="Sidebar"
-      className="w-10 flex ml-5 flex-col items-center justify-between h-full bg-white border border-[#000000]/15 rounded-md dark:bg-[#1D1D1D] dark:text-[#FFFFFF]"
+      className="w-12 flex ml-5 flex-col items-center justify-between h-full bg-white border border-[#000000]/15 rounded-md dark:bg-[#1D1D1D] dark:text-[#FFFFFF]"
     >
       <section className="flex flex-col justify-center items-center dark:text-[#FFFFFF]">
         <section

@@ -159,7 +159,7 @@ const Tabcard = ({
       artifactName,
       version
     );
-    window.location.href = `http://192.168.2.97:3000?tk=${enCodedDetails}`;
+    window.location.href = `http://192.168.2.89:3000?tk=${enCodedDetails}`;
   };
 
   useEffect(() => {
@@ -240,17 +240,6 @@ const Tabcard = ({
             My Artifacts
           </Tab>
           <Tab
-            id={"crk"}
-            className={({ isSelected }) =>
-              `${isSelected
-                ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
-                : "outline-none text-xs font-semibold ml-2"
-              } cursor-pointer`
-            }
-          >
-            My Components
-          </Tab>
-          <Tab
             id={"tpfrk"}
             className={({ isSelected }) =>
               `${isSelected
@@ -261,6 +250,18 @@ const Tabcard = ({
           >
             Shared with Me
           </Tab>
+          <Tab
+            id={"crk"}
+            className={({ isSelected }) =>
+              `${isSelected
+                ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
+                : "outline-none text-xs font-semibold ml-2"
+              } cursor-pointer`
+            }
+          >
+            Purchased
+          </Tab>
+         
         </TabList>
       </Tabs>
       <div className="mt-4 grid sm:grid-cols-2 xl:grid-cols-3 text-[#000000] gap-5 overflow-y-auto  pr-2 dark:bg-[1D1D1D] dark:text-[#FFFFFF] dark:border-[#212121]">

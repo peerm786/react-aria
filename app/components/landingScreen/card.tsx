@@ -478,7 +478,7 @@ const Card = ({
       artifactName,
       version
     );
-    window.location.href = `http://192.168.2.97:3000?tk=${enCodedDetails}`;
+    window.location.href = `http://192.168.2.89:3000?tk=${enCodedDetails}`;
   };
 
   const filteredAppGroups = mappingAppGrp.filter(
