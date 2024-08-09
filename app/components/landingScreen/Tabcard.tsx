@@ -11,7 +11,7 @@ import {
   UserFabric,
 } from "../../constants/svgApplications";
 import { AxiosService } from "../../../lib/utils/axiosService";
-import { getCookie } from "../../../lib/utils/cookiemgmt";
+import { getCookie, getEncodedDetails } from "../../../lib/utils/cookiemgmt";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../lib/Store/store";
 import TorusDialog from "../torusdialogmodal";
@@ -55,14 +55,37 @@ const Tabcard = ({
         artifactGrp: artifactGrps.size ? Array.from(artifactGrps) : undefined,
         sortOrder: selectedSortButton ? selectedSortButton : "Newwest",
       });
-      setArtifactList(res.data);
+      if (res.status === 201) {
+        setArtifactList(res.data);
+      } else {
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "error",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Error Fetching Artifacts",
+            text: `Something went wrong`,
+            closeButton: false,
+          } as any
+        )
+      }
     } catch (error) {
-      console.log(error);
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error Fetching Artifacts",
+          text: `${error}`,
+          closeButton: false,
+        } as any
+      )
     }
   };
-
-  console.log(artifactList, "artifactList");
-  
 
   useEffect(() => {
     getArtifact(artifactType, fabric);
@@ -104,7 +127,7 @@ const Tabcard = ({
     }
   };
 
-  const getAllCatelogs = async () => {
+  const getAllCatalogs = async () => {
     try {
       const res = await AxiosService.post(`/tp/getAllCatalogs`, {
         artifactType: artifactType,
@@ -118,7 +141,7 @@ const Tabcard = ({
           position: "bottom-right",
           autoClose: 2000,
           hideProgressBar: true,
-          title: "Error Fetching Tenant",
+          title: "Error Fetching Catalogs",
           text: `${error}`,
           closeButton: false,
         } as any
@@ -126,8 +149,21 @@ const Tabcard = ({
     }
   }
 
+  const handleNavigateToModeller = (item: any) => {
+    const { artifactName, version, fabric, catalog, artifactGrp } = item;
+    const enCodedDetails = getEncodedDetails(
+      fabric,
+      artifactType,
+      catalog,
+      artifactGrp,
+      artifactName,
+      version
+    );
+    window.location.href = `http://192.168.2.97:3000?tk=${enCodedDetails}`;
+  };
+
   useEffect(() => {
-    getAllCatelogs();
+    getAllCatalogs();
     getAllArtifactGrp();
   }, [artifactType])
 
@@ -163,7 +199,7 @@ const Tabcard = ({
           triggerElement={
             <Button className=" outline-none flex items-center gap-2 text-xs dark:bg-[#0F0F0F] dark:border-[#212121] text-black font-medium border border-black/15 rounded-md px-3 h-6 cursor-pointer dark:text-[#FFFFFF]">
               Filter
-              <FilterIcon />
+              <FilterIcon fill={isDarkMode ? "#FFFFFF" : "#000000"}/>
             </Button>
           }
           classNames={{
@@ -234,12 +270,13 @@ const Tabcard = ({
               ele.artifactName
                 .toLowerCase()
                 .includes(searchTerm.toLowerCase()) ||
-              ele.project.toLowerCase().includes(searchTerm.toLowerCase())
+                ele.catalog.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                ele.artifactGrp.toLowerCase().includes(searchTerm.toLowerCase()) 
           )
           .map((item: any, index: number) => (
             <div
               key={index}
-              className="border-2   border-gray-300 bg-[#F4F5FA] dark:bg-[#0F0F0F] p-3 flex flex-col items-center justify-center rounded-md dark:border-[#212121]"
+              className="border border-gray-300 bg-[#F4F5FA] dark:bg-[#0F0F0F] p-3 flex flex-col items-center justify-center rounded-md dark:border-[#212121]"
             >
               <div className="flex items-center ml-auto gap-1">
                 {item.isLocked ? (
@@ -250,7 +287,7 @@ const Tabcard = ({
               <div className=" mr-auto bg-[#0736C4]/5 rounded-md mb-3 p-1">
                 {getFabricIcon(item.fabric)}
               </div>
-              <div className="flex w-full justify-between text-[#000000] dark:text-[#FFFFFF]  ">
+              <div className="flex w-full justify-between text-[#000000] dark:text-[#FFFFFF] cursor-pointer" onClick={() => handleNavigateToModeller(item)}>
                 <h3 className="text-sm font-bold whitespace-nowrap ">
                   {item.artifactName.charAt(0).toUpperCase() +
                     item.artifactName.slice(1)}
@@ -260,7 +297,7 @@ const Tabcard = ({
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap- ">
+              <div className="flex w-full cursor-pointer" onClick={() => handleNavigateToModeller(item)}>
                 <p className="text-xs whitespace-nowrap text-black/40 dark:text-[#FFFFFF]/40">
                   {item.catalog} - {item.artifactGrp}
                 </p>

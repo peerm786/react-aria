@@ -17,7 +17,7 @@ const Fabrics = ({
 }) => {
   const handleFabricChange = (fab: string) => {
     const enCodedDetails = getEncodedDetails(fab);
-    window.location.href = `http://192.168.2.97:3000?data=${enCodedDetails}`;
+    window.location.href = `http://192.168.2.97:3000?tk=${enCodedDetails}`;
 
     // if (fab !== fabric) {
     //   setFabric(fab);
