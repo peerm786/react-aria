@@ -1091,8 +1091,8 @@ export const Gitbutton = ({ fill = "black" }) => {
   return (
     <svg
       className="mr-2"
-      width="20"
-      height="24"
+      width="1vw"
+      height="1vw"
       viewBox="0 0 22 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -1108,8 +1108,8 @@ export const Googlebutton = ({ }) => {
   return (
     <svg
       className="mr-2"
-      width="24"
-      height="24"
+      width="1vw"
+      height="1vw"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -2013,9 +2013,9 @@ export const EditIcon = () => {
         <path
           d="M14.167 2.49993C14.3859 2.28106 14.6457 2.10744 14.9317 1.98899C15.2176 1.87054 15.5241 1.80957 15.8337 1.80957C16.1432 1.80957 16.4497 1.87054 16.7357 1.98899C17.0216 2.10744 17.2815 2.28106 17.5003 2.49993C17.7192 2.7188 17.8928 2.97863 18.0113 3.2646C18.1297 3.55057 18.1907 3.85706 18.1907 4.16659C18.1907 4.47612 18.1297 4.78262 18.0113 5.06859C17.8928 5.35455 17.7192 5.61439 17.5003 5.83326L6.25033 17.0833L1.66699 18.3333L2.91699 13.7499L14.167 2.49993Z"
           stroke="#667085"
-          stroke-width="1.66667"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="1.66667"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </g>
       <defs>
@@ -2039,9 +2039,9 @@ export const ImportIcon = () => {
         <path
           d="M13.3335 13.3332L10.0002 9.9999M10.0002 9.9999L6.66688 13.3332M10.0002 9.9999V17.4999M16.9919 15.3249C17.8047 14.8818 18.4467 14.1806 18.8168 13.3321C19.1868 12.4835 19.2637 11.5359 19.0354 10.6388C18.807 9.7417 18.2865 8.94616 17.5558 8.37778C16.8251 7.80939 15.9259 7.50052 15.0002 7.4999H13.9502C13.698 6.52427 13.2278 5.61852 12.5752 4.85073C11.9225 4.08295 11.1042 3.47311 10.182 3.06708C9.25967 2.66104 8.25734 2.46937 7.25031 2.50647C6.24328 2.54358 5.25777 2.80849 4.36786 3.28129C3.47795 3.7541 2.7068 4.42249 2.1124 5.23622C1.51799 6.04996 1.11579 6.98785 0.936028 7.9794C0.756269 8.97095 0.803632 9.99035 1.07456 10.961C1.34548 11.9316 1.83291 12.8281 2.50021 13.5832"
           stroke="#344054"
-          stroke-width="1.67"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="1.67"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </g>
       <defs>
@@ -2066,9 +2066,9 @@ export const TickSign = () => {
       <path
         d="M14.6673 6.5L8.25065 12.9167L5.33398 10"
         stroke="#0736C4"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -2087,10 +2087,18 @@ export const UnTickSign = () => {
       <path
         d="M5.91602 10H14.0827"
         stroke="#0736C4"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
 };
+
+export const ArrowForward = () => {
+  return (
+    <svg width="1.19vw" height="2.22vh" viewBox="0 0 23 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5.75 12H17.25M17.25 12L12.4583 17M17.25 12L12.4583 7" stroke="#0736C4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}

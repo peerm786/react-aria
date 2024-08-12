@@ -4,7 +4,7 @@ import Image from "next/image";
 import DashBoard from "../../constants/image.png";
 import DarkModeDashboard from "../../constants/darkDashboard.png";
 import LoginForm from "../../components/auth/startpage"
-import { IoIosArrowForward } from "react-icons/io";
+import { ArrowForward } from "../../constants/svgApplications";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../lib/Store/store";
 
@@ -22,18 +22,22 @@ const Login = () => {
                 <div className="flex flex-col mt-[5%]  ">
 
                     <div className="flex items-center justify-between mr-8">
-
-                        <p className="text-2xl font-bold text-blue-500 dark:text-white mb-3">What's new</p>
-                        <p className="text-blue-400  dark:text-white text-sm flex items-center">
-                            View all changes
-                            <IoIosArrowForward className="ml-1" />
+                        <div className="flex gap-1 items-center">
+                            <span className="w-[.46vw] h-[.46vw] rounded-full bg-[#0736C4]">
+                            </span>
+                            <p className="text-[0.93vw] leading-[2vh] font-bold text-[#0736C4] dark:text-white">
+                                What's New
+                            </p>
+                        </div>
+                        <p className="flex text-[#0736C4] dark:text-white text-[0.72vw] font-medium leading-[1.5vh]">
+                            View all changes <ArrowForward />
                         </p>
                     </div>
 
-                    <p className="text-black dark:text-white text-2xl  font-bold  ">
+                    <p className="flex pt-3 dark:text-white text-[1.8vw] font-bold leading-[3.92vh]">
                         Discover the New Torus 9
                     </p>
-                    <p className="text-sm mt-4 dark:text-[#FFFFFF] ">
+                    <p className="text-[0.93vw] leading-[2.31vh] w-[75%] mt-4 text-black/50 dark:text-[#FFFFFF]/50">
                         Experience the all new Torus9 with an enhanced UI Intuitive appflow,newscreens
                         a refreshed home and our newbrand new marketplace and templates Log in into
                         Explore the nextlevel of productivity and innovations

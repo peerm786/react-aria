@@ -2,7 +2,7 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { Form } from "react-aria-components";
 import { Button } from "react-aria-components";
-import { Heading, Input, Label } from "react-aria-components";
+import { Input, Label } from "react-aria-components";
 import { toast } from "react-toastify";
 import { login } from "../../../lib/utils/login";
 import {
@@ -139,36 +139,36 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
 
   return (
     <div className="min-h-screen w-full bg-[#FFFFFF] border-none dark:bg-[#000000]">
-      <h2 className="flex text-xl p-3 font-bold text-black dark:text-white">
+      <h2 className="flex leading-[2.6vh] text-[1.25vw] p-3 items-center font-medium text-black dark:text-white">
         <TorusLogo /> TORUS
       </h2>
 
-      <Form className="flex flex-col space-y-4 justify-center px-12 transition-all duration-700 ease-in-out">
-        <div className="mt-8">
-          <h1 className="text-2xl font-bold text-black dark:text-white">
+      <Form className="flex flex-col h-full space-y-4 justify-center px-12 transition-all duration-700 ease-in-out">
+        <div className="flex flex-col pt-10">
+          <h1 className="text-[2vw] leading-[4.4vh] font-semibold text-black dark:text-white">
             Log in
           </h1>
-          <p className="text-[#000000] dark:text-white text-sm ">
+          <p className="text-[#000000]/35 dark:text-white/35 pt-2 text-[0.8vw] leading-[1.7vh]">
             Enter your details to get started
           </p>
         </div>
-        <div className="flex w-full bg-[#F4F5FA] dark:bg-[#161616] rounded-lg p-1">
+        <div className="flex w-full bg-[#F4F5FA] dark:bg-[#161616] rounded-lg p-1 mt-6">
           <Button
             onPress={() => setSelectedOption("Individual")}
-            className={`px-4 py-2 w-1/2 transition-colors duration-700 ease-in-out
+            className={`py-2 w-1/2 transition-colors duration-700 ease-in-out text-[0.8vw] font-medium leading-[1.8vh]
                              ${selectedOption === "Individual"
-                ? "bg-[#FFFFFF] dark:bg-[#000]  text-sm outline-none"
-                : " bg-inherit text-sm outline-none"
+                ? "bg-[#FFFFFF] dark:bg-[#000] outline-none"
+                : " bg-inherit outline-none"
               } dark:text-white text-black`}
           >
             Individual
           </Button>
           <Button
             onPress={() => setSelectedOption("Teams")}
-            className={`px-4 py-2 w-1/2 transition-colors duration-700 ease-in-out
+            className={`py-2 w-1/2 transition-colors duration-700 ease-in-out text-[0.8vw] font-medium leading-[1.8vh]
                             ${selectedOption === "Teams"
-                ? "bg-[#FFFFFF] dark:bg-[#000]  text-sm outline-none"
-                : " bg-inherit text-sm outline-none"
+                ? "bg-[#FFFFFF] dark:bg-[#000] outline-none"
+                : " bg-inherit outline-none"
               } dark:text-white text-black`}
           >
             Team
@@ -180,7 +180,7 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
             <div className="flex flex-col">
               <Label
                 htmlFor="tenant"
-                className="text-[#000000] dark:text-white mb-1 text-sm"
+                className="text-[#000000] dark:text-white mb-1 text-[0.8vw] font-medium leading-[1.7vh]"
               >
                 Client
               </Label>
@@ -191,7 +191,7 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
                 items={clientList}
                 classNames={{
                   triggerButton:
-                    "w-full bg-[#D9D9D9] text-black rounded-lg text-sm font-medium mt-2 dark:bg-[#171717] dark:text-[#FFFFFF] ",
+                    "w-full bg-[#F4F5FA] text-black rounded-lg text-[0.8vw] font-medium leading-[1.7vh] py-3 mt-2 dark:bg-[#171717] dark:text-[#FFFFFF] ",
                   popover: "w-[20%]",
                 }}
               />
@@ -201,7 +201,7 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
           <div className="flex flex-col focus:outline-none">
             <Label
               htmlFor="Email or Username"
-              className="text-black dark:text-white mb-1 text-sm "
+              className="text-black dark:text-white mb-2 text-[0.8vw] font-medium leading-[1.7vh]"
             >
               Email or Username
             </Label>
@@ -211,13 +211,13 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
               type="text"
               onChange={handleFormDataChange}
               placeholder="eg:support@torus.com"
-              className=" bg-[#D9D9D9] text-sm outline-none pl-3  dark:bg-[#171717] dark:text-[#FFFFFF] text-[#000000] py-2 rounded-md w-full "
+              className="bg-[#F4F5FA] text-[0.8vw] font-medium leading-[1.7vh] outline-none pl-3 dark:bg-[#171717] dark:text-[#FFFFFF] text-[#000000] py-3 rounded-md w-full "
             />
           </div>
           <div className="flex flex-col relative">
             <Label
               htmlFor="Password"
-              className="text-black dark:text-white mb-1 text-sm"
+              className="text-black dark:text-white mb-2 text-[0.8vw] font-medium leading-[1.7vh]"
             >
               Password
             </Label>
@@ -228,7 +228,7 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
               type={showPassword ? "text" : "password"}
               onKeyUp={(e) => e.key === "Enter" && handleFormSubmit()}
               placeholder="Enter Password"
-              className=" bg-[#D9D9D9] pl-3 outline-none text-sm dark:text-[#FFFFFF] text-[#000000] dark:bg-[#171717]  py-2 rounded-md w-full"
+              className="bg-[#F4F5FA] pl-3 outline-none text-[0.8vw] font-medium leading-[1.7vh] dark:text-[#FFFFFF] text-[#000000] dark:bg-[#171717] py-3 rounded-md w-full"
             />
             <span
               className="absolute bottom-8 right-4 "
@@ -240,7 +240,7 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
                 <BsEyeSlash fill={isDarkMode ? "#FFFFFF" : "#000000"} />
               )}
             </span>
-            <p className="text-black/35 dark:text-white text-sm">
+            <p className="text-black/35 dark:text-white  text-[0.8vw] font-medium leading-[1.7vh] mt-3">
               Forgot Password?
             </p>
           </div>
@@ -249,16 +249,16 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
           <Button
             onPress={handleFormSubmit}
             isDisabled={loading}
-            className="bg-[#0736C4] w-full flex justify-center text-white px-4 py-3 text-base disabled:bg-[#8c9ac4] disabled:cursor-not-allowed focus:outline-none rounded-lg"
+            className="bg-[#0736C4] w-full flex justify-center text-white px-4 py-4 text-[0.8vw] font-semibold leading-[1.7vh] disabled:bg-[#8c9ac4] disabled:cursor-not-allowed focus:outline-none rounded-lg"
           >
             {loading ? <ProgressButton isIndeterminate /> : "Sign In"}
           </Button>
         </div>
         {selectedOption == "Individual" && (
           <div className="flex items-center justify-center dark:text-white mt-5 w-full">
-            <span className="h-px bg-gray-400 w-[40%] "></span>
-            <span className="text-gray-700 dark:text-white px-2">Or</span>
-            <span className="h-px bg-gray-400 w-[40%]"></span>
+            <span className="h-px bg-black/15 w-[50%] "></span>
+            <span className="dark:text-white px-2 text-[0.8vw] leading-[1.7vh]">Or</span>
+            <span className="h-px bg-black/15 w-[50%]"></span>
           </div>
         )}
         {selectedOption === "Individual" && (
@@ -267,24 +267,24 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
               onPress=
               {handlesociallogin}
 
-              className="bg-[#D9D9D9] py-2 dark:bg-[#171717] dark:text-white text-sm text-black px-6 flex items-center justify-center  focus:outline-none rounded-lg"
+              className="bg-[#F4F5FA] py-3 dark:bg-[#171717] dark:text-white text-[0.8vw] font-medium leading-[1.7vh] px-6 flex items-center justify-center focus:outline-none rounded-lg"
             >
               <Gitbutton fill={isDarkMode ? "white" : "black"} />
               GitHub
             </Button>
             <Button
               onPress={handlesociallogin}
-              className="bg-[#D9D9D9] py-2 text-black text-sm dark:bg-[#171717] dark:text-white px-6 flex items-center justify-center  focus:outline-none rounded-lg"
+              className="bg-[#F4F5FA] py-3 text-[0.8vw] font-medium leading-[1.7vh] dark:bg-[#171717] dark:text-white px-6 flex items-center justify-center focus:outline-none rounded-lg"
             >
               <Googlebutton />
               Google
             </Button>
           </div>
         )}
-        <div className="text-center mt-5 ">
-          <p className="text-black dark:text-white text-sm">
+        <div className="text-center text-[0.8vw] leading-[1.7vh]">
+          <p className="text-black/35 dark:text-white">
             Don't have an account?{" "}
-            <a href="#" className="text-black dark:text-white font-bold gap">
+            <a href="#" className="text-black dark:text-white font-bold">
               Sign Up
             </a>
           </p>
