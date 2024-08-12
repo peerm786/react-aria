@@ -504,7 +504,7 @@ const Card = ({
   return (
     <div className="flex flex-col gap-3 border border-black/15 p-3 w-full h-full rounded-md ml-4 bg-white dark:bg-[#1D1D1D] dark:text-[#FFFFFF] dark:border-[#212121]">
       <div className="flex justify-between">
-        <h1 className="text-sm font-semibold">{selectedApp ? "Artifacts" : selectAppGroup ? "Apps" : "AppGroups"}</h1>
+        <h1 className="text-[0.93vw] font-semibold leading-[1.13vh]">{selectedApp ? "Artifacts" : selectAppGroup ? "Apps" : "AppGroups"}</h1>
       </div>
       {selectedTenant ? (
         <>
@@ -609,7 +609,7 @@ const Card = ({
           </div>
         </>
       ) : (
-        <div className="grid grid-cols-2 grid-rows-5 gap-3 h-[90%] text-xs rounded-md">
+        <div className="grid grid-cols-2 pt-3 grid-rows-5 gap-3 h-[90%] text-xs rounded-md">
           {filteredAppGroups.map((item, index) => (
             <div
               key={index}

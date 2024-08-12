@@ -8,7 +8,7 @@ import {
     SecurityFabric,
     ShopSvg,
     UserFabric,
-    LogDetailIcon,
+    AssemblerScreenIcon,
     LogoutSvg
 } from "../../constants/svgApplications";
 import { Button, Dialog, DialogTrigger, Popover } from "react-aria-components";
@@ -35,7 +35,7 @@ const BuilderSideNav = () => {
         { Icon: UserFabric },
         { Icon: ProcessFabric },
         { Icon: SecurityFabric },
-        { Icon: LogDetailIcon, route: "/" },
+        { Icon: AssemblerScreenIcon, route: "/" },
         { Icon: ShopSvg },
         { Icon: QuestionSvg },
         { Icon: CallChatSvg }

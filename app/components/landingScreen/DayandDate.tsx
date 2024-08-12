@@ -45,18 +45,18 @@ const DateandTime = () => {
     }
 
     return (
-        <div className='flex justify-between mx-5'>
-            <div className='flex flex-col'>
-                <h1 className='text-lg font-bold'>{greeting},{getCookie("loginId")}!</h1>
-                <p className='text-xs'>{formattedDate}</p>
+        <div className='flex items-center justify-between mx-5 pt-3'>
+            <div className='flex flex-col gap-1'>
+                <h1 className='text-[1.25vw] font-semibold leading-[2.22vh]'>{greeting},{getCookie("loginId")}!</h1>
+                <p className='text-[0.72vw] leading-[2.22vh] text-black/50'>{formattedDate}</p>
             </div>
-            <div className='flex gap-2 self-end'>
-                <Button className="flex items-center gap-2 px-2 h-7 bg-[#0736C4]/15 text-[#0736C4] font-semibold rounded-3xl text-[10px]">Tenant Setup<ShareIcon /></Button>
-                <Button className="flex items-center gap-2 px-2 h-7 bg-[#0736C4]/15 text-[#0736C4] font-semibold rounded-3xl text-[10px]">App Setup<ShareIcon /></Button>
-                <Button className="flex items-center gap-2 px-2 h-7 bg-[#0736C4]/15 text-[#0736C4] font-semibold rounded-3xl text-[10px]">Build<ShareIcon /></Button>
-                <Button className="flex items-center gap-2 px-2 h-7 bg-[#0736C4]/15 text-[#0736C4] font-semibold rounded-3xl text-[10px]">Bank Master<ShareIcon /></Button>
-                <Button className="flex items-center gap-2 px-2 h-7 bg-[#0736C4]/15 text-[#0736C4] font-semibold rounded-3xl text-[10px]">Form<ShareIcon /></Button>
-                <Button className="flex items-center gap-2 px-2 h-7 bg-[#0736C4]/15 text-[#0736C4] font-semibold rounded-3xl text-[10px]">Connector Setup<ShareIcon /></Button>
+            <div className='flex gap-1 self-end'>
+                <Button className="flex outline-none items-center gap-2 px-2 h-7 bg-[#0736C4]/15 text-[#0736C4] font-medium rounded-3xl text-[0.72vw] leading-[2.22vh]">Tenant Setup<ShareIcon /></Button>
+                <Button className="flex outline-none items-center gap-2 px-2 h-7 bg-[#0736C4]/15 text-[#0736C4] font-medium rounded-3xl text-[0.72vw] leading-[2.22vh]">App Setup<ShareIcon /></Button>
+                <Button className="flex outline-none items-center gap-2 px-2 h-7 bg-[#0736C4]/15 text-[#0736C4] font-medium rounded-3xl text-[0.72vw] leading-[2.22vh]">Build<ShareIcon /></Button>
+                <Button className="flex outline-none items-center gap-2 px-2 h-7 bg-[#0736C4]/15 text-[#0736C4] font-medium rounded-3xl text-[0.72vw] leading-[2.22vh]">Bank Master<ShareIcon /></Button>
+                <Button className="flex outline-none items-center gap-2 px-2 h-7 bg-[#0736C4]/15 text-[#0736C4] font-medium rounded-3xl text-[0.72vw] leading-[2.22vh]">Form<ShareIcon /></Button>
+                <Button className="flex outline-none items-center gap-2 px-2 h-7 bg-[#0736C4]/15 text-[#0736C4] font-medium rounded-3xl text-[0.72vw] leading-[2.22vh]">Connector Setup<ShareIcon /></Button>
             </div>
         </div>
     );

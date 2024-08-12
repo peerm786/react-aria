@@ -67,8 +67,8 @@ export const UpArrow = ({ fill = "black" }) => {
 export const DownArrow = ({ fill = "black" }) => {
   return (
     <svg
-      width="14"
-      height="8"
+      width="0.83vw"
+      height="0.83vw"
       viewBox="0 0 14 8"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -117,11 +117,11 @@ export const PlusIcon = ({ height = 20, fill = "black" }) => {
   );
 };
 
-export const DataFabric = ({ width = "20", fill = "black" }) => {
+export const DataFabric = ({ width = "20", height = "25", fill = "black" }) => {
   return (
     <svg
       width={width}
-      height="25"
+      height={height}
       viewBox="0 0 27 26"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -159,11 +159,11 @@ export const DataFabric = ({ width = "20", fill = "black" }) => {
   );
 };
 
-export const UserFabric = ({ fill = "black" }) => {
+export const UserFabric = ({ fill = "black", width = "20", height = "25" }) => {
   return (
     <svg
-      width="20"
-      height="25"
+      width={width}
+      height={height}
       viewBox="0 0 27 27"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -198,11 +198,11 @@ export const UserFabric = ({ fill = "black" }) => {
   );
 };
 
-export const ProcessFabric = ({ fill = "black" }) => {
+export const ProcessFabric = ({ fill = "black", width = "20px", height = "25px" }) => {
   return (
     <svg
-      width="20"
-      height="25"
+      width={width}
+      height={height}
       viewBox="0 0 27 27"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -235,11 +235,11 @@ export const ProcessFabric = ({ fill = "black" }) => {
   );
 };
 
-export const SecurityFabric = ({ fill = "black" }) => {
+export const SecurityFabric = ({ fill = "black", width = "20", height = "25" }) => {
   return (
     <svg
-      width="20"
-      height="25"
+      width={width}
+      height={height}
       viewBox="0 0 27 27"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -293,8 +293,8 @@ export const TorusLogo = () => {
 export const HomeSvg = ({ fill = "black" }) => {
   return (
     <svg
-      width="20"
-      height="20"
+      width="1.25vw"
+      height="1.25vw"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -320,8 +320,8 @@ export const HomeSvg = ({ fill = "black" }) => {
 export const ShopSvg = ({ fill = "black" }) => {
   return (
     <svg
-      width="20"
-      height="20"
+      width="1.25vw"
+      height="1.25vw"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -365,8 +365,8 @@ export const ShopSvg = ({ fill = "black" }) => {
 export const QuestionSvg = ({ fill = "black" }) => {
   return (
     <svg
-      width="20"
-      height="20"
+      width="1.25vw"
+      height="1.25vw"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -395,8 +395,8 @@ export const QuestionSvg = ({ fill = "black" }) => {
 export const CallChatSvg = ({ fill = "black" }) => {
   return (
     <svg
-      width="20"
-      height="20"
+      width="1.25vw"
+      height="1.25vw"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -469,11 +469,11 @@ export const LogoutSvg = ({ fill = "black" }) => {
   );
 };
 
-export const SearchIcon = ({ fill = "black" }) => {
+export const SearchIcon = ({ fill = "black", width = "16", height = "16" }) => {
   return (
     <svg
-      width="16"
-      height="16"
+      width={width}
+      height={height}
       viewBox="0 0 16 16"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -501,8 +501,8 @@ export const SearchIcon = ({ fill = "black" }) => {
 export const BellIcon = ({ fill = "black" }) => {
   return (
     <svg
-      width="50"
-      height="50"
+      width="3vw"
+      height="3vw"
       viewBox="0 0 56 56"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -1426,8 +1426,8 @@ export const LinkedAccountsIcon = () => {
 export const SettingsIcon = ({ fill = "black" }) => {
   return (
     <svg
-      width="50"
-      height="50"
+      width="3vw"
+      height="3vw"
       viewBox="0 0 56 56"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -1753,11 +1753,11 @@ export const BuilderShareIcon = ({ fill = "black" }) => {
   );
 };
 
-export const LogDetailIcon = ({ fill = "black" }) => {
+export const AssemblerScreenIcon = ({ fill = "black" }) => {
   return (
     <svg
-      width="20"
-      height="25"
+      width="1.66vw"
+      height="1.66vw"
       viewBox="0 0 32 32"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -1774,6 +1774,16 @@ export const LogDetailIcon = ({ fill = "black" }) => {
     </svg>
   );
 };
+
+export const LogScreenIcon = ({ fill = "black", stroke = "white" }) => {
+  return (
+    <svg width="1.66vw" height="1.66vw" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g opacity={fill == "black" ? "0.35" : "1"}>
+        <path d="M24.5387 13.6921C24.9899 13.6922 25.4328 13.8125 25.822 14.0406C26.2112 14.2688 26.5326 14.5965 26.753 14.9902C26.9735 15.3838 27.0851 15.829 27.0762 16.2801C27.0674 16.7311 26.9386 17.1717 26.703 17.5564C26.4673 17.9411 26.1334 18.2561 25.7356 18.4689C25.3378 18.6817 24.8905 18.7846 24.4397 18.7671C23.9889 18.7496 23.5509 18.6122 23.1708 18.3692C22.7907 18.1262 22.4823 17.7862 22.2772 17.3844H21.8572C19.3695 17.4121 18.4926 18.169 17.0987 20.7721L17.0203 20.9244L16.928 21.0998C16.0972 22.6552 15.6264 23.3613 14.7772 24.109C13.5818 25.1567 12.0403 25.6921 10.0003 25.6921H9.72336C9.46424 26.1998 9.04176 26.6056 8.52396 26.844C8.00616 27.0824 7.42319 27.1396 6.86893 27.0064C6.31467 26.8731 5.82139 26.5572 5.46855 26.1095C5.1157 25.6617 4.92383 25.1083 4.92383 24.5382C4.92383 23.9682 5.1157 23.4147 5.46855 22.967C5.82139 22.5193 6.31467 22.2033 6.86893 22.0701C7.42319 21.9368 8.00616 21.994 8.52396 22.2325C9.04176 22.4709 9.46424 22.8766 9.72336 23.3844H10.1434C12.6772 23.3567 13.5403 22.5721 14.9803 19.8444L15.0772 19.6921C15.4707 18.8731 15.952 18.0994 16.5126 17.3844H9.72336C9.46424 17.8921 9.04176 18.2979 8.52396 18.5363C8.00616 18.7747 7.42319 18.8319 6.86893 18.6987C6.31467 18.5654 5.82139 18.2495 5.46855 17.8018C5.1157 17.3541 4.92383 16.8006 4.92383 16.2305C4.92383 15.6605 5.1157 15.107 5.46855 14.6593C5.82139 14.2116 6.31467 13.8957 6.86893 13.7624C7.42319 13.6292 8.00616 13.6863 8.52396 13.9248C9.04176 14.1632 9.46424 14.5689 9.72336 15.0767H22.2772C22.4829 14.6758 22.7912 14.3365 23.1706 14.0933C23.55 13.8501 23.987 13.7116 24.4372 13.6921H24.5387ZM24.5387 4.92285C24.9899 4.92294 25.4328 5.04325 25.822 5.27141C26.2112 5.49956 26.5326 5.82732 26.753 6.22093C26.9735 6.61455 27.0851 7.0598 27.0762 7.51086C27.0674 7.96191 26.9386 8.40247 26.703 8.78718C26.4673 9.1719 26.1334 9.48686 25.7356 9.69965C25.3378 9.91245 24.8905 10.0154 24.4397 9.99786C23.9889 9.98034 23.5509 9.84299 23.1708 9.59996C22.7907 9.35694 22.4823 9.017 22.2772 8.61516H9.72336C9.46424 9.12292 9.04176 9.52868 8.52396 9.7671C8.00616 10.0055 7.42319 10.0627 6.86893 9.92945C6.31467 9.79621 5.82139 9.48028 5.46855 9.03255C5.1157 8.58482 4.92383 8.03137 4.92383 7.46131C4.92383 6.89126 5.1157 6.3378 5.46855 5.89008C5.82139 5.44235 6.31467 5.12642 6.86893 4.99318C7.42319 4.85993 8.00616 4.91712 8.52396 5.15553C9.04176 5.39395 9.46424 5.79971 9.72336 6.30747H22.2772C22.4899 5.89065 22.8137 5.54073 23.2128 5.29638C23.6119 5.05204 24.0708 4.92277 24.5387 4.92285Z" fill={fill} stroke={stroke} />
+      </g>
+    </svg>
+  )
+}
 
 export const ColumnIcon = ({ fill = "black" }) => {
   return (

@@ -3,7 +3,8 @@ import {
   BellIcon,
   CallChatSvg,
   HomeSvg,
-  LogDetailIcon,
+  AssemblerScreenIcon,
+  LogScreenIcon,
   LogoutSvg,
   QuestionSvg,
   SettingsIcon,
@@ -29,7 +30,8 @@ const Sidebar = () => {
     { Icon: ShopSvg },
     { Icon: QuestionSvg },
     { Icon: CallChatSvg },
-    { Icon: LogDetailIcon, route: "/" }
+    { Icon : LogScreenIcon},
+    { Icon: AssemblerScreenIcon, route: "/" }
   ];
   const router = useRouter();
   const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
@@ -53,12 +55,12 @@ const Sidebar = () => {
   return (
     <aside
       aria-label="Sidebar"
-      className="w-12 flex ml-5 flex-col items-center justify-between h-full bg-white border border-[#000000]/15 rounded-md dark:bg-[#1D1D1D] dark:text-[#FFFFFF]"
+      className="w-[3.5vw] flex ml-5 flex-col items-center justify-between h-full bg-white border border-[#000000]/15 rounded-md dark:bg-[#1D1D1D] dark:text-[#FFFFFF]"
     >
       <section className="flex flex-col justify-center items-center dark:text-[#FFFFFF]">
         <section
           aria-label="Actions"
-          className="w-12 flex flex-col items-center justify-center gap-3 mt-3 dark:bg-[#1D1D1D] dark:text-[#FFFFFF]"
+          className="w-[3.5vw] flex flex-col items-center justify-center gap-3 mt-3 dark:bg-[#1D1D1D] dark:text-[#FFFFFF]"
         >
           {actionIcons.map(({ Icon, route }, index) => (
             <Button
@@ -86,13 +88,13 @@ const Sidebar = () => {
           {isDarkMode ? (
             <BiSun
               color={"#A59E92"}
-              size={25}
+              size={20}
               className="dark:text-white text-black/70"
             />
           ) : (
             <BiMoon
               color={"#A59E92"}
-              size={25}
+              size={20}
               className="dark:text-white text-black/70"
             />
           )}

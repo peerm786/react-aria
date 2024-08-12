@@ -137,7 +137,7 @@ const DropDown = ({
                       textValue={getItemDisplayValue(item)}
                       onAction={() => handleSelectionChange(item, close)}
                       className={twMerge(
-                        `focus:outline-none p-2 flex justify-between border border-transparent cursor-pointer rounded ${
+                        `focus:outline-none p-1 items-center flex justify-between border border-transparent cursor-pointer rounded ${
                           isSelected() ? "bg-[#F9FAFB] dark:bg-[#000]" : ""
                         }`,
                         classNames?.listboxItem
