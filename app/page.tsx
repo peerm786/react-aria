@@ -21,12 +21,12 @@ import {
   HistoryIcon,
   PushandPullIcon,
   SearchIcon,
+  FilterIcon
 } from "./constants/svgApplications";
 import { menuItems, TreeNode } from "./constants/MenuItemTree";
 import BuilderTopNav from "./components/builderScreen/BuilderTopNav";
 import BuilderSideNav from "./components/builderScreen/BuilderSideNav";
 import ProcessLogs from "./components/torusComponents/processLog";
-import { FilterIcon } from "./components/torusComponents/SVG_Application";
 import ExceptionLog from "./components/torusComponents/ExceptionLog";
 import Artifactdetails from "./components/landingScreen/artifactdetails";
 import ProgressButton from "./components/progressbar";
@@ -251,11 +251,10 @@ const page = () => {
           autoClose: 2000,
           hideProgressBar: true,
           title: "Error saving build",
-          text: `${
-            typeof data.errorDetails == "string"
-              ? data.errorDetails
-              : data.errorDetails.message
-          }`,
+          text: `${typeof data.errorDetails == "string"
+            ? data.errorDetails
+            : data.errorDetails.message
+            }`,
           closeButton: false,
         } as any
       );
@@ -292,11 +291,10 @@ const page = () => {
           autoClose: 2000,
           hideProgressBar: true,
           title: "Error updating build",
-          text: `${
-            typeof data.errorDetails == "string"
-              ? data.errorDetails
-              : data.errorDetails.message
-          }`,
+          text: `${typeof data.errorDetails == "string"
+            ? data.errorDetails
+            : data.errorDetails.message
+            }`,
           closeButton: false,
         } as any
       );
@@ -334,18 +332,16 @@ const page = () => {
             <div className="flex w-full items-center justify-between">
               <div className="flex gap-5 pt-2 pl-4">
                 <Button
-                  className={`${
-                    selectedAssemblerButton ? "font-semibold" : ""
-                  } flex text-sm items-center gap-3 rounded-lg border-none outline-none dark:text-white`}
+                  className={`${selectedAssemblerButton ? "font-semibold" : ""
+                    } flex text-sm items-center gap-3 rounded-lg border-none outline-none dark:text-white`}
                   onPress={handleBuildButtonSelect}
                 >
                   <PushandPullIcon fill={isDarkMode ? "white" : "black"} />
                   Assembler
                 </Button>
                 <Button
-                  className={`${
-                    selectedLogsButton ? "font-semibold" : ""
-                  } flex text-sm items-center gap-3 rounded-lg border-none outline-none dark:text-white`}
+                  className={`${selectedLogsButton ? "font-semibold" : ""
+                    } flex text-sm items-center gap-3 rounded-lg border-none outline-none dark:text-white`}
                   onPress={handleHistoryButtonSelect}
                 >
                   {" "}
@@ -446,21 +442,19 @@ const page = () => {
                       <TabList className="flex w-full p-1 gap-2 bg-[#F4F5FA] items-center text-nowrap rounded-md dark:bg-[#0F0F0F] dark:text-[#FFFFFF]">
                         <Tab
                           id="log"
-                          className={`p-2 outline-none text-xs rounded-md font-semibold cursor-pointer dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ${
-                            logsTabList === "log"
-                              ? "bg-white dark:bg-[#161616]"
-                              : ""
-                          }`}
+                          className={`p-2 outline-none text-xs rounded-md font-semibold cursor-pointer dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ${logsTabList === "log"
+                            ? "bg-white dark:bg-[#161616]"
+                            : ""
+                            }`}
                         >
                           Log Details
                         </Tab>
                         <Tab
                           id="exception"
-                          className={`p-2 outline-none text-xs rounded-md font-semibold cursor-pointer dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ${
-                            logsTabList === "exception"
-                              ? "bg-white dark:bg-[#161616]"
-                              : ""
-                          }`}
+                          className={`p-2 outline-none text-xs rounded-md font-semibold cursor-pointer dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ${logsTabList === "exception"
+                            ? "bg-white dark:bg-[#161616]"
+                            : ""
+                            }`}
                         >
                           Exception Details
                         </Tab>
@@ -498,11 +492,10 @@ const page = () => {
                       setSelectedKeys={handleAppGroupselect}
                       items={appGrpList}
                       classNames={{
-                        triggerButton: `${
-                          selectedTenant
-                            ? "min-w-40 pressed:animate-torusButtonActive rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                            : "backdrop-blur-3xl min-w-40 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                        }`,
+                        triggerButton: `${selectedTenant
+                          ? "min-w-40 pressed:animate-torusButtonActive rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                          : "backdrop-blur-3xl min-w-40 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                          }`,
                         popover: "w-40",
                         listbox: "overflow-y-auto",
                         listboxItem: "flex text-sm justify-between",
@@ -516,11 +509,10 @@ const page = () => {
                       setSelectedKeys={handleAppselect}
                       items={appList}
                       classNames={{
-                        triggerButton: `${
-                          selectAppGroup
-                            ? "min-w-40 pressed:animate-torusButtonActive rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                            : "backdrop-blur-3xl min-w-40 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                        }`,
+                        triggerButton: `${selectAppGroup
+                          ? "min-w-40 pressed:animate-torusButtonActive rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                          : "backdrop-blur-3xl min-w-40 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                          }`,
                         popover: "w-40",
                         listbox: "overflow-y-auto",
                         listboxItem: "flex text-sm justify-between",
@@ -534,11 +526,10 @@ const page = () => {
                       setSelectedKeys={handleVersionselect}
                       items={versionList}
                       classNames={{
-                        triggerButton: `${
-                          selectApp
-                            ? "min-w-20 pressed:animate-torusButtonActive rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                            : "backdrop-blur-3xl min-w-20 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                        }`,
+                        triggerButton: `${selectApp
+                          ? "min-w-20 pressed:animate-torusButtonActive rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                          : "backdrop-blur-3xl min-w-20 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                          }`,
                         popover: "w-40",
                         listbox: "overflow-y-auto",
                         listboxItem: "flex text-sm justify-between",

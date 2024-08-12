@@ -30,7 +30,8 @@ import {
   PlusIcon,
   TickSign,
   UnTickSign,
-} from "./SVG_Application";
+} from "../../constants/svgApplications"
+
 import { twMerge } from "tailwind-merge";
 import TorusButton from "./torusButton";
 import TorusDialog from "../torusdialogmodal";

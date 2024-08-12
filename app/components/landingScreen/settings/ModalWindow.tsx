@@ -13,13 +13,13 @@ import {
 import { Accordion, AccordionItem, Tooltip } from "@nextui-org/react";
 import _ from "lodash";
 import { toast } from "react-toastify";
-import RenderAccordion from "./RenderAccordian";
+import RenderAccordion from "../../landingScreen/settings/RenderAccordian";
 import Image from "next/image";
 import { TiDelete } from "react-icons/ti";
 import { FaPlusCircle } from "react-icons/fa";
 import { MdOutlineAutoDelete } from "react-icons/md";
-import { AxiosService } from "../../lib/utils/axiosService";
-import TorusToast from "../components/torusComponents/torusToast";
+import { AxiosService } from "../../../../lib/utils/axiosService";
+import TorusToast from "../../torusComponents/torusToast";
 interface componentprops {
     json: null | any;
     setjson: any;

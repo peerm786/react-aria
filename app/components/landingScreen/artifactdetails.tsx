@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Tabs } from '../../src/Tabs';
+import { Tabs } from 'react-aria-components';
 import { Tab, TabList, TabPanel } from 'react-aria-components';
 import JsonView from 'react18-json-view';
 import { FaClipboardCheck } from 'react-icons/fa';

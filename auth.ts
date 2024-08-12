@@ -18,7 +18,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       async authorize(credentials) {
         const { client, username, password } = credentials;
         const data = {
-          client: client,
+          client: "ABC",
           role: "seniordev",
           username: username,
           password: password,

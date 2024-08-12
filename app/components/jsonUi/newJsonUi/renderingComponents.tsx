@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from "react";
 import TorusDialog from "../../torusdialogmodal";
 import TorusButton from "../torusComponents/torusButton";
-import { PlusIcon } from "../../torusComponents/SVG_Application";
+import { PlusIcon } from "../../../constants/svgApplications"
 import { AddModalContentType } from "./AddModalContent";
 import { CiTrash } from "react-icons/ci";
 import TorusInput from "../torusComponents/TorusInput";
@@ -72,7 +72,7 @@ const RenderDropdown = ({
       handlejs(bool, path + "." + item + "." + data, data, "boolean", showObj);
   }, [bool]);
 
-  const handleDropdownChange = (e:any) => {
+  const handleDropdownChange = (e: any) => {
     setValue(e);
 
     handlejs(e, path + "." + item + "." + data, data, "dropdown", showObj);
@@ -180,14 +180,14 @@ const RenderDropdown = ({
   );
 };
 
-const RenderSwitch = ({ obj }:any) => {
-  const handleDropdownClick = (event:any) => {
+const RenderSwitch = ({ obj }: any) => {
+  const handleDropdownClick = (event: any) => {
     event.stopPropagation();
   };
   return (
     <div>
       <select onClick={handleDropdownClick}>
-        {obj && obj.map((ele:any) => ({ ele }))}
+        {obj && obj.map((ele: any) => ({ ele }))}
       </select>
     </div>
   );
@@ -205,8 +205,8 @@ const RenderJsonArraySidebarIcon = memo(
     shuffledIcons,
     setCheckActivestatus,
     setExpandedItem
-  }:any) => {
-    
+  }: any) => {
+
     return (
       <>
         <div
@@ -217,13 +217,13 @@ const RenderJsonArraySidebarIcon = memo(
               : " text-gray-800 cursor-pointer")
           }
         >
-         
+
           <TorusToolTip
             hoverContent={
-              <MdOutlineDataArray size={20}   />
+              <MdOutlineDataArray size={20} />
             }
             tooltipFor="arr"
-            tooltipContent={ fg} // obj.map((ele) => ele?.label ? ele?.label : fg
+            tooltipContent={fg} // obj.map((ele) => ele?.label ? ele?.label : fg
             color={activeTab == fg ? "#6600ff" : "#09254D"}
             setShowObj={setShowObj}
             setActiveTab={setActiveTab}
@@ -242,8 +242,8 @@ const RenderJsonArraySidebarIcon = memo(
 
 
 const JsonSidebarIcon = memo(
-  ({ obj, setShowObj, setPath, setLabel, checkActivestatus,setCheckActivestatus,setExpandedItem }:any) => {
-    const [activeTab, setActiveTab] = useState<null|any>(null);
+  ({ obj, setShowObj, setPath, setLabel, checkActivestatus, setCheckActivestatus, setExpandedItem }: any) => {
+    const [activeTab, setActiveTab] = useState<null | any>(null);
 
     return (
       <>
@@ -267,7 +267,7 @@ const JsonSidebarIcon = memo(
                         setCheckActivestatus(obj[activeTab])
                       }}
                     >
-                      
+
                       <TorusToolTip
                         hoverContent={
                           <MdDataObject size={20} />
@@ -299,7 +299,7 @@ const JsonSidebarIcon = memo(
                     shuffledIcons={iconArray}
                     setCheckActivestatus={setCheckActivestatus}
                     setExpandedItem={setExpandedItem}
-          
+
                   />
                 );
               }
@@ -466,7 +466,7 @@ function JsonSidebarDetail({
                                 }
                               />
                             </div>
-                           
+
                           </p>
                         );
                       }
@@ -519,10 +519,10 @@ const RenderJsonArraySidebarDetail = ({
   handleDeletejs,
   expandedItem,
   setExpandedItem,
-}:any) => {
+}: any) => {
   const [showAccordianItem, setShowAccordianItem] = useState(null);
   const [value, setValue] = useState(null);
-  const handleInput = (e:any, i:any, key:any, type:any) => {
+  const handleInput = (e: any, i: any, key: any, type: any) => {
     setValue(e);
     if (value) {
       handlejs(e, i, key, type, showObj);
@@ -530,9 +530,9 @@ const RenderJsonArraySidebarDetail = ({
   };
 
 
-  const toggleKey = (key:any) => {
+  const toggleKey = (key: any) => {
     if (expandedItem.includes(key)) {
-      setExpandedItem(expandedItem.filter((k:any) => k !== key));
+      setExpandedItem(expandedItem.filter((k: any) => k !== key));
     } else {
       setExpandedItem([...expandedItem, key]);
     }
@@ -540,58 +540,58 @@ const RenderJsonArraySidebarDetail = ({
 
   return (
     <>
-    <div className="flex justify-end">
-      <div className="flex h-full w-2/5 items-center mb-2 gap-2">
-        <TorusDialog
-          key={"TableDelete"}
-          triggerElement={
-            <TorusButton
-              Children={`Add`}
-              size={"xs"}
-              btncolor={"#0736C4"}
-              radius={"lg"}
-              color={"#ffffff"}
-              gap={"py-[0.2rem] px-[0.2rem] mb-[0.3rem]"}
-              // height={"md"}
-              borderColor={"3px solid #0736C4"}
-              startContent={<PlusIcon />}
-              fontStyle={"text-sm font-medium text-[#FFFFFF]"}
-            />
-          }
-          classNames={{
-            modalClassName: " w-full flex justify-center items-center  ",
-            dialogClassName: " w-[30vw] p-3 h-full rounded-lg flex-col bg-white",
-          }}
-          title={"Add"}
-          message={"Edit"}
-          children={({ close }:any) => (
-            <AddModalContentType
-              obj={obj}
-              showObj={showObj}
-              close={close}
-              handleAddjs={handleAddjs}
-              type="arr-0"
-            />
-          )}
-        />
-        <TorusButton
-          Children={`Delete`}
-          size={"xs"}
-          btncolor={"#0736C4"}
-          radius={"lg"}
-          color={"#f00"}
-          gap={"py-[0.2rem] px-[0.2rem] mb-[0.3rem]"}
-          // height={"md"}
-          borderColor={"3px solid #0736C4"}
-          startContent={<CiTrash color="white" />}
-          fontStyle={"text-sm font-medium text-[#FFFFFF]"}
-          onPress={() => handleDeletejs(path)}
-        />
-      </div>
+      <div className="flex justify-end">
+        <div className="flex h-full w-2/5 items-center mb-2 gap-2">
+          <TorusDialog
+            key={"TableDelete"}
+            triggerElement={
+              <TorusButton
+                Children={`Add`}
+                size={"xs"}
+                btncolor={"#0736C4"}
+                radius={"lg"}
+                color={"#ffffff"}
+                gap={"py-[0.2rem] px-[0.2rem] mb-[0.3rem]"}
+                // height={"md"}
+                borderColor={"3px solid #0736C4"}
+                startContent={<PlusIcon />}
+                fontStyle={"text-sm font-medium text-[#FFFFFF]"}
+              />
+            }
+            classNames={{
+              modalClassName: " w-full flex justify-center items-center  ",
+              dialogClassName: " w-[30vw] p-3 h-full rounded-lg flex-col bg-white",
+            }}
+            title={"Add"}
+            message={"Edit"}
+            children={({ close }: any) => (
+              <AddModalContentType
+                obj={obj}
+                showObj={showObj}
+                close={close}
+                handleAddjs={handleAddjs}
+                type="arr-0"
+              />
+            )}
+          />
+          <TorusButton
+            Children={`Delete`}
+            size={"xs"}
+            btncolor={"#0736C4"}
+            radius={"lg"}
+            color={"#f00"}
+            gap={"py-[0.2rem] px-[0.2rem] mb-[0.3rem]"}
+            // height={"md"}
+            borderColor={"3px solid #0736C4"}
+            startContent={<CiTrash color="white" />}
+            fontStyle={"text-sm font-medium text-[#FFFFFF]"}
+            onPress={() => handleDeletejs(path)}
+          />
+        </div>
       </div>
       <div className={`grid ${obj.length > 1 ? "grid-cols-2" : "grid-cols-1"} gap-2`}>
         {obj &&
-          obj.map((ele:any, index:number) => {
+          obj.map((ele: any, index: number) => {
             const isExpanded = expandedItem.includes(ele?.label);
             return (
               <div
@@ -647,7 +647,7 @@ const RenderJsonArraySidebarDetail = ({
                           }}
                           title={"Add"}
                           message={"Edit"}
-                          children={({ close }:any) => (
+                          children={({ close }: any) => (
                             <AddModalContentType
                               obj={obj}
                               showObj={showObj}
@@ -696,7 +696,7 @@ const RenderJsonArraySidebarDetail = ({
                                   outlineColor="torus-focus:ring-[#000000]/50"
                                   placeholder=""
                                   isDisabled={false}
-                                  onChange={(e:any) => {
+                                  onChange={(e: any) => {
                                     handleInput(
                                       e,
                                       path + "." + index + "." + item,

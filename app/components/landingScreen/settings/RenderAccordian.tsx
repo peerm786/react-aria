@@ -16,9 +16,9 @@ import { toast } from "react-toastify";
 import { TiDelete } from "react-icons/ti";
 import _ from "lodash";
 import { MdOutlineAutoDelete } from "react-icons/md";
-import { AxiosService } from "../../lib/utils/axiosService"
-import { getCookie } from "../../lib/utils/cookiemgmt"
-import TorusToast from "../components/torusComponents/torusToast";
+import { getCookie } from "../../../../lib/utils/cookiemgmt";
+import TorusToast from "../../torusComponents/torusToast";
+import { AxiosService } from "../../../../lib/utils/axiosService";
 
 const RenderAccordion = ({
     data,

@@ -10,12 +10,15 @@ import {
 import { Button } from "react-aria-components";
 import { AxiosService } from "../../lib/utils/axiosService";
 import { toast } from "react-toastify";
-import ModalWindow from "../settings/ModalWindow";
+import ModalWindow from "./landingScreen/settings/ModalWindow";
 import { RenderJson } from "./jsonUi/newJsonUi/renderData";
 import { sample } from "./jsonUi/samplejson";
 import TorusToast from "./torusComponents/torusToast";
 import DropDown from "./multiDropdownnew";
 import { getCookie } from "../../lib/utils/cookiemgmt";
+import { useSelector } from "react-redux";
+import { RootState } from "../../lib/Store/store";
+
 
 const Settings = () => {
   const [tenantInfo, setTenantInfo] = useState<null | any>(null);
@@ -25,6 +28,7 @@ const Settings = () => {
   const [wordLength, setWordLength] = useState(0);
   const token = getCookie('token')
   const [tenantList, setTenantList] = useState<string[]>([]);
+  const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
 
   const AuthorizedTenantDetails = async () => {
     try {
@@ -113,9 +117,9 @@ const Settings = () => {
   ];
 
   return (
-    <div className="p-4 w-[60vw] h-[80vh] bg-white rounded-md shadow-md flex">
-      <div className="w-[20%] border-r">
-        <h1 className="w-full border-b  font-semibold">Settings</h1>
+    <div className="p-4 w-[60vw] h-[80vh] bg-white rounded-md shadow-md flex dark:bg-[#161616] dark:text-[#FFFFFF]">
+      <div className="w-[20%] border-r dark:border-[#000000]/15">
+        <h1 className="w-full border-b dark:border-[#000000]/15  font-semibold">Settings</h1>
         {SettingsMenu.map(({ Icon, name }, index) => (
           <Button
             onPress={() => {
@@ -123,7 +127,7 @@ const Settings = () => {
               { selectedButton === "App Setup" && handleTenant() };
             }}
             key={index}
-            className={`mt-2 text-xs gap-2 items-center p-2 rounded-md outline-none ${selectedButton == name ? "flex bg-[#F4F5FA]" : "flex cursor-pointer hover:bg-[#F4F5FA]"}`}
+            className={`mt-2 text-xs gap-2 items-center p-2 rounded-md outline-none ${selectedButton == name ? "flex bg-[#F4F5FA] dark:text-black" : "flex cursor-pointer hover:bg-[#F4F5FA] dark:hover:text-black"} ${isDarkMode ? "text-[#FFFFFF]" : "text-[#000000]"}`}
           >
             <Icon />
             {name}
@@ -163,12 +167,12 @@ const Settings = () => {
         ) : null}
         {selectedButton != "Tenant Setup" && selectedButton != "App Setup" && (
           <div>
-            <h1 className="text-lg font-semibold mt-4 border-t  pb-2">
+            <h1 className="text-lg font-semibold mt-4 border-t dark:border-[#000000]/15 pb-2">
               Appearance
             </h1>
             <div>
               <h2 className="text-sm font-medium mb-2">Color Mode</h2>
-              <p className="text-sm text-[#000000]">
+              <p className="text-sm text-[#000000] dark:text-white">
                 Choose to change the apperance of the Torus app
               </p>
               <div className="flex items-center py-2 mb-5  rounded-md gap-6 ">
@@ -182,7 +186,7 @@ const Settings = () => {
             </div>
             <div>
               <h2 className="text-sm font-medium mb-2">Themes</h2>
-              <p className="text-sm text-[#000000] mb-2">
+              <p className="text-sm text-[#000000] mb-2 dark:text-white">
                 Change the color theme of the app.
               </p>
 
@@ -194,7 +198,7 @@ const Settings = () => {
                     className={`flex items-center w-[80%]  ${theme.bgClass} gap-2 rounded-md p-2  `}
                   >
                     <span
-                      className={`w-2 h-2  ${theme.bgClass}  inline-block rounded-full border border-black`}
+                      className={`w-2 h-2  ${theme.bgClass}  inline-block rounded-full border dark:border-[#000000]/15 border-black`}
                     />
                     <span>{theme.color}</span>
                   </Button>

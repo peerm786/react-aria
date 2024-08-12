@@ -1,13 +1,6 @@
-
-
 "use client"
 import React from 'react'
-import CustomTable from '../../components/landingScreen/exceptiontable'
-import VendorTable from '../../components/landingScreen/processtable'
 import Artifactdetails from '../../components/landingScreen/artifactdetails'
-
-
-
 const data = {
     "key": "T:PF:FRKP:ME:NA:bankmaster:v1:ctks9q6rbc1mzt7ny0cg",
     "nodeData": [
@@ -73,16 +66,10 @@ const data = {
         }
     ]
 }
-
-
-
-
 const page = () => {
     return (
         <div>
             <Artifactdetails nodeData={data} />
-            {/* <VendorTable /> */}
-            {/* <CustomTable /> */}
         </div>
     )
 }
