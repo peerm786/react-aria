@@ -158,10 +158,10 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
           </p>
         </div>
 
-        <div className="flex w-full bg-[#F4F5FA] dark:bg-[#161616] rounded-lg p-1 ">
+        <div className="flex w-full bg-[#F4F5FA] dark:bg-[#161616] rounded-lg p-[0.3vw] ">
           <Button
             onPress={() => setSelectedOption("Individual")}
-            className={`py-2 w-1/2 transition-colors duration-700 ease-in-out text-[0.8vw]  leading-[1.8vh] rounded-md
+            className={`py-[0.5vw] w-1/2 transition-colors duration-700 ease-in-out text-[0.8vw]  leading-[1.8vh] rounded-md
                              ${
                                selectedOption === "Individual"
                                  ? "bg-[#FFFFFF] dark:bg-[#000] outline-none font-medium"
