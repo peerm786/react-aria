@@ -200,6 +200,7 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
                   triggerButton:
                     "w-full bg-[#F4F5FA] text-black rounded-lg text-[0.8vw] font-medium leading-[1.7vh] py-[1vw] mt-2 dark:bg-[#171717] dark:text-[#FFFFFF] ",
                   popover: "w-[20%]",
+                  listboxItem : "text-[0.8vw] text-center"
                 }}
               />
             </div>
@@ -255,7 +256,9 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
             <Button
               onPress={handleFormSubmit}
               isDisabled={loading}
-              className="bg-[#0736C4] w-full flex justify-center text-white py-[1.3vw] text-[0.8vw] font-semibold leading-[1.7vh] disabled:bg-[#8c9ac4] disabled:cursor-not-allowed focus:outline-none rounded-lg"
+              className={`bg-[#0736C4] w-full flex justify-center text-white ${
+                loading ? "py-[0.4vw]" : "py-[1.3vw]"
+              } text-[0.8vw] font-semibold leading-[1.7vh] disabled:bg-[#8c9ac4] disabled:cursor-not-allowed focus:outline-none rounded-lg`}
             >
               {loading ? <ProgressButton isIndeterminate /> : "Sign In"}
             </Button>
