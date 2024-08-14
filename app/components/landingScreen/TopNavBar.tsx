@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Input } from "react-aria-components";
 import { SearchIcon, TorusLogo } from "../../constants/svgApplications";
 import DropDown from "../multiDropdownnew";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../lib/Store/store";
 
 const Topbar = ({
   tenant,
@@ -16,6 +18,7 @@ const Topbar = ({
 }) => {
   const [selectedTenant, setSelectedTenant] = useState<string>("");
   const [tenantList, setTenantList] = useState<string[]>([]);
+  const isDarkmode = useSelector((state: RootState) => state.main.useDarkMode);
 
   useEffect(() => {
     if (tenantInfo && Array.isArray(tenantInfo)) {
@@ -24,19 +27,19 @@ const Topbar = ({
   }, [tenantInfo]);
 
   return (
-    <nav aria-label="Navbar" className="flex w-full p-3 pt-2">
+    <nav aria-label="Navbar" className="flex w-full p-[0.58vw] pt-[0.87vw]">
       <div className="flex w-full justify-between items-center">
         <div className="flex items-center">
           <TorusLogo />
           <h2 className="text-[1.25vw] leading-[2.66vh] font-medium">TORUS</h2>
         </div>
         <div className="flex w-[25%] relative items-center">
-          <span className="absolute inset-y-0 left-0 p-2 h-7 w-7">
-            <SearchIcon width="0.65vw" height="0.65vw" />
+          <span className="absolute inset-y-0 left-0 p-[0.58vw]">
+            <SearchIcon fill={isDarkmode ? "#FFFFFF" : "#000000"} width="0.65vw" height="0.65vw" />
           </span>
           <Input
             placeholder="Search"
-            className={`w-full p-1 focus:outline-none focus:border-blue-400 border pl-5 text-[0.72vw] leading-[2.22vh] rounded-md dark:border-[#212121]`}
+            className={`w-full p-[0.29vw] focus:outline-none focus:border-blue-400 border pl-[1.46vw] text-[0.72vw] leading-[2.22vh] rounded-md dark:border-[#212121]`}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
@@ -48,8 +51,8 @@ const Topbar = ({
             items={tenantList}
             classNames={{
               triggerButton:
-                "min-w-40 rounded-lg text-[0.72vw] leading-[2.22vh] mt-2 bg-[white] dark:bg-[#0F0F0F] dark:text-white",
-              popover: "w-40",
+                "min-w-[11.71vw] mr-[1.75vw] rounded-lg text-[0.72vw] leading-[2.22vh] pt-[0.58vw] bg-[white] dark:bg-[#0F0F0F] dark:text-white",
+              popover: "w-[11.71vw]",
               listbox: "overflow-y-auto",
               listboxItem: "flex text-[0.72vw] leading-[2.22vh] justify-between",
             }}

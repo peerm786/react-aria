@@ -55,17 +55,17 @@ const Sidebar = () => {
   return (
     <aside
       aria-label="Sidebar"
-      className="w-[3.5vw] flex ml-5 flex-col items-center justify-between h-full bg-white border border-[#000000]/15 rounded-md dark:bg-[#1D1D1D] dark:text-[#FFFFFF]"
+      className="w-[3.59vw] flex ml-[1.46vw] flex-col items-center justify-between h-full bg-white border border-[#000000]/15 rounded-md dark:bg-[#1D1D1D] dark:text-[#FFFFFF]"
     >
       <section className="flex flex-col justify-center items-center dark:text-[#FFFFFF]">
         <section
           aria-label="Actions"
-          className="w-[3.5vw] flex flex-col items-center justify-center gap-3 mt-3 dark:bg-[#1D1D1D] dark:text-[#FFFFFF]"
+          className="w-[3.5vw] flex flex-col items-center justify-center gap-[0.29vw] mt-[0.29vw] dark:bg-[#1D1D1D] dark:text-[#FFFFFF]"
         >
           {actionIcons.map(({ Icon, route }, index) => (
             <Button
               key={index}
-              className="p-2 focus:outline-none "
+              className="p-[0.58vw] focus:outline-none "
               onPress={() => handleRoutes(index, route)}
             >
               <Icon
@@ -82,9 +82,9 @@ const Sidebar = () => {
 
       <section
         aria-label="Theme and Logout"
-        className="w-full flex flex-col justify-center items-center mb-3 "
+        className="w-full flex flex-col justify-center items-center mb-[0.58vw]"
       >
-        <Button onPress={handleDarkModeToggle} className="p-2 focus:outline-none">
+        <Button onPress={handleDarkModeToggle} className="p-[0.58vw] focus:outline-none">
           {isDarkMode ? (
             <BiSun
               color={"#A59E92"}
@@ -107,7 +107,7 @@ const Sidebar = () => {
             dialogClassName: "focus:outline-none bg-white border rounded ",
           }}
           triggerElement={
-            <Button className="outline-none mb-2  " >
+            <Button className="outline-none mb-[0.29vw]" >
               <SettingsIcon fill={isDarkMode ? "white" : "black"} />
             </Button>
           }
@@ -117,14 +117,14 @@ const Sidebar = () => {
 
         <DialogTrigger>
           <Button
-            className={`outline-none mr-1 mb-2`}
+            className={`outline-none mr-[0.29vw] mb-[0.29vw]`}
           >
             <TorusAvatar radius="full" size="lg" />
           </Button>
           <Popover placement="right top">
             <Dialog className="bg-white focus:outline-none rounded-lg dark:bg-[#161616]">
               {({ close }) => (
-                <div className="flex flex-col p-2 gap-2 border border-black/15 rounded-lg dark:bg-[#0F0F0F] dark:text-white dark:border-white/15">
+                <div className="flex flex-col p-[0.58vw] gap-[0.58vw] border border-black/15 rounded-lg dark:bg-[#0F0F0F] dark:text-white dark:border-white/15">
                   <Button className={`outline-none`} onPress={() => handleLogout(close)}>
                     <LogoutSvg fill={isDarkMode ? "white" : "black"} />
                   </Button>

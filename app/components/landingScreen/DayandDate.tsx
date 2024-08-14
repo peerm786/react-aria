@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { Button } from 'react-aria-components';
 import { ShareIcon } from '../../constants/svgApplications';
 import { getCookie } from '../../../lib/utils/cookiemgmt';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../lib/Store/store';
 
 const formatDate = (date: Date) => {
     const options: Intl.DateTimeFormatOptions = {
@@ -28,6 +30,7 @@ const getGreeting = () => {
 const DateandTime = () => {
     const [formattedDate, setFormattedDate] = useState('');
     const [greeting, setGreeting] = useState('');
+    const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
 
     useEffect(() => {
         const currentDate = new Date();
@@ -45,18 +48,18 @@ const DateandTime = () => {
     }
 
     return (
-        <div className='flex items-center justify-between mx-5 pt-3'>
-            <div className='flex flex-col gap-1'>
+        <div className='flex items-center justify-between pt-[0.87vw]'>
+            <div className='flex flex-col gap-1 pl-[1.46vw]'>
                 <h1 className='text-[1.25vw] font-semibold leading-[2.22vh]'>{greeting},{getCookie("loginId")}!</h1>
-                <p className='text-[0.72vw] leading-[2.22vh] text-black/50'>{formattedDate}</p>
+                <p className='text-[0.72vw] leading-[2.22vh] text-black/50 dark:text-white/50'>{formattedDate}</p>
             </div>
-            <div className='flex gap-1 self-end'>
-                <Button className="flex outline-none items-center gap-2 px-2 h-7 bg-[#0736C4]/15 text-[#0736C4] font-medium rounded-3xl text-[0.72vw] leading-[2.22vh]">Tenant Setup<ShareIcon /></Button>
-                <Button className="flex outline-none items-center gap-2 px-2 h-7 bg-[#0736C4]/15 text-[#0736C4] font-medium rounded-3xl text-[0.72vw] leading-[2.22vh]">App Setup<ShareIcon /></Button>
-                <Button className="flex outline-none items-center gap-2 px-2 h-7 bg-[#0736C4]/15 text-[#0736C4] font-medium rounded-3xl text-[0.72vw] leading-[2.22vh]">Build<ShareIcon /></Button>
-                <Button className="flex outline-none items-center gap-2 px-2 h-7 bg-[#0736C4]/15 text-[#0736C4] font-medium rounded-3xl text-[0.72vw] leading-[2.22vh]">Bank Master<ShareIcon /></Button>
-                <Button className="flex outline-none items-center gap-2 px-2 h-7 bg-[#0736C4]/15 text-[#0736C4] font-medium rounded-3xl text-[0.72vw] leading-[2.22vh]">Form<ShareIcon /></Button>
-                <Button className="flex outline-none items-center gap-2 px-2 h-7 bg-[#0736C4]/15 text-[#0736C4] font-medium rounded-3xl text-[0.72vw] leading-[2.22vh]">Connector Setup<ShareIcon /></Button>
+            <div className='flex gap-[0.29vw] self-end'>
+                <Button className="flex outline-none items-center gap-[0.58vw] px-[0.58vw] h-[2.04vw] bg-[#0736C4]/15 text-[#0736C4] dark:text-[#3063FF] font-medium rounded-3xl text-[0.72vw] leading-[2.22vh]">Tenant Setup<ShareIcon fill={isDarkMode ? "#3063FF" : "#0736C4"} /></Button>
+                <Button className="flex outline-none items-center gap-[0.58vw] px-[0.58vw] h-[2.04vw] bg-[#0736C4]/15 text-[#0736C4] dark:text-[#3063FF] font-medium rounded-3xl text-[0.72vw] leading-[2.22vh]">App Setup<ShareIcon fill={isDarkMode ? "#3063FF" : "#0736C4"} /></Button>
+                <Button className="flex outline-none items-center gap-[0.58vw] px-[0.58vw] h-[2.04vw] bg-[#0736C4]/15 text-[#0736C4] dark:text-[#3063FF] font-medium rounded-3xl text-[0.72vw] leading-[2.22vh]">Build<ShareIcon fill={isDarkMode ? "#3063FF" : "#0736C4"} /></Button>
+                <Button className="flex outline-none items-center gap-[0.58vw] px-[0.58vw] h-[2.04vw] bg-[#0736C4]/15 text-[#0736C4] dark:text-[#3063FF] font-medium rounded-3xl text-[0.72vw] leading-[2.22vh]">Bank Master<ShareIcon fill={isDarkMode ? "#3063FF" : "#0736C4"} /></Button>
+                <Button className="flex outline-none items-center gap-[0.58vw] px-[0.58vw] h-[2.04vw] bg-[#0736C4]/15 text-[#0736C4] dark:text-[#3063FF] font-medium rounded-3xl text-[0.72vw] leading-[2.22vh]">Form<ShareIcon fill={isDarkMode ? "#3063FF" : "#0736C4"} /></Button>
+                <Button className="flex outline-none items-center gap-[0.58vw] px-[0.58vw] h-[2.04vw] bg-[#0736C4]/15 text-[#0736C4] dark:text-[#3063FF] font-medium rounded-3xl text-[0.72vw] leading-[2.22vh]">Connector Setup<ShareIcon fill={isDarkMode ? "#3063FF" : "#0736C4"} /></Button>
             </div>
         </div>
     );

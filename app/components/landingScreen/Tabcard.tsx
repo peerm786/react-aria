@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Tab, TabList, Tabs } from "react-aria-components";
-import { LuLock } from "react-icons/lu";
+import { Button, Dialog, DialogTrigger, Popover, Tab, TabList, Tabs } from "react-aria-components";
 import {
   Avatars,
   DataFabric,
@@ -9,6 +8,7 @@ import {
   SecurityFabric,
   ThreeDots,
   UserFabric,
+  LockIcon
 } from "../../constants/svgApplications";
 import { AxiosService } from "../../../lib/utils/axiosService";
 import { getCookie, getEncodedDetails } from "../../../lib/utils/cookiemgmt";
@@ -19,6 +19,7 @@ import FilterModal from "./filterModal";
 import { toast } from "react-toastify";
 import TorusToast from "../torusComponents/torusToast";
 import { sortingConditions } from "../../constants/MenuItemTree"
+import ArtifactContextMenu from "./contextMenu";
 
 const Tabcard = ({
   fabric,
@@ -94,15 +95,15 @@ const Tabcard = ({
   const getFabricIcon = (fab: string) => {
     switch (fab) {
       case "df":
-        return <DataFabric fill="#0736C4" />;
+        return <DataFabric fill={isDarkMode ? "#3063FF" : "#0736C4"} width="1.04vw" height="1.04vw" />;
       case "pf":
-        return <ProcessFabric fill="#13CC78" />;
+        return <ProcessFabric fill={isDarkMode ? "#3063FF" : "#0736C4"} width="1.04vw" height="1.04vw" />;
       case "sf":
-        return <SecurityFabric fill="#FFBE00" />;
+        return <SecurityFabric fill={isDarkMode ? "#3063FF" : "#0736C4"} width="1.04vw" height="1.04vw" />;
       case "uf":
-        return <UserFabric fill="#03A9F4" />;
+        return <UserFabric fill={isDarkMode ? "#3063FF" : "#0736C4"} width="1.04vw" height="1.04vw" />;
       default:
-        return <DataFabric fill="#0736C4" />;
+        return <DataFabric fill={isDarkMode ? "#3063FF" : "#0736C4"} width="1.04vw" height="1.04vw" />;
     }
   };
 
@@ -190,20 +191,20 @@ const Tabcard = ({
   }
 
   return (
-    <div className="flex flex-col w-full h-full bg-white border border-gray-300 p-2 rounded-md dark:bg-[#1D1D1D] text-[#FFFFFF] dark:border-[#212121]">
+    <div className="flex flex-col w-full h-full bg-white border border-gray-300 p-[0.87vw] rounded-md dark:bg-[#1D1D1D] text-[#FFFFFF] dark:border-[#212121]">
       <div className="flex items-center justify-between">
-        <h1 className="text-base font-bold text-black dark:text-[#FFFFFF] py-2">
+        <h1 className="text-[0.93vw] font-semibold leading-[2vh] text-black dark:text-[#FFFFFF] py-[0.58vw]">
           My Library
         </h1>
         <TorusDialog
           triggerElement={
-            <Button className=" outline-none flex items-center gap-2 text-xs dark:bg-[#0F0F0F] dark:border-[#212121] text-black font-medium border border-black/15 rounded-md px-3 h-6 cursor-pointer dark:text-[#FFFFFF]">
+            <Button className=" outline-none flex items-center gap-[0.29vw] text-[0.69vw] leading-[2.22vh] dark:bg-[#0F0F0F] dark:border-[#212121] text-black border border-black/15 rounded-md px-[0.8vw] py-[0.1vw] cursor-pointer dark:text-[#FFFFFF]">
               Filter
-              <FilterIcon fill={isDarkMode ? "#FFFFFF" : "#000000"}/>
+              <FilterIcon fill={isDarkMode ? "#FFFFFF" : "#000000"} />
             </Button>
           }
           classNames={{
-            modalClassName: "justify-end pr-2 pt-16 ",
+            modalClassName: "justify-end pr-[0.58vw] pt-16",
             dialogClassName:
               "bg-white border rounded p-2 h-[85vh] w-[20vw] overflow-y-auto outline-none",
           }}
@@ -222,100 +223,131 @@ const Tabcard = ({
           />
         </TorusDialog>
       </div>
-      <Tabs selectedKey={artifactType} onSelectionChange={setArtifactType}>
-        <TabList
-          className="flex gap-5 rounded-md p-1  bg-[#F4F5FA] text-sm text-black  items-center dark:bg-[#0F0F0F] dark:text-[#FFFFFF] dark:border-[#212121]"
-          aria-label="Tabs"
-        >
-          <Tab
-            id={"frk"}
-            className={({ isSelected }) =>
-              `${isSelected
-                ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
-                : "outline-none text-xs font-semibold ml-2 "
-              } cursor-pointer`
-            }
+      <div className="flex flex-col pl-[0.58vw] h-[70.37vh]">
+        <Tabs className={"pt-[0.58vw]"} selectedKey={artifactType} onSelectionChange={setArtifactType}>
+          <TabList
+            className="flex w-[26.3vw] text-nowrap rounded-lg p-[0.29vw] bg-[#F4F5FA] text-black items-center dark:bg-[#0F0F0F] dark:text-[#FFFFFF] dark:border-[#212121]"
+            aria-label="Tabs"
           >
-            {" "}
-            My Artifacts
-          </Tab>
-          <Tab
-            id={"tpfrk"}
-            className={({ isSelected }) =>
-              `${isSelected
-                ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
-                : "outline-none text-xs font-semibold ml-2"
-              } cursor-pointer`
-            }
-          >
-            Shared with Me
-          </Tab>
-          <Tab
-            id={"crk"}
-            className={({ isSelected }) =>
-              `${isSelected
-                ? "bg-white transition duration-300 ease-in-out rounded-lg outline-none p-2 text-xs font-semibold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
-                : "outline-none text-xs font-semibold ml-2"
-              } cursor-pointer`
-            }
-          >
-            Purchased
-          </Tab>
-         
-        </TabList>
-      </Tabs>
-      <div className="mt-4 grid sm:grid-cols-2 xl:grid-cols-3 text-[#000000] gap-5 overflow-y-auto  pr-2 dark:bg-[1D1D1D] dark:text-[#FFFFFF] dark:border-[#212121]">
-        {artifactList
-          .filter(
-            (ele: any) =>
-              ele.artifactName
-                .toLowerCase()
-                .includes(searchTerm.toLowerCase()) ||
-                ele.catalog.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                ele.artifactGrp.toLowerCase().includes(searchTerm.toLowerCase()) 
-          )
-          .map((item: any, index: number) => (
-            <div
-              key={index}
-              className="border border-gray-300 bg-[#F4F5FA] dark:bg-[#0F0F0F] p-3 flex flex-col items-center justify-center rounded-md dark:border-[#212121]"
+            <Tab
+              id={"frk"}
+              className={({ isSelected }) =>
+                `${isSelected
+                  ? "bg-white transition duration-300 ease-in-out rounded-md p-[0.55vw] font-bold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
+                  : "font-semibold"
+                } cursor-pointer outline-none w-[8.67vw] text-center text-[0.67vw] leading-[1.85vh]`
+              }
             >
-              <div className="flex items-center ml-auto gap-1">
-                {item.isLocked ? (
-                  <LuLock className="ml-1 text-red-500" />
-                ) : null}
-                <ThreeDots fill={isDarkMode ? "white" : "black"} />
-              </div>
-              <div className=" mr-auto bg-[#0736C4]/5 rounded-md mb-3 p-1">
-                {getFabricIcon(item.fabric)}
-              </div>
-              <div className="flex w-full justify-between text-[#000000] dark:text-[#FFFFFF] cursor-pointer" onClick={() => handleNavigateToModeller(item)}>
-                <h3 className="text-sm font-bold whitespace-nowrap ">
-                  {item.artifactName.charAt(0).toUpperCase() +
-                    item.artifactName.slice(1)}
-                </h3>
-                <div className=" text-xs dark:text-[#FFFFFF]/40 ">
-                  {item.version}
+              {" "}
+              My Artifacts
+            </Tab>
+            <Tab
+              id={"tpfrk"}
+              className={({ isSelected }) =>
+                `${isSelected
+                  ? "bg-white transition duration-300 ease-in-out rounded-md p-[0.55vw] font-bold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
+                  : "font-semibold"
+                } cursor-pointer outline-none w-[8.67vw] text-center text-[0.67vw] leading-[1.85vh]`
+              }
+            >
+              Shared with Me
+            </Tab>
+            <Tab
+              id={"crk"}
+              className={({ isSelected }) =>
+                `${isSelected
+                  ? "bg-white transition duration-300 ease-in-out rounded-md p-[0.55vw] font-bold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
+                  : "font-semibold"
+                } cursor-pointer outline-none w-[8.67vw] text-center text-[0.67vw] leading-[1.85vh]`
+              }
+            >
+              Purchased
+            </Tab>
+          </TabList>
+        </Tabs>
+        <div className="pt-[1.17vw] grid sm:grid-cols-2 xl:grid-cols-3 text-[#000000] gap-[1.46vw] overflow-y-auto pr-[0.58vw] dark:bg-[#1D1D1D] dark:text-[#FFFFFF] dark:border-[#212121]">
+          {artifactList
+            .filter(
+              (ele: any) =>
+                ele.artifactName
+                  .toLowerCase()
+                  .includes(searchTerm.toLowerCase()) ||
+                ele.catalog.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                ele.artifactGrp.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+            .map((item: any, index: number) => (
+              <div
+                key={index}
+                className="w-[15.15vw] h-[9.5vw] border border-black/15 bg-[#F4F5FA] dark:bg-[#0F0F0F] flex flex-col items-center justify-center rounded-md dark:border-[#212121]"
+              >
+                <div className="w-full p-[0.58vw]">
+                  <div className="flex w-full justify-between">
+                    <div className="self-start bg-[#0736C4]/15 rounded-md mb-[0.87vw] w-[2.18vw] h-[2.18vw]">
+                      <div className="w-full h-full flex items-center justify-center">
+                        {getFabricIcon(item.fabric)}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-[0.29vw] pb-[1.75vw]">
+                      {item.isLocked ? (
+                        <LockIcon />
+                      ) : null}
+                      <DialogTrigger>
+                        <Button className={`focus:outline-[#000000]/15 p-[0.29vw] items-center`}>
+                          <ThreeDots fill={isDarkMode ? "white" : "black"} />
+                        </Button>
+                        <Popover placement="bottom right">
+                          <Dialog className="outline-none">
+                            {({ close }) => (
+                              <ArtifactContextMenu
+                                artifactName={item.artifactName}
+                                artifactGrp={item.artifactGrp}
+                                artifactType={artifactType}
+                                catalog={item.catalog}
+                                isLocked={item.isLocked}
+                                version={item.version}
+                                close={close}
+                              />
+                            )}
+                          </Dialog>
+                        </Popover>
+                      </DialogTrigger>
+                    </div>
+                  </div>
+                  <div className="flex w-full justify-between text-[#000000] dark:text-[#FFFFFF] cursor-pointer" onClick={() => handleNavigateToModeller(item)}>
+                    <h3 className="text-[0.83vw] leading-[1.7vh] font-semibold whitespace-nowrap">
+                      {item.artifactName.charAt(0).toUpperCase() +
+                        item.artifactName.slice(1)}
+                    </h3>
+                    <div className="text-[0.72vw] leading-[1.29vh] pr-[0.58vw] font-medium text-black/35 dark:text-[#FFFFFF]/35 ">
+                      {item.version}
+                    </div>
+                  </div>
+                  <div className="flex w-full cursor-pointer" onClick={() => handleNavigateToModeller(item)}>
+                    <p className="pt-[0.29vw] text-[0.62vw] leading-[1.34vh] font-medium whitespace-nowrap text-black/40 dark:text-[#FFFFFF]/40">
+                      {item.catalog} - {item.artifactGrp}
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex w-full cursor-pointer" onClick={() => handleNavigateToModeller(item)}>
-                <p className="text-xs whitespace-nowrap text-black/40 dark:text-[#FFFFFF]/40">
-                  {item.catalog} - {item.artifactGrp}
-                </p>
-              </div>
-              <div className="w-[110%] border-b border-b-black/15 my-2"></div>
-              <div className="flex w-full text-xs whitespace-nowrap justify-between px-1">
-                <div className="text-xs text-black/35 dark:text-[#FFFFFF]/40">
-                  Last edited{" "}
-                  {calculateRecentlyWorkingDetails(item.recentlyWorking)}
-                  <div className="text-[#0736C4] font-medium">{loginId}</div>
+                <div className="w-full border-b border-b-black/15 dark:border-[#212121]"></div>
+
+                <div className="w-full p-[0.58vw]">
+                  <div className="flex w-full text-xs whitespace-nowrap justify-between">
+                    <div className="flex flex-col text-[0.52vw] leading-[1.66vh] font-medium text-black/40 dark:text-[#FFFFFF]/40">
+                      Last edited{" "}
+                      {calculateRecentlyWorkingDetails(item.recentlyWorking)}
+                      <span className="text-[#0736C4] text-[0.62vw] leading-[1.66vh] font-medium">
+                        {loginId.charAt(0).toUpperCase() + loginId.slice(1)}
+                      </span>
+                    </div>
+                    <div className="">
+                      <Avatars />
+                    </div>
+                  </div>
                 </div>
-                <div className="">
-                  <Avatars />
-                </div>
               </div>
-            </div>
-          ))}
+            ))}
+        </div>
       </div>
     </div>
   );

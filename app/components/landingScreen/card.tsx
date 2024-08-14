@@ -502,27 +502,27 @@ const Card = ({
   };
 
   return (
-    <div className="flex flex-col gap-3 border border-black/15 p-3 w-full h-full rounded-md ml-4 bg-white dark:bg-[#1D1D1D] dark:text-[#FFFFFF] dark:border-[#212121]">
+    <div className="flex flex-col gap-[0.87vw] border border-black/15 p-[0.87vw] w-full h-[59.51vh] rounded-md bg-white dark:bg-[#1D1D1D] dark:text-[#FFFFFF] dark:border-[#212121]">
       <div className="flex justify-between">
         <h1 className="text-[0.93vw] font-semibold leading-[1.13vh]">{selectedApp ? "Artifacts" : selectAppGroup ? "Apps" : "AppGroups"}</h1>
       </div>
       {selectedTenant ? (
         <>
-          <Breadcrumbs className="flex gap-1">
-            <Breadcrumb className={`flex items-center gap-1 m-0 p-0 [&:not(:last-child)]:after:content-['›'_/_''] cursor-pointer`}>
+          <Breadcrumbs className="flex gap-[0.29vw]">
+            <Breadcrumb className={`flex items-center gap-[0.29vw] m-0 p-0 [&:not(:last-child)]:after:content-['›'_/_''] cursor-pointer`}>
               <Button onPress={() => handleBreadcrumbClick("tenant")} className={`outline-none text-[#a8a9ae] text-xs`}>
                 {selectedTenant}
               </Button>
             </Breadcrumb>
             {selectAppGroup && (
-              <Breadcrumb className={`flex items-center gap-1 m-0 p-0 [&:not(:last-child)]:after:content-['›'_/_''] cursor-pointer`}>
+              <Breadcrumb className={`flex items-center gap-[0.29vw] m-0 p-0 [&:not(:last-child)]:after:content-['›'_/_''] cursor-pointer`}>
                 <Button onPress={() => handleBreadcrumbClick("appGroup")} className={`outline-none text-[${!selectedApp ? "#000" : "#a8a9ae"}] text-xs`}>
                   {selectAppGroup}
                 </Button>
               </Breadcrumb>
             )}
             {selectedApp && (
-              <Breadcrumb className={`flex items-center gap-1 m-0 p-0 [&:not(:last-child)]:after:content-['›'_/_''] cursor-pointer`}>
+              <Breadcrumb className={`flex items-center gap-[0.29vw] m-0 p-0 [&:not(:last-child)]:after:content-['›'_/_''] cursor-pointer`}>
                 <Button onPress={() => handleBreadcrumbClick("app")} className={`outline-none text-[${selectedApp ? "#000" : "#a8a9ae"}] text-xs`}>
                   {selectedApp}
                 </Button>
@@ -531,7 +531,7 @@ const Card = ({
           </Breadcrumbs>
           <div>
             {selectedApp ? (
-              <div className="mt-4 grid sm:grid-cols-2 xl:grid-cols-3 text-[#000000] gap-5 overflow-y-auto  pr-2 dark:bg-[1D1D1D] dark:text-[#FFFFFF] dark:border-[#212121]">
+              <div className="mt-[1.17vw] grid sm:grid-cols-2 xl:grid-cols-3 text-[#000000] gap-[1.46vw] overflow-y-auto  pr-[0.58vw] dark:bg-[1D1D1D] dark:text-[#FFFFFF] dark:border-[#212121]">
                 {artifactList.length ? artifactList 
                   .filter(
                     (ele: any) =>
@@ -544,7 +544,7 @@ const Card = ({
                   .map((item: any, index: number) => (
                     <div
                       key={index}
-                      className="border border-gray-300 bg-[#F4F5FA] dark:bg-[#0F0F0F] p-3 flex flex-col items-center justify-center rounded-md dark:border-[#212121]"
+                      className="border border-gray-300 bg-[#F4F5FA] dark:bg-[#0F0F0F] p-[0.87vw] flex flex-col items-center justify-center rounded-md dark:border-[#212121]"
                     >
                       {/* <div className="flex items-center ml-auto gap-1">
                         {item.isLocked ? (
@@ -552,7 +552,7 @@ const Card = ({
                         ) : null}
                         <ThreeDots fill={isDarkMode ? "white" : "black"} />
                       </div> */}
-                      <div className=" mr-auto bg-[#0736C4]/5 rounded-md mb-3 p-1">
+                      <div className="self-start bg-[#0736C4]/5 rounded-md mb-[0.87vw] p-[0.29vw]">
                         {getFabricIcon(item.fabric)}
                       </div>
                       <div
@@ -590,14 +590,14 @@ const Card = ({
                   )): <div>No artifacts found</div>}
               </div>
             ) : (
-              <div className="grid grid-cols-2 grid-rows-5 gap-3 text-xs rounded-md">
+              <div className="grid grid-cols-2 grid-rows-5 gap-[0.87vw] text-xs rounded-md">
                 {appList.map((app, index) => (
                   <div
                     key={index}
-                    className="flex flex-col p-2 bg-[#F4F5FA] border border-black/15 justify-center rounded-md dark:bg-[#0F0F0F]"
+                    className="flex flex-col p-[0.58vw] bg-[#F4F5FA] border border-black/15 justify-center rounded-md dark:bg-[#0F0F0F]"
                   >
                     <Button
-                      className="flex ml-4 focus:outline-none"
+                      className="flex ml-[1.17vw] focus:outline-none"
                       onPress={() => handleAppClick(app)}
                     >
                       {app}
@@ -609,19 +609,19 @@ const Card = ({
           </div>
         </>
       ) : (
-        <div className="grid grid-cols-2 pt-3 grid-rows-5 gap-3 h-[90%] text-xs rounded-md">
+        <div className="grid grid-cols-2 pt-[0.87vw] grid-rows-5 gap-[0.87vw] h-[90%] text-xs rounded-md">
           {filteredAppGroups.map((item, index) => (
             <div
               key={index}
               className="flex flex-col bg-[#F4F5FA] border border-black/15 justify-center rounded-md dark:bg-[#0F0F0F]"
             >
               <Button
-                className="flex ml-4 focus:outline-none"
+                className="flex ml-[1.17vw] focus:outline-none"
                 onPress={() => handleCardClick(item)}
               >
                 <div className="flex justify-between items-center w-full">
-                  <div className="flex gap-3 items-center">
-                    <div className="bg-white p-2 text-[#0736C4] rounded-md dark:bg-[#161616]">
+                  <div className="flex gap-[0.87vw] items-center">
+                    <div className="bg-white p-[0.58vw] text-[#0736C4] rounded-md dark:bg-[#161616]">
                       {item.icon}
                     </div>
                     <div className="flex flex-col">

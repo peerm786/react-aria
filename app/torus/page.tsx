@@ -49,18 +49,18 @@ const page = () => {
     }
 
     return (
-        <div className='flex flex-col w-full h-screen bg-[#F4F5FA] pt-1 dark:bg-[#161616] dark:text-[#FFFFFF]'>
+        <div className='flex flex-col w-full h-screen bg-[#F4F5FA] dark:bg-[#161616] dark:text-[#FFFFFF]'>
             <Topbar tenant={tenant} setTenant={setTenant} tenantInfo={data} setSearchTerm={setSearchTerm} />
-            <div className='flex h-[88%]'>
+            <div className='flex h-[89.07vh]'>
                 <Sidebar />
-                <div className='flex flex-col w-full h-full'>
+                <div className='flex flex-col h-[89.07vh]'>
                     <DateandTime />
-                    <div className='flex justify-between w-full gap-2 h-[89%] mt-4'>
-                        <div className='flex flex-col gap-3 w-[36%]'>
+                    <div className='flex justify-between w-full pt-[1.46vw] gap-[1.46vw] h-[82.37vh]'>
+                        <div className='flex flex-col gap-[1.46vw] pl-[1.46vw] w-[37.18vw]'>
                             <Fabrics fabric={fabric} setFabric={setFabric} />
                             <Card tenant={tenant} tenantInfo={data} searchTerm={searchTerm} />
                         </div>
-                        <div className='flex flex-col mr-3 w-[61%]'>
+                        <div className='flex flex-col w-[53.64vw] h-full'>
                             <Tabcard fabric={fabric} searchTerm={searchTerm} />
                         </div>
                     </div>
