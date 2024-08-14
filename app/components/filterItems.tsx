@@ -5,9 +5,8 @@ import {
   ListBox,
   ListBoxItem,
 } from "react-aria-components";
-import { Checked, UnChecked } from "../constants/svgApplications";
+import { Checked, UnChecked, SearchIcon } from "../constants/svgApplications";
 import { twMerge } from "tailwind-merge";
-import { IoIosSearch } from "react-icons/io";
 
 type ClassNameProps = {
   container?: string;
@@ -44,28 +43,28 @@ const FilterItems = ({
 
   return (
     <div className={twMerge("w-full", classNames?.container)}>
-      <div className="flex justify-between text-nowrap mb-2">
-        <h1 className="text-xs font-semibold">{title.toUpperCase()}</h1>
+      <div className="flex justify-between text-nowrap items-center">
+        <h1 className="text-[0.62vw] leading-[2.22vh] font-medium">{title.toUpperCase()}</h1>
         <Button
           onPress={() => setSelectedKeys(new Set([]))}
-          className={"outline-none text-[#000000]/35 text-[10px]"}
+          className={"outline-none text-[#000000]/35 text-[0.52vw] leading-[2.22vh] font-medium"}
         >
           Clear All
         </Button>
       </div>
       {isSearchNeeded ? (
-        <div className="relative w-full my-2 px-1">
+        <div className="relative items-center w-full">
           <Input
             type="text"
-            className={`w-full py-1 outline-none border-[#E7EAEE] rounded bg-[#F4F5FA] group focus:ring-2 focus:px-0 ${searchTerm ? "px-0" : "px-6"}`}
+            className={`w-full items-center text-[0.72vw] leading-[1.5vh] text-[#64748B] p-[0.58vw] outline-none border-[#E7EAEE] rounded bg-[#F4F5FA] group focus:ring-2 focus:px-0 ${searchTerm ? "px-0" : "px-[1.75vw]"}`}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search"
           />{" "}
           {!isFocused && !searchTerm ? (
-            <span className="absolute inset-y-0 left-0 flex items-center p-1 group-fous:hidden">
-              <IoIosSearch />
+            <span className="absolute items-center inset-y-0 left-0 flex p-[0.58vw] group-fous:hidden">
+              <SearchIcon width="0.83vw" height="0.83vw"/>
             </span>
           ) : null}
         </div>
@@ -77,7 +76,7 @@ const FilterItems = ({
         selectedKeys={selectedKeys}
         onSelectionChange={setSelectedKeys}
         items={filteredItems}
-        className={twMerge("w-[95%] mt-1 px-1", classNames?.listbox)}
+        className={twMerge("w-[95%] mt-[0.29vw]", classNames?.listbox)}
         renderEmptyState={() => 'No data Available'}
       >
         {(item) => (
@@ -90,7 +89,7 @@ const FilterItems = ({
             textValue={item.label}
           >
             {({ isSelected }) => (
-              <div className="w-full flex gap-2 items-center text-sm">
+              <div className="w-full flex gap-[0.58vw] items-center text-[0.72vw] leading-[1.94vh]">
                 {isSelected ? <Checked /> : <UnChecked />}
                 {item.label}
               </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Separator } from "react-aria-components";
 import {
   ArtifactPinIcon,
@@ -16,8 +16,11 @@ interface contextMenuProps {
   catalog: string;
   artifactGrp: string;
   version: string;
+  fabric : string;
+  index : number;
   isLocked: any;
   close: () => void;
+  setInput: React.Dispatch<React.SetStateAction<{ id: number | undefined, name: string }>>
 }
  
 const ArtifactContextMenu = ({
@@ -27,8 +30,17 @@ const ArtifactContextMenu = ({
   catalog,
   isLocked,
   version,
+  fabric,
+  index,
   close,
+  setInput,
 }: contextMenuProps) => {
+
+  const handleEdit = (e: any) => {
+    setInput({ id: index, name: artifactName });
+    close();
+  }
+
   return (
     <div className="bg-white w-[11vw] rounded-[0.42vw] P-[1vw]">
       <h2 className={`px-[1vw] py-[0.4vw] text-[1.05vw] font-medium`}>
@@ -37,6 +49,7 @@ const ArtifactContextMenu = ({
       <Separator orientation="horizontal" />
       <div className="flex flex-col justify-around px-[0.6vw] h-[6.25vw]">
         <Button
+          onPress={handleEdit}
           className={"outline-none flex gap-[0.5vw] items-center text-[0.72vw]"}
         >
           <RenameIcon /> Rename

@@ -51,7 +51,7 @@ const Topbar = ({
             items={tenantList}
             classNames={{
               triggerButton:
-                "min-w-[11.71vw] mr-[1.75vw] rounded-lg text-[0.72vw] leading-[2.22vh] pt-[0.58vw] bg-[white] dark:bg-[#0F0F0F] dark:text-white",
+                "min-w-[11.71vw] mr-[1.75vw] rounded-lg text-[0.72vw] leading-[2.22vh] pt-[0.58vw] bg-white dark:bg-[#0F0F0F] dark:text-white",
               popover: "w-[11.71vw]",
               listbox: "overflow-y-auto",
               listboxItem: "flex text-[0.72vw] leading-[2.22vh] justify-between",

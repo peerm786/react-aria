@@ -10,6 +10,8 @@ import {
 import { IoIosCheckmark } from "react-icons/io";
 import { twMerge } from "tailwind-merge";
 import { DownArrow } from "../constants/svgApplications";
+import { useSelector } from "react-redux";
+import { RootState } from "../../lib/Store/store";
 
 type classNames = {
   triggerButton?: string;
@@ -45,10 +47,11 @@ const DropDown = ({
   displayParam,
   classNames,
   renderOption,
-  isDarkMode,
   displaySelectedKeys = true,
 }: CustomDropDpwnProps) => {
+
   const [open, setOpen] = React.useState(false);
+  const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
 
   const handleSelectionChange = (selectedItem: any, close: () => void) => {
     if (multiple) {

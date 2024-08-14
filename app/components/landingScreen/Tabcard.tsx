@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Button, Dialog, DialogTrigger, Popover, Tab, TabList, Tabs } from "react-aria-components";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { Button, Dialog, DialogTrigger, Input, Popover, Tab, TabList, Tabs } from "react-aria-components";
 import {
   Avatars,
   DataFabric,
@@ -40,6 +40,7 @@ const Tabcard = ({
   const loginId = getCookie("loginId");
   const [wordLength, setWordLength] = useState(0);
   const [selectedSortButton, setSelectedSortButton] = useState<sortingConditions>("Newest");
+  const [isInput, setInput] = useState<{ id: number | undefined, name: string }>({ id: undefined, name: "" });
 
   const getArtifact = async (type: string, fabric?: string) => {
     try {
@@ -190,6 +191,53 @@ const Tabcard = ({
     }
   }
 
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setInput(prev => ({ ...prev, name: e.target.value }))
+  }
+
+  const handleChangeArtifactName = async (item: any) => {
+    try {
+      const res = await AxiosService.post(`http://192.168.2.110:3002/tp/renameArtifact`, {
+        artifactType: artifactType,
+        fabric: item.fabric,
+        catalog: item.catalog,
+        artifactGrp: item.artifactGrp,
+        oldName: item.artifactName,
+        newName: isInput.name
+      })
+      if (res.status === 201) {
+        setInput({ id: undefined, name: "" })
+        getArtifact(artifactType)
+      } else {
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "error",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Error Fetching Artifacts",
+            text: `${res.data}`,
+            closeButton: false,
+          } as any
+        )
+      }
+    } catch (error) {
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error Fetching Artifacts",
+          text: `${error}`,
+          closeButton: false,
+        } as any
+      )
+    }
+  }
+
   return (
     <div className="flex flex-col w-full h-full bg-white border border-gray-300 p-[0.87vw] rounded-md dark:bg-[#1D1D1D] text-[#FFFFFF] dark:border-[#212121]">
       <div className="flex items-center justify-between">
@@ -204,9 +252,9 @@ const Tabcard = ({
             </Button>
           }
           classNames={{
-            modalClassName: "justify-end pr-[0.58vw] pt-16",
+            modalClassName: "justify-end pr-[1.46vw] pt-[6.6vw]",
             dialogClassName:
-              "bg-white border rounded p-2 h-[85vh] w-[20vw] overflow-y-auto outline-none",
+              "bg-white border rounded p-[0.58vw] h-[80.18vh] w-[14.89vw] overflow-y-auto outline-none",
           }}
         >
           <FilterModal
@@ -305,7 +353,10 @@ const Tabcard = ({
                                 catalog={item.catalog}
                                 isLocked={item.isLocked}
                                 version={item.version}
+                                fabric={item.fabric}
+                                index={index}
                                 close={close}
+                                setInput={setInput}
                               />
                             )}
                           </Dialog>
@@ -313,11 +364,27 @@ const Tabcard = ({
                       </DialogTrigger>
                     </div>
                   </div>
-                  <div className="flex w-full justify-between text-[#000000] dark:text-[#FFFFFF] cursor-pointer" onClick={() => handleNavigateToModeller(item)}>
-                    <h3 className="text-[0.83vw] leading-[1.7vh] font-semibold whitespace-nowrap">
-                      {item.artifactName.charAt(0).toUpperCase() +
-                        item.artifactName.slice(1)}
-                    </h3>
+                  <div className="flex w-full items-center justify-between text-[#000000] dark:text-[#FFFFFF] cursor-pointer"
+                    onClick={() => {
+                      if (index == isInput.id) return;
+                      handleNavigateToModeller(item)
+                    }}>
+                    {(isInput.id === index) ? (
+                      <Input
+                        defaultValue={item.artifactName}
+                        onChange={handleInputChange}
+                        onBlur={() => handleChangeArtifactName(item)}
+                        onKeyDown={(e) => {
+                          if (e.key == "Enter") handleChangeArtifactName(item)
+                        }}
+                        className={`bg-[#F4F5FA] p-[0.29vw] w-[80%] text-[0.83vw] leading-[1.7vh] font-semibold focus:outline-none dark:bg-[#161616] dark:text-white rounded-md`}
+                      />
+                    ) : (
+                      <h3 className="text-[0.83vw] leading-[1.7vh] font-semibold whitespace-nowrap">
+                        {item.artifactName.charAt(0).toUpperCase() +
+                          item.artifactName.slice(1)}
+                      </h3>
+                    )}
                     <div className="text-[0.72vw] leading-[1.29vh] pr-[0.58vw] font-medium text-black/35 dark:text-[#FFFFFF]/35 ">
                       {item.version}
                     </div>
@@ -340,7 +407,7 @@ const Tabcard = ({
                         {loginId.charAt(0).toUpperCase() + loginId.slice(1)}
                       </span>
                     </div>
-                    <div className="">
+                    <div>
                       <Avatars />
                     </div>
                   </div>

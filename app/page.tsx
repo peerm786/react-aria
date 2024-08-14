@@ -472,7 +472,6 @@ const page = () => {
                 <div className="flex w-full justify-between items-center">
                   <div className="flex outline-none gap-5 pl-4">
                     <DropDown
-                      isDarkMode={isDarkMode}
                       triggerButton="Tenant"
                       selectedKeys={selectedTenant}
                       setSelectedKeys={handleTenantselect}
@@ -486,7 +485,6 @@ const page = () => {
                     />
 
                     <DropDown
-                      isDarkMode={isDarkMode}
                       triggerButton="AppGroup"
                       selectedKeys={selectAppGroup}
                       setSelectedKeys={handleAppGroupselect}
@@ -503,7 +501,6 @@ const page = () => {
                     />
 
                     <DropDown
-                      isDarkMode={isDarkMode}
                       triggerButton="App"
                       selectedKeys={selectApp}
                       setSelectedKeys={handleAppselect}
@@ -520,7 +517,6 @@ const page = () => {
                     />
 
                     <DropDown
-                      isDarkMode={isDarkMode}
                       triggerButton="version"
                       selectedKeys={selectedVersion}
                       setSelectedKeys={handleVersionselect}

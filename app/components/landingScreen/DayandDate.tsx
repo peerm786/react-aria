@@ -31,6 +31,7 @@ const DateandTime = () => {
     const [formattedDate, setFormattedDate] = useState('');
     const [greeting, setGreeting] = useState('');
     const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
+    const loginId = getCookie("loginId")
 
     useEffect(() => {
         const currentDate = new Date();
@@ -50,7 +51,7 @@ const DateandTime = () => {
     return (
         <div className='flex items-center justify-between pt-[0.87vw]'>
             <div className='flex flex-col gap-1 pl-[1.46vw]'>
-                <h1 className='text-[1.25vw] font-semibold leading-[2.22vh]'>{greeting},{getCookie("loginId")}!</h1>
+                <h1 className='text-[1.25vw] font-semibold leading-[2.22vh]'>{greeting},{loginId.charAt(0).toUpperCase() + loginId.slice(1)}!</h1>
                 <p className='text-[0.72vw] leading-[2.22vh] text-black/50 dark:text-white/50'>{formattedDate}</p>
             </div>
             <div className='flex gap-[0.29vw] self-end'>
