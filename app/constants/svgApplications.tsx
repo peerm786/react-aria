@@ -1862,7 +1862,7 @@ export const ToastClose = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <rect width="24" height="24" rx="12" fill="white" fill-opacity="0.35" />
+      <rect width="24" height="24" rx="12" fill="white" fillOpacity="0.35" />
       <path
         d="M16.6673 8.27334L15.7273 7.33334L12.0007 11.06L8.27398 7.33334L7.33398 8.27334L11.0607 12L7.33398 15.7267L8.27398 16.6667L12.0007 12.94L15.7273 16.6667L16.6673 15.7267L12.9407 12L16.6673 8.27334Z"
         fill="white"
@@ -1880,7 +1880,7 @@ export const ToastSucess = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <rect width="28" height="28" rx="14" fill="white" fill-opacity="0.24" />
+      <rect width="28" height="28" rx="14" fill="white" fillOpacity="0.24" />
       <path
         fillRule="evenodd"
         clipRule="evenodd"

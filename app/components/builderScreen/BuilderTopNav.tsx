@@ -6,13 +6,6 @@ import { RootState } from "../../../lib/Store/store";
 
 const BuilderTopNav = ({ showNodeData, setShowNodeData }: any) => {
     const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode)
-    console.log(isDarkMode, "isDarkMode");
-
-    const dispatch = useDispatch();
-
-
-
-    // console.log(isDarkMode, "isDarkMode")
 
     return (
         <nav
@@ -21,7 +14,7 @@ const BuilderTopNav = ({ showNodeData, setShowNodeData }: any) => {
         >
             <div className="flex w-full h-full justify-between items-center">
                 <div className="flex gap-4">
-                    <div className="flex dark:bg-[#1D1D1D] dark:text-[#FFFFFF] ">
+                    <div className="flex items-center dark:bg-[#1D1D1D] dark:text-[#FFFFFF] ">
                         <TorusLogo />
                         <h2 className="font-semibold">TORUS</h2>
                     </div>

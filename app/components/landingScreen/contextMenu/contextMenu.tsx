@@ -8,21 +8,29 @@ import {
   PostToMarketIcon,
   RenameIcon,
   TrashIcon,
-} from "../../constants/svgApplications";   
- 
+} from "../../../constants/svgApplications";
+import ArtifactDisplayModal from "./artifactDisplayModel";
+import { AxiosService } from "../../../../lib/utils/axiosService";
+import { getCookie } from "../../../../lib/utils/cookiemgmt";
+import { toast } from "react-toastify";
+import TorusPopOver from "./torusPopover";
+import ArtifactSharingModal from "./shareArtifactModal";
+
 interface contextMenuProps {
   artifactName: string;
   artifactType: string;
   catalog: string;
   artifactGrp: string;
   version: string;
-  fabric : string;
-  index : number;
+  fabric: string;
+  index: number;
   isLocked: any;
   close: () => void;
   setInput: React.Dispatch<React.SetStateAction<{ id: number | undefined, name: string }>>
+  setRefetchOnContextMenu: any
+  artifactDetails:any
 }
- 
+
 const ArtifactContextMenu = ({
   artifactName,
   artifactGrp,
@@ -34,11 +42,38 @@ const ArtifactContextMenu = ({
   index,
   close,
   setInput,
+  setRefetchOnContextMenu,
+  artifactDetails
 }: contextMenuProps) => {
 
   const handleEdit = (e: any) => {
     setInput({ id: index, name: artifactName });
     close();
+  }
+
+  const handleDeleteArtifact = async () => {
+    try {
+      const response = await AxiosService.post("/tp/deleteArtifact", {
+        loginId: getCookie("loginId"),
+        artifactType,
+        fabric,
+        catalog,
+        artifactGrp,
+        artifactName,
+        version
+      })
+
+      if (response.status === 201) {
+        toast.success("Artifact deleted successfully")
+        setRefetchOnContextMenu((prev: any) => !prev)
+        close();
+      } else {
+        toast.error("Some error occured")
+      }
+    } catch (error) {
+      toast.error("Some error from API occured")
+
+    }
   }
 
   return (
@@ -54,16 +89,25 @@ const ArtifactContextMenu = ({
         >
           <RenameIcon /> Rename
         </Button>
-        <Button
-          className={"outline-none flex gap-[0.5vw] items-center text-[0.72vw]"}
-        >
-          <ArtifactShareIcon /> Share to
-        </Button>
-        <Button
-          className={"outline-none flex gap-[0.5vw] items-center text-[0.72vw]"}
-        >
-          <MoveToIcon /> Move to
-        </Button>
+        <TorusPopOver
+          parentHeading={
+            <Button
+              className={"outline-none flex gap-[0.5vw] items-center text-[0.72vw]"}
+            >
+              <ArtifactShareIcon /> Share to
+            </Button>
+          }
+          children={({close}:any) => <ArtifactSharingModal close={close} artifactDetails={artifactDetails}/>}
+          dialogClassName={"fixed z-[100] top-0 left-0 w-screen h-screen bg-transparent/45 flex items-center justify-center"}
+        />
+
+        <ArtifactDisplayModal
+          fabric={fabric}
+          sourceKeyPrefix={`TCL:${artifactType.toUpperCase()}:${fabric.toUpperCase()}:${catalog}:${artifactGrp}`}
+          version={version}
+          artifactName={artifactName}
+          closeParent={close}
+        />
       </div>
       <Separator orientation="horizontal" />
       <div className="flex flex-col px-[0.6vw] justify-around h-[6.25vw]">
@@ -72,7 +116,7 @@ const ArtifactContextMenu = ({
         >
           <ArtifactPinIcon /> Pin to Top
         </Button>
- 
+
         <Button
           className={
             "outline-none flex gap-[0.5vw] items-center text-[0.72vw] justify-between"
@@ -85,6 +129,7 @@ const ArtifactContextMenu = ({
         </Button>
         <Button
           className={"outline-none flex gap-[0.5vw] items-center text-[0.72vw]"}
+          onPress={handleDeleteArtifact}
         >
           <TrashIcon /> Move to Trash
         </Button>
@@ -92,7 +137,6 @@ const ArtifactContextMenu = ({
     </div>
   );
 };
- 
+
 export default ArtifactContextMenu;
- 
- 
+

@@ -65,9 +65,9 @@ const FilterModal = (
 
   useEffect(() => {
     setFilteredItems(
-      new Set([...Array.from(catalogs), ...Array.from(artifactGrps)])
+      new Set([...Array.from(fabrics), ...Array.from(catalogs), ...Array.from(artifactGrps)])
     );
-  }, [catalogs, artifactGrps]);
+  }, [fabrics, catalogs, artifactGrps]);
 
   const removeItemFromAllStates = (ele: any) => {
     const selectedCatalogs = new Set(catalogs);
@@ -127,59 +127,61 @@ const FilterModal = (
           Clear All
         </Button>
       </div>
-      <div className="flex flex-wrap">
-        {Array.from(filteredItems).map((ele, index) => (
-          <div
-            className="m-[0.29vw] bg-[#F4F5FA] flex gap-[0.29vw] rounded-xl p-[0.29vw] px-[0.58vw]"
-            key={index}
-          >
-            <span key={index} className="text-[0.62vw] leading-[2.22vh]">
-              {ele}
-            </span>
-            <Button
-              onPress={() => handleRemoveItem(ele)}
-              className={`outline-none`}
+      <div className="h-[73.6vh] overflow-y-scroll scrollbar-hide">
+        <div className="flex flex-wrap">
+          {Array.from(filteredItems).map((ele, index) => (
+            <div
+              className="m-[0.29vw] bg-[#F4F5FA] flex gap-[0.29vw] rounded-xl p-[0.29vw] px-[0.58vw]"
+              key={index}
             >
-              <CloseIcon />
-            </Button>
-          </div>
-        ))}
-      </div>
-
-      <div className="flex flex-col gap-[0.58vw]">
-        <h1 className="text-[0.62vw] leading-[2.22vh] font-semibold">SORT BY</h1>
-        <div className="flex gap-[0.58vw] flex-wrap text-nowrap">
-          {sortbutton.map((item) => (
-            <Button
-              onPress={() => setSelectedSortButton(item)}
-              className={`flex outline-none p-1 text-[0.62vw] leading-[2.22vh] border border-black/15
-              rounded-lg ${selectedSortButton == item ? "bg-[#0736C4] text-white" : "bg-[#F4F5FA]"}`}
-            >
-              {item}
-            </Button>
+              <span key={index} className="text-[0.62vw] leading-[2.22vh]">
+                {ele}
+              </span>
+              <Button
+                onPress={() => handleRemoveItem(ele)}
+                className={`outline-none`}
+              >
+                <CloseIcon />
+              </Button>
+            </div>
           ))}
         </div>
-      </div>
 
-      <div className="flex flex-col gap-[1.17vw] mt-[0.58vw]">
-        {mappingCondtions.map((state, index) => (
-          <FilterItems
-            key={index}
-            items={
-              index == 0
-                ? state.items
-                : state.items.map((item) => ({ key: item, label: item }))
-            }
-            selectedKeys={state.selectedKeys}
-            setSelectedKeys={state.setSelectedKeys}
-            title={state.title}
-            isSearchNeeded={index == 0 ? false : true}
-            classNames={{
-              listbox: getListBoxClassNames(state.title),
-              listboxItem: "p-[0.29vw]",
-            }}
-          />
-        ))}
+        <div className="flex flex-col gap-[0.58vw]">
+          <h1 className="text-[0.62vw] leading-[2.22vh] font-semibold">SORT BY</h1>
+          <div className="flex gap-[0.58vw] flex-wrap text-nowrap">
+            {sortbutton.map((item) => (
+              <Button
+                onPress={() => setSelectedSortButton(item)}
+                className={`flex outline-none p-1 text-[0.62vw] leading-[2.22vh] border border-black/15
+              rounded-lg ${selectedSortButton == item ? "bg-[#0736C4] text-white" : "bg-[#F4F5FA]"}`}
+              >
+                {item}
+              </Button>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-[1.17vw] mt-[0.58vw]">
+          {mappingCondtions.map((state, index) => (
+            <FilterItems
+              key={index}
+              items={
+                index == 0
+                  ? state.items
+                  : state.items.map((item) => ({ key: item, label: item }))
+              }
+              selectedKeys={state.selectedKeys}
+              setSelectedKeys={state.setSelectedKeys}
+              title={state.title}
+              isSearchNeeded={index == 0 ? false : true}
+              classNames={{
+                listbox: getListBoxClassNames(state.title),
+                listboxItem: "p-[0.29vw]",
+              }}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

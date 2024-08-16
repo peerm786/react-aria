@@ -19,7 +19,7 @@ import FilterModal from "./filterModal";
 import { toast } from "react-toastify";
 import TorusToast from "../torusComponents/torusToast";
 import { sortingConditions } from "../../constants/MenuItemTree"
-import ArtifactContextMenu from "./contextMenu";
+import ArtifactContextMenu from "./contextMenu/contextMenu";
 
 const Tabcard = ({
   fabric,
@@ -41,6 +41,7 @@ const Tabcard = ({
   const [wordLength, setWordLength] = useState(0);
   const [selectedSortButton, setSelectedSortButton] = useState<sortingConditions>("Newest");
   const [isInput, setInput] = useState<{ id: number | undefined, name: string }>({ id: undefined, name: "" });
+  const [refetchOnContextMenu, setRefetchOnContextMenu] = useState<any>(false);
 
   const getArtifact = async (type: string, fabric?: string) => {
     try {
@@ -91,7 +92,7 @@ const Tabcard = ({
 
   useEffect(() => {
     getArtifact(artifactType, fabric);
-  }, [artifactType, fabric, fabricList, catalogs, artifactGrps, selectedSortButton]);
+  }, [artifactType, fabric, fabricList, catalogs, artifactGrps, selectedSortButton, refetchOnContextMenu]);
 
   const getFabricIcon = (fab: string) => {
     switch (fab) {
@@ -197,8 +198,8 @@ const Tabcard = ({
 
   const handleChangeArtifactName = async (item: any) => {
     try {
-      const res = await AxiosService.post(`http://192.168.2.110:3002/tp/renameArtifact`, {
-        artifactType: artifactType,
+      const res = await AxiosService.post(`/tp/renameArtifact`, {
+        artifactType: item.artifactType,
         fabric: item.fabric,
         catalog: item.catalog,
         artifactGrp: item.artifactGrp,
@@ -254,7 +255,7 @@ const Tabcard = ({
           classNames={{
             modalClassName: "justify-end pr-[1.46vw] pt-[6.6vw]",
             dialogClassName:
-              "bg-white border rounded p-[0.58vw] h-[80.18vh] w-[14.89vw] overflow-y-auto outline-none",
+              "bg-white border rounded p-[0.58vw] h-[79.18vh] w-[14.89vw] outline-none",
           }}
         >
           <FilterModal
@@ -343,13 +344,13 @@ const Tabcard = ({
                         <Button className={`focus:outline-[#000000]/15 p-[0.29vw] items-center`}>
                           <ThreeDots fill={isDarkMode ? "white" : "black"} />
                         </Button>
-                        <Popover placement="bottom right">
+                        <Popover placement="bottom right" style={{ zIndex: 10 }}>
                           <Dialog className="outline-none">
                             {({ close }) => (
                               <ArtifactContextMenu
                                 artifactName={item.artifactName}
                                 artifactGrp={item.artifactGrp}
-                                artifactType={artifactType}
+                                artifactType={item.artifactType}
                                 catalog={item.catalog}
                                 isLocked={item.isLocked}
                                 version={item.version}
@@ -357,6 +358,8 @@ const Tabcard = ({
                                 index={index}
                                 close={close}
                                 setInput={setInput}
+                                setRefetchOnContextMenu={setRefetchOnContextMenu}
+                                artifactDetails={item}
                               />
                             )}
                           </Dialog>
