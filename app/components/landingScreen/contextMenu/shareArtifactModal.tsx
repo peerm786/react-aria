@@ -62,9 +62,12 @@ const ArtifactSharingModal = ({ close, artifactDetails }: any) => {
     const [userList, setUserList] = useState<any[]>([]);
     const [selectedUser, setSelectedUser] = useState<any>(null);
     const { artifactType, fabric, catalog, artifactGrp, artifactName, version, createdBy, sharingInfo } = artifactDetails;
+    const [selectedPermission, setSelectedPermission] = useState<string>("can view");
 
     const [selectedKeys, setSelectedKeys] = useState(sharingInfo ? sharingInfo?.map((person: any) => (person?.accessType)) : null);
     const [sharingInfoList, setSharingInfoList] = useState(sharingInfo ? sharingInfo : null);
+    const [usersSelectedOption, setUsersSelectedOption] = useState(null);
+    const [linkAccessSelectedOption, setLinkAccessSelectedOption] = useState(null);
 
     // Function to handle when a new key is selected
     const handleSelectedKeys = (newKey: any, index: number) => {
@@ -158,29 +161,40 @@ const ArtifactSharingModal = ({ close, artifactDetails }: any) => {
         setSelectedUser(user)
         setIsPopoverOpen(false)
     }
+    const handleLinkAccessToggle = (id: any) => {
+        setLinkAccessSelectedOption(id);
+    };
+
+
+    const handleUsersToggle = (id: any) => {
+        setUsersSelectedOption(id);
+    };
 
     return (
         <div className='bg-white w-[37.25vw] rounded p-[0.2vw]'>
-            <div className="flex justify-between w-full p-[1vw]">
-                <div className='flex gap-[1.46vw]'>
+            <div className="flex justify-between w-full p-2">
+
+                <div className="flex mt-[0.58vw] ml-[0.86vw] gap-[1.46vw] border-none ">
                     <Button
-                        className={`${Share ? "text-[#1A2024]" : ""} flex gap-[0.87vw] text-[#1A2024] font-semibold text-[0.93vw] leading-[1.25vw] outline-none`}
+                        className={`${Share ? "text-[#1A2024]" : "text-[#1A2024]/35 border-none"} flex gap-[0.87vw] font-semibold text-[0.93vw] leading-[1.25vw]`}
                         onPress={handleshare}>
-                        <Threecircles />
+                        <Threecircles fill={`${Share ? "#1A2024" : "#AFB1B2"}`} />
                         Share
                     </Button>
 
 
                     <Button
-                        className={`${Private ? "text-[#1A2024]" : ""} flex text-sm gap-[0.58vw] text-[#1A2024] text-[0.93vw] leading-[1.25vw] outline-none`}
+                        className={`${Private ? "text-[#1A2024]" : "text-[#1A2024]/35 border-none"} flex text-sm gap-[0.58vw] text-[0.93vw] leading-[1.25vw]`}
                         onPress={handlepriv}>
-                        <Privacy />
+                        <Privacy fill={`${Private ? "#1A2024" : "#AFB1B2"}`} />
                         Privacy
                     </Button>
+
+                    <Button className='ouitline-none ml-[20.12vw] ' onPress={close}>
+                        <Multiply />
+                    </Button>
                 </div>
-                <Button className='ouitline-none' onPress={close}>
-                    <Multiply />
-                </Button>
+
             </div>
 
             <hr className='w-[100%] mt-[0.58vw] border-[#E5E9EB] dark:border-[#212121]' />
@@ -195,28 +209,25 @@ const ArtifactSharingModal = ({ close, artifactDetails }: any) => {
                                 {selectedUser ? <div className='flex w-full justify-between px-[0.87vw]'><span>{selectedUser.loginId}</span><span className='cursor-pointer' onClick={() => { setSelectedUser(null) }}>X</span></div> :
                                     <Input
                                         type="text"
-                                        placeholder="Type to search..."
+                                        placeholder="Enter people,teams or email address"
                                         value={inputValue}
                                         onChange={handleInputChange}
-
-
-
-                                        className="flex w-full p-[0.29vw]   text-[#101828] text-[0.83vw] leading-[1.25vw] bg-[#F4F5FA]  focus:outline-none focus:ring-1 focus:ring-indigo-500 rounded-l-md"
+                                        className="flex w-[28.11vw] p-[0.58vw]  text-[#101828] text-[0.83vw] leading-[1.25vw] bg-[#F4F5FA]  focus:outline-none  rounded"
                                     />}
                                 <Button isDisabled={selectedUser ? false : true}
                                     onPress={() => { handleShare() }}
-                                    className="p-[0.29vw] px-[1.46vw]  bg-[#0736C4] disabled:bg-[#4c68bd] self-end text-[#FFFFFF] text-[0.83vw] leading-[1.25vw] rounded-md"
+                                    className="p-[0.58vw] px-[1.46vw]  bg-[#0736C4] disabled:bg-[#4c68bd] self-end text-[#FFFFFF] text-[0.83vw] leading-[1.25vw] rounded-md"
                                 >
                                     Share
                                 </Button>
 
                             </div>
                             {isPopoverOpen && (
-                                <div className=" absolute  mt-[0.58vw] left-0 bg-[#F4F5FA]  border w-[380px] border-gray-300 rounded-md p-[0.58vw] max-h-40 overflow-auto">
+                                <div className=" absolute  mt-[0.58vw] left-0 bg-[#F4F5FA]  border w-[380px]  rounded-md p-[0.58vw] max-h-40 overflow-auto">
                                     <div className="flex flex-col">
                                         {popoverContent.length > 0 ? (
                                             popoverContent.map((item: any) => (
-                                                <div key={item.email} className="flex p-[0.58vw] border-b border-gray-200 hover:bg-[#cfd0d3]" onClick={() => handleselectUser(item)}>
+                                                <div key={item.email} className="flex p-[0.58vw]  hover:bg-[#cfd0d3]" onClick={() => handleselectUser(item)}>
                                                     <div className="flex">
                                                         <TorusAvatar radius="full" size="lg" />
                                                     </div>
@@ -244,31 +255,33 @@ const ArtifactSharingModal = ({ close, artifactDetails }: any) => {
                         <div className="mt-[0.58vw] mx-[0.21vw]">
                             <div className="flex justify-between items-center py-[0.58vw]">
 
-                                <div className='flex gap-[0.87vw]'>
-                                    <TorusAvatar radius="full" size="lg" />
-                                    <div className='flex flex-col'>
-                                        <p className="text-[0.85vw] leading-[1.06vw] font-medium">{createdBy}</p>
+                                <div className='flex gap-[0.87vw] '>
+                                    <TorusAvatar radius="full" size="md" />
+                                    <div className='flex flex-col mb-[0.58vw]'>
+                                        <p className="text-[0.85vw] leading-[1.06vw] mt-[0.48vw] font-medium ">{createdBy}</p>
                                     </div>
                                 </div>
-                                <div className='border border-black/35 rounded bg-[#F4F5FA] py-[0.58vw] px-[2.04vw] text-[0.62vw] leading-[1.25vw]'>Owner</div>
+                                <div className='border border-black/15 rounded-lg bg-[#F4F5FA] p-[0.43vw] px-[2.34vw] text-[0.62vw] text-[#000000] mt-[0.58vw] leading-[1.25vw]'>Owner
+                                </div>
                             </div>
                             {sharingInfoList ? sharingInfoList.map((person: any, i: any) => (
                                 <div key={person?.sharedTo?.email} className="flex justify-between items-center py-[0.58vw]">
-                                    <div className='flex gap-[0.87vw]'>
-                                        <TorusAvatar radius="full" size="lg" />
+                                    <div className='flex gap-[0.87vw]  mb-[0.58vw items-center'>
+                                        <TorusAvatar radius="full" size="md" />
                                         <div className='flex flex-col'>
                                             <p className="text-[0.85vw] leading-[1.06vw] font-medium">{person?.sharedTo?.loginId}</p>
                                             <p className="text-[0.63vw] leading-[1.25vw] text-[#000000]/50">{person?.sharedTo?.email}</p>
                                         </div>
                                     </div>
-                                    <div className="flex">
+                                    <div className="flex  gap-[0.58vw] ">
                                         <DropDown
                                             triggerButton=""
                                             selectedKeys={person?.accessType}
                                             setSelectedKeys={(e) => handleSelectedKeys(e, i)}
                                             items={["Full Access", "Can View", "Can Edit"]}
                                             classNames={{
-                                                triggerButton: "  gap-[0.58vw] rounded-lg px-[2.04vw] bg-[#F4F5FA] border border-[#000000]/15 text-[0.62vw] leading-[1.25vw] text-[#000000] mt-[0.58vw] ",
+                                                triggerButton:
+                                                    "w-[7vw] h-[2.5vw] flex items-center justify-center gap-[0.58vw] whitespace-nowrap rounded-lg bg-[#F4F5FA] border border-[#000000]/15 text-[0.62vw] leading-[1.25vw] text-[#000000] mt-[0.58vw]",
                                                 popover: "w-40",
                                                 listbox: "overflow-y-auto",
                                                 listboxItem: "flex text-sm justify-between",
@@ -282,26 +295,33 @@ const ArtifactSharingModal = ({ close, artifactDetails }: any) => {
                 </div>
             )}
             {Private && (
-                <div className=''>
+                <div className='w-full'>
 
                     <div className="p-[0.86vw] h-[51.2vh] ">
                         <h3 className="font-semibold text-[0.72vw] leading-[1.25vw] text-[#101828]">Link Access</h3>
                         {accessOptions.map((option) => (
                             <div
                                 key={option.id}
-                                className="flex gap- bg-[#F4F5FA] rounded-md py-[0.87vw] px-[0.87vw] mb-[0.87vw] items-center cursor-pointer"
-                                onClick={() => handleToggle(option.id)}
+                                className={`flex gap-[0.87vw] bg-[#F4F5FA] rounded-md py-[0.87vw] px-[0.87vw] mb-[0.87vw] items-center cursor-pointer ${linkAccessSelectedOption === option.id ? '' : ''
+                                    }`}
+                                onClick={() => handleLinkAccessToggle(option.id)}
                             >
-                                <span className="flex items-center">
-                                    <span className='bg-white w-3 h-3  flex items-center justify-center rounded-full'><option.icon /></span>
+                                <span className="flex items-center ">
+                                    <span className='bg-white p-[0.29vw] flex items-center justify-center rounded-full'><option.icon /></span>
                                 </span>
-                                <div className="flex flex-col text-[#101828] text-[0.85vw] leading-[1.06vw]">
+                                <div className="flex flex-col font-medium text-[#101828] text-[0.85vw] leading-[1.06vw] ">
                                     {option.title}
-                                    <div>{option.description}</div>
+                                    <div className='text-[0.62vw] text-[#000000]/50 leading-[1.25vw]'>{option.description}</div>
                                 </div>
-                                <div className="ml-auto cursor-pointer" onClick={() => handleToggle(option.id)}>
-                                    <span className={`w-[0.62vw] h-[1.11vh] flex items-center justify-center rounded-full ${selectedOption === option.id ? 'bg-blue-500' : 'border border-[#808080]/55'}`}>
-                                        {selectedOption === option.id && (
+
+                                <div className="ml-auto cursor-pointer">
+                                    <span
+                                        className={`p-[0.29vw] flex items-center justify-center rounded-full ${linkAccessSelectedOption === option.id
+                                            ? 'bg-blue-500'
+                                            : 'border border-[#808080]/55'
+                                            }`}
+                                    >
+                                        {linkAccessSelectedOption === option.id && (
                                             <VscCheck className="text-white w-[0.62vw] h-[1.11vh]" />
                                         )}
                                     </span>
@@ -310,25 +330,32 @@ const ArtifactSharingModal = ({ close, artifactDetails }: any) => {
                             </div>
                         ))}
 
+
                         <hr className="w-full mt-[0.58vw] border-[#E5E9EB] dark:border-[#212121]" />
 
                         <h3 className="font-semibold text-[0.72vw] leading-[1.25vw] text-[#101828]">Users</h3>
                         {userOptions.map((option) => (
                             <div
                                 key={option.id}
-                                className="flex gap-2 bg-[#F4F5FA] rounded-md py-[0.87vw] px-[0.87vw] mb-[0.87vw] items-center cursor-pointer"
-                                onClick={() => handleToggle(option.id)}
+                                className={`flex gap-[0.87vw] bg-[#F4F5FA] rounded-md py-[0.87vw] px-[0.87vw] mb-[0.87vw] items-center cursor-pointer ${usersSelectedOption === option.id ? '' : ''
+                                    }`}
+                                onClick={() => handleUsersToggle(option.id)}
                             >
                                 <span className="flex items-center">
-                                    <span className='bg-white w-[1.45vw] h-[2.59vh] flex items-center justify-center rounded-full'><option.icon /></span>
+                                    <span className='bg-white p-[0.29vw] flex items-center justify-center rounded-full'><option.icon /></span>
                                 </span>
-                                <div className="flex flex-col text-[#101828] text-[0.85vw] leading-[1.06vw]">
+                                <div className="flex flex-col text-[#101828] text-[0.85vw] font-medium leading-[1.06vw]">
                                     {option.title}
-                                    <div>{option.description}</div>
+                                    <div className='text-[0.62vw] text-[#000000]/50 leading-[1.25vw]'>{option.description}</div>
                                 </div>
-                                <div className="ml-auto cursor-pointer" onClick={() => handleToggle(option.id)}>
-                                    <span className={`w-[0.62vw] h-[1.11vh] flex items-center justify-center rounded-full ${selectOption === option.id ? 'bg-blue-500' : 'border border-[#808080]/55'}`}>
-                                        {selectedOption === option.id && (
+                                <div className="ml-auto cursor-pointer">
+                                    <span
+                                        className={`p-[0.29vw] flex items-center justify-center rounded-full ${usersSelectedOption === option.id
+                                            ? 'bg-blue-500'
+                                            : 'border border-[#808080]/55'
+                                            }`}
+                                    >
+                                        {usersSelectedOption === option.id && (
                                             <VscCheck className="text-white w-[0.62vw] h-[1.11vh]" />
                                         )}
                                     </span>
@@ -340,17 +367,26 @@ const ArtifactSharingModal = ({ close, artifactDetails }: any) => {
             )}
             <hr className="w-full mt-[0.58vw] border-[#E5E9EB] dark:border-[#212121]" />
             {Share && (
-                <div className="flex items-center w-full bg-[#F4F5FA] rounded-md p-[0.29vw] ">
-                    <Global />
-                    <Input
-                        type="text"
-                        value="Anyone with the link can view"
-                        readOnly
-                        className="flex-1 p-[0.58vw]  text-[#101828] bg-[#F4F5FA] text-[0.83vw] leading-[1.25vw] focus:outline-none focus:ring-1 focus:ring-indigo-500 rounded-l-md"
-                    />
-                    <Button
-                        className="p-[0.29vw] px-[1.46vw] text-black bg-[#FFFFFF] text-[0.83vw] leading-[1.25vw] rounded-md"
-                    >
+                <div className="flex items-center w-full bg-[#F4F5FA] rounded-md p-[0.29vw]  ">
+                    <div className='ml-[0.58vw]'>
+                        <Global />
+                    </div>
+                    <div className="flex-1 flex items-center p-[0.58vw]  text-[#101828] text-[0.83vw] leading-[1.25vw] ">
+                        <span className="whitespace-normal text-[0.83vw] linear-[1.25vw] text-[#000000]/50  ">Anyone with the link</span>
+                        <DropDown
+                            triggerButton={selectedPermission}
+                            selectedKeys={selectedPermission}
+                            setSelectedKeys={setSelectedPermission}
+                            items={["canview", "canEdit"]}
+                            classNames={{
+                                triggerButton: " w-35 gap-[0.29vw] text-[0.83vw] leading-[1.25vw] font-semibold text-[#000000]/50 ",
+                                popover: "w-40",
+                                listbox: "overflow-y-auto",
+                                listboxItem: "flex text-sm  justify-between",
+                            }}
+                        />
+                    </div>
+                    <Button className="p-[0.29vw] px-[1.46vw] text-black  bg-[#FFFFFF] text-[0.83vw] leading-[1.25vw] rounded-md">
                         Copy Link
                     </Button>
                 </div>
