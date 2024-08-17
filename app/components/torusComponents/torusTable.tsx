@@ -70,7 +70,7 @@ export function TorusColumn(props: any) {
                   className="sort-indicator opacity-0 group-hover:opacity-100 transition-opacity"
                 >
                   <FaArrowDown
-                    size={15}
+                    size={12}
                     color="#667085"
                     className={` transition-rotate ease-in-out duration-100 ${sortDirection === "ascending" ? "rotate-180" : ""
                       }`}
@@ -102,7 +102,7 @@ export function TorusTableHeader({
           aria-label="Column"
           className={twMerge(
             `text-xs w-[${100 / columns.length + 1
-            }%] font-medium px-2 py-[0.8rem] focus:outline-none focus:border-none`,
+            }%] font-medium px-[0.58vw] py-[0.8rem] focus:outline-none focus:border-none`,
             className
           )}
         >
@@ -358,18 +358,18 @@ const Pagination = ({ currentPage, totalPages, setCurrentPage }: any) => {
   return (
     <div className="w-full flex items-center justify-center gap-4 ">
       <Button
-        className="px-2 py-1 border rounded shadow flex items-center text-xs text-[#344054] gap-2 focus:outline-none dark:text-[#FFFFFF]"
+        className="px-[0.58vw] py-[0.29vw]  border rounded shadow flex items-center text-[0.72vw] text-[#344054] gap-2 focus:outline-none dark:text-[#FFFFFF]"
         onPress={() => handlePageChange(currentPage - 1)}
         isDisabled={currentPage === 1}
       >
-        <BiLeftArrowAlt size={20} /> Previous
+        <BiLeftArrowAlt size={12} /> Previous
       </Button>
       <div className="flex gap-2">
         {getPageNumbers().map((page) => (
           <Button
             key={page}
-            className={`pagination-button text-xs focus:outline-none dark:focus:bg-[#3063FF]/35 dark:text-[#FFFFFF] ${page === currentPage
-              ? "text-[#0736C4] bg-[#E3EAFF] px-2 py-1 rounded"
+            className={`pagination-button text-[0.72vw] focus:outline-none dark:focus:bg-[#3063FF]/35 dark:text-[#FFFFFF] ${page === currentPage
+              ? "text-[#0736C4] bg-[#E3EAFF] px-[0.58vw] py-[0.29vw]  rounded"
               : "text-[#667085]"
               }`}
             onPress={() => handlePageChange(page)}
@@ -383,8 +383,8 @@ const Pagination = ({ currentPage, totalPages, setCurrentPage }: any) => {
       </div>
       {totalPages > 4 && currentPage + 1 < totalPages && (
         <Button
-          className={`pagination-button text-xs focus:outline-none dark:text-[#FFFFFF] ${totalPages === currentPage
-            ? "text-[#0736C4] bg-[#E3EAFF] px-2 py-1 rounded"
+          className={`pagination-button text-[0.72vw] focus:outline-none dark:text-[#FFFFFF] ${totalPages === currentPage
+            ? "text-[#0736C4] bg-[#E3EAFF] px-[0.58vw] py-[0.29vw]  rounded"
             : "text-[#667085]"
             }`}
           onPress={() => handlePageChange(totalPages)}
@@ -393,11 +393,11 @@ const Pagination = ({ currentPage, totalPages, setCurrentPage }: any) => {
         </Button>
       )}
       <Button
-        className="px-2 py-1 border rounded shadow flex items-center text-xs text-[#344054] gap-2 focus:outline-none aria-pressed:hidden dark:text-[#FFFFFF]"
+        className="px-[0.58vw] py-[0.29vw]  border rounded shadow flex items-center text-[0.72vw] text-[#344054] gap-2 focus:outline-none aria-pressed:hidden dark:text-[#FFFFFF]"
         onPress={() => handlePageChange(currentPage + 1)}
         isDisabled={currentPage === totalPages}
       >
-        Next <BiRightArrowAlt size={20} />
+        Next <BiRightArrowAlt size={12} />
       </Button>
     </div>
   );
@@ -795,7 +795,7 @@ export function TorusTable({
               </div>
             </div> */}
           <div
-            className={`w-full  ${totalPages > 1 ? "h-[70%]" : "h-[75%]"} flex flex-col justify-between items-center`}
+            className={`w-full  ${totalPages > 1 ? "h-[73%]" : "h-[75%]"} flex flex-col justify-between items-center`}
           >
             {/* <div className="w-[95%] flex items-center justify-center h-[8%]">
                 <div className="w-[60%] flex  h-full bg-transparent rounded-md ">

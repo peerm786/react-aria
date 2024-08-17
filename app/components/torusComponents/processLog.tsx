@@ -12,7 +12,12 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../lib/Store/store";
 import { SiTicktick } from "react-icons/si";
 
-const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeData }: any) => {
+const ProcessLogs = ({
+  visibleColumns,
+  searchValue,
+  showNodeData,
+  setShowNodeData,
+}: any) => {
   const [data, setData] = useState<any>([]);
   const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
   const [copied, setCopied] = useState(null);
@@ -53,7 +58,7 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
             jobName: key,
             version: key.split(":")[6],
             fabric: key.split(":")[1],
-            jobType: key.split(":")[1] == "PF" ? "Process" : "Push",
+            jobType: key.split(":")[1] == "PF" ? "Process" : "Process",
             status: statusArray.includes("Failed") ? "Failed" : "Success",
             node: nodeNameArray,
             time: timeStampArray,
@@ -77,7 +82,7 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
         return (
           <div>
             {data.nodeData.map((item: any) => (
-              <div className="text-sm font-medium">{item.node}</div>
+              <div className="text-[0.83vw] font-medium">{item.node}</div>
             ))}
           </div>
         );
@@ -85,8 +90,12 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
         return (
           <div>
             {data.nodeData.map((item: any) => (
-              <div className="text-xs text-black/50 
-           dark:text-[#FFFFFF]/50">{item.time}</div>
+              <div
+                className="text-[0.833vw] text-black/50 
+           dark:text-[#FFFFFF]/50"
+              >
+                {item.time}
+              </div>
             ))}
           </div>
         );
@@ -97,7 +106,7 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
         if (resultStatus.includes("Failed")) {
           return (
             <div
-              className={`px-4 py-1 text-center text-xs rounded-full text-white bg-red-500`}
+              className={`px-[0.87vw] py-[0.29vw] text-center text-[0.625vw] rounded-full text-white bg-red-500`}
             >
               Failed
             </div>
@@ -105,7 +114,7 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
         } else {
           return (
             <div
-              className={`px-3 py-1 text-center text-xs rounded-full text-white bg-green-500`}
+              className={`px-[0.87vw] py-[0.29vw] text-center text-[0.625vw] rounded-full text-white bg-green-500`}
             >
               Success
             </div>
@@ -119,9 +128,12 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
   const displayjobname = (datas: any) => {
     const { jobName } = datas;
     const artifact = jobName.split(":")[5];
-    const tenantDetail = jobName.split(":").map((item: string, index: number) => (index < 3 ? item + ">" : "")).join("");
+    const tenantDetail = jobName
+      .split(":")
+      .map((item: string, index: number) => (index < 3 ? item + ">" : ""))
+      .join("");
     const isProcess = jobName.split(":")[1] == "PF" ? true : false;
-    const processKey = isProcess ? jobName.split(":")[jobName.split(":").length - 1] : undefined;
+    const processKey = jobName.split(":")[jobName.split(":").length - 1];
 
     const handleCopyToClipboard = async () => {
       try {
@@ -131,24 +143,29 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
           setCopied(null);
         }, 1000);
       } catch (err) {
-        console.error('Failed to copy text: ', err);
+        console.error("Failed to copy text: ", err);
       }
     };
 
     return (
-      <div onClick={() => setShowNodeData(datas)}>
-        <div className="text-sm font-bold">
+      <div
+        onClick={() => setShowNodeData(datas)}
+        className="flex flex-col gap-[0.29vw]"
+      >
+        <div className="text-[0.833vw] leading-[1.85vh] font-bold">
           {artifact.charAt(0).toUpperCase() + artifact.slice(1)}
         </div>
-        <div className="text-xs text-black/35 dark:text-[#FFFFFF]/35">{tenantDetail}</div>
+        <div className="text-[0.625vw] leading-[1.85vh] text-black/35 dark:text-[#FFFFFF]/35">
+          {tenantDetail}
+        </div>
         {processKey && (
-          <div className="flex gap-1 text-xs font-medium border border-[#1C274C]/15 rounded-full p-1 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-[#FFFFFF] dark:border-[#FFFFFF]/15">
+          <div className="flex items-center gap-1 text-[0.625vw] leading-[1.85vh] font-medium border border-[#1C274C]/15 rounded-full p-1 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-[#FFFFFF] text-[#1C274C] dark:border-[#FFFFFF]/15">
             UID: {processKey}
             <Button className={"outline-none"} onPress={handleCopyToClipboard}>
               {copied && copied === processKey ? (
-                <SiTicktick size={12} className="text-green-500" />
+                <SiTicktick size={8} className="text-green-500" />
               ) : (
-                <Clipboard fill={isDarkMode ? 'white' : 'black'} />
+                <Clipboard fill={isDarkMode ? "white" : "black"} />
               )}
             </Button>
           </div>
@@ -162,11 +179,11 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
       case "jobName":
         return displayjobname(item);
       case "version":
-        return <div className="text-sm font-medium">{item.version}</div>
+        return <div className="text-[0.83vw] font-medium">{item.version}</div>;
       case "fabric":
-        return <div className="text-sm font-medium">{item.fabric}</div>
+        return <div className="text-[0.83vw] font-medium">{item.fabric}</div>;
       case "jobType":
-        return <div className="text-sm font-medium">{item.jobType}</div>;
+        return <div className="text-[0.83vw] font-medium">{item.jobType}</div>;
       case "status":
         return displayNodeData(item, "status");
       case "node":
@@ -180,7 +197,8 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
 
   return (
     <div>
-      <TorusTable className=""
+      <TorusTable
+        className=""
         primaryColumn="jobName"
         tableData={data}
         visibleColumns={visibleColumns}
@@ -201,8 +219,13 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
                       id={column.id}
                       allowsSorting={column.allowsSorting}
                       isRowHeader={column.isRowHeader}
-                      className={`text-sm font-medium bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-[#FFFFFF] cursor-pointer ${i == 0 ? "rounded-tl-xl rounded-bl-xl" : ""} ${i == filterColmns.length - 1 ? "rounded-tr-xl rounded-br-xl" : ""}`}
-
+                      className={`text-[0.72vw] leading-[2.22vh] font-medium bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-[#FFFFFF] cursor-pointer ${
+                        i == 0 ? "rounded-tl-xl rounded-bl-xl" : ""
+                      } ${
+                        i == filterColmns.length - 1
+                          ? "rounded-tr-xl rounded-br-xl"
+                          : ""
+                      }`}
                     >
                       {column.name}
                     </TorusColumn>
@@ -214,7 +237,10 @@ const ProcessLogs = ({ visibleColumns, searchValue, showNodeData, setShowNodeDat
             {/* <span className="h-[500px] overflow-y-scroll"> */}
             <TableBody
               renderEmptyState={() => (
-                <div className="text-center overflow-y-auto"> No Process log detail found </div>
+                <div className="text-center overflow-y-auto">
+                  {" "}
+                  No Process log detail found{" "}
+                </div>
               )}
             >
               {sortedItems.map((item: any, index: number) => (

@@ -5,12 +5,11 @@ import {
     TorusTable,
     TorusTableHeader,
 } from "./torusTable";
-import { Cell, Separator, TableBody } from "react-aria-components";
+import { Cell, TableBody } from "react-aria-components";
 import { AxiosService } from '../../../lib/utils/axiosService';
 import { toast } from 'react-toastify';
 import JsonView from "react18-json-view";
 import "react18-json-view/src/style.css";
-import { tree } from 'next/dist/build/templates/app-page';
 import TorusToast from './torusToast';
 
 const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[], searchValue: string, }) => {
@@ -79,8 +78,8 @@ const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[
         const jobName = array[5]
         return (
             <div>
-                <div className='text-sm font-bold dark:text-white'>{jobName}</div>
-                <div className='text-xs text-black/35 dark:text-[#FFFFFF]/35 '>
+                <div className='text-[0.833vw] leading-[1.85vh] font-bold dark:text-white'>{jobName}</div>
+                <div className='text-[0.625vw] leading-[1.85vh] text-black/35 dark:text-[#FFFFFF]/35 '>
                     {array.map((item: any, index: any) => (
                         index < 3 && <span>{item + ">"}</span>
                     ))}
@@ -94,11 +93,11 @@ const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[
             case "key":
                 return displayjobname(item);
             case "timeStamp":
-                return <div className='text-xs text-black/50 dark:text-[#FFFFFF]/50 '>{item.timeStamp}</div>
+                return <div className='text-[0.83vw] text-black/50 dark:text-[#FFFFFF]/50 '>{item.timeStamp}</div>
             case "version":
-                return <div className='text-sm font-medium dark:text-white'>{item.version}</div>
+                return <div className='text-[0.83vw] font-medium dark:text-white'>{item.version}</div>
             case "errorCode":
-                return <div className='text-xs dark:text-white/50'>{item.errorCode}</div>
+                return <div className='text-[0.83vw] dark:text-white/50'>{item.errorCode}</div>
             // case "errorDetails":
             //     return <div>{Object.keys(tabdata.error).map((item: any) => <div>{item.errorCode}</div>)}</div>
             default:
@@ -139,7 +138,7 @@ const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[
                                                 id={column.id}
                                                 allowsSorting={column.allowsSorting}
                                                 isRowHeader={column.isRowHeader}
-                                                className={`text-sm font-medium bg-[#F4F5FA] cursor-pointer dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ${i == 0 ? "rounded-tl-xl rounded-bl-xl" : ""} ${i == filterColmns.length - 1 ? "rounded-tr-xl rounded-br-xl" : ""}`}
+                                                className={`text-[0.72vw] leading-[2.22vh] font-medium bg-[#F4F5FA] cursor-pointer dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ${i == 0 ? "rounded-tl-xl rounded-bl-xl" : ""} ${i == filterColmns.length - 1 ? "rounded-tr-xl rounded-br-xl" : ""}`}
                                             >
                                                 {column.name}
                                             </TorusColumn>
@@ -190,14 +189,15 @@ const ExceptionLog = ({ visibleColumns, searchValue }: { visibleColumns: string[
                 </TorusTable>
             </div>
             <hr className="w-[1px] h-[90%] bg-black/10 dark:bg-[#212121]" />
-            <div className='w-[28%] h-[85%] mt-2 mr-3 items-center bg-[#F4F5FA] rounded-lg dark:bg-[#0F0F0F] dark:text-[#FFFFFF]'>
-                <p className="text-l p-3 font-semibold text-left">Error Details</p>
+            <div className='w-[28%] h-[88%] mt-[0.58vw] mr-[0.87vw] items-center bg-[#F4F5FA] rounded-lg dark:bg-[#0F0F0F] dark:text-[#FFFFFF]'>
+                <p className="text-[0.93vw] leading-[2.22vh] p-[0.87vw] font-semibold text-left">Error Details</p>
                 <div className='w-full h-[88%] overflow-scroll scrollbar-thin'>
                     {(tabdata) ? (
                         <JsonView
                             theme='atom'
                             enableClipboard={false}
                             src={tabdata.errorDetails}
+                            style={{fontSize: "0.833vw" }}
                         // collapsed={true}
                         // collapseObjectsAfterLength={2}
                         />

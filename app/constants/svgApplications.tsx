@@ -1754,11 +1754,11 @@ export const LogScreenIcon = ({ fill = "black", stroke = "white" }) => {
   )
 }
 
-export const ColumnIcon = ({ fill = "black" }) => {
+export const ColumnIcon = ({ fill = "black" , height="25", width="20" }) => {
   return (
     <svg
-      width="20"
-      height="25"
+      width={width}
+      height={height}
       viewBox="0 0 24 25"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

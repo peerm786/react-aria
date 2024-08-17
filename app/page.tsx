@@ -321,7 +321,7 @@ const page = () => {
         showNodeData={showNodeData}
         setShowNodeData={setShowNodeData}
       />
-      <div className="flex justify-between w-full h-[92%] dark:bg-[#0F0F0F]">
+      <div className="flex justify-between w-full h-[94%] dark:bg-[#0F0F0F]">
         <BuilderSideNav />
         {showNodeData ? (
           <div className="flex flex-col w-[94%] h-[95%] mt-[1.46vw] mr-[0.87vw] rounded-md">
@@ -376,27 +376,27 @@ const page = () => {
               )}
               {selectedLogsButton && (
                 <div className="flex gap-2 items-center justify-between w-[70%]">
-                  <div className="flex w-full gap-2 items-center pt-2">
-                    <div className="relative w-[60%]">
-                      <span className="absolute inset-y-0 left-0 flex items-center p-2 h-7 w-7 ">
-                        <SearchIcon fill={isDarkMode ? "white" : "black"} />
+                  <div className="flex w-full gap-[0.58vw] items-center pt-[0.58vw">
+                    <div className="relative w-[60%] h-[4vh] ">
+                      <span className="absolute inset-y-0 left-0 flex items-center p-[0.58vw] h-[2.18vw] w-[2.18vw] ">
+                        <SearchIcon fill={isDarkMode ? "white" : "black"} height="0.83vw" width="0.83vw"/>
                       </span>
                       <Input
                         value={searchValue}
                         onChange={(e) => setSearchValue(e.target.value)}
                         placeholder="Search"
-                        className={`w-full p-1 focus:outline-none focus:border-blue-400 dark:focus:border-blue-400 border pl-6 text-sm font-medium rounded-md dark:border-[#212121] dark:text-white`}
+                        className={`w-full p-[0.29vw] text-[0.72vw] h-[4vh] focus:outline-none focus:border-blue-400 dark:focus:border-blue-400 border pl-[1.76vw] font-medium rounded-md dark:border-[#212121] dark:text-white`}
                       />
                     </div>
                     <DropDown
                       classNames={{
-                        popover: "w-[180px]",
+                        popover: "w-[10vw] h-[25vh] overflow-y-auto",
                         triggerButton:
-                          "w-[100px] h-[30px] border border-black/15 rounded-lg bg-[#F4F5FA] dark:border-[#212121] dark:bg-[#0F0F0F] dark:text-[#FFFFFF]",
+                          "w-[5.5vw] h-[4vh] border border-black/15 rounded-lg bg-[#F4F5FA] dark:border-[#212121] dark:bg-[#0F0F0F] dark:text-[#FFFFFF]",
                       }}
                       triggerButton={
-                        <div className="flex text-xs font-medium items-center gap-2 dark:bg-[#0F0F0F] dark:text-[#FFFFFF]">
-                          <ColumnIcon fill={isDarkMode ? "white" : "black"} />{" "}
+                        <div className="flex text-[0.72vw] font-medium items-center gap-[0.29vw] dark:bg-[#0F0F0F] dark:text-[#FFFFFF]">
+                          <ColumnIcon fill={isDarkMode ? "white" : "black"} height="0.83vw" width="0.83vw"/>{" "}
                           Columns
                         </div>
                       }
@@ -412,12 +412,12 @@ const page = () => {
                     />
                     <DropDown
                       classNames={{
-                        popover: "w-[180px]",
+                        popover: "w-[10vw] h-[25vh] overflow-y-auto",
                         triggerButton:
-                          "w-[80px] h-[30px] border border-black/15 rounded-lg dark:border-[#212121] bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-[#FFFFFF]",
+                          "w-[4.2vw] h-[4vh] border border-black/15 rounded-lg dark:border-[#212121] bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-[#FFFFFF]",
                       }}
                       triggerButton={
-                        <div className="flex text-xs font-medium items-center gap-2 dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ">
+                        <div className="flex text-[0.72vw] font-medium items-center gap-[0.29vw] dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ">
                           <FilterIcon fill={isDarkMode ? "white" : "black"} />{" "}
                           Filter
                         </div>
@@ -435,14 +435,14 @@ const page = () => {
                   </div>
                   <div>
                     <Tabs
-                      className={"pt-2 pr-2"}
+                      className={"pt-[0.58vw] pr-[0.58vw]"}
                       selectedKey={logsTabList}
                       onSelectionChange={setLogTabList}
                     >
-                      <TabList className="flex w-full p-1 gap-2 bg-[#F4F5FA] items-center text-nowrap rounded-md dark:bg-[#0F0F0F] dark:text-[#FFFFFF]">
+                      <TabList className="flex w-full p-[0.29vw] gap-[0.58vw] bg-[#F4F5FA] items-center text-nowrap rounded-md dark:bg-[#0F0F0F] dark:text-[#FFFFFF]">
                         <Tab
                           id="log"
-                          className={`p-2 outline-none text-xs rounded-md font-semibold cursor-pointer dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ${logsTabList === "log"
+                          className={`p-[0.58vw] outline-none text-[0.7vw] rounded-md font-semibold cursor-pointer dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ${logsTabList === "log"
                             ? "bg-white dark:bg-[#161616]"
                             : ""
                             }`}
@@ -451,7 +451,7 @@ const page = () => {
                         </Tab>
                         <Tab
                           id="exception"
-                          className={`p-2 outline-none text-xs rounded-md font-semibold cursor-pointer dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ${logsTabList === "exception"
+                          className={`p-[0.58vw] outline-none text-[0.7vw] rounded-md font-semibold cursor-pointer dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ${logsTabList === "exception"
                             ? "bg-white dark:bg-[#161616]"
                             : ""
                             }`}
