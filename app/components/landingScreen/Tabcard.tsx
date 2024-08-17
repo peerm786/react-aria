@@ -1,5 +1,14 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { Button, Dialog, DialogTrigger, Input, Popover, Tab, TabList, Tabs } from "react-aria-components";
+import {
+  Button,
+  Dialog,
+  DialogTrigger,
+  Input,
+  Popover,
+  Tab,
+  TabList,
+  Tabs,
+} from "react-aria-components";
 import {
   Avatars,
   DataFabric,
@@ -8,7 +17,7 @@ import {
   SecurityFabric,
   ThreeDots,
   UserFabric,
-  LockIcon
+  LockIcon,
 } from "../../constants/svgApplications";
 import { AxiosService } from "../../../lib/utils/axiosService";
 import { getCookie, getEncodedDetails } from "../../../lib/utils/cookiemgmt";
@@ -18,8 +27,9 @@ import TorusDialog from "../torusdialogmodal";
 import FilterModal from "./filterModal";
 import { toast } from "react-toastify";
 import TorusToast from "../torusComponents/torusToast";
-import { sortingConditions } from "../../constants/MenuItemTree"
+import { sortingConditions } from "../../constants/MenuItemTree";
 import ArtifactContextMenu from "./contextMenu/contextMenu";
+import { TbPinFilled } from "react-icons/tb";
 
 const Tabcard = ({
   fabric,
@@ -39,8 +49,12 @@ const Tabcard = ({
   const client = getCookie("client");
   const loginId = getCookie("loginId");
   const [wordLength, setWordLength] = useState(0);
-  const [selectedSortButton, setSelectedSortButton] = useState<sortingConditions>("Newest");
-  const [isInput, setInput] = useState<{ id: number | undefined, name: string }>({ id: undefined, name: "" });
+  const [selectedSortButton, setSelectedSortButton] =
+    useState<sortingConditions>("Newest");
+  const [isInput, setInput] = useState<{
+    id: number | undefined;
+    name: string;
+  }>({ id: undefined, name: "" });
   const [refetchOnContextMenu, setRefetchOnContextMenu] = useState<any>(false);
 
   const getArtifact = async (type: string, fabric?: string) => {
@@ -52,8 +66,8 @@ const Tabcard = ({
         fabric: fabric
           ? fabric
           : fabricList.size
-            ? Array.from(fabricList)
-            : fabric,
+          ? Array.from(fabricList)
+          : fabric,
         catalog: catalogs.size ? Array.from(catalogs) : undefined,
         artifactGrp: artifactGrps.size ? Array.from(artifactGrps) : undefined,
         sortOrder: selectedSortButton ? selectedSortButton : "Newwest",
@@ -72,7 +86,7 @@ const Tabcard = ({
             text: `Something went wrong`,
             closeButton: false,
           } as any
-        )
+        );
       }
     } catch (error) {
       toast(
@@ -86,26 +100,64 @@ const Tabcard = ({
           text: `${error}`,
           closeButton: false,
         } as any
-      )
+      );
     }
   };
 
   useEffect(() => {
     getArtifact(artifactType, fabric);
-  }, [artifactType, fabric, fabricList, catalogs, artifactGrps, selectedSortButton, refetchOnContextMenu]);
+  }, [
+    artifactType,
+    fabric,
+    fabricList,
+    catalogs,
+    artifactGrps,
+    selectedSortButton,
+    refetchOnContextMenu,
+  ]);
 
   const getFabricIcon = (fab: string) => {
     switch (fab) {
       case "df":
-        return <DataFabric fill={isDarkMode ? "#3063FF" : "#0736C4"} width="1.04vw" height="1.04vw" />;
+        return (
+          <DataFabric
+            fill={isDarkMode ? "#3063FF" : "#0736C4"}
+            width="1.04vw"
+            height="1.04vw"
+          />
+        );
       case "pf":
-        return <ProcessFabric fill={isDarkMode ? "#3063FF" : "#0736C4"} width="1.04vw" height="1.04vw" />;
+        return (
+          <ProcessFabric
+            fill={isDarkMode ? "#3063FF" : "#0736C4"}
+            width="1.04vw"
+            height="1.04vw"
+          />
+        );
       case "sf":
-        return <SecurityFabric fill={isDarkMode ? "#3063FF" : "#0736C4"} width="1.04vw" height="1.04vw" />;
+        return (
+          <SecurityFabric
+            fill={isDarkMode ? "#3063FF" : "#0736C4"}
+            width="1.04vw"
+            height="1.04vw"
+          />
+        );
       case "uf":
-        return <UserFabric fill={isDarkMode ? "#3063FF" : "#0736C4"} width="1.04vw" height="1.04vw" />;
+        return (
+          <UserFabric
+            fill={isDarkMode ? "#3063FF" : "#0736C4"}
+            width="1.04vw"
+            height="1.04vw"
+          />
+        );
       default:
-        return <DataFabric fill={isDarkMode ? "#3063FF" : "#0736C4"} width="1.04vw" height="1.04vw" />;
+        return (
+          <DataFabric
+            fill={isDarkMode ? "#3063FF" : "#0736C4"}
+            width="1.04vw"
+            height="1.04vw"
+          />
+        );
     }
   };
 
@@ -134,7 +186,7 @@ const Tabcard = ({
     try {
       const res = await AxiosService.post(`/tp/getAllCatalogs`, {
         artifactType: artifactType,
-      })
+      });
       setCatalogList(res.data);
     } catch (error) {
       toast(
@@ -148,9 +200,9 @@ const Tabcard = ({
           text: `${error}`,
           closeButton: false,
         } as any
-      )
+      );
     }
-  }
+  };
 
   const handleNavigateToModeller = (item: any) => {
     const { artifactName, version, fabric, catalog, artifactGrp } = item;
@@ -168,13 +220,13 @@ const Tabcard = ({
   useEffect(() => {
     getAllCatalogs();
     getAllArtifactGrp();
-  }, [artifactType])
+  }, [artifactType]);
 
   const getAllArtifactGrp = async () => {
     try {
       const res = await AxiosService.post(`/tp/getAllArtifactGrp`, {
         artifactType: artifactType,
-      })
+      });
       setArtifactGrpList(res.data.filter(Boolean));
     } catch (error) {
       toast(
@@ -188,27 +240,31 @@ const Tabcard = ({
           text: `${error}`,
           closeButton: false,
         } as any
-      )
+      );
     }
-  }
+  };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setInput(prev => ({ ...prev, name: e.target.value }))
-  }
+    setInput((prev) => ({ ...prev, name: e.target.value }));
+  };
 
   const handleChangeArtifactName = async (item: any) => {
     try {
+      if (item.artifactName == isInput.name) {
+        setInput({ id: undefined, name: "" });
+        return;
+      }
       const res = await AxiosService.post(`/tp/renameArtifact`, {
         artifactType: item.artifactType,
         fabric: item.fabric,
         catalog: item.catalog,
         artifactGrp: item.artifactGrp,
         oldName: item.artifactName,
-        newName: isInput.name
-      })
+        newName: isInput.name,
+      });
       if (res.status === 201) {
-        setInput({ id: undefined, name: "" })
-        getArtifact(artifactType)
+        setInput({ id: undefined, name: "" });
+        getArtifact(artifactType);
       } else {
         toast(
           <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
@@ -221,7 +277,7 @@ const Tabcard = ({
             text: `${res.data}`,
             closeButton: false,
           } as any
-        )
+        );
       }
     } catch (error) {
       toast(
@@ -235,9 +291,9 @@ const Tabcard = ({
           text: `${error}`,
           closeButton: false,
         } as any
-      )
+      );
     }
-  }
+  };
 
   return (
     <div className="flex flex-col w-full h-full bg-white border border-gray-300 p-[0.87vw] rounded-md dark:bg-[#1D1D1D] text-[#FFFFFF] dark:border-[#212121]">
@@ -273,7 +329,11 @@ const Tabcard = ({
         </TorusDialog>
       </div>
       <div className="flex flex-col pl-[0.58vw] h-[70.37vh]">
-        <Tabs className={"pt-[0.58vw]"} selectedKey={artifactType} onSelectionChange={setArtifactType}>
+        <Tabs
+          className={"pt-[0.58vw]"}
+          selectedKey={artifactType}
+          onSelectionChange={setArtifactType}
+        >
           <TabList
             className="flex w-[26.3vw] text-nowrap rounded-lg p-[0.29vw] bg-[#F4F5FA] text-black items-center dark:bg-[#0F0F0F] dark:text-[#FFFFFF] dark:border-[#212121]"
             aria-label="Tabs"
@@ -281,9 +341,10 @@ const Tabcard = ({
             <Tab
               id={"frk"}
               className={({ isSelected }) =>
-                `${isSelected
-                  ? "bg-white transition duration-300 ease-in-out rounded-md p-[0.55vw] font-bold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
-                  : "font-semibold"
+                `${
+                  isSelected
+                    ? "bg-white transition duration-300 ease-in-out rounded-md p-[0.55vw] font-bold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
+                    : "font-semibold"
                 } cursor-pointer outline-none w-[8.67vw] text-center text-[0.67vw] leading-[1.85vh]`
               }
             >
@@ -293,9 +354,10 @@ const Tabcard = ({
             <Tab
               id={"tpfrk"}
               className={({ isSelected }) =>
-                `${isSelected
-                  ? "bg-white transition duration-300 ease-in-out rounded-md p-[0.55vw] font-bold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
-                  : "font-semibold"
+                `${
+                  isSelected
+                    ? "bg-white transition duration-300 ease-in-out rounded-md p-[0.55vw] font-bold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
+                    : "font-semibold"
                 } cursor-pointer outline-none w-[8.67vw] text-center text-[0.67vw] leading-[1.85vh]`
               }
             >
@@ -304,9 +366,10 @@ const Tabcard = ({
             <Tab
               id={"crk"}
               className={({ isSelected }) =>
-                `${isSelected
-                  ? "bg-white transition duration-300 ease-in-out rounded-md p-[0.55vw] font-bold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
-                  : "font-semibold"
+                `${
+                  isSelected
+                    ? "bg-white transition duration-300 ease-in-out rounded-md p-[0.55vw] font-bold dark:bg-[#161616] dark:text-[#FFFFFF] dark:border-[#212121]"
+                    : "font-semibold"
                 } cursor-pointer outline-none w-[8.67vw] text-center text-[0.67vw] leading-[1.85vh]`
               }
             >
@@ -337,14 +400,20 @@ const Tabcard = ({
                       </div>
                     </div>
                     <div className="flex items-center gap-[0.29vw] pb-[1.75vw]">
-                      {item.isLocked ? (
-                        <LockIcon />
+                      {item.isUserPinned ? (
+                        <TbPinFilled fill="#0736C4" />
                       ) : null}
+                      {item.isLocked ? <LockIcon /> : null}
                       <DialogTrigger>
-                        <Button className={`focus:outline-[#000000]/15 p-[0.29vw] items-center`}>
+                        <Button
+                          className={`focus:outline-[#000000]/15 p-[0.29vw] items-center`}
+                        >
                           <ThreeDots fill={isDarkMode ? "white" : "black"} />
                         </Button>
-                        <Popover placement="bottom right" style={{ zIndex: 10 }}>
+                        <Popover
+                          placement="bottom right"
+                          style={{ zIndex: 10 }}
+                        >
                           <Dialog className="outline-none">
                             {({ close }) => (
                               <ArtifactContextMenu
@@ -358,7 +427,9 @@ const Tabcard = ({
                                 index={index}
                                 close={close}
                                 setInput={setInput}
-                                setRefetchOnContextMenu={setRefetchOnContextMenu}
+                                setRefetchOnContextMenu={
+                                  setRefetchOnContextMenu
+                                }
                                 artifactDetails={item}
                               />
                             )}
@@ -367,21 +438,23 @@ const Tabcard = ({
                       </DialogTrigger>
                     </div>
                   </div>
-                  <div className="flex w-full items-center justify-between text-[#000000] dark:text-[#FFFFFF] cursor-pointer"
+                  <div
+                    className="flex w-full items-center justify-between text-[#000000] dark:text-[#FFFFFF] cursor-pointer"
                     onClick={() => {
                       if (index == isInput.id) return;
-                      handleNavigateToModeller(item)
-                    }}>
-                    {(isInput.id === index) ? (
+                      handleNavigateToModeller(item);
+                    }}
+                  >
+                    {isInput.id === index ? (
                       <Input
                         defaultValue={item.artifactName}
                         onChange={handleInputChange}
                         onBlur={() => handleChangeArtifactName(item)}
                         onKeyDown={(e) => {
-                          if (e.key == "Enter") handleChangeArtifactName(item)
+                          if (e.key == "Enter") handleChangeArtifactName(item);
                         }}
-                        className={`bg-[#F4F5FA] p-[0.29vw] w-[80%] text-[0.83vw] leading-[1.7vh] font-semibold focus:outline-none dark:bg-[#161616] dark:text-white rounded-md`}
-                      />
+                        className={`bg-[#F4F5FA] w-[80%] text-[0.83vw] leading-[1.7vh] font-semibold focus:outline-none dark:bg-[#161616] dark:text-white rounded-md`}
+                       />
                     ) : (
                       <h3 className="text-[0.83vw] leading-[1.7vh] font-semibold whitespace-nowrap">
                         {item.artifactName.charAt(0).toUpperCase() +
@@ -392,7 +465,10 @@ const Tabcard = ({
                       {item.version}
                     </div>
                   </div>
-                  <div className="flex w-full cursor-pointer" onClick={() => handleNavigateToModeller(item)}>
+                  <div
+                    className="flex w-full cursor-pointer"
+                    onClick={() => handleNavigateToModeller(item)}
+                  >
                     <p className="pt-[0.29vw] text-[0.62vw] leading-[1.34vh] font-medium whitespace-nowrap text-black/40 dark:text-[#FFFFFF]/40">
                       {item.catalog} - {item.artifactGrp}
                     </p>

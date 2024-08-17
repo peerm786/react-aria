@@ -15,6 +15,7 @@ import { getCookie } from "../../../../lib/utils/cookiemgmt";
 import { toast } from "react-toastify";
 import TorusPopOver from "./torusPopover";
 import ArtifactSharingModal from "./shareArtifactModal";
+import TorusToast from "../../torusComponents/torusToast";
 
 interface contextMenuProps {
   artifactName: string;
@@ -26,9 +27,11 @@ interface contextMenuProps {
   index: number;
   isLocked: any;
   close: () => void;
-  setInput: React.Dispatch<React.SetStateAction<{ id: number | undefined, name: string }>>
-  setRefetchOnContextMenu: any
-  artifactDetails:any
+  setInput: React.Dispatch<
+    React.SetStateAction<{ id: number | undefined; name: string }>
+  >;
+  setRefetchOnContextMenu: any;
+  artifactDetails: any;
 }
 
 const ArtifactContextMenu = ({
@@ -43,13 +46,14 @@ const ArtifactContextMenu = ({
   close,
   setInput,
   setRefetchOnContextMenu,
-  artifactDetails
+  artifactDetails,
 }: contextMenuProps) => {
+  const [wordLength, setWordLength] = useState(0);
 
   const handleEdit = (e: any) => {
     setInput({ id: index, name: artifactName });
     close();
-  }
+  };
 
   const handleDeleteArtifact = async () => {
     try {
@@ -60,21 +64,50 @@ const ArtifactContextMenu = ({
         catalog,
         artifactGrp,
         artifactName,
-        version
-      })
+        version,
+      });
 
       if (response.status === 201) {
-        toast.success("Artifact deleted successfully")
-        setRefetchOnContextMenu((prev: any) => !prev)
+        toast.success("Artifact deleted successfully");
+        setRefetchOnContextMenu((prev: any) => !prev);
         close();
       } else {
-        toast.error("Some error occured")
+        toast.error("Some error occured");
       }
     } catch (error) {
-      toast.error("Some error from API occured")
-
+      toast.error("Some error from API occured");
     }
-  }
+  };
+
+  const handlePinningOfArtifacts = async () => {
+    try {
+      const artifactKey = `TCL:${artifactType.toUpperCase()}:${fabric.toUpperCase()}:${catalog}:${artifactGrp}:${artifactName}:${version}:artifactInfo`;
+      const ApiLink = artifactDetails.isUserPinned
+        ? "unPinArtifact"
+        : "pinArtifact";
+      const response = await AxiosService.post(`/tp/${ApiLink}`, {
+        artifactKey,
+        loginId: getCookie("loginId"),
+      });
+      if (response.status == 201) {
+        setRefetchOnContextMenu((prev: any) => !prev);
+        close();
+      }
+    } catch (error) {
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Some Network error occured`,
+          closeButton: false,
+        } as any
+      );
+    }
+  };
 
   return (
     <div className="bg-white w-[11vw] rounded-[0.42vw] P-[1vw]">
@@ -92,13 +125,22 @@ const ArtifactContextMenu = ({
         <TorusPopOver
           parentHeading={
             <Button
-              className={"outline-none flex gap-[0.5vw] items-center text-[0.72vw]"}
+              className={
+                "outline-none flex gap-[0.5vw] items-center text-[0.72vw]"
+              }
             >
               <ArtifactShareIcon /> Share to
             </Button>
           }
-          children={({close}:any) => <ArtifactSharingModal close={close} artifactDetails={artifactDetails}/>}
-          dialogClassName={"fixed z-[100] top-0 left-0 w-screen h-screen bg-transparent/45 flex items-center justify-center"}
+          children={({ close }: any) => (
+            <ArtifactSharingModal
+              close={close}
+              artifactDetails={artifactDetails}
+            />
+          )}
+          dialogClassName={
+            "fixed z-[100] top-0 left-0 w-screen h-screen bg-transparent/45 flex items-center justify-center"
+          }
         />
 
         <ArtifactDisplayModal
@@ -113,8 +155,10 @@ const ArtifactContextMenu = ({
       <div className="flex flex-col px-[0.6vw] justify-around h-[6.25vw]">
         <Button
           className={"outline-none flex gap-[0.5vw] items-center text-[0.72vw]"}
+          onPress={handlePinningOfArtifacts}
         >
-          <ArtifactPinIcon /> Pin to Top
+          <ArtifactPinIcon />{" "}
+          {artifactDetails?.isUserPinned ? "Unpin" : "Pin to Top"}
         </Button>
 
         <Button
@@ -139,4 +183,3 @@ const ArtifactContextMenu = ({
 };
 
 export default ArtifactContextMenu;
-
