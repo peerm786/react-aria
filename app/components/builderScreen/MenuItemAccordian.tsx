@@ -120,7 +120,7 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
             {isInput ? (
               <Input
                 defaultValue={node.title}
-                className={`border mr-2 w-full focus:outline-none dark:text-white dark:bg-white focus:border-blue-300 rounded-lg p-1`}
+                className={`border text-[0.83vw] leading-[2.22vh] mr-2 w-full focus:outline-none dark:text-white dark:bg-white focus:border-blue-300 rounded-lg p-1`}
                 onKeyDown={(e) =>
                   e.key === "Enter" ? handleChangeTitle(e, path) : null
                 }
@@ -128,7 +128,7 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
               />
             ) : (
               <span
-                className="text-sm"
+                className="text-[0.83vw] leading-[2.22vh]"
                 onDoubleClick={(e) => {
                   e.stopPropagation();
                   setInput(!isInput);
@@ -165,7 +165,7 @@ const RenderAccordian: React.FC<TreeNodeProps> = ({
               >
                 {["df", "uf", "pf", "sf"].map((fab, id) => (
                   <TextField
-                    className="m-2 relative dark:bg-[#161616] dark:text-white focus:outline-none"
+                    className="m-2 text-[0.72vw] leading-[2.22vh] relative dark:bg-[#161616] dark:text-white focus:outline-none"
                     key={id}
                     onFocus={() => setClearKeyPath(`${path}.keys`)}
                   >
@@ -514,7 +514,7 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
               onDragOver={(e) => e.preventDefault()}
               onDrop={(e) => handleDropNode(e, `${id}`)}
               key={id}
-              className="flex p-1 items-center gap-2 border rounded flex-[0_0_23%] bg-white dark:bg-[#161616] dark:border-[#212121] dark:text-white group relative"
+              className="flex p-1 items-center gap-2 border rounded flex-[0_0_23%] bg-white dark:bg-[#161616] dark:border-[#212121] dark:text-white group relative cursor-pointer"
               onContextMenu={(e) => {
                 e.preventDefault();
               }}
@@ -523,7 +523,7 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
               {isInput === `${id}` ? (
                 <Input
                   defaultValue={node.title}
-                  className={`border mr-2 w-full focus:outline-none dark:bg-[#161616] dark:border-[#212121] dark:text-white focus:border-blue-300 rounded-lg p-1`}
+                  className={`border text-[0.83vw] leading-[2.22vh] mr-2 w-full focus:outline-none dark:bg-[#161616] dark:border-[#212121] dark:text-white focus:border-blue-300 rounded-lg p-1`}
                   onKeyDown={(e) =>
                     e.key === "Enter"
                       ? handleChangeTitle(e, id.toString())
@@ -533,7 +533,7 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
                 />
               ) : (
                 <span
-                  className="text-sm"
+                  className="text-[0.83vw] leading-[2.22vh]"
                   onDoubleClick={(e) => {
                     e.stopPropagation();
                     setInput(id.toString());
@@ -652,7 +652,7 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
                 >
                   {["df", "uf", "pf", "sf"].map((fab, index) => (
                     <TextField
-                      className="m-2 relative dark:bg-[#161616] dark:text-white"
+                      className="m-2 text-[0.72vw] leading-[2.22vh] relative dark:bg-[#161616] dark:text-white"
                       key={index}
                       onFocus={() => setClearKeyPath(`${id}.keys`)}
                     >

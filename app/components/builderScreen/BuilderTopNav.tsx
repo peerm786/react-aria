@@ -10,19 +10,19 @@ const BuilderTopNav = ({ showNodeData, setShowNodeData }: any) => {
     return (
         <nav
             aria-label="Navbar"
-            className="w-full h-[8%] flex flex-col justify-center items-center border border-[#000000]/15 dark:bg-[#1D1D1D] dark:text-[#FFFFFF] transition-colors duration-700 ease-in-out"
+            className="w-full h-[6.38vh] bg-white flex flex-col justify-center items-center border border-[#000000]/15 dark:bg-[#1D1D1D] dark:text-[#FFFFFF] transition-colors duration-700 ease-in-out"
         >
             <div className="flex w-full h-full justify-between items-center">
                 <div className="flex gap-4">
                     <div className="flex items-center dark:bg-[#1D1D1D] dark:text-[#FFFFFF] ">
                         <TorusLogo />
-                        <h2 className="font-semibold">TORUS</h2>
+                        <h2 className="text-[1.25vw] leading-[2.66vh] font-medium">TORUS</h2>
                     </div>
                     {showNodeData ? <div>
                         <Button className={"outline-none "} onPress={() => setShowNodeData(null)}><BackwardIcon fill={isDarkMode ? "white" : "black"} /></Button>
                     </div> : null}
                 </div>
-                <div className="flex h-full gap-3 items-center ">
+                <div className="flex h-full gap-3 items-center">
                     <Avatars />
                     <div className="flex h-8">
                         <Separator className="border border-black/35" orientation="vertical" />
@@ -35,7 +35,7 @@ const BuilderTopNav = ({ showNodeData, setShowNodeData }: any) => {
                     <div className="flex h-8">
                         <Separator className="border border-black/35" orientation="vertical" />
                     </div>
-                    <Button className={"mr-2 px-4 py-1 bg-[#0736C4] rounded-md text-white text-sm font-medium outline-none"}>Publish</Button>
+                    <Button className={"mr-2 px-5 py-[0.5vw] bg-[#0736C4] rounded-md text-white text-[0.72vw] leading-[2.22vh] font-medium outline-none"}>Publish</Button>
                 </div>
             </div>
             <Separator />

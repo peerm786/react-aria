@@ -18,8 +18,8 @@ import { toast } from "react-toastify";
 import DropDown from "./components/multiDropdownnew";
 import {
   ColumnIcon,
-  HistoryIcon,
-  PushandPullIcon,
+  LogHubIcon,
+  AssemblerIcon,
   SearchIcon,
   FilterIcon
 } from "./constants/svgApplications";
@@ -316,36 +316,36 @@ const page = () => {
   }
 
   return (
-    <div className="flex flex-col w-full h-screen">
+    <div className="flex flex-col w-full h-screen bg-[#F4F5FA]">
       <BuilderTopNav
         showNodeData={showNodeData}
         setShowNodeData={setShowNodeData}
       />
-      <div className="flex justify-between bg-[#F4F5FA] w-full h-[92%] dark:bg-[#0F0F0F]">
+      <div className="flex justify-between w-full h-[92%] dark:bg-[#0F0F0F]">
         <BuilderSideNav />
         {showNodeData ? (
-          <div className="flex flex-col w-[94%] h-[95%] mt-5 mr-3 rounded-md">
+          <div className="flex flex-col w-[94%] h-[95%] mt-[1.46vw] mr-[0.87vw] rounded-md">
             <Artifactdetails nodeData={showNodeData} />
           </div>
         ) : (
-          <div className="flex flex-col w-[94%] h-[95%] border border-black/15 dark:border-black/15 bg-white mt-5 overflow-y-hidden dark:bg-[#161616] rounded-md mr-3 scrollbar-hide">
-            <div className="flex w-full items-center justify-between">
+          <div className="flex flex-col w-[94%] h-[89.07vh] border border-black/15 dark:border-black/15 bg-white mt-[1.46vw] overflow-y-hidden dark:bg-[#161616] rounded-md mr-[0.87vw] scrollbar-hide">
+            <div className="flex w-full h-[6.66vh] items-center justify-between">
               <div className="flex gap-5 pt-2 pl-4">
                 <Button
-                  className={`${selectedAssemblerButton ? "font-semibold" : ""
-                    } flex text-sm items-center gap-3 rounded-lg border-none outline-none dark:text-white`}
+                  className={`${selectedAssemblerButton ? "text-[#1A2024] dark:text-white" : "text-[#1A2024]/35 dark:text-[white]/35"
+                    } flex text-[0.93vw] leading-[2.22vh] font-semibold items-center gap-3 rounded-lg border-none outline-none`}
                   onPress={handleBuildButtonSelect}
                 >
-                  <PushandPullIcon fill={isDarkMode ? "white" : "black"} />
+                  <AssemblerIcon fill={!selectedAssemblerButton ? "#A6A6A6" : isDarkMode ? "white" : "black"} />
                   Assembler
                 </Button>
                 <Button
-                  className={`${selectedLogsButton ? "font-semibold" : ""
-                    } flex text-sm items-center gap-3 rounded-lg border-none outline-none dark:text-white`}
+                  className={`${selectedLogsButton ? "text-[#1A2024] dark:text-white" : "text-[#1A2024]/35 dark:text-[white]/35"
+                    } flex text-[0.93vw] leading-[2.22vh] font-semibold items-center gap-3 rounded-lg border-none outline-none`}
                   onPress={handleHistoryButtonSelect}
                 >
                   {" "}
-                  <HistoryIcon fill={isDarkMode ? "white" : "black"} />
+                  <LogHubIcon fill={!selectedLogsButton ? "#A6A6A6" : isDarkMode ? "white" : "black"} />
                   Logs Hub
                 </Button>
               </div>
@@ -354,20 +354,20 @@ const page = () => {
                   <Button
                     onPress={handleUpdateBuild}
                     isDisabled={!selectedVersion}
-                    className={`text-[12px] rounded-md border-none text-[#4CAF50] disabled:cursor-not-allowed bg-[#4CAF50]/15 px-5 py-2 outline-none`}
+                    className={`text-[0.83vw] leading-[2.22vh] rounded-md border-none text-[#4CAF50] disabled:cursor-not-allowed bg-[#4CAF50]/15 px-5 py-2 outline-none`}
                   >
                     Update
                   </Button>
                   <Button
                     onPress={handleSaveBuild}
                     isDisabled={!selectApp}
-                    className={`text-[12px] rounded-md border-none text-[#0736C4] disabled:cursor-not-allowed bg-[#0736C4]/15 px-5 py-2 outline-none`}
+                    className={`text-[0.83vw] leading-[2.22vh] rounded-md border-none text-[#0736C4] disabled:cursor-not-allowed bg-[#0736C4]/15 px-5 py-2 outline-none`}
                   >
                     Save
                   </Button>
                   <Button
                     className={
-                      "text-[12px] rounded-md border-none text-white disabled:cursor-not-allowed bg-[#0736C4] px-5 py-2 outline-none"
+                      "text-[0.83vw] leading-[2.22vh] rounded-md border-none text-white disabled:cursor-not-allowed bg-[#0736C4] px-5 py-2 outline-none"
                     }
                   >
                     Build
@@ -477,10 +477,10 @@ const page = () => {
                       setSelectedKeys={handleTenantselect}
                       items={tenantList}
                       classNames={{
-                        triggerButton: `min-w-40  pressed:animate-torusButtonActive rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white`,
+                        triggerButton: `min-w-40  pressed:animate-torusButtonActive rounded-lg text-[0.83vw] leading-[2.22vh] mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white`,
                         popover: "w-40",
                         listbox: "overflow-y-auto",
-                        listboxItem: "flex text-sm justify-between",
+                        listboxItem: "flex text-[0.83vw] leading-[2.22vh] justify-between",
                       }}
                     />
 
@@ -491,12 +491,12 @@ const page = () => {
                       items={appGrpList}
                       classNames={{
                         triggerButton: `${selectedTenant
-                          ? "min-w-40 pressed:animate-torusButtonActive rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                          : "backdrop-blur-3xl min-w-40 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                          ? "min-w-40 pressed:animate-torusButtonActive rounded-lg text-[0.83vw] leading-[2.22vh] mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                          : "backdrop-blur-3xl min-w-40 rounded-lg text-[0.83vw] mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
                           }`,
                         popover: "w-40",
                         listbox: "overflow-y-auto",
-                        listboxItem: "flex text-sm justify-between",
+                        listboxItem: "flex text-[0.83vw] leading-[2.22vh] justify-between",
                       }}
                     />
 
@@ -507,12 +507,12 @@ const page = () => {
                       items={appList}
                       classNames={{
                         triggerButton: `${selectAppGroup
-                          ? "min-w-40 pressed:animate-torusButtonActive rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                          : "backdrop-blur-3xl min-w-40 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                          ? "min-w-40 pressed:animate-torusButtonActive rounded-lg text-[0.83vw] leading-[2.22vh] mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                          : "backdrop-blur-3xl min-w-40 rounded-lg text-[0.83vw] mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
                           }`,
                         popover: "w-40",
                         listbox: "overflow-y-auto",
-                        listboxItem: "flex text-sm justify-between",
+                        listboxItem: "flex text-[0.83vw] leading-[2.22vh] justify-between",
                       }}
                     />
 
@@ -523,19 +523,19 @@ const page = () => {
                       items={versionList}
                       classNames={{
                         triggerButton: `${selectApp
-                          ? "min-w-20 pressed:animate-torusButtonActive rounded-lg text-sm font-medium mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
-                          : "backdrop-blur-3xl min-w-20 rounded-lg text-sm mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                          ? "min-w-20 pressed:animate-torusButtonActive rounded-lg text-[0.83vw] leading-[2.22vh] mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
+                          : "backdrop-blur-3xl min-w-20 rounded-lg text-[0.83vw] mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
                           }`,
                         popover: "w-40",
                         listbox: "overflow-y-auto",
-                        listboxItem: "flex text-sm justify-between",
+                        listboxItem: "flex text-[0.83vw] leading-[2.22vh] justify-between",
                       }}
                     />
                   </div>
                   <div className="flex gap-2 justify-end mr-3 mt-2">
                     <Button
                       className={
-                        "bg-[#FFF6F6] dark:bg-[#EF4444]/15 text-sm font-semibold outline-none rounded-md text-[#EF4444] px-5 py-1"
+                        "bg-[#FFF6F6] dark:bg-[#EF4444]/15 text-[0.72vw] leading-[1.85vh] font-medium outline-none rounded-md text-[#EF4444] px-6 py-2.5"
                       }
                       onPress={() => {
                         document
@@ -548,7 +548,7 @@ const page = () => {
                     <DialogTrigger>
                       <Button
                         className={
-                          "bg-[#F1F1F1] dark:bg-[#0F0F0F] dark:text-white text-sm font-medium outline-none rounded-md text-black px-3 py-1"
+                          "bg-[#F1F1F1] dark:bg-[#0F0F0F] dark:text-white text-[0.72vw] leading-[1.85vh] font-medium outline-none rounded-md text-black px-4 py-2.5"
                         }
                       >
                         Clear All
@@ -557,11 +557,11 @@ const page = () => {
                         <Dialog className="border bg-white dark:bg-[#161616] dark:text-white dark:border-[#212121] focus:outline-none rounded-lg">
                           {({ close }) => (
                             <div className="p-4 rounded-2xl flex flex-col gap-3">
-                              <div>
+                              <div className="text-[0.72vw] leading-[1.85vh] font-medium p-1">
                                 Are you sure you want to clear all Menu Items?
                               </div>
                               <Button
-                                className={`outline-none bg-red-500 px-2 py-1 self-end rounded text-white`}
+                                className={`outline-none bg-red-500 px-2 py-1 text-[0.72vw] leading-[1.85vh] font-medium self-end rounded text-white`}
                                 onPress={() => {
                                   setMenuItemData([]);
                                   close();

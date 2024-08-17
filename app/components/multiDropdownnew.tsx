@@ -112,7 +112,7 @@ const DropDown = ({
               aria-label="Custom dropdown"
               selectionMode={multiple ? "multiple" : "single"}
               className={twMerge("", classNames?.listbox)}
-              renderEmptyState={()=> <div className="p-2 rounded dark:bg[#212121] dark:text-white">No data found</div>}
+              renderEmptyState={()=> <div className="p-2 text-[0.83vw] leading-[2.22vh] rounded dark:bg[#212121] dark:text-white">No data found</div>}
             >
               {items.map((item: any) => {
                 const isSelected = () => {

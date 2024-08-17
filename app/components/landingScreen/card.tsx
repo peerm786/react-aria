@@ -13,7 +13,7 @@
 // import { RootState } from "../../../lib/Store/store";
 
 // import { Breadcrumbs, Breadcrumb, Link } from "react-aria-components";
- 
+
 // const Card = ({
 
 //   tenant,
@@ -43,14 +43,14 @@
 //   const [artifactData, setArtifactData] = useState<any[]>([]);
 
 //   const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
- 
- 
+
+
 //   const dummyArtifactData = [
 
 //     { name: "Artifact A" },
- 
+
 //   ];
- 
+
 //   useEffect(() => {
 
 //     if (tenantInfo.length) {
@@ -122,7 +122,7 @@
 //     }
 
 //   }, [tenant, tenantInfo]);
- 
+
 //   const handleCardClick = (item: { tenant: string; name: string }) => {
 
 //     setSelectedTenant(item.tenant);
@@ -132,7 +132,7 @@
 //     setSelectedApp(null);
 
 //   };
- 
+
 //   const handleBreadcrumbClick = (level: string) => {
 
 //     if (level === 'tenant') {
@@ -162,21 +162,21 @@
 //     }
 
 //   };
- 
+
 //   const handleAppClick = (app: any) => {
- 
+
 //     setSelectedApp(app.name);
 
 //     setArtifactData(dummyArtifactData);
- 
+
 //   };
- 
+
 //   const handleartifactclick = (artifact: any) => {
 
 //     setArtifactData(artifact);
 
 //   }
- 
+
 //   const filteredAppGroups = mappingAppGrp.filter(
 
 //     (ele) =>
@@ -186,7 +186,7 @@
 //       ele.name.toLowerCase().includes(searchTerm.toLowerCase())
 
 //   );
- 
+
 //   return (
 
 //     <div className="flex flex-col gap-3 border border-black/15 p-3 w-full h-full rounded-md ml-4 bg-white dark:bg-[#1D1D1D] dark:text-[#FFFFFF] dark:border-[#212121]">
@@ -254,7 +254,7 @@
 //                   <div key={index} className="flex flex-col bg-[#F4F5FA] border border-black/15 justify-center rounded-md dark:bg-[#0F0F0F]">
 
 //                     {selectedApp === app.name ? (
- 
+
 //                       artifactData.map((artifact: any, artifactIndex: number) => (
 
 //                         <div key={artifactIndex}>
@@ -266,7 +266,7 @@
 //                       ))
 
 //                     ) : (
- 
+
 //                       <Button className="flex ml-4 focus:outline-none" onPress={() => handleAppClick(app)}>
 
 //                         {app.name}
@@ -280,7 +280,7 @@
 //                 ))
 
 //               )}
- 
+
 //           </div>
 
 //         </>
@@ -342,14 +342,14 @@
 //   );
 
 // };
- 
+
 // export default Card;
 
 import React, { useEffect, useState } from "react";
 import { Button } from "react-aria-components";
 import { PiAirplaneTiltFill } from "react-icons/pi";
 import { RiBankFill } from "react-icons/ri";
-import { DataFabric, ProcessFabric, SecurityFabric, ThreeDots, UserFabric } from "../../constants/svgApplications";
+import { BackwardIcon, DataFabric, ProcessFabric, SecurityFabric, ThreeDots, UserFabric } from "../../constants/svgApplications";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../lib/Store/store";
 import { Breadcrumbs, Breadcrumb } from "react-aria-components";
@@ -503,8 +503,16 @@ const Card = ({
 
   return (
     <div className="flex flex-col gap-[0.87vw] border border-black/15 p-[0.87vw] w-full h-[59.51vh] rounded-md bg-white dark:bg-[#1D1D1D] dark:text-[#FFFFFF] dark:border-[#212121]">
-      <div className="flex justify-between">
+      <div className="flex justify-between items-center">
         <h1 className="text-[0.93vw] font-semibold leading-[1.13vh]">{selectedApp ? "Artifacts" : selectAppGroup ? "Apps" : "AppGroups"}</h1>
+        {selectedTenant ?
+          <Button
+            onPress={selectedApp ? () => handleBreadcrumbClick("appGroup") : () => handleBreadcrumbClick("tenant")}
+            className="outline-none">
+            <BackwardIcon />
+          </Button>
+          : null
+        }
       </div>
       {selectedTenant ? (
         <>
@@ -532,7 +540,7 @@ const Card = ({
           <div>
             {selectedApp ? (
               <div className="mt-[1.17vw] grid sm:grid-cols-2 xl:grid-cols-3 text-[#000000] gap-[1.46vw] overflow-y-auto  pr-[0.58vw] dark:bg-[1D1D1D] dark:text-[#FFFFFF] dark:border-[#212121]">
-                {artifactList.length ? artifactList 
+                {artifactList.length ? artifactList
                   .filter(
                     (ele: any) =>
                       ele.artifactName
@@ -587,7 +595,7 @@ const Card = ({
                         </div>
                       </div> */}
                     </div>
-                  )): <div>No artifacts found</div>}
+                  )) : <div>No artifacts found</div>}
               </div>
             ) : (
               <div className="grid grid-cols-2 grid-rows-5 gap-[0.87vw] text-xs rounded-md">
@@ -633,7 +641,9 @@ const Card = ({
                       </div> */}
                     </div>
                   </div>
-                  <ThreeDots fill={isDarkMode ? "white" : "black"} />
+                  <div className="mr-[0.58vw]">
+                    <ThreeDots fill={isDarkMode ? "white" : "black"} />
+                  </div>
                 </div>
               </Button>
             </div>

@@ -29,37 +29,30 @@ function FabricSelector({ tenant, appGrp, app }: any) {
   const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
   const [searchValue, setSearchValue] = useState<string>("");
 
-  const IconColors = {
-    df: "#0736C4",
-    uf: "#03A9F4",
-    pf: "#13CC78",
-    sf: "#FFBE00",
-  };
-
   const tabs = [
     {
       id: "df",
       label: "DataFabric",
-      icon: <DataFabric fill={IconColors["df"]} />,
-      iconDefault: <DataFabric fill={isDarkMode ? "white" : "black"} />,
+      icon: <DataFabric width="1.34vw" height="1.34vw" />,
+      iconDefault: <DataFabric width="1.34vw" height="1.34vw" fill={isDarkMode ? "white" : "black"} />,
     },
     {
       id: "uf",
       label: "UserFabric",
-      icon: <UserFabric fill={IconColors["uf"]} />,
-      iconDefault: <UserFabric fill={isDarkMode ? "white" : "black"} />,
+      icon: <UserFabric width="1.34vw" height="1.34vw" />,
+      iconDefault: <UserFabric width="1.34vw" height="1.34vw" fill={isDarkMode ? "white" : "black"} />,
     },
     {
       id: "pf",
       label: "ProcessFabric",
-      icon: <ProcessFabric fill={IconColors["pf"]} />,
-      iconDefault: <ProcessFabric fill={isDarkMode ? "white" : "black"} />,
+      icon: <ProcessFabric width="1.34vw" height="1.34vw" />,
+      iconDefault: <ProcessFabric width="1.34vw" height="1.34vw" fill={isDarkMode ? "white" : "black"} />,
     },
     {
       id: "sf",
       label: "SecurityFabric",
-      icon: <SecurityFabric fill={IconColors["sf"]} />,
-      iconDefault: <SecurityFabric fill={isDarkMode ? "white" : "black"} />,
+      icon: <SecurityFabric width="1.34vw" height="1.34vw" />,
+      iconDefault: <SecurityFabric width="1.34vw" height="1.34vw" fill={isDarkMode ? "white" : "black"} />,
     },
   ];
 
@@ -156,12 +149,12 @@ function FabricSelector({ tenant, appGrp, app }: any) {
   return (
     <div className="flex flex-col w-[85%] h-screen">
       <Tabs
-        className={"h-[67%] dark:bg-[#0F0F0F] bg-[#F4F5FA] rounded-lg"}
+        className={"h-[69.52vh] dark:bg-[#0F0F0F] bg-[#F4F5FA] rounded-lg"}
         onSelectionChange={handleTabChange}
       >
         <TabList
           aria-label="Feeds"
-          className="flex w-[95%] bg-[#FFFFFF] dark:bg-[#161616] dark:text-white rounded-lg p-1 ml-2 mt-2 font-semibold"
+          className="flex w-[95%] bg-[#FFFFFF] dark:bg-[#161616] dark:text-white rounded-lg p-1 ml-2 mt-2"
         >
           {tabs.map(({ id, label, icon, iconDefault }) => (
             <MyTab key={id} id={id} label={label}>
@@ -171,13 +164,13 @@ function FabricSelector({ tenant, appGrp, app }: any) {
         </TabList>
         <div className="relative mt-3 ml-2">
           <span className="absolute inset-y-0 left-0 flex items-center p-2 h-7 w-7 ">
-            <SearchIcon fill={isDarkMode ? "white" : "black"} />
+            <SearchIcon width="0.83vw" height="0.83vw" fill={isDarkMode ? "white" : "black"} />
           </span>
           <Input
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             placeholder="Search Artifacts"
-            className={`w-[92%] bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white text-sm font-medium p-1 focus:outline-none focus:border-blue-400 border border-black/15 pl-6 rounded-md dark:border-[#212121]`}
+            className={`w-[92%] bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white text-[0.72vw] leading-[2.22vh] p-1 focus:outline-none focus:border-blue-400 border border-black/15 pl-6 rounded-md dark:border-[#212121]`}
           />
         </div>
         <div className="h-[85%] overflow-y-auto">
@@ -186,7 +179,7 @@ function FabricSelector({ tenant, appGrp, app }: any) {
               <div
                 draggable
                 onDragStart={(e) => handleDragKey(e, key.key)}
-                className="w-[90%] bg-white dark:bg-[#161616] border border-black/20 dark:border-[#212121] dark:text-white p-1 ml-2 text-sm rounded-md"
+                className="w-[90%] bg-white dark:bg-[#161616] border border-black/20 dark:border-[#212121] dark:text-white p-1 ml-2 text-[0.83vw] leading-[2.22vh] rounded-md"
               >
                 {key.label}
               </div>
@@ -203,7 +196,7 @@ function MyTab({ id, children, label }: TabProps & { label: string }) {
     <Tab
       id={id}
       className={({ isSelected }) => `
-        w-full flex items-center justify-center text-[12px] cursor-pointer
+        w-full flex items-center justify-center text-[0.72vw] leading-[1.48vh] font-medium cursor-pointer
         ${isSelected
           ? "bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white transition duration-300 ease-in-out rounded-lg outline-none p-1"
           : ""
