@@ -162,35 +162,34 @@ const ArtifactSharingModal = ({ close, artifactDetails }: any) => {
         setIsPopoverOpen(false)
     }
     const handleLinkAccessToggle = (id: any) => {
-        setLinkAccessSelectedOption(id);
+        setLinkAccessSelectedOption((prevSelected) => (prevSelected === id ? null : id));
     };
 
 
     const handleUsersToggle = (id: any) => {
-        setUsersSelectedOption(id);
+        setUsersSelectedOption((prevSelected) => (prevSelected === id ? null : id));
     };
 
     return (
         <div className='bg-white w-[37.25vw] rounded p-[0.2vw]'>
             <div className="flex justify-between w-full p-2">
 
-                <div className="flex mt-[0.58vw] ml-[0.86vw] gap-[1.46vw] border-none ">
+                <div className="flex mt-[0.58vw] ml-[0.86vw] gap-[1.46vw] items-center">
                     <Button
-                        className={`${Share ? "text-[#1A2024]" : "text-[#1A2024]/35 border-none"} flex gap-[0.87vw] font-semibold text-[0.93vw] leading-[1.25vw]`}
+                        className={`${Share ? "text-[#1A2024]" : "text-[#1A2024]/35"} flex outline-none gap-[0.87vw] font-semibold text-[0.93vw] leading-[1.25vw]`}
                         onPress={handleshare}>
                         <Threecircles fill={`${Share ? "#1A2024" : "#AFB1B2"}`} />
                         Share
                     </Button>
 
-
                     <Button
-                        className={`${Private ? "text-[#1A2024]" : "text-[#1A2024]/35 border-none"} flex text-sm gap-[0.58vw] text-[0.93vw] leading-[1.25vw]`}
+                        className={`${Private ? "text-[#1A2024]" : "text-[#1A2024]/35"} flex outline-none gap-[0.58vw] text-[0.93vw] leading-[1.25vw]`}
                         onPress={handlepriv}>
                         <Privacy fill={`${Private ? "#1A2024" : "#AFB1B2"}`} />
                         Privacy
                     </Button>
 
-                    <Button className='ouitline-none ml-[20.12vw] ' onPress={close}>
+                    <Button className='ouitline-none ml-[20.12vw]' onPress={close}>
                         <Multiply />
                     </Button>
                 </div>
@@ -206,7 +205,7 @@ const ArtifactSharingModal = ({ close, artifactDetails }: any) => {
                         <label className="text-[0.72vw] font-semibold  text-[#101828] leading-[1.25vw] mb-[0.87vw] block">Share with people and teams</label>
                         <div className="relative">
                             <div className='flex justify-between gap-[0.29vw]'>
-                                {selectedUser ? <div className='flex w-full justify-between px-[0.87vw]'><span>{selectedUser.loginId}</span><span className='cursor-pointer' onClick={() => { setSelectedUser(null) }}>X</span></div> :
+                                {selectedUser ? <div className='flex w-full justify-between px-[0.87vw] items-center text-[0.72vw] leading-[1.25vw] bg-[#F4F5FA] rounded-md'><span>{selectedUser.loginId}</span><span className='cursor-pointer' onClick={() => { setSelectedUser(null) }}><Multiply /></span></div> :
                                     <Input
                                         type="text"
                                         placeholder="Enter people,teams or email address"
@@ -216,7 +215,7 @@ const ArtifactSharingModal = ({ close, artifactDetails }: any) => {
                                     />}
                                 <Button isDisabled={selectedUser ? false : true}
                                     onPress={() => { handleShare() }}
-                                    className="p-[0.58vw] px-[1.46vw]  bg-[#0736C4] disabled:bg-[#4c68bd] self-end text-[#FFFFFF] text-[0.83vw] leading-[1.25vw] rounded-md"
+                                    className="p-[0.58vw] px-[2vw]  bg-[#0736C4] disabled:bg-[#4c68bd] self-end text-[#FFFFFF] text-[0.83vw] leading-[1.25vw] rounded-md"
                                 >
                                     Share
                                 </Button>
@@ -253,27 +252,27 @@ const ArtifactSharingModal = ({ close, artifactDetails }: any) => {
                     <div className="mt-[0.29vw] mx-[0.14vw]">
                         <h3 className="font-semibold text-[0.72vw] leading-[1.25vw] text-[#101828] mx-[0.87vw]">People with Access</h3>
                         <div className="mt-[0.58vw] mx-[0.21vw]">
-                            <div className="flex justify-between items-center py-[0.58vw]">
+                            <div className="flex justify-between items-center">
 
-                                <div className='flex gap-[0.87vw] '>
-                                    <TorusAvatar radius="full" size="md" />
+                                <div className='flex gap-[0.87vw] items-center'>
+                                    <TorusAvatar radius="full" size="w-[1.7vw] h-[1.7vw]" />
                                     <div className='flex flex-col mb-[0.58vw]'>
-                                        <p className="text-[0.85vw] leading-[1.06vw] mt-[0.48vw] font-medium ">{createdBy}</p>
+                                        <p className="text-[0.83vw] leading-[1.85vh] font-medium mt-[0.48vw]">{createdBy}</p>
                                     </div>
                                 </div>
-                                <div className='border border-black/15 rounded-lg bg-[#F4F5FA] p-[0.43vw] px-[2.34vw] text-[0.62vw] text-[#000000] mt-[0.58vw] leading-[1.25vw]'>Owner
+                                <div className='border border-black/15 rounded-lg bg-[#F4F5FA] p-[0.43vw] px-[2.5vw] text-[0.62vw] text-[#000000] mt-[0.58vw] leading-[1.25vw]'>Owner
                                 </div>
                             </div>
                             {sharingInfoList ? sharingInfoList.map((person: any, i: any) => (
-                                <div key={person?.sharedTo?.email} className="flex justify-between items-center py-[0.58vw]">
-                                    <div className='flex gap-[0.87vw]  mb-[0.58vw items-center'>
-                                        <TorusAvatar radius="full" size="md" />
+                                <div key={person?.sharedTo?.email} className="flex justify-between items-center py-[0.29vw]">
+                                    <div className='flex gap-[0.58vw] items-center'>
+                                        <TorusAvatar radius="full" size="w-[1.7vw] h-[1.7vw]" />
                                         <div className='flex flex-col'>
-                                            <p className="text-[0.85vw] leading-[1.06vw] font-medium">{person?.sharedTo?.loginId}</p>
-                                            <p className="text-[0.63vw] leading-[1.25vw] text-[#000000]/50">{person?.sharedTo?.email}</p>
+                                            <p className="text-[0.83vw] leading-[1.85vh] font-medium">{person?.sharedTo?.loginId}</p>
+                                            <p className="text-[0.62vw] leading-[1.85vh] text-[#000000]/50">{person?.sharedTo?.email}</p>
                                         </div>
                                     </div>
-                                    <div className="flex  gap-[0.58vw] ">
+                                    <div className="flex">
                                         <DropDown
                                             triggerButton=""
                                             selectedKeys={person?.accessType}
@@ -284,7 +283,7 @@ const ArtifactSharingModal = ({ close, artifactDetails }: any) => {
                                                     "w-[7vw] h-[2.5vw] flex items-center justify-center gap-[0.58vw] whitespace-nowrap rounded-lg bg-[#F4F5FA] border border-[#000000]/15 text-[0.62vw] leading-[1.25vw] text-[#000000] mt-[0.58vw]",
                                                 popover: "w-40",
                                                 listbox: "overflow-y-auto",
-                                                listboxItem: "flex text-sm justify-between",
+                                                listboxItem: "flex text-[0.62vw] leading-[1.25vw] justify-between",
                                             }}
                                         />
                                     </div>
@@ -377,12 +376,12 @@ const ArtifactSharingModal = ({ close, artifactDetails }: any) => {
                             triggerButton={selectedPermission}
                             selectedKeys={selectedPermission}
                             setSelectedKeys={setSelectedPermission}
-                            items={["canview", "canEdit"]}
+                            items={["can View", "can Edit"]}
                             classNames={{
-                                triggerButton: " w-35 gap-[0.29vw] text-[0.83vw] leading-[1.25vw] font-semibold text-[#000000]/50 ",
-                                popover: "w-40",
+                                triggerButton: "w-35 gap-[0.29vw] text-[0.83vw] leading-[1.25vw] font-semibold text-[#000000]/50 ",
+                                popover: "w-20",
                                 listbox: "overflow-y-auto",
-                                listboxItem: "flex text-sm  justify-between",
+                                listboxItem: "flex text-[0.83vw] leading-[1.25vw] justify-between",
                             }}
                         />
                     </div>

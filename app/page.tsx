@@ -526,7 +526,7 @@ const page = () => {
                           ? "min-w-20 pressed:animate-torusButtonActive rounded-lg text-[0.83vw] leading-[2.22vh] mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
                           : "backdrop-blur-3xl min-w-20 rounded-lg text-[0.83vw] mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white"
                           }`,
-                        popover: "w-40",
+                        popover: "w-20",
                         listbox: "overflow-y-auto",
                         listboxItem: "flex text-[0.83vw] leading-[2.22vh] justify-between",
                       }}

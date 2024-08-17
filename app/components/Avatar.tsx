@@ -34,7 +34,7 @@ export default function TorusAvatar({ color, src, borderColor, radius, size }: A
                                 ? "w-8 h-8"
                                 : size === "full"
                                     ? "w-10 h-10"
-                                    : "w-5 h-5"
+                                    : `${size}`
                     }
             bg-transparent 
             border-2  ${borderColor}`}

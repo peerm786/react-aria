@@ -65,17 +65,17 @@ const BuilderSideNav = () => {
     return (
         <aside
             aria-label="Sidebar"
-            className="w-[3.59vw] h-[89.07vh] mt-5 flex ml-3 flex-col items-center justify-between bg-white border border-[#000000]/15 rounded-md dark:bg-[#1D1D1D] dark:text-[#FFFFFF]"
+            className="w-[3.59vw] h-[89.07vh] mt-[1.46vw] flex ml-[0.87vw] flex-col items-center justify-between bg-white border border-[#000000]/15 rounded-md dark:bg-[#1D1D1D] dark:text-[#FFFFFF]"
         >
             <section className="flex flex-col w-full">
                 <section
                     aria-label="Actions"
-                    className="flex flex-col w-full items-center justify-center mt-1 dark:bg-[#1D1D1D] dark:text-[#FFFFFF]"
+                    className="flex flex-col w-full items-center justify-center mt-[0.29vw] dark:bg-[#1D1D1D] dark:text-[#FFFFFF]"
                 >
                     {actionIcons.map(({ Icon, route }, index) => (
                         <Button
                             key={index}
-                            className={`${index === 6 ? "border-b border-b-black/35 dark:border-b-white/35" : ""} p-2 items-center justify-center focus:outline-none ${index === fillIndex ? "flex border-l-2 border-l-[#0736C4] w-full" : ""}`}
+                            className={`${index === 6 ? "border-b border-b-black/35 dark:border-b-white/35" : ""} p-[0.58vw] items-center justify-center focus:outline-none ${index === fillIndex ? "flex border-l-2 border-l-[#0736C4] w-full" : ""}`}
                             onPress={() => handleRoutes(index, route)}
                         >
                             <Icon
@@ -88,18 +88,18 @@ const BuilderSideNav = () => {
                     ))}
                 </section>
             </section>
-            <div className="flex flex-col justify-center">
-                <Button onPress={handleDarkModeToggle} className="p-2 focus:outline-none">
+            <div className="flex flex-col items-center justify-center">
+                <Button onPress={handleDarkModeToggle} className="p-[0.58vw] focus:outline-none">
                     {isDarkMode ? (
                         <BiSun
                             color={"#A59E92"}
-                            size={25}
+                            size={18}
                             className="dark:text-white text-black/70"
                         />
                     ) : (
                         <BiMoon
                             color={"#A59E92"}
-                            size={25}
+                            size={18}
                             className="dark:text-white text-black/70"
                         />
                     )}
@@ -122,7 +122,7 @@ const BuilderSideNav = () => {
                 </TorusDialog>
                 <DialogTrigger>
                     <Button
-                        className={`outline-none mr-1 mb-2`}
+                        className={`outline-none mr-[0.29vw] mb-[0.58vw]`}
                     >
                         <TorusAvatar
                             radius="full"
@@ -132,7 +132,7 @@ const BuilderSideNav = () => {
                     <Popover placement="right top">
                         <Dialog className="bg-white focus:outline-none rounded-lg dark:bg-[#161616]">
                             {({ close }) => (
-                                <div className="flex flex-col p-2 gap-2 border border-black/15 rounded-lg dark:bg-[#0F0F0F] dark:text-white dark:border-white/15">
+                                <div className="flex flex-col p-[0.58vw] gap-[0.58vw] border border-black/15 rounded-lg dark:bg-[#0F0F0F] dark:text-white dark:border-white/15">
                                     <Button className={`outline-none`} onPress={() => handleLogout(close)}>
                                         <LogoutSvg fill={isDarkMode ? "white" : "black"} />
                                     </Button>

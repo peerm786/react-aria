@@ -154,7 +154,7 @@ function FabricSelector({ tenant, appGrp, app }: any) {
       >
         <TabList
           aria-label="Feeds"
-          className="flex w-[95%] bg-[#FFFFFF] dark:bg-[#161616] dark:text-white rounded-lg p-1 ml-2 mt-2"
+          className="flex w-[95%] bg-[#FFFFFF] dark:bg-[#161616] dark:text-white rounded-lg p-[0.29vw] ml-[0.58vw] mt-[0.58vw]"
         >
           {tabs.map(({ id, label, icon, iconDefault }) => (
             <MyTab key={id} id={id} label={label}>
@@ -162,15 +162,15 @@ function FabricSelector({ tenant, appGrp, app }: any) {
             </MyTab>
           ))}
         </TabList>
-        <div className="relative mt-3 ml-2">
-          <span className="absolute inset-y-0 left-0 flex items-center p-2 h-7 w-7 ">
+        <div className="relative mt-[0.87vw] ml-[0.58vw]">
+          <span className="absolute inset-y-0 left-0 flex items-center p-[0.58vw] h-[2.04vw] w-[2.04vw] ">
             <SearchIcon width="0.83vw" height="0.83vw" fill={isDarkMode ? "white" : "black"} />
           </span>
           <Input
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             placeholder="Search Artifacts"
-            className={`w-[92%] bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white text-[0.72vw] leading-[2.22vh] p-1 focus:outline-none focus:border-blue-400 border border-black/15 pl-6 rounded-md dark:border-[#212121]`}
+            className={`w-[92%] bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white text-[0.72vw] leading-[2.22vh] p-[0.29vw] focus:outline-none focus:border-blue-400 border border-black/15 pl-[1.75vw] rounded-md dark:border-[#212121]`}
           />
         </div>
         <div className="h-[85%] overflow-y-auto">
@@ -179,7 +179,7 @@ function FabricSelector({ tenant, appGrp, app }: any) {
               <div
                 draggable
                 onDragStart={(e) => handleDragKey(e, key.key)}
-                className="w-[90%] bg-white dark:bg-[#161616] border border-black/20 dark:border-[#212121] dark:text-white p-1 ml-2 text-[0.83vw] leading-[2.22vh] rounded-md"
+                className="w-[90%] bg-white dark:bg-[#161616] border border-black/20 dark:border-[#212121] dark:text-white p-[0.29vw] ml-[0.58vw] text-[0.83vw] leading-[2.22vh] rounded-md"
               >
                 {key.label}
               </div>
@@ -198,7 +198,7 @@ function MyTab({ id, children, label }: TabProps & { label: string }) {
       className={({ isSelected }) => `
         w-full flex items-center justify-center text-[0.72vw] leading-[1.48vh] font-medium cursor-pointer
         ${isSelected
-          ? "bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white transition duration-300 ease-in-out rounded-lg outline-none p-1"
+          ? "bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white transition duration-300 ease-in-out rounded-lg outline-none p-[0.29vw]"
           : ""
         }
       `}
@@ -206,7 +206,7 @@ function MyTab({ id, children, label }: TabProps & { label: string }) {
       {({ isSelected }) => (
         <>
           {children}
-          {isSelected && <span className="ml-2">{label}</span>}
+          {isSelected && <span className="ml-[0.58vw]">{label}</span>}
         </>
       )}
     </Tab>
@@ -214,7 +214,7 @@ function MyTab({ id, children, label }: TabProps & { label: string }) {
 }
 
 function MyTabPanel(props: TabPanelProps) {
-  return <TabPanel {...props} className="mt-2" />;
+  return <TabPanel {...props} className="mt-[0.58vw]" />;
 }
 
 export default FabricSelector;
