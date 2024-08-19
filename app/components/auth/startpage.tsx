@@ -294,7 +294,7 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
       </div>
       <div className="text-center text-[0.8vw] leading-[1.7vh]">
         <p className="text-black/35 dark:text-white">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <a href="#" className="text-black dark:text-white font-bold">
             Sign Up
           </a>

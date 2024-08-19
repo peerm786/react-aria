@@ -10,7 +10,7 @@ import { AxiosService } from '../../lib/utils/axiosService'
 import { getCookie } from '../../lib/utils/cookiemgmt'
 import ProgressButton from '../components/progressbar'
 
-const page = () => {
+const Page = () => {
     const [fabric, setFabric] = useState('')
     const [tenant, setTenant] = useState('')
     const [data, setData] = useState([])
@@ -70,4 +70,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

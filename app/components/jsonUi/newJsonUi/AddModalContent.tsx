@@ -3,7 +3,7 @@ import { useState } from "react";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import TorusInput from "../../torusComponents/torusInput";
 import TorusDropDown from "../../torusComponents/torusDropdown";
- 
+
 const AddObj = ["object"];
 const AddKey = ["input", "boolean", "dropdown"];
 export const AddModalContentType = ({
@@ -13,14 +13,14 @@ export const AddModalContentType = ({
   handleAddjs,
   type,
   path,
-}:any) => {
+}: any) => {
   const [value, setValue] = useState(null);
- 
+
   const [keyinput, setkeyinput] = useState(null);
   const [valueinput, setvalueinput] = useState(null);
   const [dropdownValues, setdropdownValues] = useState([""]);
- 
-  const handleAdd = (selectedValue:any) => {
+
+  const handleAdd = (selectedValue: any) => {
     if (selectedValue == "input" && keyinput && valueinput) {
       handleAddjs(showObj, keyinput, valueinput, type, path, selectedValue);
       close();
@@ -38,7 +38,7 @@ export const AddModalContentType = ({
       close();
     }
   };
- 
+
   return (
     <div className="mb-3 flex  h-[100%]  w-[100%] flex-col items-center rounded dark:bg-[#070707]">
       <p className="dark:text-white">Add key-values</p>
@@ -75,12 +75,12 @@ export const AddModalContentType = ({
               (ele) => ({
                 key: ele,
                 label: ele,
-              }),
+              })
             )}
             btWidth={"md"}
           />
         </div>
- 
+
         <div>
           <div
             style={{
@@ -94,7 +94,7 @@ export const AddModalContentType = ({
               labelColor="text-[#000000]/50"
               borderColor="[#000000]/50"
               isDisabled={false}
-              onChange={(e:any) => {
+              onChange={(e: any) => {
                 setkeyinput(e);
               }}
               radius="lg"
@@ -118,7 +118,7 @@ export const AddModalContentType = ({
               borderColor="[#000000]/50"
               placeholder=""
               isDisabled={false}
-              onChange={(e:any) => {
+              onChange={(e: any) => {
                 setvalueinput(e);
               }}
               radius="lg"
@@ -135,22 +135,28 @@ export const AddModalContentType = ({
                 value && Array.from(value)[0] === "dropdown" ? "block" : "none",
             }}
           >
-            <button onClick={() => dropdownValues[dropdownValues.length - 1] !== "" && setdropdownValues([...dropdownValues, ""])}>
+            <button
+              onClick={() =>
+                dropdownValues[dropdownValues.length - 1] !== "" &&
+                setdropdownValues([...dropdownValues, ""])
+              }
+            >
               Add Field
             </button>
             <div className="h-[100px] overflow-y-scroll">
               {dropdownValues.map((item, i) => {
                 return (
                   <TorusInput
+                    key={i}
                     label={`Item ${i + 1}`}
                     variant="fade"
                     labelColor="text-[#000000]/50"
                     borderColor="[#000000]/50"
                     placeholder=""
                     isDisabled={false}
-                    onChange={(e:any) => {
+                    onChange={(e: any) => {
                       setdropdownValues((prev) =>
-                        prev.map((item, index) => (index === i ? e : item)),
+                        prev.map((item, index) => (index === i ? e : item))
                       );
                     }}
                     radius="lg"
@@ -178,7 +184,7 @@ export const AddModalContentType = ({
             labelColor="text-[#000000]/50"
             borderColor="[#000000]/50"
             isDisabled={false}
-            onChange={(e:any) => {
+            onChange={(e: any) => {
               setkeyinput(e);
             }}
             radius="lg"
@@ -213,5 +219,3 @@ export const AddModalContentType = ({
     </div>
   );
 };
- 
- 

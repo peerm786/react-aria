@@ -82,7 +82,9 @@ const ProcessLogs = ({
         return (
           <div>
             {data.nodeData.map((item: any) => (
-              <div className="text-[0.83vw] font-medium">{item.node}</div>
+              <div key={item.node} className="text-[0.83vw] font-medium">
+                {item.node}
+              </div>
             ))}
           </div>
         );
@@ -91,6 +93,7 @@ const ProcessLogs = ({
           <div>
             {data.nodeData.map((item: any) => (
               <div
+                key={item.time}
                 className="text-[0.833vw] text-black/50 
            dark:text-[#FFFFFF]/50"
               >
@@ -261,12 +264,13 @@ const ProcessLogs = ({
                         <Cell
                           key={i}
                           className={"border-b border-transparent "}
-                          children={
+                        >
+                          {
                             <div className="w-full h-full flex flex-col items-center justify-center py-[1rem]">
                               {RenderTableCell(item, column)}
                             </div>
                           }
-                        />
+                        </Cell>
                       ))}
                     </>
                   )}

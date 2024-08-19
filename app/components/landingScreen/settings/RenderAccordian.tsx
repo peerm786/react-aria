@@ -196,7 +196,7 @@ const RenderAccordion = ({
                         typeof data[key][0] !== "string"
                     ) {
                         return (
-                            <div className="">
+                            <div className="" key={"array"+index}>
                                 <Accordion
                                     key={key}
                                     className={`flex flex-row  gap-4 px-2 border-none`}
@@ -244,7 +244,7 @@ const RenderAccordion = ({
                                             </div>
                                         }
                                     >
-                                        {data[key].map((item, index) => {
+                                        {data[key].map((item:any, index:number) => {
                                             return (
                                                 <div key={index}>
                                                     <RenderAccordion
@@ -267,7 +267,7 @@ const RenderAccordion = ({
                         typeof data[key][0] === "string"
                     ) {
                         return (
-                            <div className="">
+                            <div className="" key={"stringarray"+index}>
                                 <Accordion
                                     key={key}
                                     className={`flex flex-row  gap-4 px-2 border-none `}

@@ -24,7 +24,7 @@ const Login = () => {
             <div className="flex gap-1 items-center">
               <span className="w-[.46vw] h-[.46vw] rounded-full bg-[#0736C4]"></span>
               <p className="text-[0.93vw] leading-[2vh] font-bold text-[#0736C4] dark:text-white">
-                What's New
+                What&apos;s New
               </p>
             </div>
             <p className="flex items-center text-[#0736C4] dark:text-white text-[0.72vw] font-medium leading-[1.5vh]">

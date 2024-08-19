@@ -34,7 +34,7 @@ import TorusToast from "./components/torusComponents/torusToast";
 import { useSelector } from "react-redux";
 import { RootState } from "../lib/Store/store";
 
-const page = () => {
+const Page = () => {
   const [selectedAssemblerButton, setSelectedAssemblerButton] = useState(true);
   const [selectedLogsButton, setSelectedLogsButton] = useState(false);
   const [selectedTenant, setSelectedTenant] = useState<string>("");
@@ -624,4 +624,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

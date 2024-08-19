@@ -132,16 +132,17 @@ const ArtifactContextMenu = ({
               <ArtifactShareIcon /> Share to
             </Button>
           }
-          children={({ close }: any) => (
+          dialogClassName={
+            "fixed z-[100] top-0 left-0 w-screen h-screen bg-transparent/45 flex items-center justify-center"
+          }
+        >
+          {({ close }: any) => (
             <ArtifactSharingModal
               close={close}
               artifactDetails={artifactDetails}
             />
           )}
-          dialogClassName={
-            "fixed z-[100] top-0 left-0 w-screen h-screen bg-transparent/45 flex items-center justify-center"
-          }
-        />
+        </TorusPopOver>
 
         <ArtifactDisplayModal
           fabric={fabric}

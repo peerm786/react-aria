@@ -31,14 +31,14 @@ export const RenderJson = ({ json, functionality }: any) => {
   }
 
   const OgJson = useCallback(() => {
-    const newjs :any = unflattenJson(dupJson);
+    const newjs: any = unflattenJson(dupJson);
     setConvertedJson(newjs);
     functionality(newjs["root"]);
   }, [dupJson]);
 
-  const handlejs = (e:any, i:any, key:any, type:any, jskey:any) => {
+  const handlejs = (e: any, i: any, key: any, type: any, jskey: any) => {
     if (type == "obj") {
-      setDupJson((prev:any) => {
+      setDupJson((prev: any) => {
         const newJson = structuredClone(prev);
         return {
           ...newJson,
@@ -67,9 +67,16 @@ export const RenderJson = ({ json, functionality }: any) => {
     }
   };
 
-  const handleAddjs = (path:any, key:any, value:any, type:any, i:any, selectedType:any) => {
+  const handleAddjs = (
+    path: any,
+    key: any,
+    value: any,
+    type: any,
+    i: any,
+    selectedType: any
+  ) => {
     if (type == "obj" && selectedType === "input") {
-      setDupJson((prev:any) => {
+      setDupJson((prev: any) => {
         return {
           ...prev,
           [path]: {
@@ -79,7 +86,7 @@ export const RenderJson = ({ json, functionality }: any) => {
         };
       });
     } else if (type == "obj" && selectedType === "boolean") {
-      setDupJson((prev:any) => {
+      setDupJson((prev: any) => {
         return {
           ...prev,
           [path]: {
@@ -94,7 +101,7 @@ export const RenderJson = ({ json, functionality }: any) => {
         };
       });
     } else if (type == "obj" && selectedType === "dropdown") {
-      setDupJson((prev :any) => {
+      setDupJson((prev: any) => {
         return {
           ...prev,
           [path]: {
@@ -109,10 +116,10 @@ export const RenderJson = ({ json, functionality }: any) => {
         };
       });
     } else if (type === "arr-1" && selectedType === "input") {
-      setDupJson((prev:any) => {
+      setDupJson((prev: any) => {
         return {
           ...prev,
-          [path]: prev[path].map((item:any, index:number) => {
+          [path]: prev[path].map((item: any, index: number) => {
             if (index === i) {
               return {
                 ...item,
@@ -125,10 +132,10 @@ export const RenderJson = ({ json, functionality }: any) => {
         };
       });
     } else if (type === "arr-1" && selectedType === "boolean") {
-      setDupJson((prev:any) => {
+      setDupJson((prev: any) => {
         return {
           ...prev,
-          [path]: prev[path].map((item:any, index:number) => {
+          [path]: prev[path].map((item: any, index: number) => {
             if (index === i) {
               return {
                 ...item,
@@ -146,10 +153,10 @@ export const RenderJson = ({ json, functionality }: any) => {
         };
       });
     } else if (type == "arr-1" && selectedType === "dropdown") {
-      setDupJson((prev:any) => {
+      setDupJson((prev: any) => {
         return {
           ...prev,
-          [path]: prev[path].map((item:any, index:number) => {
+          [path]: prev[path].map((item: any, index: number) => {
             if (index === i) {
               return {
                 ...item,
@@ -167,7 +174,7 @@ export const RenderJson = ({ json, functionality }: any) => {
         };
       });
     } else if (type === "arr-0" && selectedType === "object") {
-      setDupJson((prev:any) => {
+      setDupJson((prev: any) => {
         return {
           ...prev,
           [path]: [
@@ -180,12 +187,12 @@ export const RenderJson = ({ json, functionality }: any) => {
       });
     }
   };
-  const handleDeletejs = (path:any, type:any, label:any) => {
+  const handleDeletejs = (path: any, type: any, label: any) => {
     if (type === "arr-1") {
-      setDupJson((prev:any) => {
+      setDupJson((prev: any) => {
         const updatedObj = _.cloneDeep(prev);
         const events = _.get(updatedObj, path);
-        _.remove(events, (event:any) => event.label === label);
+        _.remove(events, (event: any) => event.label === label);
         return updatedObj;
       });
     } else if (type === "obj") {
@@ -203,7 +210,12 @@ export const RenderJson = ({ json, functionality }: any) => {
       setDupJson(js);
     }
   };
-  function denormalizeJson(obj:any, prefix = "", result:any = {}, originalObj?:any) {
+  function denormalizeJson(
+    obj: any,
+    prefix = "",
+    result: any = {},
+    originalObj?: any
+  ) {
     const copy = JSON.parse(JSON.stringify(obj));
     for (let key in copy) {
       if (copy.hasOwnProperty(key)) {
@@ -241,7 +253,7 @@ export const RenderJson = ({ json, functionality }: any) => {
           typeof copy[key][0] === "object"
         ) {
           result[newKey] = copy[key];
-          copy[key].forEach((item, index) => {
+          copy[key].forEach((item: any, index: number) => {
             if (typeof item === "object" && item !== null) {
               const nestedKey = `${newKey}/${index}`;
               denormalizeJson(item, nestedKey, result, originalObj);

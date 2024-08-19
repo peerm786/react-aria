@@ -25,7 +25,7 @@ import {
   EditIcon,
   TickSign,
   UnTickSign,
-} from "../../constants/svgApplications"
+} from "../../constants/svgApplications";
 
 import { twMerge } from "tailwind-merge";
 import TorusDialog from "./torusdialogmodal";
@@ -65,8 +65,9 @@ export function TorusColumn(props: any) {
                   <FaArrowDown
                     size={12}
                     color="#667085"
-                    className={` transition-rotate ease-in-out duration-100 ${sortDirection === "ascending" ? "rotate-180" : ""
-                      }`}
+                    className={` transition-rotate ease-in-out duration-100 ${
+                      sortDirection === "ascending" ? "rotate-180" : ""
+                    }`}
                   />
                 </span>
               )}
@@ -94,7 +95,8 @@ export function TorusTableHeader({
         <Column
           aria-label="Column"
           className={twMerge(
-            `text-xs w-[${100 / columns.length + 1
+            `text-xs w-[${
+              100 / columns.length + 1
             }%] font-medium px-[0.58vw] py-[0.8rem] focus:outline-none focus:border-none`,
             className
           )}
@@ -143,15 +145,21 @@ export function TorusRow({
 
   const handleRowAction = (item: any) => {
     if (otherProps?.onAction) {
-      otherProps?.onAction(item)
+      otherProps?.onAction(item);
     } else {
-      console.log("Action not found")
+      console.log("Action not found");
     }
-  }
+  };
 
   return (
     <>
-      <Row aria-label="Row" {...otherProps} key={id} className={className} onAction={() => handleRowAction(otherProps?.item)}>
+      <Row
+        aria-label="Row"
+        {...otherProps}
+        key={id}
+        className={className}
+        onAction={() => handleRowAction(otherProps?.item)}
+      >
         {/* {allowsDragging && (
             <Cell className={"min-h-4"}>
               <Button slot="drag">≡</Button>
@@ -186,24 +194,26 @@ export function TorusRow({
               if (column?.id == "Actions") {
                 return (
                   <Cell
+                    key={column?.id}
                     aria-label="Actions"
                     className={"border-b border-[#EAECF0]"}
-                    children={<TableCellActions id={otherProps?.index} />}
-                  />
+                  >
+                    <TableCellActions id={otherProps?.index} />
+                  </Cell>
                 );
               } else
                 return (
                   <Cell
+                    key={column?.id}
                     aria-label="table cell"
                     className={"border-b border-[#EAECF0]"}
-                    children={
-                      <div className="w-full h-full flex flex-col items-center justify-center py-[1rem] text-xs font-normal ">
-                        <RenderTableChildren
-                          children={otherProps?.item?.[column?.id]}
-                        />
-                      </div>
-                    }
-                  />
+                  >
+                    <div className="w-full h-full flex flex-col items-center justify-center py-[1rem] text-xs font-normal ">
+                      <RenderTableChildren>
+                        {otherProps?.item?.[column?.id]}
+                      </RenderTableChildren>
+                    </div>
+                  </Cell>
                 );
             })}
           </>
@@ -223,8 +233,8 @@ export function TorusCheckbox({ children, index, ...props }: any) {
       className={"w-full, h-full, flex items-center justify-center"}
       isIndeterminate={
         selectedRows &&
-          Array.from(selectedRows).length > 0 &&
-          (selectedRows.has(index) || selectedRows.has("all"))
+        Array.from(selectedRows).length > 0 &&
+        (selectedRows.has(index) || selectedRows.has("all"))
           ? true
           : false
       }
@@ -253,7 +263,7 @@ export function TorusCheckbox({ children, index, ...props }: any) {
               } else {
                 if (
                   Array.from(selectedRows).length + 1 ==
-                  Array.from(tableIndex).length &&
+                    Array.from(tableIndex).length &&
                   selectionMode === "multiple"
                 ) {
                   setSelectedRows(new Set(["all"]));
@@ -288,8 +298,8 @@ function TorusColumnCheckbox({ children, ...props }: any) {
       id="all"
       isIndeterminate={
         selectedRows &&
-          Array.from(selectedRows).length > 0 &&
-          selectedRows.has("all")
+        Array.from(selectedRows).length > 0 &&
+        selectedRows.has("all")
           ? true
           : false
       }
@@ -361,10 +371,11 @@ const Pagination = ({ currentPage, totalPages, setCurrentPage }: any) => {
         {getPageNumbers().map((page) => (
           <Button
             key={page}
-            className={`pagination-button text-[0.72vw] focus:outline-none dark:focus:bg-[#3063FF]/35 dark:text-[#FFFFFF] ${page === currentPage
-              ? "text-[#0736C4] bg-[#E3EAFF] px-[0.58vw] py-[0.29vw]  rounded"
-              : "text-[#667085]"
-              }`}
+            className={`pagination-button text-[0.72vw] focus:outline-none dark:focus:bg-[#3063FF]/35 dark:text-[#FFFFFF] ${
+              page === currentPage
+                ? "text-[#0736C4] bg-[#E3EAFF] px-[0.58vw] py-[0.29vw]  rounded"
+                : "text-[#667085]"
+            }`}
             onPress={() => handlePageChange(page)}
           >
             {page}
@@ -376,10 +387,11 @@ const Pagination = ({ currentPage, totalPages, setCurrentPage }: any) => {
       </div>
       {totalPages > 4 && currentPage + 1 < totalPages && (
         <Button
-          className={`pagination-button text-[0.72vw] focus:outline-none dark:text-[#FFFFFF] ${totalPages === currentPage
-            ? "text-[#0736C4] bg-[#E3EAFF] px-[0.58vw] py-[0.29vw]  rounded"
-            : "text-[#667085]"
-            }`}
+          className={`pagination-button text-[0.72vw] focus:outline-none dark:text-[#FFFFFF] ${
+            totalPages === currentPage
+              ? "text-[#0736C4] bg-[#E3EAFF] px-[0.58vw] py-[0.29vw]  rounded"
+              : "text-[#667085]"
+          }`}
           onPress={() => handlePageChange(totalPages)}
         >
           {totalPages}
@@ -697,9 +709,9 @@ export function TorusTable({
       }}
     >
       {filterColmns &&
-        filterColmns.length > 0 &&
-        sortDescriptor &&
-        totalPages ? (
+      filterColmns.length > 0 &&
+      sortDescriptor &&
+      totalPages ? (
         <div className="w-full h-screen flex flex-col items-center ">
           {/* <div className="w-full h-[8%] flex justify-center items-center ">
               <div className="w-[95%] h-full flex justify-between items-center pl-2">
@@ -788,7 +800,9 @@ export function TorusTable({
               </div>
             </div> */}
           <div
-            className={`w-full  ${totalPages > 1 ? "h-[73%]" : "h-[75%]"} flex flex-col justify-between items-center`}
+            className={`w-full  ${
+              totalPages > 1 ? "h-[73%]" : "h-[75%]"
+            } flex flex-col justify-between items-center`}
           >
             {/* <div className="w-[95%] flex items-center justify-center h-[8%]">
                 <div className="w-[60%] flex  h-full bg-transparent rounded-md ">
@@ -875,7 +889,9 @@ export function TorusTable({
                   </div>
                 </div>
               </div> */}
-            <div className={`w-full h-full overflow-y-scroll mt-2 border-b-1 border-transparent `}>
+            <div
+              className={`w-full h-full overflow-y-scroll mt-2 border-b-1 border-transparent `}
+            >
               <Table
                 aria-label="table"
                 selectedKeys={selectedKeys}
@@ -955,8 +971,7 @@ export function TorusTable({
                 totalPages={totalPages}
               />
             </div>
-          ) :
-            null}
+          ) : null}
 
           {/* <div className="flex flex-col items-center justify-center pl-2 w-[100%] h-[5%]">
               <div className="w-[95%] flex justify-between "> */}
@@ -1041,7 +1056,8 @@ export const TableCellActions = ({ id }: any) => {
                 " flex  border border-gray-300 dark: border-[#212121] rounded-lg flex-col bg-white",
             }}
             message={"Delete"}
-            children={({ close }: any) => (
+          >
+            {({ close }: any) => (
               <>
                 <div className="p-4">
                   <Heading
@@ -1058,7 +1074,7 @@ export const TableCellActions = ({ id }: any) => {
                 </div>
               </>
             )}
-          />
+          </TorusDialog>
         </div>
 
         <div className="w-[25%] h-[100%] flex justify-start items-center">
@@ -1073,12 +1089,14 @@ export const TableCellActions = ({ id }: any) => {
               />
             }
             classNames={{
-              dialogClassName: " flex  border-2 dark: border-[#212121]  flex-col bg-white",
+              dialogClassName:
+                " flex  border-2 dark: border-[#212121]  flex-col bg-white",
             }}
             title={"Edit"}
             message={"Edit"}
-            children={({ close }: any) => <EditAction id={id} close={close} />}
-          />
+          >
+            {({ close }: any) => <EditAction id={id} close={close} />}
+          </TorusDialog>
         </div>
       </div>
     </div>
@@ -1091,8 +1109,8 @@ export const RenderTableChildren = ({ children }: any) => (
         {Array.isArray(children) ? (
           <div className=" flex flex-col gap-1">
             {children.map((item, index) => (
-              <li className="text-sm font-medium">
-                <RenderTableChildren key={index} children={item} />
+              <li className="text-sm font-medium" key={index}>
+                <RenderTableChildren key={index}>{item}</RenderTableChildren>
               </li>
             ))}
           </div>
@@ -1101,7 +1119,9 @@ export const RenderTableChildren = ({ children }: any) => (
             {Object.keys(children).map((key) => (
               <div key={key} className=" flex gap-2 items-center justify-start">
                 <h1>{key}:</h1>
-                <RenderTableChildren key={key} children={children[key]} />
+                <RenderTableChildren key={key}>
+                  {children[key]}
+                </RenderTableChildren>
               </div>
             ))}
           </div>

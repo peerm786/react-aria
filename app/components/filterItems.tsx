@@ -38,7 +38,7 @@ const FilterItems = ({
   useEffect(() => {
     const filtered = (items as any).filter((item: any) => item.label.toLowerCase().includes(searchTerm.toLowerCase()));
     setFilteredItems(filtered);
-  }, [searchTerm])
+  }, [searchTerm , items])
 
 
   return (

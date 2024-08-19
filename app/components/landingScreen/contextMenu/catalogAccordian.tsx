@@ -1,7 +1,7 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DownArrow } from "../../../constants/svgApplications";
 
-const CatalogAccordian = memo(
+const CatalogAccordian =
   ({
     items,
     onSelectionChange,
@@ -35,9 +35,8 @@ const CatalogAccordian = memo(
       </div>
     );
   }
-);
 
-const DisplayTkeys = memo(
+const DisplayTkeys = 
   ({
     title,
     id,
@@ -94,9 +93,8 @@ const DisplayTkeys = memo(
       </div>
     );
   }
-);
 
-const DisplayCatalog = memo(
+const DisplayCatalog = 
   ({ title, id, items, onSelectionChange, selectedItem ,  selectedTkey , selectedProject , selectedArtifactGroup }: any) => {
     const [open, setOpen] = useState(false);
    
@@ -147,9 +145,9 @@ const DisplayCatalog = memo(
       </div>
     );
   }
-);
 
-const DisplayContent = memo(
+
+const DisplayContent = 
   ({ title, id, onSelectionChange, isSelected }: any) => {
     // console.log(title , isSelected ,id , "dhd");
 
@@ -172,6 +170,5 @@ const DisplayContent = memo(
       </div>
     );
   }
-);
 
 export default CatalogAccordian;

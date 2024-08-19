@@ -1,10 +1,15 @@
 import React, { memo, useEffect, useState } from "react";
 import TorusDialog from "../../torusComponents/torusdialogmodal";
-import { PlusIcon } from "../../../constants/svgApplications"
+import { PlusIcon } from "../../../constants/svgApplications";
 import { AddModalContentType } from "./AddModalContent";
 import { CiTrash } from "react-icons/ci";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
-import { MdBackupTable, MdDataObject, MdExpandLess, MdOutlineDataArray } from "react-icons/md";
+import {
+  MdBackupTable,
+  MdDataObject,
+  MdExpandLess,
+  MdOutlineDataArray,
+} from "react-icons/md";
 import { LuDatabase } from "react-icons/lu";
 import { SiDatabricks } from "react-icons/si";
 import { TfiRulerPencil } from "react-icons/tfi";
@@ -17,7 +22,6 @@ import TorusDropDown from "../../torusComponents/torusDropdown";
 import TorusButton from "../../torusComponents/torusButton";
 import TorusSwitch from "../../torusComponents/torusSwitch";
 import TorusToolTip from "../../torusComponents/torusTooltip";
-
 
 const iconArray = [
   MdDataObject,
@@ -76,7 +80,6 @@ const RenderDropdown = ({
     setValue(e);
 
     handlejs(e, path + "." + item + "." + data, data, "dropdown", showObj);
-
   };
 
   return (
@@ -193,122 +196,117 @@ const RenderSwitch = ({ obj }: any) => {
   );
 };
 
-const RenderJsonArraySidebarIcon = memo(
-  ({
-    obj,
-    setShowObj,
-    setPath,
-    fg,
-    activeTab,
-    setActiveTab,
-    setLabel,
-    shuffledIcons,
-    setCheckActivestatus,
-    setExpandedItem
-  }: any) => {
+const RenderJsonArraySidebarIcon = ({
+  obj,
+  setShowObj,
+  setPath,
+  fg,
+  activeTab,
+  setActiveTab,
+  setLabel,
+  shuffledIcons,
+  setCheckActivestatus,
+  setExpandedItem,
+}: any) => {
+  return (
+    <>
+      <div
+        className={
+          "w-[100%]  flex z-50 items-center gap-4 cursor-pointer" +
+          (activeTab == fg
+            ? "text-xs  cursor-pointer text-[#6600ff]"
+            : " text-gray-800 cursor-pointer")
+        }
+      >
+        <TorusToolTip
+          hoverContent={<MdOutlineDataArray size={20} />}
+          tooltipFor="arr"
+          tooltipContent={fg} // obj.map((ele) => ele?.label ? ele?.label : fg
+          color={activeTab == fg ? "#6600ff" : "#09254D"}
+          setShowObj={setShowObj}
+          setActiveTab={setActiveTab}
+          setPath={setPath}
+          fg={fg}
+          obj={obj}
+          setLabel={setLabel}
+          setCheckActivestatus={setCheckActivestatus}
+          setExpandedItem={setExpandedItem}
+        />
+      </div>
+    </>
+  );
+};
 
-    return (
-      <>
-        <div
-          className={
-            "w-[100%]  flex z-50 items-center gap-4 cursor-pointer" +
-            (activeTab == fg
-              ? "text-xs  cursor-pointer text-[#6600ff]"
-              : " text-gray-800 cursor-pointer")
-          }
-        >
+const JsonSidebarIcon = ({
+  obj,
+  setShowObj,
+  setPath,
+  setLabel,
+  checkActivestatus,
+  setCheckActivestatus,
+  setExpandedItem,
+}: any) => {
+  const [activeTab, setActiveTab] = useState<null | any>(null);
 
-          <TorusToolTip
-            hoverContent={
-              <MdOutlineDataArray size={20} />
+  return (
+    <>
+      <div className="max-w-full relative bg-white dark:bg-[#161616]   h-full overflow-y-scroll scrollbar-none flex flex-col mb-5 p-4 gap-5">
+        {obj &&
+          Object.keys(obj).map((ele, i) => {
+            if (typeof obj[ele] == "object" && !Array.isArray(obj[ele])) {
+              return (
+                <div key={i + ele} className="">
+                  <span
+                    className={
+                      " flex items-center z-50 text-xs cursor-pointer gap-4" +
+                      (activeTab === ele
+                        ? " cursor-pointer  text-xs text-[#0073e6]"
+                        : "text-gray-100 cursor-pointer")
+                    }
+                    onClick={() => {
+                      setShowObj(ele);
+                      setPath(ele);
+                      setActiveTab(ele);
+                      setCheckActivestatus(obj[activeTab]);
+                    }}
+                  >
+                    <TorusToolTip
+                      hoverContent={<MdDataObject size={20} />}
+                      tooltipFor="obj"
+                      tooltipContent={ele} // obj.map((ele) => ele?.label ? ele?.label : fg
+                      color={activeTab == ele ? "#6600ff" : "#09254D"}
+                      setShowObj={setShowObj}
+                      setActiveTab={setActiveTab}
+                      setPath={setPath}
+                      ele={ele}
+                      setLabel={setLabel}
+                    />
+                  </span>
+                </div>
+              );
             }
-            tooltipFor="arr"
-            tooltipContent={fg} // obj.map((ele) => ele?.label ? ele?.label : fg
-            color={activeTab == fg ? "#6600ff" : "#09254D"}
-            setShowObj={setShowObj}
-            setActiveTab={setActiveTab}
-            setPath={setPath}
-            fg={fg}
-            obj={obj}
-            setLabel={setLabel}
-            setCheckActivestatus={setCheckActivestatus}
-            setExpandedItem={setExpandedItem}
-          />
-        </div>
-      </>
-    );
-  }
-);
-
-
-const JsonSidebarIcon = memo(
-  ({ obj, setShowObj, setPath, setLabel, checkActivestatus, setCheckActivestatus, setExpandedItem }: any) => {
-    const [activeTab, setActiveTab] = useState<null | any>(null);
-
-    return (
-      <>
-        <div className="max-w-full relative bg-white dark:bg-[#161616]   h-full overflow-y-scroll scrollbar-none flex flex-col mb-5 p-4 gap-5">
-          {obj &&
-            Object.keys(obj).map((ele, i) => {
-              if (typeof obj[ele] == "object" && !Array.isArray(obj[ele])) {
-                return (
-                  <div key={i + ele} className="">
-                    <span
-                      className={
-                        " flex items-center z-50 text-xs cursor-pointer gap-4" +
-                        (activeTab === ele
-                          ? " cursor-pointer  text-xs text-[#0073e6]"
-                          : "text-gray-100 cursor-pointer")
-                      }
-                      onClick={() => {
-                        setShowObj(ele);
-                        setPath(ele);
-                        setActiveTab(ele);
-                        setCheckActivestatus(obj[activeTab])
-                      }}
-                    >
-
-                      <TorusToolTip
-                        hoverContent={
-                          <MdDataObject size={20} />
-                        }
-                        tooltipFor="obj"
-                        tooltipContent={ele} // obj.map((ele) => ele?.label ? ele?.label : fg
-                        color={activeTab == ele ? "#6600ff" : "#09254D"}
-                        setShowObj={setShowObj}
-                        setActiveTab={setActiveTab}
-                        setPath={setPath}
-                        ele={ele}
-                        setLabel={setLabel}
-                      />
-                    </span>
-                  </div>
-                );
-              }
-              if (Array.isArray(obj[ele])) {
-                return (
-                  <RenderJsonArraySidebarIcon
-                    key={i + ele}
-                    activeTab={activeTab}
-                    setActiveTab={setActiveTab}
-                    obj={obj[ele]}
-                    fg={ele}
-                    setShowObj={setShowObj}
-                    setPath={setPath}
-                    setLabel={setLabel}
-                    shuffledIcons={iconArray}
-                    setCheckActivestatus={setCheckActivestatus}
-                    setExpandedItem={setExpandedItem}
-
-                  />
-                );
-              }
-            })}
-        </div>
-      </>
-    );
-  }
-);
+            if (Array.isArray(obj[ele])) {
+              return (
+                <RenderJsonArraySidebarIcon
+                  key={i + ele}
+                  activeTab={activeTab}
+                  setActiveTab={setActiveTab}
+                  obj={obj[ele]}
+                  fg={ele}
+                  setShowObj={setShowObj}
+                  setPath={setPath}
+                  setLabel={setLabel}
+                  shuffledIcons={iconArray}
+                  setCheckActivestatus={setCheckActivestatus}
+                  setExpandedItem={setExpandedItem}
+                />
+              );
+            }
+          })}
+      </div>
+    </>
+  );
+};
 
 function JsonSidebarDetail({
   showObj,
@@ -389,7 +387,8 @@ function JsonSidebarDetail({
                       }}
                       title={"Add"}
                       message={"Edit"}
-                      children={({ close }: any) => (
+                    >
+                      {({ close }: any) => (
                         <AddModalContentType
                           obj={obj}
                           showObj={showObj}
@@ -398,7 +397,7 @@ function JsonSidebarDetail({
                           type={"obj"}
                         />
                       )}
-                    />
+                    </TorusDialog>
                     <TorusButton
                       Children={`Delete`}
                       size={"xs"}
@@ -418,13 +417,14 @@ function JsonSidebarDetail({
                   {obj &&
                     showObj &&
                     obj[showObj] &&
-                    Object.keys(obj[showObj]).map((ele) => {
+                    Object.keys(obj[showObj]).map((ele, j) => {
                       if (
                         !Array.isArray(obj[showObj][ele]) &&
                         typeof obj[showObj][ele] !== "object"
                       ) {
                         return (
                           <p
+                            key={j}
                             style={{
                               display: ele === "label" ? "none" : "",
                             }}
@@ -466,7 +466,6 @@ function JsonSidebarDetail({
                                 }
                               />
                             </div>
-
                           </p>
                         );
                       }
@@ -476,6 +475,7 @@ function JsonSidebarDetail({
                       ) {
                         return (
                           <RenderDropdown
+                            key={ "dropdown" + j}
                             obj={obj[showObj][ele]}
                             item={ele}
                             path={path}
@@ -529,7 +529,6 @@ const RenderJsonArraySidebarDetail = ({
     }
   };
 
-
   const toggleKey = (key: any) => {
     if (expandedItem.includes(key)) {
       setExpandedItem(expandedItem.filter((k: any) => k !== key));
@@ -560,11 +559,13 @@ const RenderJsonArraySidebarDetail = ({
             }
             classNames={{
               modalClassName: " w-full flex justify-center items-center  ",
-              dialogClassName: " w-[30vw] p-3 h-full rounded-lg flex-col bg-white",
+              dialogClassName:
+                " w-[30vw] p-3 h-full rounded-lg flex-col bg-white",
             }}
             title={"Add"}
             message={"Edit"}
-            children={({ close }: any) => (
+          >
+            {({ close }: any) => (
               <AddModalContentType
                 obj={obj}
                 showObj={showObj}
@@ -573,7 +574,7 @@ const RenderJsonArraySidebarDetail = ({
                 type="arr-0"
               />
             )}
-          />
+          </TorusDialog>
           <TorusButton
             Children={`Delete`}
             size={"xs"}
@@ -589,7 +590,11 @@ const RenderJsonArraySidebarDetail = ({
           />
         </div>
       </div>
-      <div className={`grid ${obj.length > 1 ? "grid-cols-2" : "grid-cols-1"} gap-2`}>
+      <div
+        className={`grid ${
+          obj.length > 1 ? "grid-cols-2" : "grid-cols-1"
+        } gap-2`}
+      >
         {obj &&
           obj.map((ele: any, index: number) => {
             const isExpanded = expandedItem.includes(ele?.label);
@@ -647,7 +652,8 @@ const RenderJsonArraySidebarDetail = ({
                           }}
                           title={"Add"}
                           message={"Edit"}
-                          children={({ close }: any) => (
+                        >
+                          {({ close }: any) => (
                             <AddModalContentType
                               obj={obj}
                               showObj={showObj}
@@ -657,7 +663,7 @@ const RenderJsonArraySidebarDetail = ({
                               path={index}
                             />
                           )}
-                        />
+                        </TorusDialog>
                         <TorusButton
                           Children={`Delete`}
                           size={"xs"}
@@ -678,7 +684,7 @@ const RenderJsonArraySidebarDetail = ({
                     {objs &&
                       Object.keys(objs[showObj][index])
                         .filter(
-                          (item) => item !== "grouplabel" && item !== "label",
+                          (item) => item !== "grouplabel" && item !== "label"
                         )
                         .map((item, inds) => {
                           if (
@@ -686,7 +692,10 @@ const RenderJsonArraySidebarDetail = ({
                             typeof objs[showObj][index][item] !== "object"
                           ) {
                             return (
-                              <p className="mt-[-25px] flex  flex-col ">
+                              <p
+                                className="mt-[-25px] flex  flex-col "
+                                key={inds}
+                              >
                                 <TorusInput
                                   key={inds}
                                   variant="bordered"
@@ -701,7 +710,7 @@ const RenderJsonArraySidebarDetail = ({
                                       e,
                                       path + "." + index + "." + item,
                                       item,
-                                      "arr",
+                                      "arr"
                                     );
                                   }}
                                   radius="lg"
@@ -727,7 +736,7 @@ const RenderJsonArraySidebarDetail = ({
                                   onPress={() =>
                                     handleDeletejs(
                                       path + "." + index + "." + item,
-                                      "obj",
+                                      "obj"
                                     )
                                   }
                                 />
@@ -742,6 +751,7 @@ const RenderJsonArraySidebarDetail = ({
                             return (
                               <>
                                 <RenderDropdown
+                                  key={"dropdown" + inds}
                                   obj={objs[showObj][index][item]}
                                   item={item}
                                   path={path + "." + index}

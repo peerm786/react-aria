@@ -153,6 +153,7 @@ const FilterModal = (
             {sortbutton.map((item) => (
               <Button
                 onPress={() => setSelectedSortButton(item)}
+                key={item}
                 className={`flex outline-none p-1 text-[0.62vw] leading-[2.22vh] border border-black/15
               rounded-lg ${selectedSortButton == item ? "bg-[#0736C4] text-white" : "bg-[#F4F5FA]"}`}
               >

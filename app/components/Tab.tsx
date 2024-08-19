@@ -34,25 +34,49 @@ function FabricSelector({ tenant, appGrp, app }: any) {
       id: "df",
       label: "DataFabric",
       icon: <DataFabric width="1.34vw" height="1.34vw" />,
-      iconDefault: <DataFabric width="1.34vw" height="1.34vw" fill={isDarkMode ? "white" : "black"} />,
+      iconDefault: (
+        <DataFabric
+          width="1.34vw"
+          height="1.34vw"
+          fill={isDarkMode ? "white" : "black"}
+        />
+      ),
     },
     {
       id: "uf",
       label: "UserFabric",
       icon: <UserFabric width="1.34vw" height="1.34vw" />,
-      iconDefault: <UserFabric width="1.34vw" height="1.34vw" fill={isDarkMode ? "white" : "black"} />,
+      iconDefault: (
+        <UserFabric
+          width="1.34vw"
+          height="1.34vw"
+          fill={isDarkMode ? "white" : "black"}
+        />
+      ),
     },
     {
       id: "pf",
       label: "ProcessFabric",
       icon: <ProcessFabric width="1.34vw" height="1.34vw" />,
-      iconDefault: <ProcessFabric width="1.34vw" height="1.34vw" fill={isDarkMode ? "white" : "black"} />,
+      iconDefault: (
+        <ProcessFabric
+          width="1.34vw"
+          height="1.34vw"
+          fill={isDarkMode ? "white" : "black"}
+        />
+      ),
     },
     {
       id: "sf",
       label: "SecurityFabric",
       icon: <SecurityFabric width="1.34vw" height="1.34vw" />,
-      iconDefault: <SecurityFabric width="1.34vw" height="1.34vw" fill={isDarkMode ? "white" : "black"} />,
+      iconDefault: (
+        <SecurityFabric
+          width="1.34vw"
+          height="1.34vw"
+          fill={isDarkMode ? "white" : "black"}
+        />
+      ),
     },
   ];
 
@@ -78,7 +102,7 @@ function FabricSelector({ tenant, appGrp, app }: any) {
 
           const newSet = new Set(data);
           setModelKeys(
-            Array.from(newSet).map((key) => ({
+            (Array.from(newSet) as string[]).map((key: string) => ({
               key: key,
               label: key.replace(
                 `TGA:ABK${fabric}:BUILD:${tenant}:${app}:`,
@@ -90,7 +114,10 @@ function FabricSelector({ tenant, appGrp, app }: any) {
         } else {
           setModelKeys([]);
           toast(
-            <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
             {
               type: "error",
               position: "bottom-right",
@@ -100,7 +127,7 @@ function FabricSelector({ tenant, appGrp, app }: any) {
               text: `There is no ModelKey found for the application`,
               closeButton: false,
             } as any
-          )
+          );
         }
       } else {
         setModelKeys([]);
@@ -129,7 +156,7 @@ function FabricSelector({ tenant, appGrp, app }: any) {
           text: `Please select valid application`,
           closeButton: false,
         } as any
-      )
+      );
     }
   };
 
@@ -164,7 +191,11 @@ function FabricSelector({ tenant, appGrp, app }: any) {
         </TabList>
         <div className="relative mt-[0.87vw] ml-[0.58vw]">
           <span className="absolute inset-y-0 left-0 flex items-center p-[0.58vw] h-[2.04vw] w-[2.04vw] ">
-            <SearchIcon width="0.83vw" height="0.83vw" fill={isDarkMode ? "white" : "black"} />
+            <SearchIcon
+              width="0.83vw"
+              height="0.83vw"
+              fill={isDarkMode ? "white" : "black"}
+            />
           </span>
           <Input
             value={searchValue}
@@ -174,17 +205,21 @@ function FabricSelector({ tenant, appGrp, app }: any) {
           />
         </div>
         <div className="h-[85%] overflow-y-auto">
-          {modelKeys.filter((key: any) => key.label.toLowerCase().includes(searchValue.toLowerCase())).map((key: any, index: number) => (
-            <MyTabPanel key={index} id={selectedTab}>
-              <div
-                draggable
-                onDragStart={(e) => handleDragKey(e, key.key)}
-                className="w-[90%] bg-white dark:bg-[#161616] border border-black/20 dark:border-[#212121] dark:text-white p-[0.29vw] ml-[0.58vw] text-[0.83vw] leading-[2.22vh] rounded-md"
-              >
-                {key.label}
-              </div>
-            </MyTabPanel>
-          ))}
+          {modelKeys
+            .filter((key: any) =>
+              key.label.toLowerCase().includes(searchValue.toLowerCase())
+            )
+            .map((key: any, index: number) => (
+              <MyTabPanel key={index} id={selectedTab}>
+                <div
+                  draggable
+                  onDragStart={(e) => handleDragKey(e, key.key)}
+                  className="w-[90%] bg-white dark:bg-[#161616] border border-black/20 dark:border-[#212121] dark:text-white p-[0.29vw] ml-[0.58vw] text-[0.83vw] leading-[2.22vh] rounded-md"
+                >
+                  {key.label}
+                </div>
+              </MyTabPanel>
+            ))}
         </div>
       </Tabs>
     </div>
@@ -197,9 +232,10 @@ function MyTab({ id, children, label }: TabProps & { label: string }) {
       id={id}
       className={({ isSelected }) => `
         w-full flex items-center justify-center text-[0.72vw] leading-[1.48vh] font-medium cursor-pointer
-        ${isSelected
-          ? "bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white transition duration-300 ease-in-out rounded-lg outline-none p-[0.29vw]"
-          : ""
+        ${
+          isSelected
+            ? "bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white transition duration-300 ease-in-out rounded-lg outline-none p-[0.29vw]"
+            : ""
         }
       `}
     >
