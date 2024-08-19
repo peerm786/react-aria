@@ -23,7 +23,7 @@ import { AxiosService } from "../../../lib/utils/axiosService";
 import { getCookie, getEncodedDetails } from "../../../lib/utils/cookiemgmt";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../lib/Store/store";
-import TorusDialog from "../torusdialogmodal";
+import TorusDialog from "../torusComponents/torusdialogmodal";
 import FilterModal from "./filterModal";
 import { toast } from "react-toastify";
 import TorusToast from "../torusComponents/torusToast";

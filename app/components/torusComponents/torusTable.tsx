@@ -16,8 +16,6 @@ import {
   TableHeader,
 } from "react-aria-components";
 import { FaArrowDown } from "react-icons/fa";
-import { CiSaveUp1 } from "react-icons/ci";
-import { Tabs, TabList, Tab } from "react-aria-components";
 import { Checkbox } from "react-aria-components";
 import { BiLeftArrowAlt } from "react-icons/bi";
 import { BiRightArrowAlt } from "react-icons/bi";
@@ -25,19 +23,14 @@ import { BiRightArrowAlt } from "react-icons/bi";
 import {
   DeleteIcon,
   EditIcon,
-  FilterIcon,
-  ImportIcon,
-  PlusIcon,
   TickSign,
   UnTickSign,
 } from "../../constants/svgApplications"
 
 import { twMerge } from "tailwind-merge";
-import TorusButton from "./torusButton";
-import TorusDialog from "../torusdialogmodal";
-import TorusSearch from "./torusSearch";
-import TorusDropDown from "./torusDropdown";
+import TorusDialog from "./torusdialogmodal";
 import TorusInput from "./torusInput";
+import TorusButton from "./torusButton";
 
 const defaultClassName = {
   table: "",

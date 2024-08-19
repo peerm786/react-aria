@@ -1,15 +1,10 @@
 import React, { memo, useEffect, useState } from "react";
-import TorusDialog from "../../torusdialogmodal";
-import TorusButton from "../torusComponents/torusButton";
+import TorusDialog from "../../torusComponents/torusdialogmodal";
 import { PlusIcon } from "../../../constants/svgApplications"
 import { AddModalContentType } from "./AddModalContent";
 import { CiTrash } from "react-icons/ci";
-import TorusInput from "../torusComponents/TorusInput";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
-import TorusDropDown from "../torusComponents/torusDropdown";
-import TorusSwitch from "../torusComponents/torusSwitch";
 import { MdBackupTable, MdDataObject, MdExpandLess, MdOutlineDataArray } from "react-icons/md";
-import TorusToolTip from "../torusComponents/torusTooltip";
 import { LuDatabase } from "react-icons/lu";
 import { SiDatabricks } from "react-icons/si";
 import { TfiRulerPencil } from "react-icons/tfi";
@@ -17,6 +12,11 @@ import { PiCodepenLogoLight } from "react-icons/pi";
 import { GoLink } from "react-icons/go";
 import { LiaCreditCardSolid } from "react-icons/lia";
 import { SlSocialDropbox } from "react-icons/sl";
+import TorusInput from "../../torusComponents/torusInput";
+import TorusDropDown from "../../torusComponents/torusDropdown";
+import TorusButton from "../../torusComponents/torusButton";
+import TorusSwitch from "../../torusComponents/torusSwitch";
+import TorusToolTip from "../../torusComponents/torusTooltip";
 
 
 const iconArray = [

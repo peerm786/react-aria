@@ -23,7 +23,7 @@ import { toggleDarkMode } from "../../../lib/Store/Reducers/MainSlice";
 import { BiMoon, BiSun } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../lib/Store/store";
-import TorusDialog from "../torusdialogmodal";
+import TorusDialog from "../torusComponents/torusdialogmodal";
 import Settings from "../settings";
 
 const BuilderSideNav = () => {

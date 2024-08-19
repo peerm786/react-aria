@@ -13,7 +13,7 @@ import {
 import { BsEyeFill, BsEyeSlash } from "react-icons/bs";
 import { setServerCookie } from "../../../lib/utils/registerIdentityProvider";
 import { DEFAULT_LOGIN_REDIRECT } from "../../../lib/utils/routes";
-import TorusDialog from "../../components/torusdialogmodal";
+import TorusDialog from "../torusComponents/torusdialogmodal";
 import { signIn } from "next-auth/react";
 import { AxiosService } from "../../../lib/utils/axiosService";
 import DropDown from "../multiDropdownnew";

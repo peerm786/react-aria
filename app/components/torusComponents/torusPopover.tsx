@@ -1,7 +1,7 @@
 import React from "react";
 import { Dialog, DialogTrigger, Popover } from "react-aria-components";
-import TorusButton from "../../jsonUi/torusComponents/torusButton";
 import { twMerge } from "tailwind-merge";
+import TorusButton from "./torusButton";
 
 export default function TorusPopOver({
   children,

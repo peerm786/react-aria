@@ -4,9 +4,9 @@ import { twMerge } from "tailwind-merge";
 
 const TorusButton = ({
   value,
-  isDisabled,
+  isDisabled = false,
   Children,
-  autoFocus,
+  autoFocus = false,
   gap,
   onPress,
   size = "md",
@@ -21,11 +21,11 @@ const TorusButton = ({
   endContent,
   startContent,
   borderColor,
-  isIconOnly,
+  isIconOnly = false,
 }:any) => {
   const outlineFn = () => {
     if (outlineColor) {
-      return ` torus-hover:ring-2 torus-hover:ring-offset-4  ${outlineColor}`;
+      return ` hover:ring-2 hover:ring-offset-4  ${outlineColor}`;
     }
     return "outline-none";
   };
@@ -49,30 +49,18 @@ const TorusButton = ({
   };
 
   const commonClass = `font-lg w-[100%] ${marginT} 
-  border-none outline-none torus-pressed:animate-torusButtonActive 
-  torus-hover:outline-none torus-hover:border-2 ${hoverOutline} ${gap} ${
+  border-none outline-none pressed:animate-torusButtonActive 
+  hover:outline-none hover:border-2 ${hoverOutline} ${gap} ${
     (startContent || endContent) && "flex justify-center items-center"
   } ${radiusClasses[radius] || "rounded-lg"}`;
 
-  const contentClass = sizeClasses[size] || "";
+  const contentClass = sizeClasses[size] || "px-2.5 py-1.5";
 
   return (
     <Button
       style={{
-        background: `${
-          btncolor && btncolor === "primary"
-            ? "#0736C4"
-            : btncolor === "secondary"
-            ? "#F4F5FA"
-            : btncolor === "success"
-            ? "#17C964"
-            : btncolor === "danger"
-            ? "#F5A524"
-            : btncolor === "warning"
-            ? "#F5A524"
-            : btncolor
-        }`,
-        border: borderColor ? borderColor : "0736C4",
+        background: btncolor,
+        border: borderColor ? borderColor : "",
       }}
       className={twMerge(commonClass, buttonClassName)}
       value={value}
@@ -81,35 +69,33 @@ const TorusButton = ({
       onPress={onPress}
     >
       {isIconOnly ? (
-        <div
-          className={`${contentClass} w-[100%] flex justify-center items-center`}
-        >
+        <div className={`${contentClass} flex items-center justify-center`}>
           {Children}
         </div>
       ) : startContent ? (
-        <div className={`${contentClass} flex justify-center items-center`}>
-          <div className="w-[100%] flex justify-evenly gap-1">
-            <div className="w-[20%] flex justify-center items-center">
+        <div className={`${contentClass} flex items-center justify-center`}>
+          <div className="flex w-[100%] justify-evenly gap-1">
+            <div className="flex w-[20%] items-center justify-center">
               {startContent}
             </div>
-            <div className={`${fontStyle} w-[80%] flex justify-center pr-1`}>
+            <div className={`${fontStyle} flex w-[80%] justify-center pr-1`}>
               {Children}
             </div>
           </div>
         </div>
       ) : endContent ? (
-        <div className={`${contentClass} flex justify-center items-center`}>
-          <div className="w-[100%] flex justify-evenly gap-1">
-            <div className={`${fontStyle} w-[80%] flex justify-start pr-1`}>
+        <div className={`${contentClass} flex items-center justify-center`}>
+          <div className="flex w-[100%] justify-evenly gap-1">
+            <div className={`${fontStyle} flex w-[80%] justify-start pr-1`}>
               {Children}
             </div>
-            <div className="w-[20%] flex justify-center items-center">
+            <div className="flex w-[20%] items-center justify-center">
               {endContent}
             </div>
           </div>
         </div>
       ) : (
-        <p className={`${fontStyle} ${contentClass}`}>{Children}</p>
+        <p className={`${fontStyle}`}>{Children}</p>
       )}
     </Button>
   );
@@ -135,7 +121,6 @@ TorusButton.propTypes = {
   startContent: PropTypes.node,
   borderColor: PropTypes.string,
   isIconOnly: PropTypes.bool,
-  isDropDown: PropTypes.bool,
 };
 
 export default TorusButton;

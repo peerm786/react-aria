@@ -12,7 +12,7 @@ import {
 } from "../../constants/svgApplications";
 import { Button, Dialog, DialogTrigger, Popover } from "react-aria-components";
 import TorusAvatar from "../Avatar";
-import TorusDialog from "../torusdialogmodal";
+import TorusDialog from "../torusComponents/torusdialogmodal";
 import Settings from "../settings";
 import { useRouter } from "next/navigation";
 import { BiMoon, BiSun } from "react-icons/bi";

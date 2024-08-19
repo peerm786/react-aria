@@ -13,7 +13,7 @@ import ArtifactDisplayModal from "./artifactDisplayModel";
 import { AxiosService } from "../../../../lib/utils/axiosService";
 import { getCookie } from "../../../../lib/utils/cookiemgmt";
 import { toast } from "react-toastify";
-import TorusPopOver from "./torusPopover";
+import TorusPopOver from "../../torusComponents/torusPopover";
 import ArtifactSharingModal from "./shareArtifactModal";
 import TorusToast from "../../torusComponents/torusToast";
 

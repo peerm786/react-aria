@@ -1,8 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
-import TorusDropDown from "../torusComponents/torusDropdown";
-import TorusInput from "../torusComponents/TorusInput";
+import TorusInput from "../../torusComponents/torusInput";
+import TorusDropDown from "../../torusComponents/torusDropdown";
  
 const AddObj = ["object"];
 const AddKey = ["input", "boolean", "dropdown"];
