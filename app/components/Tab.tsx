@@ -39,6 +39,7 @@ function FabricSelector({ tenant, appGrp, app }: any) {
           width="1.34vw"
           height="1.34vw"
           fill={isDarkMode ? "white" : "black"}
+          isOpacityNeeded = {true}
         />
       ),
     },
@@ -51,6 +52,7 @@ function FabricSelector({ tenant, appGrp, app }: any) {
           width="1.34vw"
           height="1.34vw"
           fill={isDarkMode ? "white" : "black"}
+          isOpacityNeeded = {true}
         />
       ),
     },
@@ -63,6 +65,7 @@ function FabricSelector({ tenant, appGrp, app }: any) {
           width="1.34vw"
           height="1.34vw"
           fill={isDarkMode ? "white" : "black"}
+          isOpacityNeeded = {true}
         />
       ),
     },
@@ -75,6 +78,7 @@ function FabricSelector({ tenant, appGrp, app }: any) {
           width="1.34vw"
           height="1.34vw"
           fill={isDarkMode ? "white" : "black"}
+          isOpacityNeeded = {true}
         />
       ),
     },

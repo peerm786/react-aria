@@ -27,7 +27,7 @@ import TorusDialog from "../torusComponents/torusdialogmodal";
 import Settings from "../settings";
 
 const BuilderSideNav = () => {
-    const [fillIndex, setFillIndex] = useState(5);
+    const [fillIndex, setFillIndex] = useState(6);
     const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
     const dispatch = useDispatch();
     const router = useRouter();
@@ -79,6 +79,7 @@ const BuilderSideNav = () => {
                             onPress={() => handleRoutes(index, route)}
                         >
                             <Icon
+                                isOpacityNeeded = {index === fillIndex ? false : true}
                                 width="1.25vw"
                                 height="1.25vw"
                                 key={index}

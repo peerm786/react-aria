@@ -53,7 +53,7 @@ const FilterItems = ({
         </Button>
       </div>
       {isSearchNeeded ? (
-        <div className="relative items-center w-full">
+        <div className="relative px-[0.2vw] items-center w-full">
           <Input
             type="text"
             className={`w-full items-center text-[0.72vw] leading-[1.5vh] text-[#64748B] p-[0.58vw] outline-none border-[#E7EAEE] rounded bg-[#F4F5FA] group focus:ring-2 focus:px-0 ${searchTerm ? "px-0" : "px-[1.75vw]"}`}
