@@ -12,7 +12,7 @@ import CatalogAccordian from "./catalogAccordian";
 import TorusToast from "../../torusComponents/torusToast";
 import { toast } from "react-toastify";
 import TorusDropDown from "../../jsonUi/torusComponents/torusDropdown";
-import { MoveToIcon } from "../../../constants/svgApplications";
+import { DataFabric, MoveToIcon, ProcessFabric, SecurityFabric, UserFabric } from "../../../constants/svgApplications";
 import { RiHome5Line } from "react-icons/ri";
 import { IoIosArrowForward } from "react-icons/io";
 import { AxiosService } from "../../../../lib/utils/axiosService";
@@ -267,7 +267,14 @@ const ArtifactDisplayModal = ({
                 } as any
             )
         }
-    };
+    }
+
+    const fabrics = [
+        { name: "df", icon: <DataFabric fill="#000000" isSelected={selectedFabric == "df"} width="1.25vw" height="1.25vw" /> },
+        { name: "uf", icon: <UserFabric fill="#000000" isSelected={selectedFabric == "uf"} width="1.25vw" height="1.25vw" /> },
+        { name: "pf", icon: <ProcessFabric fill="#000000" isSelected={selectedFabric == "pf"} width="1.25vw" height="1.25vw" /> },
+        { name: "sf", icon: <SecurityFabric fill="#000000" isSelected={selectedFabric == "sf"} width="1.25vw" height="1.25vw" /> }
+    ]
 
     return (
         <div>
@@ -356,14 +363,24 @@ const ArtifactDisplayModal = ({
 
                                             <div className=" flex h-[52.03vh] w-full items-center  justify-center   ">
                                                 <div className="flex h-full w-1/3 flex-col items-center justify-center gap-1 border-r border-[#E5E9EB] dark:border-[#212121]">
-                                                    <div className="flex h-[50vh] w-[100%] flex-col overflow-y-scroll  ">
-                                                        <CatalogAccordian
-                                                            items={accordionItems}
-                                                            onSelectionChange={handleAccordionContentToggle}
-                                                            selectedTkey={selectedTkey}
-                                                            selectedProject={selectedProject}
-                                                            selectedArtifactGroup={selectedArtifactGroup}
-                                                        />
+                                                    <div className="flex h-[50vh] w-[100%] overflow-y-scroll">
+                                                        <div className="flex flex-col px-2 pt-1 gap-2 items-center">
+                                                            {fabrics.map((fab) => (
+                                                                <div className={`${selectedFabric == fab.name ? "bg-[#F4F5FA] rounded-md" : ""} p-2`}>
+                                                                    {fab.icon}
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                        <hr className="w-[1px] h-[50vh] bg-black/15" />
+                                                        <div>
+                                                            <CatalogAccordian
+                                                                items={accordionItems}
+                                                                onSelectionChange={handleAccordionContentToggle}
+                                                                selectedTkey={selectedTkey}
+                                                                selectedProject={selectedProject}
+                                                                selectedArtifactGroup={selectedArtifactGroup}
+                                                            />
+                                                        </div>
                                                     </div>
                                                 </div>
 
