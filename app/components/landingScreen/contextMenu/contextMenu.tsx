@@ -68,14 +68,47 @@ const ArtifactContextMenu = ({
       });
 
       if (response.status === 201) {
-        toast.success("Artifact deleted successfully");
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "success",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Success",
+            text: `Artifact deleted successfully`,
+            closeButton: false,
+          } as any
+        )
         setRefetchOnContextMenu((prev: any) => !prev);
         close();
       } else {
-        toast.error("Some error occured");
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "error",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Error",
+            text: `Something went wrong`,
+            closeButton: false,
+          } as any
+        )
       }
     } catch (error) {
-      toast.error("Some error from API occured");
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `${error}`,
+          closeButton: false,
+        } as any
+      )
     }
   };
 

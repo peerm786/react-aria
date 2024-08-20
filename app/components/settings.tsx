@@ -19,7 +19,6 @@ import { getCookie } from "../../lib/utils/cookiemgmt";
 import { useSelector } from "react-redux";
 import { RootState } from "../../lib/Store/store";
 
-
 const Settings = () => {
   const [tenantInfo, setTenantInfo] = useState<null | any>(null);
   const [selectedButton, setSelectedButton] = useState("Tenant Setup");
@@ -89,12 +88,45 @@ const Settings = () => {
         data: tenantInfo,
       });
       if (response.status == 201) {
-        toast.success("Tenant profile info updated");
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "success",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Success",
+            text: `Tenant profile info updated`,
+            closeButton: false,
+          } as any
+        )
       } else {
-        toast.error("Some error occured");
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "error",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Error",
+            text: `Something went wrong`,
+            closeButton: false,
+          } as any
+        )
       }
     } catch (error) {
-      toast.error("Error occured");
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `${error}`,
+          closeButton: false,
+        } as any
+      )
     }
   };
 

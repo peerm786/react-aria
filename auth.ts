@@ -30,6 +30,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           cookies().set("client", client as string);
           cookies().set("loginId", username as string);
           cookies().set("token", res.data.token, { maxAge: 60 * 60 * 24 });
+          cookies().set("email", res.data.email, {
+          })
           return res.data;
         } else {
           return null;

@@ -427,7 +427,18 @@ const MenuItemAccordian: React.FC<TreeProps> = ({ data, setData }) => {
       });
       setData(js);
     } else {
-      alert("Can't drop here");
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "warning",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Warnig",
+          text: `Can't drop here`,
+          closeButton: false,
+        } as any
+      )
     }
   };
 

@@ -59,7 +59,7 @@ const TorusToast = ({ closeToast, toastProps, setWordLength }: any) => {
             ) : null}
           </div>
           <div className="flex w-[90%] items-center justify-start">
-            <p className="font-roboto text-lg font-medium text-white text-nowrap">
+            <p className="font-roboto font-medium text-[0.93vw] leading-[1.66vh] text-white text-nowrap">
               {toastProps.title}
             </p>
           </div>
@@ -72,31 +72,31 @@ const TorusToast = ({ closeToast, toastProps, setWordLength }: any) => {
       </div>
       <div className="ml-5">
         {length <= 30 ? (
-          <p className="font-roboto text-sm font-normal leading-3 text-white">
+          <p className="font-roboto text-[0.72vw] leading-[1.94vh] text-white">
             {toastProps.text}
           </p>
         ) : length > 30 && length <= 50 ? (
-          <p className="font-roboto text-xs leading-3 text-white ">
+          <p className="font-roboto text-[0.72vw] leading-[1.94vh] text-white ">
             {toastProps.text}
           </p>
         ) : length > 50 && length <= 80 ? (
-          <p className="font-roboto text-xs leading-3 text-white ">
+          <p className="font-roboto text-[0.72vw] leading-[1.94vh] text-white ">
             {toastProps.text}
           </p>
         ) : length > 80 && length <= 130 ? (
-          <p className="font-roboto text-xs leading-3 text-white ">
+          <p className="font-roboto text-[0.72vw] leading-[1.94vh] text-white ">
             {toastProps.text}
           </p>
         ) : length > 130 && length <= 180 ? (
-          <p className="font-roboto text-xs leading-3 text-white ">
+          <p className="font-roboto text-[0.72vw] leading-[1.94vh] text-white ">
             {toastProps.text}
           </p>
         ) : length > 180 && length <= 210 ? (
-          <p className="font-roboto text-xs leading-3 text-white ">
+          <p className="font-roboto text-[0.72vw] leading-[1.94vh] text-white ">
             {toastProps.text}
           </p>
         ) : (
-          <p className="font-roboto text-xs leading-3 text-white ">
+          <p className="font-roboto text-[0.72vw] leading-[1.94vh] text-white ">
             {toastProps.text}
           </p>
         )}

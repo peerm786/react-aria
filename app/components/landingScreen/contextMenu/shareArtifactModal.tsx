@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input } from 'react-aria-components';
 import { Domain, Global, Globe, Lock, Member, Multiply, Privacy, Threecircles } from '../../../constants/svgApplications';
 import DropDown from '../../multiDropdownnew';
@@ -8,6 +8,7 @@ import { Button } from 'react-aria-components';
 import { AxiosService } from '../../../../lib/utils/axiosService';
 import { getCookie } from '../../../../lib/utils/cookiemgmt';
 import { toast } from 'react-toastify';
+import TorusToast from '../../torusComponents/torusToast';
 
 const people = [
     { name: 'Balaji Eswar', email: 'balaji@torus.tech', role: 'FullAccess' },
@@ -15,6 +16,7 @@ const people = [
     { name: 'James Williams', email: 'james@torus.tech', role: 'can View' },
     { name: 'Robert Francisco', email: 'robert@torus.tech', role: 'can Edit' },
 ];
+
 const accessOptions = [
     {
         id: 1,
@@ -45,10 +47,6 @@ const userOptions = [
     },
 ];
 
-
-
-
-
 const ArtifactSharingModal = ({ close, artifactDetails }: any) => {
     const [Share, setShare] = React.useState(true);
     const [Private, setPrivate] = React.useState(false);
@@ -63,7 +61,7 @@ const ArtifactSharingModal = ({ close, artifactDetails }: any) => {
     const [selectedUser, setSelectedUser] = useState<any>(null);
     const { artifactType, fabric, catalog, artifactGrp, artifactName, version, createdBy, sharingInfo } = artifactDetails;
     const [selectedPermission, setSelectedPermission] = useState<string>("can view");
-
+    const [wordLength, setWordLength] = useState(0);
     const [selectedKeys, setSelectedKeys] = useState(sharingInfo ? sharingInfo?.map((person: any) => (person?.accessType)) : null);
     const [sharingInfoList, setSharingInfoList] = useState(sharingInfo ? sharingInfo : null);
     const [usersSelectedOption, setUsersSelectedOption] = useState(null);
@@ -102,14 +100,47 @@ const ArtifactSharingModal = ({ close, artifactDetails }: any) => {
             });
             if (response.status == 201) {
                 setSharingInfoList(response.data)
-                if (!user) toast.success("Artifact shared successfully")
+                if (!user) toast(
+                    <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+                    {
+                        type: "success",
+                        position: "bottom-right",
+                        autoClose: 2000,
+                        hideProgressBar: true,
+                        title: "Success",
+                        text: `Artifact shared successfully`,
+                        closeButton: false,
+                    } as any
+                )
                 // close();
             } else {
-                toast.error("Some error occured")
+                toast(
+                    <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+                    {
+                        type: "error",
+                        position: "bottom-right",
+                        autoClose: 2000,
+                        hideProgressBar: true,
+                        title: "Error",
+                        text: `Something went wrong`,
+                        closeButton: false,
+                    } as any
+                )
             }
 
         } catch (error) {
-            toast.error("Some error occured")
+            toast(
+                <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+                {
+                    type: "error",
+                    position: "bottom-right",
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    title: "Error",
+                    text: `${error}`,
+                    closeButton: false,
+                } as any
+            )
 
         }
 
@@ -124,32 +155,30 @@ const ArtifactSharingModal = ({ close, artifactDetails }: any) => {
         setPrivate(true);
         setShare(false);
     };
+
     const handleToggle = (id: any) => {
         setIsSelected(isSelected === id ? null : id);
         setSelectedOption(id);
         setSelectOption(id)
     };
+
     const handleInputChange = (event: any) => {
         const value = event.target.value;
         console.log(event.target.value)
         if (!value) {
             setIsPopoverOpen(false)
-
         }
         else {
-
             setIsPopoverOpen(true)
         }
         setInputValue(value);
         setSearchTerm(event.target.value)
 
         if (value) {
-
             const filteredData = userList.filter(item =>
                 item.loginId.toLowerCase().includes(value.toLowerCase()) ||
                 item.email.toLowerCase().includes(value.toLowerCase())
             );
-
             const content = filteredData.map(item => ({ loginId: item.loginId, email: item.email }));
             setPopoverContent(content);
         } else {
@@ -165,7 +194,6 @@ const ArtifactSharingModal = ({ close, artifactDetails }: any) => {
         setLinkAccessSelectedOption((prevSelected) => (prevSelected === id ? null : id));
     };
 
-
     const handleUsersToggle = (id: any) => {
         setUsersSelectedOption((prevSelected) => (prevSelected === id ? null : id));
     };
@@ -173,7 +201,6 @@ const ArtifactSharingModal = ({ close, artifactDetails }: any) => {
     return (
         <div className='bg-white w-[37.25vw] rounded p-[0.2vw]'>
             <div className="flex justify-between w-full p-2">
-
                 <div className="flex mt-[0.58vw] ml-[0.86vw] gap-[1.46vw] items-center">
                     <Button
                         className={`${Share ? "text-[#1A2024]" : "text-[#1A2024]/35"} flex outline-none gap-[0.87vw] font-semibold text-[0.93vw] leading-[1.25vw]`}
@@ -193,11 +220,9 @@ const ArtifactSharingModal = ({ close, artifactDetails }: any) => {
                         <Multiply />
                     </Button>
                 </div>
-
             </div>
 
             <hr className='w-[100%] mt-[0.58vw] border-[#E5E9EB] dark:border-[#212121]' />
-
 
             {Share && (
                 <div>
@@ -244,7 +269,6 @@ const ArtifactSharingModal = ({ close, artifactDetails }: any) => {
                                 </div>
                             )}
                         </div>
-
                     </div>
 
                     <hr className='w-[100%] mt-[0.58vw] border-[#E5E9EB]' />
@@ -253,7 +277,6 @@ const ArtifactSharingModal = ({ close, artifactDetails }: any) => {
                         <h3 className="font-semibold text-[0.72vw] leading-[1.25vw] text-[#101828] mx-[0.87vw]">People with Access</h3>
                         <div className="mt-[0.58vw] mx-[0.21vw]">
                             <div className="flex justify-between items-center">
-
                                 <div className='flex gap-[0.87vw] items-center'>
                                     <TorusAvatar radius="full" size="w-[1.7vw] h-[1.7vw]" />
                                     <div className='flex flex-col mb-[0.58vw]'>
@@ -295,7 +318,6 @@ const ArtifactSharingModal = ({ close, artifactDetails }: any) => {
             )}
             {Private && (
                 <div className='w-full'>
-
                     <div className="p-[0.86vw] h-[51.2vh] ">
                         <h3 className="font-semibold text-[0.72vw] leading-[1.25vw] text-[#101828]">Link Access</h3>
                         {accessOptions.map((option) => (
@@ -325,10 +347,8 @@ const ArtifactSharingModal = ({ close, artifactDetails }: any) => {
                                         )}
                                     </span>
                                 </div>
-
                             </div>
                         ))}
-
 
                         <hr className="w-full mt-[0.58vw] border-[#E5E9EB] dark:border-[#212121]" />
 
@@ -389,7 +409,6 @@ const ArtifactSharingModal = ({ close, artifactDetails }: any) => {
                         Copy Link
                     </Button>
                 </div>
-
             )}
         </div>
     );
