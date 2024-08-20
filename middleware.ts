@@ -17,9 +17,9 @@ export default auth((req): any => {
   //   return Response.redirect(new URL("/login", nextUrl));
   // }
 
-  // if (isApiAuthRoute) {
-  //   return null;
-  // }
+  if (isApiAuthRoute) {
+    return null;
+  }
 
   // if (isAuthRoute) {
   //   if (isLoggedIn) {

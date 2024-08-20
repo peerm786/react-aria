@@ -4,17 +4,14 @@ import { Form } from "react-aria-components";
 import { Button } from "react-aria-components";
 import { Input, Label } from "react-aria-components";
 import { toast } from "react-toastify";
-import { login } from "../../../lib/utils/login";
+import { login, socialLogin } from "../../../lib/utils/login";
 import {
   Gitbutton,
   Googlebutton,
   TorusLogo,
 } from "../../constants/svgApplications";
 import { BsEyeFill, BsEyeSlash } from "react-icons/bs";
-import { setServerCookie } from "../../../lib/utils/registerIdentityProvider";
 import { DEFAULT_LOGIN_REDIRECT } from "../../../lib/utils/routes";
-import TorusDialog from "../torusComponents/torusdialogmodal";
-import { signIn } from "next-auth/react";
 import { AxiosService } from "../../../lib/utils/axiosService";
 import DropDown from "../multiDropdownnew";
 import ProgressButton from "../progressbar";
@@ -32,8 +29,6 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ username: "", password: "" });
-  const [social, setSocial] = useState("");
-  const [open, setOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<"Individual" | "Teams">(
     "Individual"
   );
@@ -132,10 +127,10 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
     setShowPassword(!showPassword);
   };
 
-  const handlesociallogin = async () => {
-    await signIn(social, {
-      callbackUrl: DEFAULT_LOGIN_REDIRECT,
-    });
+  const handlesociallogin = async (social: "google" | "github") => {
+    console.log(social);
+    const res = await socialLogin(social);
+    console.log(res);
   };
 
   const handleFormDataChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -200,7 +195,7 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
                   triggerButton:
                     "w-full bg-[#F4F5FA] text-black rounded-lg text-[0.8vw] font-medium leading-[1.7vh] py-[1vw] mt-2 dark:bg-[#171717] dark:text-[#FFFFFF] ",
                   popover: "w-[20%]",
-                  listboxItem : "text-[0.8vw] text-center"
+                  listboxItem: "text-[0.8vw] text-center",
                 }}
               />
             </div>
@@ -276,14 +271,14 @@ function LoginForm({ variant = "TP" }: LoginFormProps) {
         {selectedOption === "Individual" && (
           <div className="flex w-full justify-between gap-[0.5vw]">
             <Button
-              onPress={handlesociallogin}
+              onPress={() => handlesociallogin("github")}
               className="bg-[#F4F5FA] w-full py-[1vw] dark:bg-[#171717] dark:text-white text-[0.8vw] font-medium leading-[1.7vh] px-6 flex items-center justify-center focus:outline-none rounded-lg"
             >
               <Gitbutton fill={isDarkMode ? "white" : "black"} />
               GitHub
             </Button>
             <Button
-              onPress={handlesociallogin}
+              onPress={() => handlesociallogin("google")}
               className="bg-[#F4F5FA] w-full py-[1vw] text-[0.8vw] font-medium leading-[1.7vh] dark:bg-[#171717] dark:text-white px-6 flex items-center justify-center focus:outline-none rounded-lg"
             >
               <Googlebutton />

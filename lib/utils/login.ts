@@ -2,6 +2,7 @@
 import { signIn } from "../../auth";
 import { AuthError } from "next-auth";
 import { DEFAULT_LOGIN_REDIRECT } from "./routes";
+import { isRedirectError } from "next/dist/client/components/redirect";
 
 export const login = async (values: any) => {
   try {
@@ -22,5 +23,37 @@ export const login = async (values: any) => {
       }
     }
     throw err;
+  }
+};
+
+export const socialLogin = async (socialProvider: "google" | "github") => {
+  console.log(socialProvider, "socialProvider from server");
+
+  try {
+    console.log("trying to sign in");
+
+    const res = await signIn(socialProvider, {
+      redirectTo: DEFAULT_LOGIN_REDIRECT,
+      redirect: true,
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      const { type, cause } = error as AuthError;
+
+      if (isRedirectError(error)) {
+        throw error;
+      }
+
+      switch (type) {
+        case "CredentialsSignin":
+          return "Invalid credentials.";
+        case "CallbackRouteError":
+          return cause?.err?.toString();
+        default:
+          return "Something went wrong.";
+      }
+    }
+
+    throw error;
   }
 };

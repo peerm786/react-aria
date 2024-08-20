@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import DashBoard from "../../constants/image.png";
+import DashBoard from "../../constants/Image.png";
 import DarkModeDashboard from "../../constants/darkDashboard.png";
 import LoginForm from "../../components/auth/startpage";
 import { ArrowForward } from "../../constants/svgApplications";
