@@ -21,9 +21,11 @@ import { BiLeftArrowAlt } from "react-icons/bi";
 import { BiRightArrowAlt } from "react-icons/bi";
 
 import {
+  Checked,
   DeleteIcon,
   EditIcon,
   TickSign,
+  UnChecked,
   UnTickSign,
 } from "../../constants/svgApplications";
 
@@ -65,9 +67,8 @@ export function TorusColumn(props: any) {
                   <FaArrowDown
                     size={12}
                     color="#667085"
-                    className={` transition-rotate ease-in-out duration-100 ${
-                      sortDirection === "ascending" ? "rotate-180" : ""
-                    }`}
+                    className={` transition-rotate ease-in-out duration-100 ${sortDirection === "ascending" ? "rotate-180" : ""
+                      }`}
                   />
                 </span>
               )}
@@ -88,15 +89,14 @@ export function TorusTableHeader({
   const { selectionBehavior, selectionMode, isSkeleton } =
     useContext(TableDataContext);
   return (
-    <TableHeader aria-label="Table Header" className="w-full sticky top-0">
+    <TableHeader aria-label="Table Header" className={twMerge("w-full sticky top-0", className)}>
       {/* Add extra columns for drag and drop and selection. */}
       {/* {allowsDragging && <Column />} */}
       {selectionBehavior === "toggle" && (
         <Column
           aria-label="Column"
           className={twMerge(
-            `text-xs w-[${
-              100 / columns.length + 1
+            `text-xs w-[${100 / columns.length + 1
             }%] font-medium px-[0.58vw] py-[0.8rem] focus:outline-none focus:border-none`,
             className
           )}
@@ -233,8 +233,8 @@ export function TorusCheckbox({ children, index, ...props }: any) {
       className={"w-full, h-full, flex items-center justify-center"}
       isIndeterminate={
         selectedRows &&
-        Array.from(selectedRows).length > 0 &&
-        (selectedRows.has(index) || selectedRows.has("all"))
+          Array.from(selectedRows).length > 0 &&
+          (selectedRows.has(index) || selectedRows.has("all"))
           ? true
           : false
       }
@@ -263,7 +263,7 @@ export function TorusCheckbox({ children, index, ...props }: any) {
               } else {
                 if (
                   Array.from(selectedRows).length + 1 ==
-                    Array.from(tableIndex).length &&
+                  Array.from(tableIndex).length &&
                   selectionMode === "multiple"
                 ) {
                   setSelectedRows(new Set(["all"]));
@@ -276,7 +276,7 @@ export function TorusCheckbox({ children, index, ...props }: any) {
             }}
           >
             <svg className="h-5 w-5" viewBox="0 0 18 18" aria-hidden="true">
-              {isIndeterminate ? <TickSign /> : <UnTickSign />}
+              {isIndeterminate ? <Checked /> : <UnChecked />}
             </svg>
           </div>
           {children}
@@ -298,8 +298,8 @@ function TorusColumnCheckbox({ children, ...props }: any) {
       id="all"
       isIndeterminate={
         selectedRows &&
-        Array.from(selectedRows).length > 0 &&
-        selectedRows.has("all")
+          Array.from(selectedRows).length > 0 &&
+          selectedRows.has("all")
           ? true
           : false
       }
@@ -317,7 +317,7 @@ function TorusColumnCheckbox({ children, ...props }: any) {
             }}
           >
             <svg className="h-5 w-5" viewBox="0 0 18 18" aria-hidden="true">
-              {isIndeterminate ? <TickSign /> : <UnTickSign />}
+              {isIndeterminate ? <Checked /> : <UnChecked />}
             </svg>
           </div>
           {children}
@@ -371,11 +371,10 @@ const Pagination = ({ currentPage, totalPages, setCurrentPage }: any) => {
         {getPageNumbers().map((page) => (
           <Button
             key={page}
-            className={`pagination-button text-[0.72vw] focus:outline-none dark:focus:bg-[#3063FF]/35 dark:text-[#FFFFFF] ${
-              page === currentPage
-                ? "text-[#0736C4] bg-[#E3EAFF] px-[0.58vw] py-[0.29vw]  rounded"
-                : "text-[#667085]"
-            }`}
+            className={`pagination-button text-[0.72vw] focus:outline-none dark:focus:bg-[#3063FF]/35 dark:text-[#FFFFFF] ${page === currentPage
+              ? "text-[#0736C4] bg-[#E3EAFF] px-[0.58vw] py-[0.29vw]  rounded"
+              : "text-[#667085]"
+              }`}
             onPress={() => handlePageChange(page)}
           >
             {page}
@@ -387,11 +386,10 @@ const Pagination = ({ currentPage, totalPages, setCurrentPage }: any) => {
       </div>
       {totalPages > 4 && currentPage + 1 < totalPages && (
         <Button
-          className={`pagination-button text-[0.72vw] focus:outline-none dark:text-[#FFFFFF] ${
-            totalPages === currentPage
-              ? "text-[#0736C4] bg-[#E3EAFF] px-[0.58vw] py-[0.29vw]  rounded"
-              : "text-[#667085]"
-          }`}
+          className={`pagination-button text-[0.72vw] focus:outline-none dark:text-[#FFFFFF] ${totalPages === currentPage
+            ? "text-[#0736C4] bg-[#E3EAFF] px-[0.58vw] py-[0.29vw]  rounded"
+            : "text-[#667085]"
+            }`}
           onPress={() => handlePageChange(totalPages)}
         >
           {totalPages}
@@ -709,9 +707,9 @@ export function TorusTable({
       }}
     >
       {filterColmns &&
-      filterColmns.length > 0 &&
-      sortDescriptor &&
-      totalPages ? (
+        filterColmns.length > 0 &&
+        sortDescriptor &&
+        totalPages ? (
         <div className="w-full h-screen flex flex-col items-center ">
           {/* <div className="w-full h-[8%] flex justify-center items-center ">
               <div className="w-[95%] h-full flex justify-between items-center pl-2">
@@ -800,9 +798,8 @@ export function TorusTable({
               </div>
             </div> */}
           <div
-            className={`w-full  ${
-              totalPages > 1 ? "h-[73%]" : "h-[75%]"
-            } flex flex-col justify-between items-center`}
+            className={`w-full  ${totalPages > 1 ? "h-[73%]" : "h-[75%]"
+              } flex flex-col justify-between items-center`}
           >
             {/* <div className="w-[95%] flex items-center justify-center h-[8%]">
                 <div className="w-[60%] flex  h-full bg-transparent rounded-md ">
