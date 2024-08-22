@@ -1,23 +1,22 @@
 "use client"
 import React, { useState } from 'react'
-import Page from '../components/torusComponents/usermanage'
 import BuilderSideNav from '../components/builderScreen/BuilderSideNav'
 import BuilderTopNav from '../components/builderScreen/BuilderTopNav'
-import UserManage from '../components/torusComponents/usermanage'
+import SetupScreen from '../components/settings/setup'
 
 const page = () => {
     // const [Sidenav, Setsidenav] = useState(false)
     return (
-        <div className="flex flex-col w-full h-screen bg-[#F9F5FF]">
-            <div className="w-full">
+        <div className="flex flex-col w-full h-screen bg-[#F4F5FA]">
+            <div className="flex w-full h-full">
                 <BuilderTopNav />
             </div>
-            <div className="flex gap-x-2  ">
-                <div className=" ">
+            <div className="flex gap-2 mb-5">
+                <div>
                     <BuilderSideNav />
                 </div>
-                <div className=" flex mt-5  w-[93.7vw] h-[89.1vh] bg-[#FFFFFF]  border rounded-xl scrollbar-hide  overflow-auto">
-                    <UserManage />
+                <div className=" flex mt-5 w-[92.76vw] h-[89.16vh] bg-[#FFFFFF] border rounded-xl">
+                    <SetupScreen />
                 </div>
             </div>
         </div>

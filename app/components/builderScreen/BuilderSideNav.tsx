@@ -12,13 +12,15 @@ import {
     LogoutSvg,
     BellIcon,
     SettingsIcon,
-    LogScreenIcon
+    LogScreenIcon,
+    ConnectSupportIcon,
+    TickIcon
 } from "../../constants/svgApplications";
 import { Button, Dialog, DialogTrigger, Popover } from "react-aria-components";
 import TorusAvatar from "../Avatar";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
-import { deleteAllCookies } from "../../../lib/utils/cookiemgmt";
+import { deleteAllCookies, getCookie } from "../../../lib/utils/cookiemgmt";
 import { toggleDarkMode } from "../../../lib/Store/Reducers/MainSlice";
 import { BiMoon, BiSun } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,6 +33,8 @@ const BuilderSideNav = () => {
     const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
     const dispatch = useDispatch();
     const router = useRouter();
+    const UserName = getCookie("loginId");
+    const UserEmail = getCookie("email")
 
     const actionIcons = [
         { Icon: HomeSvg, route: "/torus" },
@@ -79,7 +83,7 @@ const BuilderSideNav = () => {
                             onPress={() => handleRoutes(index, route)}
                         >
                             <Icon
-                                isOpacityNeeded = {index === fillIndex ? false : true}
+                                isOpacityNeeded={index === fillIndex ? false : true}
                                 width="1.25vw"
                                 height="1.25vw"
                                 key={index}
@@ -123,20 +127,37 @@ const BuilderSideNav = () => {
                 </TorusDialog>
                 <DialogTrigger>
                     <Button
-                        className={`outline-none mr-[0.29vw] mb-[0.58vw]`}
+                        className={`outline-none mr-[0.29vw] mb-[0.29vw]`}
                     >
-                        <TorusAvatar
-                            radius="full"
-                            size="lg"
-                        />
+                        <TorusAvatar radius="full" size="lg" />
                     </Button>
-                    <Popover placement="right top">
-                        <Dialog className="bg-white focus:outline-none rounded-lg dark:bg-[#161616]">
+                    <Popover placement="right" className="ml-3">
+                        <Dialog className="flex bg-transparent focus:outline-none">
                             {({ close }) => (
-                                <div className="flex flex-col p-[0.58vw] gap-[0.58vw] border border-black/15 rounded-lg dark:bg-[#0F0F0F] dark:text-white dark:border-white/15">
-                                    <Button className={`outline-none`} onPress={() => handleLogout(close)}>
-                                        <LogoutSvg fill={isDarkMode ? "white" : "black"} />
-                                    </Button>
+                                <div className="bg-white mb-7 rounded-md border border-black/15 w-[12.5vw] h-[22.7vh]">
+                                    <div className="flex flex-col h-[7.4vh]">
+                                        <div className="flex items-center p-1 gap-2">
+                                            <div>
+                                                <TorusAvatar radius="full" size="lg" />
+                                            </div>
+                                            <div className="flex flex-col text-[0.72vw] leading-[1.85vh] gap-1">
+                                                <p className="font-medium">{UserName.charAt(0).toUpperCase() + UserName.slice(1)}</p>
+                                                <p className="text-black/50">{UserEmail}</p>
+                                            </div>
+                                        </div>
+                                        <p className="flex justify-center mr-6 text-[0.5vw] leading-[1.85vh]">VIEW PROFILE</p>
+                                    </div>
+                                    <hr className="w-full my-1.5 bg-[#F2F4F7]" />
+                                    <div className="ml-1.5">
+                                        <p className="flex w-[11.8vw] items-center gap-2 bg-[#F4F5FA] pl-2.5 py-1.5 rounded-md text-[0.72vw] leading-[1.85vh]"><TickIcon />Change Your Status</p>
+                                    </div>
+                                    <hr className="w-full my-2 bg-[#F2F4F7]" />
+                                    <div className="flex flex-col gap-3">
+                                        <p className="flex items-center pl-4 gap-2 text-[0.72vw] leading-[1.85vh]"><ConnectSupportIcon />Connect Support</p>
+                                        <Button className={`flex pl-4 items-center gap-2 text-[0.72vw] leading-[1.85vh] outline-none`} onPress={() => handleLogout(close)}>
+                                            <LogoutSvg fill={isDarkMode ? "white" : "black"} />Log out
+                                        </Button>
+                                    </div>
                                 </div>
                             )}
                         </Dialog>

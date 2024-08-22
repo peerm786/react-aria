@@ -1,18 +1,17 @@
-
 "use client";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
     TorusColumn,
     TorusRow,
     TorusTable,
     TorusTableHeader,
-} from "./torusTable"
-
+} from "../torusComponents/torusTable"
 import {
     About,
     Account,
     App,
     Apperance,
+    ApplicationSettings,
     Billing,
     Calender,
     Checked,
@@ -37,21 +36,114 @@ import { Button, Checkbox, Input, Select, Separator } from "react-aria-component
 import { Cell, Column, Row, Table, TableBody, TableHeader } from "react-aria-components";
 import DropDown from "../multiDropdownnew";
 import TorusAvatar from "../Avatar";
+import { AxiosService } from "../../../lib/utils/axiosService";
+import DynamicGroupMemberTable from "./dynamicGroupMemberTable";
+import AppGroupTable from "./appGroupTable";
 
+interface App {
+    code: string;
+    name: string;
+    description: string;
+    icon: string;
+}
 
+interface AppGroup {
+    code: string;
+    name: string;
+    description: string;
+    icon: string;
+    APPS: App[];
+}
 
-const UserManage = () => {
+interface Org {
+    orgCode: string;
+    orgName: string;
+}
+
+interface OrgGrp {
+    orgGrpCode: string;
+    orgGrpName: string;
+    org: Org[];
+}
+
+interface Role {
+    roleCode: string;
+    roleName: string;
+}
+
+interface RoleGrp {
+    roleGrpCode: string;
+    roleGrpName: string;
+    roles: Role[];
+}
+
+interface Ps {
+    psCode: string;
+    psName: string;
+}
+
+interface PsGrp {
+    psGrpCode: string;
+    psGrpName: string;
+}
+
+const SetupScreen = () => {
     const [selectedMenuItem, setSelectedMenuItem] = useState("");
     const [searchValue, setSearchValue] = useState<string>("");
     const [Columns, setColumns] = useState<any>([]);
+    const [data, setData] = useState<any>([]);
+    const [appGrpData, setAppGrpData] = useState<any>([]);
+    const [orgGrpData, setOrgGrpData] = useState<any>([]);
+    const [roleGrpData, setRoleGrpData] = useState<any>([]);
+    const [psGrpData, setPsGrpData] = useState<any>([]);
 
-    const data = [
+    const getTenantProfile = async () => {
+        try {
+            const response = await AxiosService.get(`/tp/getTenantInfo?tenant=ABC`);
+            if (response.status === 200) {
+                setAppGrpData(response.data.AG);
+                setOrgGrpData(response.data.orgGrp);
+                setRoleGrpData(response.data.roleGrp);
+                setPsGrpData(response.data.psGrp);
+                setData(response.data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getTenantProfile();
+    }, []);
+
+    const getDisplayData: (controller: string) => {
+        data: OrgGrp[] | RoleGrp[] | PsGrp[]; onUpdate: (updatedData: OrgGrp[] | RoleGrp[] | PsGrp[]) => void; assetType: "org" | "roles" | "ps"
+    } = useCallback((controller) => {
+        switch (controller) {
+            case "org":
+                return { data: orgGrpData, onUpdate: setOrgGrpData, assetType: "org" };
+            case "role":
+                return {
+                    data: roleGrpData,
+                    onUpdate: setRoleGrpData,
+                    assetType: "roles",
+                };
+            case "ps":
+                return { data: psGrpData, onUpdate: setPsGrpData, assetType: "ps" };
+            default:
+                throw new Error(`Invalid controller value: ${controller}`);
+        }
+    }, [orgGrpData, roleGrpData, psGrpData]);
+
+    const tabledata = [
         {
             users: {
                 name: "Susan Andrews",
                 email: "james.williams@example.com"
 
             },
+            name: "Susan Andrews",
+            email: "james.williams@example.com",
             templateType: 'Template 1',
             noofproductsservice: 12,
             accessExpires: '31.07.2024',
@@ -166,10 +258,7 @@ const UserManage = () => {
             lastActive: 'June 30, 2024 | 15:10:24',
             dateAdded: 'May 06, 2024',
         },
-
-
     ];
-
 
     const Columnchange = [
         'users',
@@ -180,11 +269,9 @@ const UserManage = () => {
         'dateAdded',
     ];
 
-
     const TableCell = (item: any, column: any) => {
         switch (column.key) {
             case 'users':
-
                 return <div className="flex gap-2 ">
                     <TorusAvatar size="sm" />
                     <div className="flex flex-col justify-center">
@@ -192,37 +279,34 @@ const UserManage = () => {
                         <span className="text-[0.62vw] leading-[1.04vh] text-[#000000]/50">{item[column.key].email}</span>
                     </div>
                 </div>
-
             case 'templateType':
-
-                return <div className="text-[0.72vw] leading-[1.04vw] rounded-md   px-7 py-2 bg-[#F4F5FA]">{item[column.key]}</div>;
-
+                return <DropDown
+                    triggerButton="Template1"
+                    selectedKeys={item[column.id]}
+                    setSelectedKeys={() => { }}
+                    items={items}
+                    classNames={{
+                        triggerButton: `w-[10.52vw] h-[4vh] pressed:animate-torusButtonActive rounded-lg text-[0.83vw] leading-[2.22vh] mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white`,
+                        popover: "w-40",
+                        listbox: "overflow-y-auto",
+                        listboxItem: "flex text-[0.83vw] leading-[2.22vh] justify-between",
+                    }}
+                />
             case 'numOfProducts':
-
                 return <div>{item[column.key]}</div>;
-
             case 'accessExpires':
                 return <div className=" flex space-x-5 text-[0.72vw]  leading-[1.04vw]  px-4 py-2 rounded-md bg-[#F4F5FA]">
-
                     <span >{item[column.key]}</span>
                     <Calender />
                 </div>;
-
             case 'lastActive':
-
                 return <div >{item[column.key]}</div>;
-
             case 'dateAdded':
-
                 return <div>{item[column.key]}</div>;
-
             default:
-
                 return <div>{item[column.key]}</div>;
         }
     };
-
-
 
     const items = [
         { key: 'name', label: 'Name' },
@@ -236,43 +320,41 @@ const UserManage = () => {
             category: "Personal",
             items: [
 
-                { name: "Profile", svg: <Profile /> },
-                { name: "Appearance", svg: <Apperance /> },
+                { name: "Profile", svg: <Profile />, code: 'profile' },
+                { name: "Appearance", svg: <Apperance />, code: 'appearance' },
             ],
         },
         {
             category: "Configuration",
             items: [
-                { name: "Tenant", svg: <Tenant /> },
-                { name: "Application", svg: <App /> },
-                { name: "Organization", svg: <Org /> },
-                { name: "Roles & Groups", svg: <Roles /> },
-
-                { name: "Product & Services", svg: <PSicon /> },
+                { name: "Tenant", svg: <Tenant />, code: 'tenant' },
+                { name: "Application", svg: <App />, code: 'app' },
+                { name: "Organization", svg: <Org />, code: 'org' },
+                { name: "Roles & Groups", svg: <Roles />, code: 'role' },
+                { name: "Product & Services", svg: <PSicon />, code: 'ps' },
             ],
         },
         {
             category: "Management",
-            items: [{ name: "User Management", svg: <Management /> }],
+            items: [{ name: "User Management", svg: <Management />, code: 'user' }],
         },
 
         {
             category: "General",
             items: [
-                { name: "Security", svg: <Security /> },
-                { name: "Notifications", svg: <Notification /> },
-                { name: "Billings", svg: <Billing /> },
+                { name: "Security", svg: <Security />, code: 'security' },
+                { name: "Notifications", svg: <Notification />, code: 'notification' },
+                { name: "Billings", svg: <Billing />, code: 'billing' },
 
             ],
         },
 
     ];
 
-
-
-    const handleMenuClick = (itemName: any) => {
-        setSelectedMenuItem(itemName);
+    const handleMenuClick = (itemCode: string) => {
+        setSelectedMenuItem(itemCode);
     };
+
     const dummyData = [
         { environmentType: 'Dev', hostnameServer: 'Dev Server', hostIP: '192.168.2.165', volumePath: '3005', app: 'App Code' },
         { environmentType: 'Dev', hostnameServer: 'Dev Server', hostIP: '192.168.2.165', volumePath: '3005', app: 'App Code' },
@@ -293,26 +375,21 @@ const UserManage = () => {
     ];
 
     const RenderTableCell = (item: any, column: any) => {
-
         switch (column.id) {
             case "environmentType":
                 return <div className="bg-[#F4F5FA] p-1 w-[10.52vw] h-[4.07vh] rounded-md">{item[column.id]}</div>
-
             case "hostnameServer":
                 return <div className="w-[10.52vw] p-1 h-[4vh] bg-[#F4F5FA]  rounded-md ">
                     {item[column.id]}
                 </div>
-
             case "hostIP":
                 return <div className="w-[10.52vw] h-[4vh] p-1 bg-[#F4F5FA]  rounded-md">
                     {item[column.id]}
                 </div>
-                    ;
             case "volumePath":
                 return <div className="w-[10.52vw] h-[4vh] p-1 bg-[#F4F5FA] rounded-md">
                     {item[column.id]}
                 </div>
-
             case "app":
                 return <DropDown
                     triggerButton="Appcode"
@@ -326,25 +403,23 @@ const UserManage = () => {
                         listboxItem: "flex text-[0.83vw] leading-[2.22vh] justify-between",
                     }}
                 />
-
             default:
                 return <div >
                     {item[column.id]}
                 </div>
-
         }
     };
+
     return (
-        <div className="w-full h-screen  ">
-
-
-            <div className="flex items-center text-[0.93vw] leading-[1.25vw] font-semibold">
-                <SettingsIcon />
-                <div>Setup</div>
+        <div className="w-full h-full">
+            <div className="flex ml-4 p-3 items-center">
+                <div className="flex gap-2 items-center text-[0.93vw] text-[#1A2024] leading-[2.22vh] font-semibold">
+                    <ApplicationSettings /> Setup
+                </div>
             </div>
             <hr className="w-[100%]"></hr>
-            <div className="flex w-[79.58vw] h-[63.98vh]">
-                <div className="flex flex-col h-[55.92vh] w-[10.57vw] p-4 border-r">
+            <div className="flex h-[82.5vh]">
+                <div className="flex flex-col h-full w-[10.57vw] p-4 border-r">
                     {menuItems.map((section) => (
                         <div key={section.category} className="mb-4">
                             <h2 className="font-semibold text-[0.72vw] leading-[1.04vw] mb-2">
@@ -353,10 +428,10 @@ const UserManage = () => {
                             <ul>
                                 {section.items.map((item) => (
                                     <li
-                                        key={item.name}
-                                        className={`mb-2 cursor-pointer ${selectedMenuItem === item.name ? "text-blue-500" : "text-[#000000]/50"
+                                        key={item.code}
+                                        className={`mb-2 cursor-pointer ${selectedMenuItem === item.code ? "text-blue-500" : "text-[#000000]/50"
                                             }`}
-                                        onClick={() => handleMenuClick(item.name)}
+                                        onClick={() => handleMenuClick(item.code)}
                                     >
                                         <div className="flex items-center text-[0.72vw] leading-[1.04vw]">
                                             <div className="mr-2">{item.svg}</div>
@@ -368,8 +443,8 @@ const UserManage = () => {
                         </div>
                     ))}
                 </div>
-                <div className="p-6">
-                    {selectedMenuItem === "User Management" && (
+                <div className="flex w-[79.58vw] h-[82.5vh] p-4">
+                    {selectedMenuItem === "user" && (
                         <div className="w-full h-full">
                             <div className="flex justify-between items-center mb-4">
                                 <div className="flex flex-col gap-2">
@@ -380,15 +455,15 @@ const UserManage = () => {
                                 </div>
 
                                 <div className="flex items-center gap-2 ">
-                                    <div className="relative w-[100%] h-[4vh] ">
+                                    <div className="relative w-[100%] h-[4vh]">
                                         <span className="absolute inset-y-0 left-0 flex items-center p-[0.58vw] h-[2.18vw] w-[2.18vw] ">
-                                            <SearchIcon />
+                                            <SearchIcon width="0.83vw" height="0.83vw"/>
                                         </span>
                                         <Input
                                             value={searchValue}
                                             onChange={(e) => setSearchValue(e.target.value)}
                                             placeholder="Search"
-                                            className={` w-[100%] p-[0.45vw] text-[0.72vw] h-[4vh] focus:outline-none focus:border-blue-400 dark:focus:border-blue-400 border pl-[1.76vw] font-medium rounded-md dark:border-[#212121] dark:text-white`}
+                                            className={` w-[20vw] bg-[#F4F5FA] p-[0.45vw] text-[0.72vw] h-[4vh] focus:outline-none focus:border-blue-400 dark:focus:border-blue-400 border pl-[1.76vw] font-medium rounded-md dark:border-[#212121] dark:text-white`}
                                         />
                                     </div>
                                     <DropDown
@@ -420,12 +495,11 @@ const UserManage = () => {
                                 </div>
                             </div>
 
-
-                            <div className="w-[79.58vw] h-[70.98vh] overflow-scroll ">
+                            <div className="w-[79.58vw] h-[60vh] overflow-y-scroll">
                                 <TorusTable
                                     className=""
                                     primaryColumn="users"
-                                    tableData={data}
+                                    tableData={tabledata}
                                     visibleColumns={Columnchange}
                                     isSkeleton={true}
                                     searchValue={searchValue}
@@ -434,7 +508,11 @@ const UserManage = () => {
                                 >
                                     {({ selectedKeys, filterColmns, sortedItems, primaryColumn }: any) => (
                                         <>
-                                            <TorusTableHeader selectedKeys={selectedKeys} columns={[...filterColmns]}>
+                                            <TorusTableHeader
+                                                className="bg-[#F4F5FA] rounded-l"
+                                                selectedKeys={selectedKeys}
+                                                columns={[...filterColmns]}
+                                            >
                                                 {({ columns }: any) => (
                                                     <>
                                                         {columns.map((column: any, i: number) => (
@@ -443,8 +521,8 @@ const UserManage = () => {
                                                                 id={column.id}
                                                                 allowsSorting={column.allowsSorting}
                                                                 isRowHeader={column.isRowHeader}
-                                                                className={`text-[0.72vw] leading-[1.04vw] font-medium bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-[#FFFFFF] cursor-pointer ${i == 0 ? 'rounded-tl-xl rounded-bl-xl' : ''
-                                                                    } ${i == filterColmns.length - 1 ? 'rounded-tr-xl rounded-br-xl' : ''}`}
+                                                                className={`text-[0.72vw] leading-[1.04vw]  font-medium bg-[#F4F5FA] rounded-r dark:bg-[#0F0F0F] dark:text-[#FFFFFF] cursor-pointer ${i == 0 ? '' : ''
+                                                                    } ${i == filterColmns.length - 1 ? '' : ''}`}
                                                             >
                                                                 {column.name}
                                                             </TorusColumn>
@@ -486,14 +564,14 @@ const UserManage = () => {
                             </div>
                         </div>
                     )}
-                    {selectedMenuItem === "Tenant" && (
+                    {selectedMenuItem === "tenant" && (
                         <div className="w-full h-full" >
 
                             <h1 className="text-[1.25vw] leading-[1.04vw] font-semibold">Tenant</h1>
                             <p className="text-[0.83vw] leading-[1.04vw] text-[#000000]/50">
                                 Lorem Ipsum dolor sit amet,consectutar adipising elit
                             </p>
-                            <div className="w-[79.58vw] h-[80vh] overflow-scroll ">
+                            <div className="w-[79.58vw] h-[60vh] overflow-y-scroll ">
                                 <TorusTable
                                     className=""
                                     primaryColumn=""
@@ -506,7 +584,7 @@ const UserManage = () => {
                                 >
                                     {({ filterColmns, sortedItems, primaryColumn }: any) => (
                                         <>
-                                            <TorusTableHeader columns={[...filterColmns]} className="w-[79.58vw] h-[4.81vh]">
+                                            <TorusTableHeader columns={[...filterColmns]} className="w-[79.58vw] h-[4.81vh] bg-[#F4F5FA] rounded-l">
                                                 {({ columns }: any) => (
                                                     <>
                                                         {columns.map((column: any, i: number) => (
@@ -515,9 +593,8 @@ const UserManage = () => {
                                                                 id={column.id}
                                                                 allowsSorting={column.allowsSorting}
                                                                 isRowHeader={column.isRowHeader}
-                                                                className={`text-[0.72vw] leading-[2.22vh] font-bold bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-[#FFFFFF] cursor-pointer ${i === 0 ? 'rounded-tl-xl rounded-bl-xl' : ''
-                                                                    } ${i === filterColmns.length - 1 ? 'rounded-tr-xl rounded-br-xl' : ''
-                                                                    }`}
+                                                                className={`text-[0.72vw] leading-[1.04vw]  font-medium bg-[#F4F5FA] rounded-r dark:bg-[#0F0F0F] dark:text-[#FFFFFF] cursor-pointer ${i == 0 ? '' : ''
+                                                                    } ${i == filterColmns.length - 1 ? '' : ''}`}
                                                             >
                                                                 {column.name}
                                                             </TorusColumn>
@@ -562,19 +639,40 @@ const UserManage = () => {
                                 </TorusTable>
                             </div>
                         </div>
-
-
-
-
-
                     )}
-
-
+                    {selectedMenuItem === "app" && (
+                        <div>
+                            <AppGroupTable data={appGrpData} onUpdate={setAppGrpData} />
+                        </div>
+                    )}
+                    {(selectedMenuItem === "org" || selectedMenuItem === "role" || selectedMenuItem === "ps") && (
+                        <div>
+                            <DynamicGroupMemberTable
+                                {...getDisplayData(selectedMenuItem)}
+                                groupFields={
+                                    selectedMenuItem === "org"
+                                        ? ["orgGrpCode", "orgGrpName"]
+                                        : selectedMenuItem === "role"
+                                            ? ["roleGrpCode", "roleGrpName"]
+                                            : ["psGrpCode", "psGrpName"]
+                                }
+                                memberFields={
+                                    selectedMenuItem === "org"
+                                        ? ["orgCode", "orgName"]
+                                        : selectedMenuItem === "role"
+                                            ? ["roleCode", "roleName"]
+                                            : ["psCode", "psName"]
+                                }
+                                headerFields={
+                                    ["code", "name"]
+                                }
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
-
-        </div>
+        </div >
     );
 };
 
-export default UserManage;
+export default SetupScreen;
