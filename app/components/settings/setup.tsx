@@ -429,7 +429,7 @@ const SetupScreen = () => {
                                 {section.items.map((item) => (
                                     <li
                                         key={item.code}
-                                        className={`mb-2 cursor-pointer ${selectedMenuItem === item.code ? "text-blue-500" : "text-[#000000]/50"
+                                        className={`mb-2 cursor-pointer ${selectedMenuItem === item.code ? "text-[#0736C4]" : "text-[#000000]/50"
                                             }`}
                                         onClick={() => handleMenuClick(item.code)}
                                     >
@@ -457,7 +457,7 @@ const SetupScreen = () => {
                                 <div className="flex items-center gap-2 ">
                                     <div className="relative w-[100%] h-[4vh]">
                                         <span className="absolute inset-y-0 left-0 flex items-center p-[0.58vw] h-[2.18vw] w-[2.18vw] ">
-                                            <SearchIcon width="0.83vw" height="0.83vw"/>
+                                            <SearchIcon width="0.83vw" height="0.83vw" />
                                         </span>
                                         <Input
                                             value={searchValue}
@@ -566,11 +566,54 @@ const SetupScreen = () => {
                     )}
                     {selectedMenuItem === "tenant" && (
                         <div className="w-full h-full" >
+                            <div className="flex justify-between items-center mb-4">
+                                <div className="flex flex-col gap-2">
+                                    <h1 className="text-[1.25vw] leading-[1.04vw] font-semibold">Tenant</h1>
+                                    <p className="text-[0.83vw] leading-[1.04vw] text-[#000000]/50">
+                                        Lorem Ipsum dolor sit amet,consectutar adipising elit
+                                    </p>
+                                </div>
 
-                            <h1 className="text-[1.25vw] leading-[1.04vw] font-semibold">Tenant</h1>
-                            <p className="text-[0.83vw] leading-[1.04vw] text-[#000000]/50">
-                                Lorem Ipsum dolor sit amet,consectutar adipising elit
-                            </p>
+                                <div className="flex items-center gap-2 ">
+                                    <div className="relative w-[100%] h-[4vh]">
+                                        <span className="absolute inset-y-0 left-0 flex items-center p-[0.58vw] h-[2.18vw] w-[2.18vw] ">
+                                            <SearchIcon width="0.83vw" height="0.83vw" />
+                                        </span>
+                                        <Input
+                                            value={searchValue}
+                                            onChange={(e) => setSearchValue(e.target.value)}
+                                            placeholder="Search"
+                                            className={` w-[20vw] bg-[#F4F5FA] p-[0.45vw] text-[0.72vw] h-[4vh] focus:outline-none focus:border-blue-400 dark:focus:border-blue-400 border pl-[1.76vw] font-medium rounded-md dark:border-[#212121] dark:text-white`}
+                                        />
+                                    </div>
+                                    <DropDown
+                                        classNames={{
+                                            popover: "w-[10vw] h-[25vh] overflow-y-auto",
+                                            triggerButton:
+                                                "w-[5.5vw] h-[4vh] border border-black/15 rounded-lg bg-[#F4F5FA] dark:border-[#212121] dark:bg-[#0F0F0F] dark:text-[#FFFFFF]",
+                                        }}
+                                        triggerButton={
+                                            <div className="flex text-xs font-medium items-center gap-1 dark:bg-[#0F0F0F] dark:text-[#FFFFFF]">
+                                                <ColumnIcon />{" "}
+                                                Filter
+                                            </div>
+                                        }
+                                        items={items}
+                                        selectedKeys={Columns}
+                                        setSelectedKeys={setColumns}
+                                        multiple
+                                        displaySelectedKeys={false}
+                                    />
+                                    <Button className="flex items-center bg-blue-600 px-2 py-1 whitespace-nowrap  text-white rounded-md text-[0.72vw] leading-[1.04vw]">
+                                        <PlusIcon />
+                                        New user
+                                    </Button>
+                                    <Button className="flex items-center bg-[#F44336]/35 px-2 py-1 whitespace-nowrap  text-white rounded-md text-[0.72vw] leading-[1.04vw]">
+                                        <DeleteIcon />
+                                        Delete
+                                    </Button>
+                                </div>
+                            </div>
                             <div className="w-[79.58vw] h-[60vh] overflow-y-scroll ">
                                 <TorusTable
                                     className=""

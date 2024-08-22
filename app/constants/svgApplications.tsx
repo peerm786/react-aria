@@ -85,7 +85,7 @@ export const DownArrow = ({ fill = "black" }) => {
   );
 };
 
-export const PlusIcon = ({ width = 14, height = 20, fill = "black" }) => {
+export const PlusIcon = ({ width ="14", height = "20", fill = "black" }) => {
   return (
     <svg
       width={width}
@@ -2223,7 +2223,7 @@ export const PostToMarketArrowIcon = () => {
   );
 };
 
-export const TrashIcon = () => {
+export const TrashIcon = ({fill = "#F44336"}) => {
   return (
     <svg
       width="0.83vw"
@@ -2234,18 +2234,18 @@ export const TrashIcon = () => {
     >
       <path
         d="M2.02211 5.92637C1.70175 3.79064 1.54157 2.72278 2.14 2.02789C2.73843 1.33301 3.81824 1.33301 5.97786 1.33301H10.0217C12.1813 1.33301 13.2611 1.33301 13.8596 2.02789C14.458 2.72278 14.2978 3.79065 13.9774 5.92637L13.1774 11.2597C12.9337 12.8847 12.8118 13.6973 12.2492 14.1818C11.6866 14.6663 10.8649 14.6663 9.2217 14.6663H6.77784C5.13461 14.6663 4.31298 14.6663 3.75037 14.1818C3.18775 13.6973 3.06587 12.8847 2.82211 11.2597L2.02211 5.92637Z"
-        stroke="#F44336"
+        stroke={fill}
       />
-      <path d="M14 4H2" stroke="#F44336" strokeLinecap="round" />
+      <path d="M14 4H2" stroke={fill} strokeLinecap="round" />
       <path
         opacity="0.5"
         d="M5.33301 4L2.33301 7.33333L7.33301 12.6667M9.33301 4L2.66634 10.6667M13.333 4L4.66634 12.6667M8.66634 12.6667L13.6663 7.33333L10.6663 4M6.66634 4L13.333 10.6667M2.66634 4L11.333 12.6667"
-        stroke="#F44336"
+        stroke={fill}
         strokeLinejoin="round"
       />
       <path
         d="M12.6663 12.667H3.33301"
-        stroke="#F44336"
+        stroke={fill}
         strokeLinecap="round"
       />
     </svg>

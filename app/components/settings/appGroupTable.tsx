@@ -192,6 +192,11 @@ const AppGroupTable: React.FC<AppGroupTableProps> = ({
       currentData = _.get(data, path);
     }
     const transformedData = transformObject(currentData[0]);
+    const isExists = findPath(currentData, transformedData);
+    if (isExists) {
+      toast.warning(`Already ${path ? "member" : "group"} created`);
+      return
+    }
     if (path) {
       handlejs(transformedData, `${path}.${length}`);
     } else {
@@ -302,6 +307,33 @@ const AppGroupTable: React.FC<AppGroupTableProps> = ({
 
     setSelectedItems(newSelectedItems);
   };
+
+  function findPath(obj: any, searchValue: any, path = "") {
+    if (typeof obj === "object") {
+      for (const key in obj) {
+        if (JSON.stringify(obj[key]) === JSON.stringify(searchValue)) {
+          return path + key;
+        } else if (Array.isArray(obj[key])) {
+          for (let i = 0; i < obj[key].length; i++) {
+            const result: any = findPath(
+              obj[key][i],
+              searchValue,
+              path + key + "." + i + "."
+            );
+            if (result) {
+              return result;
+            }
+          }
+        } else if (typeof obj[key] === "object") {
+          const result: any = findPath(obj[key], searchValue, path + key + ".");
+          if (result) {
+            return result;
+          }
+        }
+      }
+    }
+    return null;
+  }
 
   return (
     <div
