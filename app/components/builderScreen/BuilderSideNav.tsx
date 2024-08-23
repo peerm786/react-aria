@@ -14,7 +14,8 @@ import {
     SettingsIcon,
     LogScreenIcon,
     ConnectSupportIcon,
-    TickIcon
+    TickIcon,
+    ApplicationSettings
 } from "../../constants/svgApplications";
 import { Button, Dialog, DialogTrigger, Popover } from "react-aria-components";
 import TorusAvatar from "../Avatar";
@@ -41,7 +42,7 @@ const BuilderSideNav = () => {
         { Icon: DataFabric },
         { Icon: UserFabric },
         { Icon: ProcessFabric },
-        { Icon: SecurityFabric },
+        { Icon: ApplicationSettings, route: "/settings" },
         { Icon: LogScreenIcon },
         { Icon: AssemblerScreenIcon, route: "/" },
         { Icon: ShopSvg },

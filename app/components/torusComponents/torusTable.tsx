@@ -327,7 +327,7 @@ function TorusColumnCheckbox({ children, ...props }: any) {
   );
 }
 
-const Pagination = ({ currentPage, totalPages, setCurrentPage }: any) => {
+export const Pagination = ({ currentPage, totalPages, setCurrentPage }: any) => {
   const getPageNumbers = () => {
     const pageNumbers = [];
     const maxPagesToShow = 4;

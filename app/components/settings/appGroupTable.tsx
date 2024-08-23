@@ -1,9 +1,13 @@
 "use client";
 import _ from "lodash";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Button, Input } from "react-aria-components";
 import { BiLeftArrowAlt, BiRightArrowAlt } from "react-icons/bi";
 import { toast } from "react-toastify";
+import { FilterIcon, PlusIcon, SearchIcon, TrashIcon } from "../../constants/svgApplications";
+import DropDown from "../multiDropdownnew";
+import { Pagination } from "../torusComponents/torusTable";
+import TorusToast from "../torusComponents/torusToast";
 
 interface App {
   code: string;
@@ -26,84 +30,6 @@ interface AppGroupTableProps {
   groupsPerPage?: number;
 }
 
-const Pagination = ({ currentPage, totalPages, setCurrentPage }: any) => {
-  const getPageNumbers = () => {
-    const pageNumbers = [];
-    const maxPagesToShow = 4;
-
-    if (totalPages <= maxPagesToShow) {
-      for (let i = 1; i <= totalPages; i++) {
-        pageNumbers.push(i);
-      }
-    } else {
-      let startPage = Math.max(currentPage - 2, 1);
-      let endPage = Math.min(startPage + maxPagesToShow - 1, totalPages);
-
-      if (endPage - startPage < maxPagesToShow - 1) {
-        startPage = Math.max(endPage - maxPagesToShow + 1, 1);
-      }
-
-      for (let i = startPage; i <= endPage; i++) {
-        pageNumbers.push(i);
-      }
-    }
-    return pageNumbers;
-  };
-
-  const handlePageChange = (page: any) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-    }
-  };
-
-  return (
-    <div className="w-full flex items-center justify-center gap-4 ">
-      <Button
-        className="px-[0.58vw] py-[0.29vw]  border rounded shadow flex items-center text-[0.72vw] text-[#344054] gap-2 focus:outline-none dark:text-[#FFFFFF]"
-        onPress={() => handlePageChange(currentPage - 1)}
-        isDisabled={currentPage === 1}
-      >
-        <BiLeftArrowAlt size={12} /> Previous
-      </Button>
-      <div className="flex gap-2">
-        {getPageNumbers().map((page) => (
-          <Button
-            key={page}
-            className={`pagination-button text-[0.72vw] focus:outline-none dark:focus:bg-[#3063FF]/35 dark:text-[#FFFFFF] ${page === currentPage
-              ? "text-[#0736C4] bg-[#E3EAFF] px-[0.58vw] py-[0.29vw]  rounded"
-              : "text-[#667085]"
-              }`}
-            onPress={() => handlePageChange(page)}
-          >
-            {page}
-          </Button>
-        ))}
-        {totalPages > 4 && currentPage + 2 < totalPages && (
-          <span className="text-[#667085] dark:text-[#FFFFFF]">...</span>
-        )}
-      </div>
-      {totalPages > 4 && currentPage + 1 < totalPages && (
-        <Button
-          className={`pagination-button text-[0.72vw] focus:outline-none dark:text-[#FFFFFF] ${totalPages === currentPage
-            ? "text-[#0736C4] bg-[#E3EAFF] px-[0.58vw] py-[0.29vw]  rounded"
-            : "text-[#667085]"
-            }`}
-          onPress={() => handlePageChange(totalPages)}
-        >
-          {totalPages}
-        </Button>
-      )}
-      <Button
-        className="px-[0.58vw] py-[0.29vw]  border rounded shadow flex items-center text-[0.72vw] text-[#344054] gap-2 focus:outline-none aria-pressed:hidden dark:text-[#FFFFFF]"
-        onPress={() => handlePageChange(currentPage + 1)}
-        isDisabled={currentPage === totalPages}
-      >
-        Next <BiRightArrowAlt size={12} />
-      </Button>
-    </div>
-  );
-};
-
 const AppGroupTable: React.FC<AppGroupTableProps> = ({
   data,
   onUpdate,
@@ -114,10 +40,52 @@ const AppGroupTable: React.FC<AppGroupTableProps> = ({
   );
   const [editingCell, setEditingCell] = useState<null | string>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const indexOfLastGroup = currentPage * groupsPerPage;
-  const indexOfFirstGroup = indexOfLastGroup - groupsPerPage;
-  const currentGroups = data.slice(indexOfFirstGroup, indexOfLastGroup);
-  const totalPages = Math.ceil(data.length / groupsPerPage);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [visibleColumns, setVisibleColumns] = useState<string[]>([]);
+  const [wordLength, setWordLength] = useState(0);
+
+  const filteredData = Object.entries(data)
+    .filter(([key, value]) => {
+      if (typeof value === "string") {
+        return (value as string).toLowerCase().includes(searchTerm.toLowerCase());
+      } else if (Array.isArray(value)) {
+        return value.some((role) => {
+          return Object.values(role).some((val) => {
+            return (
+              typeof val === "string" &&
+              val.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+          });
+        });
+      } else {
+        return Object.values(value).some((val) => {
+          if (typeof val === "string") {
+            return val.toLowerCase().includes(searchTerm.toLowerCase());
+          } else if (Array.isArray(val)) {
+            return val.some((role) => {
+              return Object.values(role).some((v) => {
+                return (
+                  typeof v === "string" &&
+                  v.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+              });
+            });
+          }
+        });
+      }
+    })
+    .map(([key, value], index) => ({ ...value, originalIndex: key }));
+
+  const currentGroups = useMemo(() => {
+    const indexOfLastGroup = currentPage * groupsPerPage;
+    const indexOfFirstGroup = indexOfLastGroup - groupsPerPage;
+
+    return filteredData.slice(indexOfFirstGroup, indexOfLastGroup);
+  }, [data, filteredData, currentPage, onUpdate, searchTerm]);
+
+  const totalPages = useMemo(() => {
+    return Math.ceil(filteredData.length / groupsPerPage);
+  }, [data, filteredData, currentPage, groupsPerPage]);
 
   const handleSelect = (path: string, isParent: boolean = false) => {
     setSelectedItems((prev) => {
@@ -194,7 +162,18 @@ const AppGroupTable: React.FC<AppGroupTableProps> = ({
     const transformedData = transformObject(currentData[0]);
     const isExists = findPath(currentData, transformedData);
     if (isExists) {
-      toast.warning(`Already ${path ? "member" : "group"} created`);
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "warning",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Warning",
+          text: `Already ${path ? "member" : "group"} created`,
+          closeButton: false,
+        } as any
+      )
       return
     }
     if (path) {
@@ -209,15 +188,15 @@ const AppGroupTable: React.FC<AppGroupTableProps> = ({
     setEditingCell(null);
   };
 
-  const getMatchedPath = (index: string | number, key: string) => {
-    const adjustedIndex =
-      currentPage > 1
-        ? Number(index) + (currentPage - 1) * groupsPerPage
-        : index;
+  // const getMatchedPath = (index: string | number, key: string) => {
+  //   const adjustedIndex =
+  //     currentPage > 1
+  //       ? Number(index) + (currentPage - 1) * groupsPerPage
+  //       : index;
 
-    const path = `${adjustedIndex}.${key}`;
-    return path; // Return the path if you need to use it elsewhere
-  };
+  //   const path = `${adjustedIndex}.${key}`;
+  //   return path; // Return the path if you need to use it elsewhere
+  // };
 
   const handleSetEditingCell = (path: string) => {
     setEditingCell(path);
@@ -231,11 +210,33 @@ const AppGroupTable: React.FC<AppGroupTableProps> = ({
       }
     });
     if (groupKeys.size == 0) {
-      toast.error("Please select an application group");
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Please select an application group`,
+          closeButton: false,
+        } as any
+      )
       return;
     }
     if (groupKeys.size > 1) {
-      toast.error("Please select only one application group");
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Please select only one application group`,
+          closeButton: false,
+        } as any
+      )
       return;
     }
 
@@ -263,7 +264,18 @@ const AppGroupTable: React.FC<AppGroupTableProps> = ({
     });
 
     if (groupKeys.size == 0 && memberKeys.size == 0) {
-      toast.error("Please select an application or group");
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Please select an application or group`,
+          closeButton: false,
+        } as any
+      )
       return;
     }
     groupKeys.forEach((key) => {
@@ -278,9 +290,18 @@ const AppGroupTable: React.FC<AppGroupTableProps> = ({
       const memberObj = _.get(updatedData, `${key}`);
       if (!parentData) return;
       if (parentData.length == 1) {
-        toast.warning(
-          "Cannot delete last application , try deleting applicationGroup"
-        );
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "warning",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Warning",
+            text: `Cannot delete last application , try deleting applicationGroup`,
+            closeButton: false,
+          } as any
+        )
         return;
       }
       _.remove(parentData, (obj) => obj === memberObj);
@@ -341,32 +362,66 @@ const AppGroupTable: React.FC<AppGroupTableProps> = ({
       role="table"
       aria-label="Application Groups"
     >
-      <div className="flex justify-between w-full px-2">
-        <div>Application</div>
-        <div className="flex gap-4">
+      <div className="flex justify-between items-center w-full px-2">
+        <div className="flex flex-col gap-[0.58vw]">
+          <div className="text-[1.25vw] leading-[1.85vh] font-semibold">
+            Application
+          </div>
+          <p className="text-[0.83vw] leading-[1.85vh] text-black/50">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+        </div>
+        <div className="flex items-center gap-[0.58vw] w-[48.9vw]">
+          <div className="relative items-center w-[23.75vw] h-[4vh]">
+            <span className="absolute inset-y-0 left-0 flex p-[0.58vw] h-[2.18vw] w-[2.18vw] ">
+              <SearchIcon height="0.83vw" width="0.83vw" />
+            </span>
+            <Input
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search"
+              className={`w-full bg-[#F4F5FA] text-dark p-[0.29vw] text-[0.72vw] h-[4vh] focus:outline-none focus:border-blue-400 dark:focus:border-blue-400 border pl-[1.76vw] font-medium rounded-md dark:border-[#212121] dark:text-white`}
+            />
+          </div>
+          <DropDown
+            classNames={{
+              popover: "w-[8vw] h-[25vh] overflow-y-auto",
+              triggerButton:
+                "w-[5vw] items-center h-[3.98vh] border border-black/15 rounded-lg dark:border-[#212121] bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-[#FFFFFF]",
+            }}
+            triggerButton={
+              <div className="flex text-[0.72vw] pt-[0.29vw] pl-[0.29vw] font-medium gap-[0.29vw] dark:bg-[#0F0F0F] dark:text-[#FFFFFF] ">
+                <FilterIcon />
+                Filter
+              </div>
+            }
+            items={[]}
+            selectedKeys={visibleColumns}
+            setSelectedKeys={setVisibleColumns}
+            multiple
+            displaySelectedKeys={false}
+          />
           <Button
-            className={`px-2 py-1 bg-blue-600 text-white rounded`}
-            onPress={handleAddMember}
-          >
-            + New App
-          </Button>
-          <Button
-            className={`px-2 py-1 bg-blue-600 text-white rounded`}
+            className={`flex gap-[0.29vw] px-3 py-1.5 items-center text-nowrap text-[0.72vw] leading-[2.22vh] bg-[#0736C4] text-white rounded-lg`}
             onPress={() => handleAddNewEntity(undefined, data.length)}
           >
-            + New Group
+            <PlusIcon fill="white" width={"1.04vw"} height={"1.04vw"} /> New Group
           </Button>
           <Button
-            className={`px-2 py-1 bg-red-600 text-white rounded`}
+            className={`flex gap-[0.29vw] px-3 py-1.5 items-center text-nowrap text-[0.72vw] leading-[2.22vh] bg-[#0736C4] text-white rounded-lg`}
+            onPress={handleAddMember}
+          ><PlusIcon fill="white" width={"1.04vw"} height={"1.04vw"} />
+            New App
+          </Button>
+          <Button
+            className={`flex gap-[0.29vw] px-3 py-1.5 text-[0.72vw] leading-[2.22vh] items-center bg-[#F44336] text-white rounded-lg`}
             onPress={handleDeleteGroupAndMembers}
           >
-            delete
+            <TrashIcon fill="white" />delete
           </Button>
         </div>
       </div>
       <div className="mx-2 mt-2">
         {/* Group Header */}
-        <div className="flex w-[79.58vw] rounded-lg items-center p-1.5 bg-[#F4F5FA]" role="row">
+        <div className="flex w-[79.58vw] rounded-lg items-center p-2 bg-[#F4F5FA]" role="row">
           <div className="w-16 ml-4" role="columnheader">
             {/* <input
               type="checkbox"
@@ -389,146 +444,137 @@ const AppGroupTable: React.FC<AppGroupTableProps> = ({
         </div>
       </div>
 
-      {currentGroups.map((group, i) => (
-        <div
-          key={group.code}
-          className="rounded mx-2 w-[79.58vw] border border-black/15"
-          role="rowgroup"
-          aria-labelledby={`group-${group.code}`}
-        >
-          {/* Group Row */}
+      <div className="flex flex-col gap-[1.17vw] h-[52.25vh] pb-[0.58vw] overflow-y-auto">
+        {currentGroups.map((group, i) => (
           <div
-            className="flex gap-5 items-center bg-[#F4F5FA] rounded-sm p-2 text-[0.62vw] leading-[1.77vh]"
-            role="row"
+            key={group.code}
+            className="rounded mx-2 w-[79.58vw] border border-black/15"
+            role="rowgroup"
+            aria-labelledby={`group-${group.code}`}
           >
-            <div className="w-10 ml-3" role="cell">
-              <input
-                type="checkbox"
-                checked={
-                  !!selectedItems[
-                  `${getMatchedPath(i, "code").replace(".code", "")}`
-                  ]
-                }
-                onChange={() =>
-                  handleSelect(
-                    `${getMatchedPath(i, "code").replace(".code", "")}`,
-                    true
-                  )
-                }
-                aria-labelledby={`group-${group.code}`}
-              />
-            </div>
+            {/* Group Row */}
+            <div
+              className="flex gap-5 items-center bg-[#F4F5FA] rounded-sm p-2 text-[0.62vw] leading-[1.77vh]"
+              role="row"
+            >
+              <div className="w-10 ml-3" role="cell">
+                <input
+                  type="checkbox"
+                  checked={!!selectedItems[`${group.originalIndex}`]}
+                  onChange={() => handleSelect(`${group.originalIndex}`, true)}
+                  aria-labelledby={`group-${group.code}`}
+                />
+              </div>
 
-            {["code", "name", "description"].map((field) => (
-              <div
-                key={field}
-                className={`${field === "code" ? "w-[10.52vw]" : field === "name" ? "w-[15.46vw]" : "w-[43.53vw]"} p-2 bg-white`}
-                role="cell"
-                onDoubleClick={() =>
-                  handleSetEditingCell(getMatchedPath(i, field))
-                }
-              >
-                {(editingCell && getMatchedPath(i, field) === editingCell) ||
-                  !(group as any)[field] ? (
-                  <Input
-                    type="text"
-                    defaultValue={(group as any)[field]}
-                    onFocus={() =>
-                      handleSetEditingCell(getMatchedPath(i, field))
-                    }
-                    onKeyDown={(e: any) => {
-                      if (e.key === "Enter") {
+              {["code", "name", "description"].map((field) => (
+                <div
+                  key={field}
+                  className={`${field === "code" ? "w-[10.52vw]" : field === "name" ? "w-[15.46vw]" : "w-[43.53vw]"} p-2 bg-white`}
+                  role="cell"
+                  onDoubleClick={() =>
+                    handleSetEditingCell(`${group.originalIndex}.${field}`)
+                  }
+                >
+                  {(editingCell && editingCell == `${group.originalIndex}.${field}`) ||
+                    !(group as any)[field] ? (
+                    <Input
+                      type="text"
+                      defaultValue={(group as any)[field]}
+                      onFocus={() =>
+                        handleSetEditingCell(`${group.originalIndex}.${field}`)
+                      }
+                      onKeyDown={(e: any) => {
+                        if (e.key === "Enter") {
+                          handleValueChange(
+                            `${group.originalIndex}.${field}`,
+                            e.target.value
+                          );
+                        }
+                      }}
+                      onBlur={(e) => {
                         handleValueChange(
-                          getMatchedPath(i, field),
+                          `${group.originalIndex}.${field}`,
                           e.target.value
                         );
-                      }
-                    }}
-                    onBlur={(e) => {
-                      handleValueChange(
-                        getMatchedPath(i, field),
-                        e.target.value
-                      );
-                    }}
-                    autoFocus
-                    className={"outline-none"}
-                  />
-                ) : (
-                  (group as any)[field]
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* App Rows */}
-          {group.APPS.map((app, memberIndex) => {
-            const parentPath = getMatchedPath(i, "APPS");
-            return (
-              <div
-                key={app.code}
-                className="flex w-full items-center gap-5 p-2 bg-white text-[0.62vw] leading-[1.77vh]"
-                role="row"
-              >
-                <div className="w-10 ml-3" role="cell">
-                  <input
-                    type="checkbox"
-                    checked={!!selectedItems[`${parentPath}.${memberIndex}`]}
-                    onChange={() =>
-                      handleSelect(`${parentPath}.${memberIndex}`)
-                    }
-                    aria-labelledby={`app-${group.code}-${app.code}`}
-                  />
+                      }}
+                      className={"outline-none"}
+                    />
+                  ) : (
+                    (group as any)[field]
+                  )}
                 </div>
+              ))}
+            </div>
 
-                {["code", "name", "description"].map((field) => (
-                  <div
-                    key={field}
-                    className={`${field === "code" ? "w-[10.52vw]" : field === "name" ? "w-[15.46vw]" : "w-[43.53vw]"} p-2 bg-[#F4F5FA]`}
-                    role="cell"
-                    onDoubleClick={() =>
-                      handleSetEditingCell(
-                        `${parentPath}.${memberIndex}.${field}`
-                      )
-                    }
-                  >
-                    {(editingCell &&
-                      editingCell == `${parentPath}.${memberIndex}.${field}`) ||
-                      !(app as any)[field] ? (
-                      <Input
-                        type="text"
-                        defaultValue={(app as any)[field]}
-                        onFocus={() =>
-                          handleSetEditingCell(
-                            `${parentPath}.${memberIndex}.${field}`
-                          )
-                        }
-                        onKeyDown={(e: any) => {
-                          if (e.key === "Enter") {
+            {/* App Rows */}
+            {group.APPS.map((app, memberIndex) => {
+              const parentPath = `${group.originalIndex}.APPS`;
+              return (
+                <div
+                  key={app.code}
+                  className="flex w-full items-center gap-5 p-2 bg-white text-[0.62vw] leading-[1.77vh]"
+                  role="row"
+                >
+                  <div className="w-10 ml-3" role="cell">
+                    <input
+                      type="checkbox"
+                      checked={!!selectedItems[`${parentPath}.${memberIndex}`]}
+                      onChange={() =>
+                        handleSelect(`${parentPath}.${memberIndex}`)
+                      }
+                      aria-labelledby={`app-${group.code}-${app.code}`}
+                    />
+                  </div>
+
+                  {["code", "name", "description"].map((field) => (
+                    <div
+                      key={field}
+                      className={`${field === "code" ? "w-[10.52vw]" : field === "name" ? "w-[15.46vw]" : "w-[43.53vw]"} p-2 bg-[#F4F5FA]`}
+                      role="cell"
+                      onDoubleClick={() =>
+                        handleSetEditingCell(
+                          `${parentPath}.${memberIndex}.${field}`
+                        )
+                      }
+                    >
+                      {(editingCell &&
+                        editingCell == `${parentPath}.${memberIndex}.${field}`) ||
+                        !(app as any)[field] ? (
+                        <Input
+                          type="text"
+                          defaultValue={(app as any)[field]}
+                          onFocus={() =>
+                            handleSetEditingCell(
+                              `${parentPath}.${memberIndex}.${field}`
+                            )
+                          }
+                          onKeyDown={(e: any) => {
+                            if (e.key === "Enter") {
+                              handleValueChange(
+                                `${parentPath}.${memberIndex}.${field}`,
+                                e.target.value
+                              )
+                            }
+                          }}
+                          onBlur={(e) => {
                             handleValueChange(
                               `${parentPath}.${memberIndex}.${field}`,
                               e.target.value
-                            )
-                          }
-                        }}
-                        onBlur={(e) => {
-                          handleValueChange(
-                            `${parentPath}.${memberIndex}.${field}`,
-                            e.target.value
-                          );
-                        }}
-                        autoFocus
-                        className={"bg-[#F4F5FA] outline-none"}
-                      />
-                    ) : (
-                      (app as any)[field]
-                    )}
-                  </div>
-                ))}
-              </div>
-            )
-          })}
-        </div>
-      ))}
+                            );
+                          }}
+                          className={"bg-[#F4F5FA] outline-none"}
+                        />
+                      ) : (
+                        (app as any)[field]
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )
+            })}
+          </div>
+        ))}
+      </div>
 
       <Pagination
         currentPage={currentPage}

@@ -85,6 +85,7 @@ interface Ps {
 interface PsGrp {
     psGrpCode: string;
     psGrpName: string;
+    ps: Ps[];
 }
 
 const SetupScreen = () => {
@@ -320,31 +321,31 @@ const SetupScreen = () => {
             category: "Personal",
             items: [
 
-                { name: "Profile", svg: <Profile />, code: 'profile' },
-                { name: "Appearance", svg: <Apperance />, code: 'appearance' },
+                { name: "Profile", svg: <Profile fill={`${selectedMenuItem === 'profile' ? '#0736C4' : 'black'}`} />, code: 'profile' },
+                { name: "Appearance", svg: <Apperance fill={`${selectedMenuItem === 'appearance' ? '#0736C4' : 'black'}`} />, code: 'appearance' },
             ],
         },
         {
             category: "Configuration",
             items: [
-                { name: "Tenant", svg: <Tenant />, code: 'tenant' },
-                { name: "Application", svg: <App />, code: 'app' },
-                { name: "Organization", svg: <Org />, code: 'org' },
-                { name: "Roles & Groups", svg: <Roles />, code: 'role' },
-                { name: "Product & Services", svg: <PSicon />, code: 'ps' },
+                { name: "Tenant", svg: <Tenant fill={`${selectedMenuItem === 'tenant' ? '#0736C4' : 'black'}`} />, code: 'tenant' },
+                { name: "Application", svg: <App fill={`${selectedMenuItem === 'app' ? '#0736C4' : 'black'}`} />, code: 'app' },
+                { name: "Organization", svg: <Org fill={`${selectedMenuItem === 'org' ? '#0736C4' : 'black'}`} />, code: 'org' },
+                { name: "Roles & Groups", svg: <Roles fill={`${selectedMenuItem === 'role' ? '#0736C4' : 'black'}`} />, code: 'role' },
+                { name: "Product & Services", svg: <PSicon fill={`${selectedMenuItem === 'ps' ? '#0736C4' : 'black'}`} />, code: 'ps' },
             ],
         },
         {
             category: "Management",
-            items: [{ name: "User Management", svg: <Management />, code: 'user' }],
+            items: [{ name: "User Management", svg: <Management fill={`${selectedMenuItem === 'user' ? '#0736C4' : 'black'}`} />, code: 'user' }],
         },
 
         {
             category: "General",
             items: [
-                { name: "Security", svg: <Security />, code: 'security' },
-                { name: "Notifications", svg: <Notification />, code: 'notification' },
-                { name: "Billings", svg: <Billing />, code: 'billing' },
+                { name: "Security", svg: <Security fill={`${selectedMenuItem === 'security' ? '#0736C4' : 'black'}`} />, code: 'security' },
+                { name: "Notifications", svg: <Notification fill={`${selectedMenuItem === 'notification' ? '#0736C4' : 'black'}`} />, code: 'notification' },
+                { name: "Billings", svg: <Billing fill={`${selectedMenuItem === 'billing' ? '#0736C4' : 'black'}`} />, code: 'billing' },
 
             ],
         },
@@ -412,7 +413,7 @@ const SetupScreen = () => {
 
     return (
         <div className="w-full h-full">
-            <div className="flex ml-4 p-3 items-center">
+            <div className="flex p-3 ml-2">
                 <div className="flex gap-2 items-center text-[0.93vw] text-[#1A2024] leading-[2.22vh] font-semibold">
                     <ApplicationSettings /> Setup
                 </div>
