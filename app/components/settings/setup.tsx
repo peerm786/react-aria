@@ -17,6 +17,7 @@ import {
     Checked,
     ColumnIcon,
     DeleteIcon,
+    FilterIcon,
     Integration,
     Management,
     Notification,
@@ -32,13 +33,20 @@ import {
     UnChecked,
     Whatsnew,
 } from "../../constants/svgApplications"
-import { Button, Checkbox, Input, Select, Separator } from "react-aria-components";
+import { Checkbox, Input, Select, Separator } from "react-aria-components";
 import { Cell, Column, Row, Table, TableBody, TableHeader } from "react-aria-components";
 import DropDown from "../multiDropdownnew";
 import TorusAvatar from "../Avatar";
 import { AxiosService } from "../../../lib/utils/axiosService";
 import DynamicGroupMemberTable from "./dynamicGroupMemberTable";
 import AppGroupTable from "./appGroupTable";
+import { Button, Calendar, CalendarCell, CalendarGrid, Heading } from 'react-aria-components';
+import { parseDate } from '@internationalized/date';
+import { useDateFormatter } from 'react-aria';
+
+
+
+
 
 interface App {
     code: string;
@@ -88,6 +96,65 @@ interface PsGrp {
     ps: Ps[];
 }
 
+
+
+const tabledata = [
+
+    {
+        "users": "easi",
+        "firstName": "sa",
+        "lastName": "r",
+        "email": "marim@torus.tech",
+        "mobile": "7894512784",
+        "accessExpires": "",
+        'noofproductsservice': 0,
+        "lastActive": "june30 2024 00:00:00",
+        "dateAdded": "may 05 2024",
+        "templateType": "",
+        "2FAFlag": "N"
+    },
+    {
+        "users": "Rahul",
+        "firstName": "Rahul",
+        "lastName": "Sakthi",
+        "email": "rahulsakthi306@gmail.com",
+        "mobile": "7904984839",
+        "accessExpires": "",
+        'noofproductsservice': 0,
+        "lastActive": "june30 2024 00:00:00",
+        "dateAdded": "may 05 2024",
+        "templateType": "template1",
+        "2FAFlag": "N"
+    },
+    {
+        "users": "peer",
+        "firstName": "peer",
+        "lastName": "maideen",
+        "email": "peerm@torus.tech",
+        "mobile": "8787878787",
+        "accessExpires": "",
+        "templateType": "",
+        'noofproductsservice': 0,
+        "lastActive": "june30 2024 00:00:00",
+        "dateAdded": "may 05 2024",
+        "2FAFlag": "N"
+    },
+    {
+        "users": "test",
+        "firstName": "test",
+        "lastName": "t",
+        "email": "allanr@torus.tech",
+        "templateType": "",
+        'noofproductsservice': 0,
+        "mobile": "1258641646",
+        "accessExpires": "21 Dec 2024 ",
+        "lastActive": "june30 2024 00:00:00",
+        "dateAdded": "may 05 2024",
+        "2FAFlag": "N"
+    }
+
+];
+
 const SetupScreen = () => {
     const [selectedMenuItem, setSelectedMenuItem] = useState("");
     const [searchValue, setSearchValue] = useState<string>("");
@@ -97,6 +164,7 @@ const SetupScreen = () => {
     const [orgGrpData, setOrgGrpData] = useState<any>([]);
     const [roleGrpData, setRoleGrpData] = useState<any>([]);
     const [psGrpData, setPsGrpData] = useState<any>([]);
+    const [displaydata, setDisplaydata] = useState<any>([]);
 
     const getTenantProfile = async () => {
         try {
@@ -113,8 +181,25 @@ const SetupScreen = () => {
         }
     };
 
+    // console.log(displaydata)
+
     useEffect(() => {
         getTenantProfile();
+        const result = tabledata.map((item: any) => {
+            return ({
+                users: (item.firstName && item.lastName)
+                    ? (item.firstName + " " + item.lastName) : item.loginId ? item.loginId : "",
+                email: item.email,
+                templateType: item.templateType,
+                noofproductsservice: item.noofproductsservice || 0,
+                accessExpires: item.accessExpires,
+                lastActive: item.lastActive,
+                dateAdded: item.dateAdded,
+
+            })
+        })
+
+        setDisplaydata(result)
     }, []);
 
     const getDisplayData: (controller: string) => {
@@ -136,130 +221,9 @@ const SetupScreen = () => {
         }
     }, [orgGrpData, roleGrpData, psGrpData]);
 
-    const tabledata = [
-        {
-            users: {
-                name: "Susan Andrews",
-                email: "james.williams@example.com"
 
-            },
-            name: "Susan Andrews",
-            email: "james.williams@example.com",
-            templateType: 'Template 1',
-            noofproductsservice: 12,
-            accessExpires: '31.07.2024',
-            lastActive: 'June 30, 2024 | 15:10:24',
-            dateAdded: 'May 05, 2024',
-        },
-        {
-            users: {
-                name: "Susan Andrews",
-                email: "james.williams@example.com"
 
-            },
-            templateType: 'Template 2',
-            noofproductsservice: 10,
-            accessExpires: '31.07.2024',
-            lastActive: 'June 30, 2024 | 15:10:24',
-            dateAdded: 'May 06, 2024',
-        },
-        {
-            users: {
-                name: "Susan Andrews",
-                email: "james.williams@example.com"
 
-            },
-            templateType: 'Template 3',
-            noofproductsservice: 12,
-            accessExpires: '31.07.2024',
-            lastActive: 'June 30, 2024 | 15:10:24',
-            dateAdded: 'May 05, 2024',
-        },
-        {
-            users: {
-                name: "Susan Andrews",
-                email: "james.williams@example.com"
-
-            },
-            templateType: 'Template 1',
-            noofproductsservice: 10,
-            accessExpires: '31.07.2024',
-            lastActive: 'June 30, 2024 | 15:10:24',
-            dateAdded: 'May 06, 2024',
-        },
-        {
-            users: {
-                name: "Susan Andrews",
-                email: "james.williams@example.com"
-
-            },
-            templateType: 'Template 1',
-            noofproductsservice: 12,
-            accessExpires: '31.07.2024',
-            lastActive: 'June 30, 2024 | 15:10:24',
-            dateAdded: 'May 05, 2024',
-        },
-        {
-            users: {
-                name: "Susan Andrews",
-                email: "james.williams@example.com"
-
-            },
-            templateType: 'Template 2',
-            noofproductsservice: 10,
-            accessExpires: '31.07.2024',
-            lastActive: 'June 30, 2024 | 15:10:24',
-            dateAdded: 'May 06, 2024',
-        },
-        {
-            users: {
-                name: "Susan Andrews",
-                email: "james.williams@example.com"
-
-            },
-            templateType: 'Template 1',
-            noofproductsservice: 12,
-            accessExpires: '31.07.2024',
-            lastActive: 'June 30, 2024 | 15:10:24',
-            dateAdded: 'May 05, 2024',
-        },
-        {
-            users: {
-                name: "Susan Andrews",
-                email: "james.williams@example.com"
-
-            },
-            templateType: 'Template 2',
-            noofproductsservice: 10,
-            accessExpires: '31.07.2024',
-            lastActive: 'June 30, 2024 | 15:10:24',
-            dateAdded: 'May 06, 2024',
-        },
-        {
-            users: {
-                name: "Susan Andrews",
-                email: "james.williams@example.com"
-
-            },
-            templateType: 'Template 1',
-            noofproductsservice: 12,
-            accessExpires: '31.07.2024',
-            lastActive: 'June 30, 2024 | 15:10:24',
-            dateAdded: 'May 05, 2024',
-        },
-        {
-            users: {
-                name: "Susan Andrews",
-                email: "james.williams@example.com"
-
-            },
-            templateType: 'Template 2',
-            noofproductsservice: 10,
-            accessExpires: '31.07.2024',
-            lastActive: 'June 30, 2024 | 15:10:24',
-            dateAdded: 'May 06, 2024',
-        },
-    ];
 
     const Columnchange = [
         'users',
@@ -270,49 +234,105 @@ const SetupScreen = () => {
         'dateAdded',
     ];
 
-    const TableCell = (item: any, column: any) => {
+    const updateValuesInSource = (indexTobeModifiled: number, key: string, value: any) => {
+        const copyOfDisplayedData = structuredClone(displaydata);
+        copyOfDisplayedData[indexTobeModifiled][key] = value;
+        setDisplaydata(copyOfDisplayedData);
+
+    }
+    const updateValueInDate = (indexTobeModifiled: number, key: string, value: any) => {
+        const copyOfDisplayedData = structuredClone(displaydata);
+        copyOfDisplayedData[indexTobeModifiled][key] = value;
+        setDisplaydata(copyOfDisplayedData);
+    }
+
+
+    const TableCell = (item: any, column: any, i: number) => {
+        const [template, setTemplate] = useState<string>(item.templateType)
+        const [dataChange, setdateChange] = useState<string>(item.accessExpires)
+
+
+        const handleTemplate = (template: string) => {
+            setTemplate(template)
+            const updatedData = { ...item, templateType: template }
+            updateValuesInSource(i, 'templateType', template)
+        }
+        const handledatechange = (date: string) => {
+            setdateChange(date)
+            const updatedData = { ...item, accessExpires: date }
+            updateValueInDate(i, 'accessExpires', date)
+
+
+
+        }
+
+
         switch (column.key) {
+
             case 'users':
-                return <div className="flex gap-2 ">
-                    <TorusAvatar size="sm" />
-                    <div className="flex flex-col justify-center">
-                        <span className="text-[0.83vw] leading-[1.04vw] font-medium">{item[column.key].name}</span>
-                        <span className="text-[0.62vw] leading-[1.04vh] text-[#000000]/50">{item[column.key].email}</span>
+                return (
+
+                    <div className="flex gap-2  ">
+                        <TorusAvatar size="sm" />
+                        <div className="flex flex-col justify-center">
+                            <span className="text-[0.72vw] leading-[1.04vw]">{item.users}</span>
+                            <span className="text-[0.72vw] leading-[1.04vw] text-black/50 dark:text-[#FFFFFF]/50">
+                                {item.email}
+                            </span>
+
+
+                        </div>
                     </div>
-                </div>
+                );
             case 'templateType':
-                return <DropDown
-                    triggerButton="Template1"
-                    selectedKeys={item[column.id]}
-                    setSelectedKeys={() => { }}
-                    items={items}
-                    classNames={{
-                        triggerButton: `w-[10.52vw] h-[4vh] pressed:animate-torusButtonActive rounded-lg text-[0.83vw] leading-[2.22vh] mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white`,
-                        popover: "w-40",
-                        listbox: "overflow-y-auto",
-                        listboxItem: "flex text-[0.83vw] leading-[2.22vh] justify-between",
-                    }}
-                />
-            case 'numOfProducts':
-                return <div>{item[column.key]}</div>;
+                return (
+                    <DropDown
+                        triggerButton="Select template"
+                        selectedKeys={template}
+                        setSelectedKeys={handleTemplate}
+                        items={templates}
+                        classNames={{
+                            triggerButton: `w-[10.52vw] h-[4vh] pressed:animate-torusButtonActive rounded-lg text-[0.72vw] leading-[1.04vh] mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white`,
+                            popover: "w-40",
+                            listbox: "overflow-y-auto",
+                            listboxItem: "flex text-[0.83vw] leading-[2.22vh] justify-between",
+                        }}
+                    />
+                );
+            case 'noofproductsservice':
+                return <div className="text-[0.72vw] leading-[1.04vw] mr-5">{item.noofproductsservice}</div>;
             case 'accessExpires':
-                return <div className=" flex space-x-5 text-[0.72vw]  leading-[1.04vw]  px-4 py-2 rounded-md bg-[#F4F5FA]">
-                    <span >{item[column.key]}</span>
-                    <Calender />
-                </div>;
+                return (
+                    <div className="flex flex-col items-center">
+                        <div className="flex text-[0.72vw] leading-[1.04vw] px-4 py-2 rounded-md bg-[#F4F5FA] mt-2">
+
+                            <form onSubmit={(e) => e.preventDefault()}>
+                                <input
+                                    className="bg-[#F4F5FA]"
+                                    type="date"
+                                    onChange={(e) => handledatechange(e.target.value)}
+                                />
+                            </form>
+                        </div>`1`
+                    </div>
+                );
+
+
             case 'lastActive':
-                return <div >{item[column.key]}</div>;
+                return <div>{item.lastActive}</div>;
             case 'dateAdded':
-                return <div>{item[column.key]}</div>;
+                return <div>{item.dateAdded}</div>;
             default:
                 return <div>{item[column.key]}</div>;
         }
-    };
+    }
 
-    const items = [
-        { key: 'name', label: 'Name' },
-        { key: 'organization', label: 'Organization' },
-        { key: 'role', label: 'Role' },
+    const templates = [
+
+        'template1',
+        'template2',
+        'template3',
+        'template4',
 
     ];
 
@@ -396,7 +416,7 @@ const SetupScreen = () => {
                     triggerButton="Appcode"
                     selectedKeys={item[column.id]}
                     setSelectedKeys={() => { }}
-                    items={items}
+                    items={templates}
                     classNames={{
                         triggerButton: `w-[10.52vw] h-[4vh] pressed:animate-torusButtonActive rounded-lg text-[0.83vw] leading-[2.22vh] mt-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white`,
                         popover: "w-40",
@@ -456,9 +476,9 @@ const SetupScreen = () => {
                                 </div>
 
                                 <div className="flex items-center gap-2 ">
-                                    <div className="relative w-[100%] h-[4vh]">
-                                        <span className="absolute inset-y-0 left-0 flex items-center p-[0.58vw] h-[2.18vw] w-[2.18vw] ">
-                                            <SearchIcon width="0.83vw" height="0.83vw" />
+                                    <div className="relative  w-[100%] h-[4vh]">
+                                        <span className="absolute inset-y-0 left-0 mb-3 flex items-center p-[0.58vw] h-[2.18vw] w-[2.18vw] ">
+                                            <SearchIcon width="12" height="12" />
                                         </span>
                                         <Input
                                             value={searchValue}
@@ -474,23 +494,23 @@ const SetupScreen = () => {
                                                 "w-[5.5vw] h-[4vh] border border-black/15 rounded-lg bg-[#F4F5FA] dark:border-[#212121] dark:bg-[#0F0F0F] dark:text-[#FFFFFF]",
                                         }}
                                         triggerButton={
-                                            <div className="flex text-xs font-medium items-center gap-1 dark:bg-[#0F0F0F] dark:text-[#FFFFFF]">
-                                                <ColumnIcon />{" "}
+                                            <div className="flex text-[0.72vw] leading-[1.25vw] font-medium items-center gap-1 dark:bg-[#0F0F0F] dark:text-[#FFFFFF]">
+                                                <FilterIcon />{" "}
                                                 Filter
                                             </div>
                                         }
-                                        items={items}
+                                        items={templates}
                                         selectedKeys={Columns}
                                         setSelectedKeys={setColumns}
                                         multiple
                                         displaySelectedKeys={false}
                                     />
-                                    <Button className="flex items-center bg-blue-600 px-2 py-1 whitespace-nowrap  text-white rounded-md text-[0.72vw] leading-[1.04vw]">
-                                        <PlusIcon />
+                                    <Button className="flex items-center bg-[#0736C4] px-2 py-1 whitespace-nowrap  text-white rounded-md text-[0.72vw] leading-[1.04vw]">
+                                        <PlusIcon width="12" height="12" fill="white" />
                                         New user
                                     </Button>
                                     <Button className="flex items-center bg-[#F44336]/35 px-2 py-1 whitespace-nowrap  text-white rounded-md text-[0.72vw] leading-[1.04vw]">
-                                        <DeleteIcon />
+                                        <DeleteIcon width="10" height="10" fill="white" />
                                         Delete
                                     </Button>
                                 </div>
@@ -500,7 +520,7 @@ const SetupScreen = () => {
                                 <TorusTable
                                     className=""
                                     primaryColumn="users"
-                                    tableData={tabledata}
+                                    tableData={displaydata}
                                     visibleColumns={Columnchange}
                                     isSkeleton={true}
                                     searchValue={searchValue}
@@ -550,7 +570,7 @@ const SetupScreen = () => {
                                                                 {columns.map((column: any, i: number) => (
                                                                     <Cell key={i} className="">
                                                                         <div className="w-full h-full flex flex-col items-center justify-center py-[1rem]">
-                                                                            {TableCell(item, column)}
+                                                                            {TableCell(item, column, i)}
                                                                         </div>
                                                                     </Cell>
                                                                 ))}
@@ -577,8 +597,8 @@ const SetupScreen = () => {
 
                                 <div className="flex items-center gap-2 ">
                                     <div className="relative w-[100%] h-[4vh]">
-                                        <span className="absolute inset-y-0 left-0 flex items-center p-[0.58vw] h-[2.18vw] w-[2.18vw] ">
-                                            <SearchIcon width="0.83vw" height="0.83vw" />
+                                        <span className="absolute inset-y-0 left-0 mb-3 flex items-center p-[0.58vw] h-[2.18vw] w-[2.18vw] ">
+                                            <SearchIcon width="10" height="10" />
                                         </span>
                                         <Input
                                             value={searchValue}
@@ -594,23 +614,23 @@ const SetupScreen = () => {
                                                 "w-[5.5vw] h-[4vh] border border-black/15 rounded-lg bg-[#F4F5FA] dark:border-[#212121] dark:bg-[#0F0F0F] dark:text-[#FFFFFF]",
                                         }}
                                         triggerButton={
-                                            <div className="flex text-xs font-medium items-center gap-1 dark:bg-[#0F0F0F] dark:text-[#FFFFFF]">
-                                                <ColumnIcon />{" "}
+                                            <div className="flex text-[0.72vw] leading-[1.04vw] font-medium items-center gap-1 dark:bg-[#0F0F0F] dark:text-[#FFFFFF]">
+                                                <FilterIcon width="12" height="12" />{" "}
                                                 Filter
                                             </div>
                                         }
-                                        items={items}
+                                        items={templates}
                                         selectedKeys={Columns}
                                         setSelectedKeys={setColumns}
                                         multiple
                                         displaySelectedKeys={false}
                                     />
-                                    <Button className="flex items-center bg-blue-600 px-2 py-1 whitespace-nowrap  text-white rounded-md text-[0.72vw] leading-[1.04vw]">
-                                        <PlusIcon />
+                                    <Button className="flex items-center bg-[#0736C4] px-2 py-1 whitespace-nowrap  text-white rounded-md text-[0.72vw] leading-[1.04vw]">
+                                        <PlusIcon fill="white" width="12" height="12" />
                                         New user
                                     </Button>
                                     <Button className="flex items-center bg-[#F44336]/35 px-2 py-1 whitespace-nowrap  text-white rounded-md text-[0.72vw] leading-[1.04vw]">
-                                        <DeleteIcon />
+                                        <DeleteIcon fill="white" width="12" height="12" />
                                         Delete
                                     </Button>
                                 </div>

@@ -62,10 +62,10 @@ const DropDown = ({
             : k === selectedItem
         )
           ? prevKeys.filter((k: any) =>
-              displayParam
-                ? k[displayParam] !== selectedItem[displayParam]
-                : k !== selectedItem
-            )
+            displayParam
+              ? k[displayParam] !== selectedItem[displayParam]
+              : k !== selectedItem
+          )
           : [...prevKeys, selectedItem]
       );
     } else {
@@ -83,8 +83,7 @@ const DropDown = ({
     <DialogTrigger>
       <Button
         className={twMerge(
-          `p-2 items-center flex justify-between disabled:cursor-not-allowed dark:text-white rounded focus:outline-none w-full ${
-            open ? "border-[#0736C4]" : ""
+          `p-2 items-center flex justify-between disabled:cursor-not-allowed dark:text-white rounded focus:outline-none w-full ${open ? "border-[#0736C4]" : ""
           }`,
           classNames?.triggerButton
         )}
@@ -92,13 +91,13 @@ const DropDown = ({
         onPress={() => setOpen(!open)}
       >
         {displaySelectedKeys
-          ? selectedKeys.length && Array.isArray(selectedKeys)
+          ? selectedKeys?.length && Array.isArray(selectedKeys)
             ? selectedKeys
-                .map((item: any) => getItemDisplayValue(item))
-                .join(", ")
+              .map((item: any) => getItemDisplayValue(item))
+              .join(", ")
             : selectedKeys && typeof selectedKeys === "string"
-            ? getItemDisplayValue(selectedKeys)
-            : triggerButton
+              ? getItemDisplayValue(selectedKeys)
+              : triggerButton
           : triggerButton}
         {displaySelectedKeys && <DownArrow fill={isDarkMode ? "white" : "black"} />}
       </Button>
@@ -112,7 +111,7 @@ const DropDown = ({
               aria-label="Custom dropdown"
               selectionMode={multiple ? "multiple" : "single"}
               className={twMerge("", classNames?.listbox)}
-              renderEmptyState={()=> <div className="p-2 text-[0.83vw] leading-[2.22vh] rounded dark:bg[#212121] dark:text-white">No data found</div>}
+              renderEmptyState={() => <div className="p-2 text-[0.83vw] leading-[2.22vh] rounded dark:bg[#212121] dark:text-white">No data found</div>}
             >
               {items.map((item: any) => {
                 const isSelected = () => {
@@ -140,8 +139,7 @@ const DropDown = ({
                       textValue={getItemDisplayValue(item)}
                       onAction={() => handleSelectionChange(item, close)}
                       className={twMerge(
-                        `focus:outline-none p-1 items-center flex justify-between border border-transparent cursor-pointer rounded ${
-                          isSelected() ? "bg-[#F9FAFB] dark:bg-[#000]" : ""
+                        `focus:outline-none p-1 items-center flex justify-between border border-transparent cursor-pointer rounded ${isSelected() ? "bg-[#F9FAFB] dark:bg-[#000]" : ""
                         }`,
                         classNames?.listboxItem
                       )}

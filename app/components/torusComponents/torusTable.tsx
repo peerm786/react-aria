@@ -960,15 +960,15 @@ export function TorusTable({
               </Table>
             </div>
           </div>
-          {totalPages > 1 ? (
-            <div className="w-full h-[7%] flex items-center">
-              <Pagination
-                currentPage={page}
-                setCurrentPage={setPage}
-                totalPages={totalPages}
-              />
-            </div>
-          ) : null}
+          {/* {totalPages > 1 ? ( */}
+          <div className="w-full h-[7%] flex items-center">
+            <Pagination
+              currentPage={page}
+              setCurrentPage={setPage}
+              totalPages={totalPages}
+            />
+          </div>
+          {/* ) : null} */}
 
           {/* <div className="flex flex-col items-center justify-center pl-2 w-[100%] h-[5%]">
               <div className="w-[95%] flex justify-between "> */}

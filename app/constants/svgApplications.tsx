@@ -1146,7 +1146,7 @@ export const FileGallery = () => {
   );
 };
 
-export const DeleteIcon = ({ width = 16, height = 16, fill = "black" }) => {
+export const DeleteIcon = ({ width = "16", height = "16", fill = "black" }) => {
   return (
     <svg
       width={width}
