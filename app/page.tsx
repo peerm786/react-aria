@@ -107,7 +107,7 @@ const Page = () => {
 
   const fetchTenants = async () => {
     try {
-      const res = await AxiosService.get("/tp/getClientTenant?type=c");
+      const res = await AxiosService.get("/tp/getClientTenant");
       if (res.status == 200) {
         setTenantList(res.data as string[]);
       }
@@ -379,7 +379,7 @@ const Page = () => {
                   <div className="flex w-full gap-[0.58vw] items-center pt-[0.58vw">
                     <div className="relative w-[60%] h-[4vh] ">
                       <span className="absolute inset-y-0 left-0 flex items-center p-[0.58vw] h-[2.18vw] w-[2.18vw] ">
-                        <SearchIcon fill={isDarkMode ? "white" : "black"} height="0.83vw" width="0.83vw"/>
+                        <SearchIcon fill={isDarkMode ? "white" : "black"} height="0.83vw" width="0.83vw" />
                       </span>
                       <Input
                         value={searchValue}
@@ -396,7 +396,7 @@ const Page = () => {
                       }}
                       triggerButton={
                         <div className="flex text-[0.72vw] font-medium items-center gap-[0.29vw] dark:bg-[#0F0F0F] dark:text-[#FFFFFF]">
-                          <ColumnIcon fill={isDarkMode ? "white" : "black"} height="0.83vw" width="0.83vw"/>{" "}
+                          <ColumnIcon fill={isDarkMode ? "white" : "black"} height="0.83vw" width="0.83vw" />{" "}
                           Columns
                         </div>
                       }

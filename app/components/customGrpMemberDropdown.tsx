@@ -94,7 +94,7 @@ const CustomGrpMemberDropdown = ({
         onPress={() => setOpen(!isOpen)}
       >
         <span>Select {groupKey}</span>
-        <DownArrow />
+        <span><DownArrow /></span>
       </Button>
       {isOpen && (
         <div className="absolute mt-[0.5vw] z-20 bg-white p-[0.5vw] rounded w-[12vw] border">

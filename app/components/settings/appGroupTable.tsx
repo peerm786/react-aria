@@ -250,8 +250,6 @@ const AppGroupTable: React.FC<AppGroupTableProps> = ({
   };
 
   const handleDeleteGroupAndMembers = () => {
-    console.log("triggered");
-
     const updatedData = _.cloneDeep(data);
     const groupKeys = new Set();
     const memberKeys = new Set();
@@ -308,6 +306,18 @@ const AppGroupTable: React.FC<AppGroupTableProps> = ({
       _.set(updatedData, parentPath, parentData);
     });
     onUpdate(updatedData);
+    toast(
+      <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+      {
+        type: "success",
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        title: "Deleted Successfully",
+        text: `Selected data deleted successfully`,
+        closeButton: false,
+      } as any
+    )
   };
 
   const handleSelectAllApps = () => {

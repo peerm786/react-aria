@@ -43,10 +43,9 @@ import AppGroupTable from "./appGroupTable";
 import { Button, Calendar, CalendarCell, CalendarGrid, Heading } from 'react-aria-components';
 import { parseDate } from '@internationalized/date';
 import { useDateFormatter } from 'react-aria';
-
-
-
-
+import { AiOutlineSave } from "react-icons/ai";
+import { toast } from "react-toastify";
+import TorusToast from "../torusComponents/torusToast";
 
 interface App {
     code: string;
@@ -96,10 +95,7 @@ interface PsGrp {
     ps: Ps[];
 }
 
-
-
 const tabledata = [
-
     {
         "users": "easi",
         "firstName": "sa",
@@ -152,7 +148,6 @@ const tabledata = [
         "dateAdded": "may 05 2024",
         "2FAFlag": "N"
     }
-
 ];
 
 const SetupScreen = () => {
@@ -165,10 +160,36 @@ const SetupScreen = () => {
     const [roleGrpData, setRoleGrpData] = useState<any>([]);
     const [psGrpData, setPsGrpData] = useState<any>([]);
     const [displaydata, setDisplaydata] = useState<any>([]);
+    const [wordLength, setWordLength] = useState(0);
+    const [tenantList, setTenantList] = useState<string[]>([]);
+    const [selectedTenant, setSelectedTenant] = useState<string>("");
 
-    const getTenantProfile = async () => {
+    const fetchTenants = async () => {
         try {
-            const response = await AxiosService.get(`/tp/getTenantInfo?tenant=ABC`);
+            const res = await AxiosService.get("/tp/getClientTenant");
+            if (res.status == 200) {
+                setTenantList(res.data as string[]);
+            }
+        } catch (error: any) {
+            const { data } = error.response;
+            toast(
+                <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+                {
+                    type: "error",
+                    position: "bottom-right",
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    title: "Error Fetching Tenant",
+                    text: `${data.errorDetails.message}`,
+                    closeButton: false,
+                } as any
+            );
+        }
+    };
+
+    const getTenantProfile = async (tenant: string = "ABC") => {
+        try {
+            const response = await AxiosService.get(`/tp/getTenantInfo?tenant=${tenant}`);
             if (response.status === 200) {
                 setAppGrpData(response.data.AG);
                 setOrgGrpData(response.data.orgGrp);
@@ -181,9 +202,8 @@ const SetupScreen = () => {
         }
     };
 
-    // console.log(displaydata)
-
     useEffect(() => {
+        fetchTenants();
         getTenantProfile();
         const result = tabledata.map((item: any) => {
             return ({
@@ -195,10 +215,8 @@ const SetupScreen = () => {
                 accessExpires: item.accessExpires,
                 lastActive: item.lastActive,
                 dateAdded: item.dateAdded,
-
             })
         })
-
         setDisplaydata(result)
     }, []);
 
@@ -221,10 +239,6 @@ const SetupScreen = () => {
         }
     }, [orgGrpData, roleGrpData, psGrpData]);
 
-
-
-
-
     const Columnchange = [
         'users',
         'templateType',
@@ -240,38 +254,32 @@ const SetupScreen = () => {
         setDisplaydata(copyOfDisplayedData);
 
     }
+
     const updateValueInDate = (indexTobeModifiled: number, key: string, value: any) => {
         const copyOfDisplayedData = structuredClone(displaydata);
         copyOfDisplayedData[indexTobeModifiled][key] = value;
         setDisplaydata(copyOfDisplayedData);
     }
 
-
     const TableCell = (item: any, column: any, i: number) => {
         const [template, setTemplate] = useState<string>(item.templateType)
         const [dataChange, setdateChange] = useState<string>(item.accessExpires)
-
 
         const handleTemplate = (template: string) => {
             setTemplate(template)
             const updatedData = { ...item, templateType: template }
             updateValuesInSource(i, 'templateType', template)
         }
+
         const handledatechange = (date: string) => {
             setdateChange(date)
             const updatedData = { ...item, accessExpires: date }
             updateValueInDate(i, 'accessExpires', date)
-
-
-
         }
 
-
         switch (column.key) {
-
             case 'users':
                 return (
-
                     <div className="flex gap-2  ">
                         <TorusAvatar size="sm" />
                         <div className="flex flex-col justify-center">
@@ -279,8 +287,6 @@ const SetupScreen = () => {
                             <span className="text-[0.72vw] leading-[1.04vw] text-black/50 dark:text-[#FFFFFF]/50">
                                 {item.email}
                             </span>
-
-
                         </div>
                     </div>
                 );
@@ -305,19 +311,16 @@ const SetupScreen = () => {
                 return (
                     <div className="flex flex-col items-center">
                         <div className="flex text-[0.72vw] leading-[1.04vw] px-4 py-2 rounded-md bg-[#F4F5FA] mt-2">
-
                             <form onSubmit={(e) => e.preventDefault()}>
                                 <input
-                                    className="bg-[#F4F5FA]"
+                                    className="bg-[#F4F5FA] cursor-pointer"
                                     type="date"
                                     onChange={(e) => handledatechange(e.target.value)}
                                 />
                             </form>
-                        </div>`1`
+                        </div>
                     </div>
                 );
-
-
             case 'lastActive':
                 return <div>{item.lastActive}</div>;
             case 'dateAdded':
@@ -328,12 +331,10 @@ const SetupScreen = () => {
     }
 
     const templates = [
-
         'template1',
         'template2',
         'template3',
         'template4',
-
     ];
 
     const menuItems = [
@@ -369,7 +370,6 @@ const SetupScreen = () => {
 
             ],
         },
-
     ];
 
     const handleMenuClick = (itemCode: string) => {
@@ -431,11 +431,84 @@ const SetupScreen = () => {
         }
     };
 
+    const handleSave = async () => {
+        try {
+            const res = await AxiosService.post(`/tp/postTenantResource`, {
+                tenant: selectedTenant,
+                data: selectedMenuItem == "app" ? appGrpData : selectedMenuItem == "org" ? orgGrpData : selectedMenuItem == "role" ? roleGrpData : selectedMenuItem == "ps" ? psGrpData : [],
+                resourceType: selectedMenuItem,
+            })
+            if (res.status == 201) {
+                toast(
+                    <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+                    {
+                        type: "success",
+                        position: "bottom-right",
+                        autoClose: 2000,
+                        hideProgressBar: true,
+                        title: "Success",
+                        text: `Data Saved Successfully`,
+                        closeButton: false,
+                    } as any
+                )
+            } else {
+                toast(
+                    <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+                    {
+                        type: "error",
+                        position: "bottom-right",
+                        autoClose: 2000,
+                        hideProgressBar: true,
+                        title: "Error",
+                        text: `Something went wrong`,
+                        closeButton: false,
+                    } as any
+                )
+            }
+        } catch (error) {
+            toast(
+                <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+                {
+                    type: "error",
+                    position: "bottom-right",
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    title: "Error",
+                    text: `${error}`,
+                    closeButton: false,
+                } as any
+            )
+        }
+    }
+
+    const handleTenantChange = (tenant: string) => {
+        setSelectedTenant(tenant)
+        getTenantProfile(tenant)
+    }
+
     return (
         <div className="w-full h-full">
-            <div className="flex p-3 ml-2">
+            <div className="flex justify-between items-center p-2 ml-2">
                 <div className="flex gap-2 items-center text-[0.93vw] text-[#1A2024] leading-[2.22vh] font-semibold">
-                    <ApplicationSettings /> Setup
+                    <ApplicationSettings fill="#000000" /> Setup
+                </div>
+                <div className="flex gap-[0.58vw] items-center">
+                    <DropDown
+                        triggerButton="Tenant Selector"
+                        selectedKeys={selectedTenant}
+                        setSelectedKeys={handleTenantChange}
+                        items={tenantList}
+                        classNames={{
+                            triggerButton:
+                                "min-w-[10.26vw] items-center border border-black/15 p-[0.29vw] rounded-lg text-[0.72vw] leading-[2.22vh] bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white",
+                            popover: "w-[10.26vw]",
+                            listbox: "overflow-y-auto",
+                            listboxItem: "flex text-[0.72vw] leading-[2.22vh] justify-between",
+                        }}
+                    />
+                    <Button onPress={handleSave} className="flex gap-[0.29vw] px-3 py-1.5 text-[0.72vw] leading-[2.22vh] items-center bg-[#0736C4] text-white rounded-lg">
+                        <AiOutlineSave size="0.83vw" /> Save
+                    </Button>
                 </div>
             </div>
             <hr className="w-[100%]"></hr>

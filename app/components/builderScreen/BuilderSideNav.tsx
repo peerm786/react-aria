@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     CallChatSvg,
     DataFabric,
@@ -19,7 +19,7 @@ import {
 } from "../../constants/svgApplications";
 import { Button, Dialog, DialogTrigger, Popover } from "react-aria-components";
 import TorusAvatar from "../Avatar";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { deleteAllCookies, getCookie } from "../../../lib/utils/cookiemgmt";
 import { toggleDarkMode } from "../../../lib/Store/Reducers/MainSlice";
@@ -30,10 +30,11 @@ import TorusDialog from "../torusComponents/torusdialogmodal";
 import Settings from "../settings";
 
 const BuilderSideNav = () => {
-    const [fillIndex, setFillIndex] = useState(6);
+    const [fillIndex, setFillIndex] = useState<number | any>();
     const isDarkMode = useSelector((state: RootState) => state.main.useDarkMode);
     const dispatch = useDispatch();
     const router = useRouter();
+    const pathName = usePathname();
     const UserName = getCookie("loginId");
     const UserEmail = getCookie("email")
 
@@ -56,6 +57,22 @@ const BuilderSideNav = () => {
         }
         setFillIndex(index);
     };
+
+    useEffect(() => {
+        switch (pathName) {
+            case "/":
+                setFillIndex(6);
+                break;
+            case "/settings":
+                setFillIndex(4);
+                break;
+            case "/torus":
+                setFillIndex(0)
+                break;
+            default:
+                break;
+        }
+    }, [pathName])
 
     const handleLogout = (close: any) => {
         signOut();
