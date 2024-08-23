@@ -93,11 +93,11 @@ const CustomGrpMemberDropdown = ({
         className={`p-2 outline-none bg-gray-400 flex justify-between items-center rounded`}
         onPress={() => setOpen(!isOpen)}
       >
-        <span>Select from list</span>
+        <span>Select {groupKey}</span>
         <DownArrow />
       </Button>
       {isOpen && (
-        <div className="absolute mt-[0.5vw] z-20 bg-white p-[0.5vw] rounded w-[12vw]">
+        <div className="absolute mt-[0.5vw] z-20 bg-white p-[0.5vw] rounded w-[12vw] border">
           {data.map((grp: any, index: number) => {
             const isParentSelected = selected.some(
               (item: any) => JSON.stringify(item) === JSON.stringify(grp)
